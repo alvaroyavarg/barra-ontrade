@@ -3867,11 +3867,6 @@ function getPillarTone(score = "") {
   const s = String(score).toLowerCase();
   if (s === "completado") return "good";
   if (s === "pendiente")  return "warning";
-  if (s === "sin registro" || s === "sin dato" || s === "") return "soft";
-  // legacy fallback
-  if (s.includes("riesgo") || s.includes("bloque")) return "danger";
-  if (s.includes("atencion") || s.includes("oportunidad")) return "warning";
-  if (s.includes("bueno") || s.includes("fuerte") || s.includes("curso")) return "good";
   return "soft";
 }
 
@@ -4899,8 +4894,7 @@ function round(value) {
 
 // ── Recalcula health score a partir de los pilares actuales ──
 function calcHealthScore(pillars, hasAacc = false) {
-  const scoreMap = { "Fuerte": 100, "Completo": 100, "Bueno": 80, "En curso": 75,
-    "Atencion": 55, "Oportunidad": 55, "No aplica": 70, "Pendiente": 30 };
+  const scoreMap = { "Completado": 100, "Pendiente": 40, "Sin registro": 20 };
   const keys = ["staff", "assortment", "menu", "branding", "activation"];
   let total = 0;
   for (const k of keys) {

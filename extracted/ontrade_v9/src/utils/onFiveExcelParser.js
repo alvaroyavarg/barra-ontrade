@@ -46,14 +46,13 @@ function toObj(headers, row) {
 }
 function countOk(vals) { return vals.filter(Boolean).length; }
 function scoreFromRate(r) {
-  if (r >= 0.85) return "Fuerte";
-  if (r >= 0.60) return "Bueno";
-  if (r >= 0.35) return "Atencion";
+  if (r >= 0.60) return "Completado";
+  if (r > 0) return "Pendiente";
   return "Pendiente";
 }
 function healthFromPillars(pillars) {
-  const w = { Fuerte:100, Bueno:82, Atencion:58, Pendiente:35, Riesgo:25 };
-  const vals = Object.values(pillars).map((p) => w[p.score] ?? 55);
+  const w = { "Completado": 100, "Pendiente": 40, "Sin registro": 20 };
+  const vals = Object.values(pillars).map((p) => w[p.score] ?? 40);
   return Math.round(vals.reduce((a,b) => a+b, 0) / vals.length);
 }
 
@@ -85,7 +84,7 @@ function buildLocal(item, sheetName, idx) {
 
   const pillars = {
     staff: {
-      title:"Staff", score: hasVisit ? "Bueno" : "Pendiente",
+      title:"Staff", score: hasVisit ? "Completado" : "Pendiente",
       summary: hasVisit ? `Visita: ${formatDate(item["Visitas"])}` : "Sin visita registrada",
       details: [`Walker: ${walkerName}`, `Desarrollador: ${developer || "Sin dato"}`, `Fecha: ${formatDate(item["Visitas"])}`],
       nextAction: hasVisit ? "Mantener frecuencia y registrar minuta." : "Registrar visita rutinaria.",
@@ -97,9 +96,9 @@ function buildLocal(item, sheetName, idx) {
         const match = assortRaw.match(/^(\d+)\/(\d+)$/);
         if (match) {
           const rate = parseInt(match[1]) / parseInt(match[2]);
-          return rate >= 1 ? "Fuerte" : rate >= 0.6 ? "Bueno" : "Atencion";
+          return rate >= 1 ? "Completado" : rate >= 0.6 ? "Completado" : "Pendiente";
         }
-        return "Atencion";
+        return "Pendiente";
       })(),
       summary: (assortRaw && assortRaw !== "" && assortRaw.toUpperCase() !== "NA")
         ? `Foto de Exito: ${assortRaw}`
@@ -116,13 +115,13 @@ function buildLocal(item, sheetName, idx) {
       nextAction: menuOk === MENU_FIELDS.length ? "Menu OK." : "Cerrar gaps de cocktails y drink strategy.",
     },
     branding: {
-      title:"Branding", score: brandOk ? "Bueno" : "Pendiente",
+      title:"Branding", score: brandOk === 2 ? "Completado" : brandOk === 1 ? "Pendiente" : "Sin registro",
       summary: `${brandOk}/2 elementos presentes`,
       details: [`Glassware: ${yes(item["Glassware"]) ? "OK":"Pendiente"}`, `Neon: ${yes(item["Neones y otros"]) ? "OK":"Pendiente"}`],
       nextAction: brandOk ? "Registrar evidencia visual." : "Solicitar material POP.",
     },
     activation: {
-      title:"Activacion", score: hasAct ? "Bueno" : "Pendiente",
+      title:"Activacion", score: hasAct ? "Completado" : "Sin registro",
       summary: hasAct ? "Always On activo" : "Sin activacion registrada",
       details: [`Always On: ${yes(item["Always On"]) ? "OK":"Pendiente"}`],
       nextAction: hasAct ? "Medir resultado." : "Levantar oportunidad de activacion.",
@@ -217,7 +216,7 @@ export function summarizeOnFiveLocals(locals) {
   return {
     total:        locals.length,
     avg:          Math.round(locals.reduce((s,l) => s + (l.healthScore||0), 0) / total),
-    menuOk:       locals.filter((l) => l.pillars.menu.score === "Fuerte" || l.pillars.menu.score === "Bueno").length,
+    menuOk:       locals.filter((l) => l.pillars.menu.score === "Completado").length,
     brandingOk:   locals.filter((l) => l.pillars.branding.score !== "Pendiente").length,
     activationOk: locals.filter((l) => l.pillars.activation.score !== "Pendiente").length,
     aacc:         locals.filter((l) => l.hasAacc).length,
