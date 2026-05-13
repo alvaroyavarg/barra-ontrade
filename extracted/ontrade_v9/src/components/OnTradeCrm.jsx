@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { parseOnFiveWorkbook, summarizeOnFiveLocals } from "../utils/onFiveExcelParser.js";
 import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCuentas.js";
+import { useLocalStorage } from "../utils/useLocalStorage.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
 const CRM_ROLES = [
@@ -285,42 +286,80 @@ function buildKanbanFromLocals(locals) {
   return cards;
 }
 
+// ── Helpers de persistencia de pillars ────────────────────────────
+
+function getStoredOverrides(key) {
+  try {
+    const s = localStorage.getItem(key);
+    return s !== null ? JSON.parse(s) : {};
+  } catch {
+    return {};
+  }
+}
+
+function applyPillarOverrides(locals, overrides) {
+  return locals.map((local) => {
+    const localOverrides = overrides[local.id];
+    if (!localOverrides) return local;
+    const mergedPillars = { ...local.pillars };
+    for (const [key, data] of Object.entries(localOverrides)) {
+      mergedPillars[key] = { ...(local.pillars[key] ?? {}), ...data };
+    }
+    return { ...local, pillars: mergedPillars };
+  });
+}
+
+function labelForRegisterType(key) {
+  return STAFF_REGISTER_TYPES.find((t) => t.key === key)?.label ?? "Registro Staff";
+}
+
+// ──────────────────────────────────────────────────────────────────
+
 function OnTradeCrm({ onOpenModule }) {
   const [roleId, setRoleId] = useState("walker");
   const [activeView, setActiveView] = useState("dashboard");
-  const [localsData, setLocalsData] = useState(MAESTRO_LOCALS);
+  const [rawLocalsData, setRawLocalsData] = useState(MAESTRO_LOCALS);
+  const [pillarOverrides, setPillarOverrides] = useLocalStorage("barra_pillarOverrides", {});
+  const localsData = useMemo(
+    () => applyPillarOverrides(rawLocalsData, pillarOverrides),
+    [rawLocalsData, pillarOverrides],
+  );
   const [walkers, setWalkers] = useState(MAESTRO_WALKERS);
   const [activeWalker, setActiveWalker] = useState("all");
   const [excelMeta, setExcelMeta] = useState(MAESTRO_META);
   const [excelError, setExcelError] = useState("");
   const [selectedLocalId, setSelectedLocalId] = useState(MAESTRO_LOCALS[0]?.id ?? null);
-  const [kanbanColumns, setKanbanColumns] = useState(() => ([
-    { id: "todo",     title: "Pendiente",   cards: buildKanbanFromLocals(MAESTRO_LOCALS) },
-    { id: "progress", title: "En progreso", cards: [] },
-    { id: "done",     title: "Completado",  cards: [] },
-  ]));
+  const [kanbanColumns, setKanbanColumns] = useState(() => {
+    const initOverrides = getStoredOverrides("barra_pillarOverrides");
+    const initLocals = applyPillarOverrides(MAESTRO_LOCALS, initOverrides);
+    return [
+      { id: "todo",     title: "Pendiente",   cards: buildKanbanFromLocals(initLocals) },
+      { id: "progress", title: "En progreso", cards: [] },
+      { id: "done",     title: "Completado",  cards: [] },
+    ];
+  });
   const [draggedCardId, setDraggedCardId] = useState(null);
   const [draftNote, setDraftNote] = useState("");
-  const [extraNotes, setExtraNotes] = useState({});
-  const [extraContacts, setExtraContacts] = useState({});
+  const [extraNotes, setExtraNotes] = useLocalStorage("barra_extraNotes", {});
+  const [extraContacts, setExtraContacts] = useLocalStorage("barra_extraContacts", {});
   const [activeOnFiveModule, setActiveOnFiveModule] = useState("staff");
   const [assortmentConfig, setAssortmentConfig] = useState(DEFAULT_ASSORTMENT_CONFIG);
-  const [assortmentAudits, setAssortmentAudits] = useState({});
+  const [assortmentAudits, setAssortmentAudits] = useLocalStorage("barra_assortmentAudits", {});
 
   const role = CRM_ROLES.find((item) => item.id === roleId) ?? CRM_ROLES[0];
 
-  // ── Actualiza un pilar real de una cuenta (sin recalcular health por ahora) ──
+  // ── Actualiza un pilar real de una cuenta y lo persiste en localStorage ──
   function updateLocalPillar(localId, pillarKey, pillarData) {
-    setLocalsData((current) =>
-      current.map((local) => {
-        if (local.id !== localId) return local;
-        const updatedPillars = {
-          ...local.pillars,
-          [pillarKey]: { ...(local.pillars[pillarKey] ?? {}), ...pillarData },
-        };
-        return { ...local, pillars: updatedPillars };
-      })
-    );
+    setPillarOverrides((prev) => ({
+      ...prev,
+      [localId]: {
+        ...(prev[localId] ?? {}),
+        [pillarKey]: {
+          ...(prev[localId]?.[pillarKey] ?? {}),
+          ...pillarData,
+        },
+      },
+    }));
   }
 
   // ── Guarda una auditoría de assortment en terreno ──
@@ -344,7 +383,7 @@ function OnTradeCrm({ onOpenModule }) {
 
   // ── Agrega una cuenta manual creada desde Config CP&A ──
   function addManualLocal(newLocal) {
-    setLocalsData((current) => [newLocal, ...current]);
+    setRawLocalsData((current) => [newLocal, ...current]);
   }
 
   // Cuentas filtradas por Walker activo (columna WALKER del Excel)
@@ -363,7 +402,7 @@ function OnTradeCrm({ onOpenModule }) {
     setExcelError("");
     try {
       const result = await parseOnFiveWorkbook(file);
-      setLocalsData(result.locals);
+      setRawLocalsData(result.locals);
       setWalkers(result.walkers);
       setActiveWalker("all");
       setSelectedLocalId(result.locals[0]?.id ?? null);
@@ -606,6 +645,10 @@ function OnTradeCrm({ onOpenModule }) {
               assortmentConfig={assortmentConfig}
               assortmentAudit={assortmentAudits[selectedLocal.id] ?? null}
               onSaveAssortmentAudit={(checkedIds, segmentIds) => saveAssortmentAudit(selectedLocal.id, checkedIds, role.name, segmentIds)}
+              onAddNote={(note) => setExtraNotes((curr) => ({
+                ...curr,
+                [selectedLocal.id]: [note, ...(curr[selectedLocal.id] ?? [])],
+              }))}
             />
           ) : null}
 
@@ -630,7 +673,7 @@ function OnTradeCrm({ onOpenModule }) {
               assortmentConfig={assortmentConfig}
               onSaveAssortmentConfig={setAssortmentConfig}
               onUpdateAccount={(localId, updates) =>
-                setLocalsData((current) => current.map((l) => l.id === localId ? { ...l, ...updates } : l))
+                setRawLocalsData((current) => current.map((l) => l.id === localId ? { ...l, ...updates } : l))
               }
             />
           ) : null}
@@ -1200,7 +1243,7 @@ function LocalProfile({ draftNote, extraContacts, local, notes, onAddContact, on
   );
 }
 
-function ExecutionWorkspace({ activeModuleKey, activeUserName, local, onSelectModule, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit }) {
+function ExecutionWorkspace({ activeModuleKey, activeUserName, local, onSelectModule, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit, onAddNote }) {
   const activeModule = ON_FIVE_MODULES.find((module) => module.key === activeModuleKey) ?? ON_FIVE_MODULES[0];
   const activePillar = local.pillars[activeModule.key];
 
@@ -1225,6 +1268,7 @@ function ExecutionWorkspace({ activeModuleKey, activeUserName, local, onSelectMo
           assortmentConfig={assortmentConfig}
           assortmentAudit={assortmentAudit}
           onSaveAssortmentAudit={onSaveAssortmentAudit}
+          onAddNote={onAddNote}
         />
       </section>
     </div>
@@ -1875,7 +1919,7 @@ function MissionGrid({ missions }) {
   );
 }
 
-function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit }) {
+function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit, onAddNote }) {
   const [moduleLogs, setModuleLogs] = useState([]);
   const [activeIncentives, setActiveIncentives] = useState(["Tanqueray Perfect Serve Challenge", "Smirnoff Red Staff Challenge"]);
   const tone = getPillarTone(pillar?.score);
@@ -1935,9 +1979,18 @@ function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePil
                   if (module.key === "staff" && onUpdatePillar) {
                     const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
                     onUpdatePillar("staff", {
-                      score: "Fuerte",
-                      summary: `Visita registrada ${ts}`,
+                      score: "Completado",
+                      summary: `${labelForRegisterType(record?.registerType)} · ${ts}`,
                       nextAction: "Programar proxima visita",
+                      lastAudit: ts,
+                    });
+                    onAddNote?.({
+                      id: `note-${Date.now()}`,
+                      author: activeUserName ?? "Walker",
+                      date: ts,
+                      text: record?.text ?? "",
+                      type: labelForRegisterType(record?.registerType),
+                      nextAction: "Seguimiento segun lo acordado en terreno.",
                     });
                     if (record?.registerType === "newIncentive" && record?.incentiveName) {
                       setActiveIncentives((prev) => [...prev, record.incentiveName]);
@@ -2618,8 +2671,8 @@ function OnFiveRegisterPanel({ module, onSave, activeIncentives }) {
   }
 
   function saveRegister() {
-    const record = buildRegisterSummary(registerType, formValues);
-    onSave?.({ ...record, registerType: registerType.key, incentiveName: formValues.incentiveName });
+    const summary = buildRegisterSummary(registerType, formValues);
+    onSave?.({ text: summary, registerType: registerType.key, incentiveName: formValues.incentiveName });
     setFormValues({});
   }
 
