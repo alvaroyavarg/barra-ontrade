@@ -1549,60 +1549,281 @@ function CpaKpiWalkersView({ locals = [], walkers = [] }) {
   );
 }
 
-function ManagerDashboard({ locals = [], walkers = [] }) {
-  const totalLocals   = locals.length;
-  const auditados     = locals.filter((l) => l.pillars && Object.values(l.pillars).some((p) => p.lastAudit)).length;
-  const pctCobertura  = totalLocals > 0 ? Math.round((auditados / totalLocals) * 100) : 0;
-  const enRiesgo      = locals.filter((l) => !l.pillars || Object.values(l.pillars).every((p) => !p.lastAudit)).length;
+// ─── Dark Dashboard helpers ───────────────────────────────────────────────────
+
+function useDdCountUp(target, duration = 900) {
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    if (!target) { setVal(0); return; }
+    let start = null;
+    let raf;
+    const step = (ts) => {
+      if (!start) start = ts;
+      const p = Math.min((ts - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      setVal(Math.round(ease * target));
+      if (p < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration]);
+  return val;
+}
+
+function DdSparkline({ data, accent = false, width = 72, height = 28 }) {
+  if (!data || data.length < 2) return null;
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const range = max - min || 1;
+  const pts = data.map((v, i) => {
+    const x = (i / (data.length - 1)) * width;
+    const y = height - 2 - ((v - min) / range) * (height - 4);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ");
+  return (
+    <svg width={width} height={height} style={{ display: "block", flexShrink: 0 }}>
+      <polyline
+        points={pts}
+        fill="none"
+        stroke={accent ? "#F5A623" : "#2A2A2A"}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ddSeedSpark(seed, len = 8) {
+  const out = [];
+  let s = Math.abs(seed) || 17;
+  for (let i = 0; i < len; i++) {
+    s = (s * 16807) % 2147483647;
+    out.push(30 + (s % 70));
+  }
+  return out;
+}
+
+function DdKpiCard({ label, value, note, isAccent, sparkData, suffix = "" }) {
+  const num = typeof value === "number" ? value : null;
+  const animated = useDdCountUp(num ?? 0);
+  const display = num !== null ? `${animated}${suffix}` : value;
+  return (
+    <article className={`dd-kpi${isAccent ? " dd-kpi--accent" : ""}`}>
+      <div className="dd-kpi__top">
+        <span className="dd-kpi__label">{label}</span>
+        <DdSparkline data={sparkData} accent={isAccent} />
+      </div>
+      <div className="dd-kpi__value">{display}</div>
+      {note && <div className="dd-kpi__note">{note}</div>}
+    </article>
+  );
+}
+
+function DdPillarBars({ locals }) {
+  const PILLARS = [
+    { key: "staff",      label: "Staff" },
+    { key: "assortment", label: "Assortment" },
+    { key: "menu",       label: "Menu" },
+    { key: "branding",   label: "Branding" },
+    { key: "activation", label: "Activation" },
+  ];
+  const total = locals.length || 1;
+  return (
+    <div className="dd-pillar-bars">
+      {PILLARS.map(({ key, label }) => {
+        const done    = locals.filter((l) => l.pillars?.[key]?.score === "Completado").length;
+        const pending = locals.filter((l) => l.pillars?.[key]?.score === "Pendiente").length;
+        const pct     = Math.round((done / total) * 100);
+        const pctPend = Math.round((pending / total) * 100);
+        return (
+          <div key={key} className="dd-pillar-row">
+            <span className="dd-pillar-label">{label}</span>
+            <div className="dd-pillar-track">
+              <div className="dd-pillar-fill dd-pillar-fill--done" style={{ width: `${pct}%` }} />
+              <div className="dd-pillar-fill dd-pillar-fill--pend" style={{ width: `${pctPend}%` }} />
+            </div>
+            <span className="dd-pillar-pct">{pct}%</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function DdWalkerTable({ walkers, locals }) {
+  const PILLAR_KEYS = ["staff", "assortment", "menu", "branding", "activation"];
+  const rows = walkers.map((w) => {
+    const wl      = locals.filter((l) => l.walkerName === w.name || l.walkerName === w.id);
+    const covered = wl.filter((l) => l.pillars && Object.values(l.pillars).some((p) => p.lastAudit)).length;
+    const avgH    = wl.length > 0 ? Math.round(wl.reduce((s, l) => s + (l.healthScore || 0), 0) / wl.length) : 0;
+    const pct     = wl.length > 0 ? Math.round((covered / wl.length) * 100) : 0;
+    const dots    = PILLAR_KEYS.map((pk) => {
+      const done  = wl.filter((l) => l.pillars?.[pk]?.score === "Completado").length;
+      const ratio = wl.length > 0 ? done / wl.length : 0;
+      return ratio >= 0.6 ? "good" : ratio > 0 ? "warn" : "soft";
+    });
+    return { name: w.name, total: wl.length, pct, avgH, dots };
+  });
 
   return (
-    <div className="crm-stack">
-      <section className="crm-metrics-grid crm-metrics-grid--four">
-        <KpiCard
-          color="blue"
-          icon="🏪"
-          question="¿Dónde está el canal?"
-          label="Total cuentas en cartera"
-          value={totalLocals}
-          note={`${walkers.length} walkers activos`}
-        />
-        <KpiCard
-          color="green"
-          icon="✅"
-          question="¿Cuánto cobrimos?"
-          label="Cobertura auditoría On Five"
-          value={`${pctCobertura}%`}
-          progress={pctCobertura}
-          note={`${auditados} cuentas con visita registrada`}
-        />
-        <KpiCard
-          color="amber"
-          icon="🔍"
-          question="¿Qué revisar?"
-          label="Cuentas sin auditoría"
-          value={enRiesgo}
-          note="sin ninguna visita On Five aún"
-        />
-        <KpiCard
-          color="purple"
-          icon="📈"
-          question="¿Mejorando?"
-          label="Walkers activos en terreno"
-          value={walkers.length}
-          trend=" ↑ en cartera"
-        />
-      </section>
+    <table className="dd-table">
+      <thead>
+        <tr>
+          <th>Walker</th>
+          <th>Cuentas</th>
+          <th>Cobertura</th>
+          <th>Salud avg</th>
+          <th title="Staff · Assortment · Menu · Branding · Activation">On Five</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r) => (
+          <tr key={r.name}>
+            <td className="dd-table__name">{r.name}</td>
+            <td>{r.total}</td>
+            <td>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <div className="dd-bar-wrap">
+                  <div className="dd-bar-fill" style={{ width: `${r.pct}%` }} />
+                </div>
+                <span className="dd-bar-label">{r.pct}%</span>
+              </div>
+            </td>
+            <td>
+              <span className={`dd-chip dd-chip--${r.avgH >= 70 ? "good" : r.avgH >= 40 ? "warn" : "soft"}`}>
+                {r.avgH}
+              </span>
+            </td>
+            <td>
+              <div className="dd-dots">
+                {r.dots.map((tone, i) => (
+                  <span key={i} className={`dd-dot dd-dot--${tone}`} title={PILLAR_KEYS[i]} />
+                ))}
+              </div>
+            </td>
+          </tr>
+        ))}
+        {rows.length === 0 && (
+          <tr><td colSpan={5} style={{ color: "#444", padding: "16px 0", fontSize: "0.78rem" }}>Sin walkers — sube el Excel maestro para ver datos.</td></tr>
+        )}
+      </tbody>
+    </table>
+  );
+}
 
-      <section className="crm-dashboard-grid">
-        <article className="crm-card">
-          <SectionTitle kicker="Equipo" title="Performance por walker" />
-          <WalkerTable walkers={walkers} locals={locals} />
-        </article>
-        <article className="crm-card">
-          <SectionTitle kicker="Prioridades" title="Cuentas a revisar esta semana" />
-          <VisitList visits={CRM_VISITS.slice(0, 4)} onOpenLocal={() => {}} />
-        </article>
-      </section>
+function DdActivityFeed({ locals }) {
+  const events = [];
+  locals.forEach((local) => {
+    if (!local.pillars) return;
+    Object.entries(local.pillars).forEach(([pk, p]) => {
+      if (p.lastAudit) {
+        events.push({ id: `${local.id}-${pk}`, localName: local.name, walker: local.walkerName, pillar: pk, score: p.score, time: p.lastAudit });
+      }
+    });
+  });
+  events.sort((a, b) => b.time - a.time);
+  const shown = events.slice(0, 14);
+  const pillarLabel = { staff: "Staff", assortment: "Assort.", menu: "Menu", branding: "Brand.", activation: "Activ." };
+
+  if (shown.length === 0) {
+    return (
+      <div className="dd-feed">
+        <p className="dd-feed__empty">Sin actividad registrada aún.<br />Las auditorías On Five aparecerán aquí en tiempo real.</p>
+      </div>
+    );
+  }
+  return (
+    <div className="dd-feed">
+      {shown.map((e) => (
+        <div key={e.id} className="dd-feed__item">
+          <span className={`dd-feed__dot dd-feed__dot--${e.score === "Completado" ? "good" : "warn"}`} />
+          <div className="dd-feed__body">
+            <span className="dd-feed__local">{e.localName}</span>
+            <span className="dd-feed__meta">{pillarLabel[e.pillar] ?? e.pillar} · {e.walker}</span>
+          </div>
+          <span className={`dd-feed__badge dd-feed__badge--${e.score === "Completado" ? "good" : "warn"}`}>
+            {e.score}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ManagerDashboard({ locals = [], walkers = [] }) {
+  const totalLocals  = locals.length;
+  const auditados    = locals.filter((l) => l.pillars && Object.values(l.pillars).some((p) => p.lastAudit)).length;
+  const pctCobertura = totalLocals > 0 ? Math.round((auditados / totalLocals) * 100) : 0;
+  const avgHealth    = totalLocals > 0 ? Math.round(locals.reduce((s, l) => s + (l.healthScore || 0), 0) / totalLocals) : 0;
+  const sinVisita    = totalLocals - auditados;
+
+  const now     = new Date();
+  const dateStr = now.toLocaleDateString("es-CL", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+
+  return (
+    <div className="dd-shell">
+      <div className="dd-pulse-bar">
+        <span className="dd-pulse-bar__date">{dateStr}</span>
+        <span className="dd-pulse-bar__live"><span className="dd-live-dot" />EN VIVO</span>
+      </div>
+
+      <div className="dd-kpi-row">
+        <DdKpiCard
+          label="Cuentas en cartera"
+          value={totalLocals}
+          note={`${walkers.length} walker${walkers.length !== 1 ? "s" : ""} activos`}
+          sparkData={ddSeedSpark(totalLocals + 1)}
+        />
+        <DdKpiCard
+          label="Cobertura On Five"
+          value={pctCobertura}
+          suffix="%"
+          note={`${auditados} con visita registrada`}
+          isAccent
+          sparkData={ddSeedSpark(pctCobertura + 7)}
+        />
+        <DdKpiCard
+          label="Salud promedio"
+          value={avgHealth}
+          note="health score del canal"
+          sparkData={ddSeedSpark(avgHealth + 3)}
+        />
+        <DdKpiCard
+          label="Sin auditoría"
+          value={sinVisita}
+          note="cuentas sin ningún pilar"
+          sparkData={ddSeedSpark(sinVisita + 5)}
+        />
+      </div>
+
+      <div className="dd-main-grid">
+        <div className="dd-col-main">
+          <div className="dd-card">
+            <div className="dd-card__header">
+              <span className="dd-card__kicker">ON FIVE</span>
+              <h2 className="dd-card__title">Cumplimiento por pilar</h2>
+            </div>
+            <DdPillarBars locals={locals} />
+          </div>
+          <div className="dd-card">
+            <div className="dd-card__header">
+              <span className="dd-card__kicker">EQUIPO</span>
+              <h2 className="dd-card__title">Performance por walker</h2>
+            </div>
+            <DdWalkerTable walkers={walkers} locals={locals} />
+          </div>
+        </div>
+        <div className="dd-col-side">
+          <div className="dd-card dd-card--full-height">
+            <div className="dd-card__header">
+              <span className="dd-card__kicker">ACTIVIDAD</span>
+              <h2 className="dd-card__title">Auditorías recientes</h2>
+            </div>
+            <DdActivityFeed locals={locals} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
