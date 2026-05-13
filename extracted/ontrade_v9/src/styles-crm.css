@@ -1154,6 +1154,18 @@ body:has(.crm-shell) {
             #22C55E good · #F59E0B warn · #6B7280 soft
    ═══════════════════════════════════════════════════════════ */
 
+/* When the dark dashboard is active: reset parent container */
+.crm-main:has(.dd-shell) {
+  background: #0A0A0A !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  overflow-y: auto;
+}
+/* Hide the light page header — dd-shell has its own pulse bar */
+.crm-main:has(.dd-shell) .crm-page-header {
+  display: none !important;
+}
+
 .dd-shell {
   background: #0A0A0A;
   min-height: 100%;
