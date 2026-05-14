@@ -445,23 +445,23 @@ function OnTradeCrm({ onOpenModule }) {
       aria-label="BARRA · On Trade Execution"
       className="flex min-h-screen flex-col bg-slate-50 text-slate-900"
     >
-      <header className="flex items-center justify-between gap-4 border-b border-slate-200 bg-white px-6 py-3">
+      <header className="flex items-center justify-between gap-4 border-b border-slate-800 bg-slate-900 px-6 py-3 text-slate-100">
         <div className="flex items-center gap-2.5">
           <span
             aria-hidden="true"
-            className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-base"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-base"
           >
             🪩
           </span>
           <div className="flex flex-col leading-tight">
-            <strong className="text-[13px] font-semibold tracking-tight text-slate-900">BARRA</strong>
-            <small className="text-[11px] text-slate-500">On Trade Execution · Diageo Chile</small>
+            <strong className="text-[13px] font-semibold tracking-tight text-white">BARRA</strong>
+            <small className="text-[11px] text-slate-400">On Trade Execution · Diageo Chile</small>
           </div>
         </div>
 
         <div
           aria-label="Selector de rol"
-          className="inline-flex items-center gap-0.5 rounded-lg border border-slate-200 bg-slate-100 p-0.5"
+          className="inline-flex items-center gap-0.5 rounded-lg border border-white/10 bg-white/5 p-0.5"
         >
           {CRM_ROLES.map((item) => {
             const isActive = roleId === item.id;
@@ -470,10 +470,10 @@ function OnTradeCrm({ onOpenModule }) {
                 key={item.id}
                 type="button"
                 onClick={() => handleRoleChange(item.id)}
-                className={`rounded-md px-3 py-1 text-[12px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-100 ${
+                className={`rounded-md px-3 py-1 text-[12px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900 ${
                   isActive
                     ? "bg-white text-slate-900 shadow-sm"
-                    : "text-slate-500 hover:text-slate-900"
+                    : "text-slate-300 hover:text-white"
                 }`}
               >
                 {item.label}
@@ -880,69 +880,98 @@ function ContactsProjectsView({ locals, onOpenLocal }) {
   function SortTh({ col, children }) {
     const active = sortBy === col;
     return (
-      <span
-        style={{ cursor: "pointer", userSelect: "none", display: "flex", alignItems: "center", gap: 4 }}
+      <button
+        type="button"
         onClick={() => toggleSort(col)}
+        className="flex select-none items-center gap-1 text-left transition hover:text-slate-900"
       >
         {children}
-        <span style={{ opacity: active ? 1 : 0.3, fontSize: "0.7rem" }}>
+        <span className={`text-[10px] ${active ? "opacity-100" : "opacity-30"}`}>
           {active ? (sortDir === "asc" ? "↑" : "↓") : "↕"}
         </span>
-      </span>
+      </button>
     );
   }
 
   function pillarDot(score) {
-    const c = score === "Completado" ? "#16a34a" : score === "Pendiente" ? "#d97706" : "#9ca3af";
-    return <span title={score} style={{ display: "inline-block", width: 8, height: 8, borderRadius: "50%", background: c, flexShrink: 0 }} />;
+    const tone =
+      score === "Completado" ? "bg-emerald-500" : score === "Pendiente" ? "bg-amber-500" : "bg-slate-400";
+    return <span title={score} className={`inline-block h-2 w-2 shrink-0 rounded-full ${tone}`} />;
   }
 
   if (locals.length === 0) {
     return (
-      <div style={{ padding: "40px 0", textAlign: "center", color: "var(--text-3)" }}>
-        <div style={{ fontSize: "2rem", marginBottom: 12 }}>📂</div>
-        <strong style={{ fontSize: "1rem", display: "block" }}>Sin cuentas cargadas</strong>
-        <p style={{ fontSize: "0.84rem", marginTop: 6 }}>Solicita al CP&A que cargue el Excel maestro desde Configuración para ver tu cartera aquí.</p>
+      <div className="flex flex-col items-center gap-1 py-10 text-center text-slate-500">
+        <span className="text-3xl" aria-hidden="true">📂</span>
+        <strong className="text-base text-slate-900">Sin cuentas cargadas</strong>
+        <p className="text-[13px]">
+          Solicita al CP&A que cargue el Excel maestro desde Configuración para ver tu cartera aquí.
+        </p>
       </div>
     );
   }
 
   return (
-    <section className="crm-directory">
-      <div className="crm-directory__toolbar">
-        <div>
-          <span className="crm-eyebrow">Cartera cargada desde Excel</span>
-          <h2>Cuentas · {filteredLocals.length === locals.length ? locals.length : `${filteredLocals.length} de ${locals.length}`}</h2>
+    <section className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col gap-0.5">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+            Cartera cargada desde Excel
+          </span>
+          <h2 className="text-lg font-semibold tracking-tight text-slate-900">
+            Cuentas · {filteredLocals.length === locals.length ? locals.length : `${filteredLocals.length} de ${locals.length}`}
+          </h2>
         </div>
-        <label className="crm-directory__search">
-          <span>Buscar</span>
+        <label className="flex flex-col gap-1 sm:w-80">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Buscar</span>
           <input
             placeholder="Nombre, cliente ID, comuna, segmento, SKU, walker..."
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-[13px] text-slate-900 placeholder:text-slate-400 transition focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10"
           />
         </label>
       </div>
 
-      <div className="crm-pill-row">
-        {filters.map((f) => (
-          <button key={f.id} className={activeFilter === f.id ? "crm-pill crm-pill--active" : "crm-pill"} type="button" onClick={() => setActiveFilter(f.id)}>
-            {f.label}
-          </button>
-        ))}
+      <div className="flex flex-wrap gap-1.5">
+        {filters.map((f) => {
+          const active = activeFilter === f.id;
+          return (
+            <button
+              key={f.id}
+              type="button"
+              onClick={() => setActiveFilter(f.id)}
+              className={`rounded-full border px-3 py-1 text-[12px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 ${
+                active
+                  ? "border-slate-900 bg-slate-900 text-white"
+                  : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900"
+              }`}
+            >
+              {f.label}
+            </button>
+          );
+        })}
       </div>
 
-      <div className="crm-directory__summary">
-        <MetricCard compact label="Cuentas totales"  value={locals.length}                                                                         note="cartera completa" />
-        <MetricCard compact label="Con AACC Diageo"  value={locals.filter((l) => l.hasAacc).length}                                               note="acuerdos vigentes" />
-        <MetricCard compact label="Gaps en Menú"     value={locals.filter((l) => l.pillars.menu.score !== "Completado").length} note="KPIs incompletos" />
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <MetricCard compact label="Cuentas totales" value={locals.length} note="cartera completa" />
+        <MetricCard
+          compact
+          label="Con AACC Diageo"
+          value={locals.filter((l) => l.hasAacc).length}
+          note="acuerdos vigentes"
+        />
+        <MetricCard
+          compact
+          label="Gaps en Menú"
+          value={locals.filter((l) => l.pillars.menu.score !== "Completado").length}
+          note="KPIs incompletos"
+        />
       </div>
 
-      {/* ── Tabla / Cards ── */}
-      <div className="crm-account-table">
-        {/* Header — solo desktop */}
-        <div className="crm-account-table__head">
+      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="hidden grid-cols-[2fr_1fr_1fr_1fr_1fr_0.8fr_1fr_1.2fr_0.6fr] items-center gap-3 border-b border-slate-200 bg-slate-50 px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wide text-slate-500 lg:grid">
           <SortTh col="name">Cuenta</SortTh>
           <SortTh col="segment">Segmento</SortTh>
           <span>Subcanal</span>
@@ -955,70 +984,98 @@ function ContactsProjectsView({ locals, onOpenLocal }) {
         </div>
 
         {filteredLocals.map((local) => {
-          const healthTone = local.healthScore >= 76 ? "#16a34a" : local.healthScore >= 68 ? "#d97706" : "#dc2626";
-          const pillarsArr = ["staff","assortment","menu","branding","activation"];
+          const healthTone =
+            local.healthScore >= 76
+              ? "text-emerald-600"
+              : local.healthScore >= 68
+              ? "text-amber-600"
+              : "text-rose-600";
+          const pillarsArr = ["staff", "assortment", "menu", "branding", "activation"];
           const assortment = local.pillars.assortment?.summary ?? "—";
-          const assortLabel = assortment.replace("Foto de Exito: ","").replace("Pendiente foto de exito por segmento","Pendiente");
+          const assortLabel = assortment
+            .replace("Foto de Exito: ", "")
+            .replace("Pendiente foto de exito por segmento", "Pendiente");
+          const assortHighlight = assortment.includes("4/4");
 
           return (
-            <button key={local.id} type="button" className="crm-account-row" onClick={() => onOpenLocal(local.id)}>
-              {/* Cuenta */}
-              <span className="crm-account-row__name">
-                <span className="crm-avatar crm-avatar--sm">{initials(local.name)}</span>
-                <span>
-                  <strong>{local.name}</strong>
-                  <small>{local.accountCode}</small>
+            <button
+              key={local.id}
+              type="button"
+              onClick={() => onOpenLocal(local.id)}
+              className="grid w-full grid-cols-1 items-center gap-2 border-b border-slate-100 px-4 py-3 text-left transition last:border-b-0 hover:bg-slate-50 focus:outline-none focus-visible:bg-slate-50 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-slate-900 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr_0.8fr_1fr_1.2fr_0.6fr] lg:gap-3"
+            >
+              <span className="flex items-center gap-2.5">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
+                  {initials(local.name)}
+                </span>
+                <span className="flex flex-col">
+                  <strong className="text-[13px] font-semibold text-slate-900">{local.name}</strong>
+                  <small className="text-[11px] text-slate-500">{local.accountCode}</small>
                 </span>
               </span>
-              {/* Segmento */}
-              <span className="crm-account-row__segment"><span className="crm-chip" style={{ fontSize: "0.72rem" }}>{local.segment || "—"}</span></span>
-              {/* Subcanal */}
-              <span className="crm-account-row__col--hide-mobile" style={{ fontSize: "0.8rem", color: "var(--text-2)" }}>{local.subchannel || "—"}</span>
-              {/* Comuna */}
-              <span className="crm-account-row__col--hide-mobile" style={{ fontSize: "0.8rem", color: "var(--text-2)" }}>{local.district || "—"}</span>
-              {/* Desarrollador */}
-              <span className="crm-account-row__col--hide-mobile" style={{ fontSize: "0.78rem", color: "var(--text-2)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{local.developer || "—"}</span>
-              {/* AACC */}
-              <span className="crm-account-row__aacc">
-                {local.hasAacc
-                  ? <span className="crm-pill crm-pill--gold" style={{ fontSize: "0.7rem" }}>Diageo</span>
-                  : <span className="crm-pill" style={{ fontSize: "0.7rem", opacity: .6 }}>Sin AC</span>}
+              <span>
+                <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700">
+                  {local.segment || "—"}
+                </span>
               </span>
-              {/* Foto Éxito */}
-              <span className="crm-account-row__col--hide-mobile" style={{ fontSize: "0.78rem", color: assortment.includes("4/4") ? "#16a34a" : "var(--text-2)", fontWeight: assortment.includes("4/4") ? 700 : 400 }}>
+              <span className="hidden text-[12px] text-slate-600 lg:inline">{local.subchannel || "—"}</span>
+              <span className="hidden text-[12px] text-slate-600 lg:inline">{local.district || "—"}</span>
+              <span className="hidden truncate text-[12px] text-slate-600 lg:inline">{local.developer || "—"}</span>
+              <span>
+                {local.hasAacc ? (
+                  <span className="rounded-md bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800">
+                    Diageo
+                  </span>
+                ) : (
+                  <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-500">
+                    Sin AC
+                  </span>
+                )}
+              </span>
+              <span
+                className={`hidden text-[12px] lg:inline ${
+                  assortHighlight ? "font-bold text-emerald-600" : "text-slate-600"
+                }`}
+              >
                 {assortLabel}
               </span>
-              {/* On Five dots */}
-              <span className="crm-account-row__onfive">
+              <span className="flex flex-wrap items-center gap-2">
                 {pillarsArr.map((key) => (
-                  <span key={key} className="crm-account-row__dot-col">
+                  <span key={key} className="flex items-center gap-1">
                     {pillarDot(local.pillars[key]?.score)}
-                    <span>{key.slice(0,2).toUpperCase()}</span>
+                    <span className="text-[10px] font-medium text-slate-500">{key.slice(0, 2).toUpperCase()}</span>
                   </span>
                 ))}
               </span>
-              {/* Health */}
-              <span className="crm-account-row__health" style={{ color: healthTone }}>{local.healthScore}</span>
+              <span className={`text-right text-[14px] font-bold ${healthTone}`}>{local.healthScore}</span>
             </button>
           );
         })}
 
-        {filteredLocals.length === 0 && (
-          <div style={{ padding: "28px", textAlign: "center", color: "var(--text-3)", fontSize: "0.84rem" }}>
-            Sin resultados para "{query}"
+        {filteredLocals.length === 0 ? (
+          <div className="px-4 py-7 text-center text-[13px] text-slate-500">
+            Sin resultados para &quot;{query}&quot;
           </div>
-        )}
+        ) : null}
       </div>
 
-      {/* Leyenda On Five */}
-      <div style={{ display: "flex", gap: 14, flexWrap: "wrap", padding: "8px 2px" }}>
-        <span style={{ fontSize: "0.72rem", color: "var(--text-3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em" }}>On Five:</span>
-        {[["ST","Staff"],["AS","Assortment"],["ME","Menú"],["BR","Branding"],["AC","Activation"]].map(([code, label]) => (
-          <span key={code} style={{ fontSize: "0.72rem", color: "var(--text-3)" }}><strong>{code}</strong> {label}</span>
-        ))}
-        {[["#16a34a","Completado"],["#d97706","Pendiente"],["#9ca3af","Sin registro"]].map(([color, label]) => (
-          <span key={label} style={{ display: "flex", alignItems: "center", gap: 4, fontSize: "0.72rem", color: "var(--text-3)" }}>
-            <span style={{ width: 7, height: 7, borderRadius: "50%", background: color, display: "inline-block" }} />{label}
+      <div className="flex flex-wrap items-center gap-3 px-1 text-[11px] text-slate-500">
+        <span className="font-semibold uppercase tracking-wide text-slate-600">On Five:</span>
+        {[["ST", "Staff"], ["AS", "Assortment"], ["ME", "Menú"], ["BR", "Branding"], ["AC", "Activation"]].map(
+          ([code, label]) => (
+            <span key={code}>
+              <strong className="text-slate-700">{code}</strong> {label}
+            </span>
+          ),
+        )}
+        {[
+          ["bg-emerald-500", "Completado"],
+          ["bg-amber-500", "Pendiente"],
+          ["bg-slate-400", "Sin registro"],
+        ].map(([tone, label]) => (
+          <span key={label} className="flex items-center gap-1">
+            <span className={`inline-block h-1.5 w-1.5 rounded-full ${tone}`} />
+            {label}
           </span>
         ))}
       </div>
@@ -1029,19 +1086,23 @@ function ContactsProjectsView({ locals, onOpenLocal }) {
 function WalkerDashboard({ columns, locals, summary, excelMeta, excelError, draggedCardId, onCardDragStart, onCardDrop, onOpenLocal, onUpload }) {
   if (!locals || locals.length === 0) {
     return (
-      <div className="crm-stack">
-        <article className="crm-card" style={{ padding: "40px 36px", maxWidth: 600 }}>
-          <SectionTitle kicker="Sin datos" title="Carga el Excel maestro para ver tu dashboard" description="Sube el archivo Maestro de Cuentas DBA para activar los KPIs de On Five, avance por pilar y cuentas en atencion." />
-          <label style={{ display: "block", cursor: "pointer", marginTop: 20 }}>
-            <div style={{ border: "2px dashed var(--border-md)", borderRadius: "var(--radius-card)", padding: "32px", textAlign: "center", background: "var(--canvas)" }}>
-              <div style={{ fontSize: "2rem", marginBottom: 8 }}>📂</div>
-              <strong style={{ fontSize: "0.95rem", display: "block" }}>Arrastra o haz click para seleccionar</strong>
-              <small style={{ color: "var(--text-3)", fontSize: "0.78rem", marginTop: 4, display: "block" }}>Maestro de Cuentas DBA .xlsx</small>
+      <div className="flex flex-col gap-4">
+        <article className="max-w-xl rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+          <SectionTitle
+            kicker="Sin datos"
+            title="Carga el Excel maestro para ver tu dashboard"
+            description="Sube el archivo Maestro de Cuentas DBA para activar los KPIs de On Five, avance por pilar y cuentas en atencion."
+          />
+          <label className="mt-5 block cursor-pointer">
+            <div className="flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center transition hover:border-slate-400 hover:bg-slate-100">
+              <span className="text-3xl" aria-hidden="true">📂</span>
+              <strong className="text-[14px] font-semibold text-slate-900">Arrastra o haz click para seleccionar</strong>
+              <small className="text-[12px] text-slate-500">Maestro de Cuentas DBA .xlsx</small>
             </div>
-            <input type="file" accept=".xlsx,.xls" style={{ display: "none" }} onChange={onUpload} />
+            <input type="file" accept=".xlsx,.xls" className="sr-only" onChange={onUpload} />
           </label>
           {excelError ? (
-            <div style={{ marginTop: 12, background: "var(--red-100,#fef2f2)", border: "1px solid var(--red-200,#fecaca)", borderRadius: 8, padding: "12px 14px", color: "#dc2626", fontSize: "0.84rem", fontWeight: 600 }}>
+            <div className="mt-3 rounded-lg border border-rose-200 bg-rose-50 px-3.5 py-3 text-[13px] font-semibold text-rose-700">
               {excelError}
             </div>
           ) : null}
@@ -1065,9 +1126,8 @@ function WalkerDashboard({ columns, locals, summary, excelMeta, excelError, drag
   );
 
   return (
-    <div className="crm-stack">
-      {/* KPI cards — mismo patrón que el dashboard de referencia */}
-      <section className="crm-metrics-grid crm-metrics-grid--four">
+    <div className="flex flex-col gap-5">
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           color="blue"
           icon="📊"
@@ -1104,10 +1164,10 @@ function WalkerDashboard({ columns, locals, summary, excelMeta, excelError, drag
         />
       </section>
 
-      <section className="crm-dashboard-grid">
-        <article className="crm-card">
+      <section className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+        <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="On Five" title="Avance por pilar" />
-          <div className="crm-progress-list">
+          <div className="flex flex-col gap-3">
             <ProgressRow label="Staff — visitas registradas" value={pct(withVisit)} />
             <ProgressRow label="Assortment — foto de exito" value={pct(withFoto)} />
             <ProgressRow label="Menu — cocktails y drink strategy" value={pct(summary.menuOk)} />
@@ -1116,49 +1176,40 @@ function WalkerDashboard({ columns, locals, summary, excelMeta, excelError, drag
           </div>
         </article>
 
-        <article className="crm-card">
+        <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="Accion requerida" title="Cuentas con menor avance" />
-          <div style={{ display: "grid", gap: 6, marginTop: 8 }}>
-            {atRisk.map((local) => (
-              <button
-                key={local.id}
-                type="button"
-                onClick={() => onOpenLocal(local.id)}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr auto",
-                  alignItems: "center",
-                  gap: "8px 16px",
-                  padding: "10px 14px",
-                  background: "var(--canvas)",
-                  border: "1px solid var(--border-sm)",
-                  borderRadius: 8,
-                  cursor: "pointer",
-                  textAlign: "left",
-                }}
-              >
-                <div>
-                  <strong style={{ fontSize: "0.875rem", display: "block" }}>{local.name}</strong>
-                  <small style={{ color: "var(--text-3)", fontSize: "0.76rem" }}>{local.district} · {local.walkerName}</small>
-                </div>
-                <span
-                  style={{
-                    fontWeight: 700,
-                    fontSize: "0.88rem",
-                    color: local.healthScore < 50 ? "#dc2626" : local.healthScore < 70 ? "#d97706" : "var(--text-2)",
-                    minWidth: 32,
-                    textAlign: "right",
-                  }}
+          <div className="mt-2 flex flex-col gap-1.5">
+            {atRisk.map((local) => {
+              const tone =
+                local.healthScore < 50
+                  ? "text-rose-600"
+                  : local.healthScore < 70
+                  ? "text-amber-600"
+                  : "text-slate-700";
+              return (
+                <button
+                  key={local.id}
+                  type="button"
+                  onClick={() => onOpenLocal(local.id)}
+                  className="flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-left transition hover:border-slate-300 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
                 >
-                  {local.healthScore}
-                </span>
-              </button>
-            ))}
+                  <div className="flex flex-col">
+                    <strong className="text-[13px] font-semibold text-slate-900">{local.name}</strong>
+                    <small className="text-[11px] text-slate-500">
+                      {local.district} · {local.walkerName}
+                    </small>
+                  </div>
+                  <span className={`min-w-[2rem] text-right text-[14px] font-bold ${tone}`}>
+                    {local.healthScore}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </article>
       </section>
 
-      <section className="crm-card">
+      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <SectionTitle
           kicker="Operacion semanal"
           title="Tablero de tareas"
@@ -1625,84 +1676,135 @@ function ManagerTeamView({ walkers = [], locals = [] }) {
 }
 
 function MetricCard({ compact = false, label, note, tone = "neutral", value }) {
+  const toneStyles = {
+    neutral: "border-slate-200 bg-white text-slate-900",
+    positive: "border-emerald-200 bg-emerald-50 text-emerald-900",
+    negative: "border-rose-200 bg-rose-50 text-rose-900",
+    accent: "border-slate-900 bg-slate-900 text-white",
+  };
+  const labelTone = tone === "accent" ? "text-slate-300" : "text-slate-500";
+  const noteTone = tone === "accent" ? "text-slate-400" : "text-slate-500";
   return (
-    <article className={`crm-metric crm-metric--${tone} ${compact ? "crm-metric--compact" : ""}`}>
-      <span>{label}</span>
-      <strong>{value}</strong>
-      {note ? <small>{note}</small> : null}
+    <article
+      className={`flex flex-col gap-1 rounded-xl border p-4 shadow-sm transition hover:shadow ${
+        compact ? "p-3 gap-0.5" : ""
+      } ${toneStyles[tone] ?? toneStyles.neutral}`}
+    >
+      <span className={`text-[11px] font-medium uppercase tracking-wide ${labelTone}`}>{label}</span>
+      <strong className={`${compact ? "text-base" : "text-lg"} font-semibold tracking-tight`}>{value}</strong>
+      {note ? <small className={`text-[11px] ${noteTone}`}>{note}</small> : null}
     </article>
   );
 }
 
-/* KpiCard — look and feel del dashboard de referencia:
-   icon + pregunta coloreada / label gris / valor grande coloreado / barra opcional / nota */
+const KPI_COLORS = {
+  blue: { accent: "text-blue-700", bar: "bg-blue-500", icon: "bg-blue-50 text-blue-600" },
+  green: { accent: "text-emerald-700", bar: "bg-emerald-500", icon: "bg-emerald-50 text-emerald-600" },
+  amber: { accent: "text-amber-700", bar: "bg-amber-500", icon: "bg-amber-50 text-amber-600" },
+  purple: { accent: "text-violet-700", bar: "bg-violet-500", icon: "bg-violet-50 text-violet-600" },
+  red: { accent: "text-rose-700", bar: "bg-rose-500", icon: "bg-rose-50 text-rose-600" },
+};
+
 function KpiCard({ color = "blue", icon, question, label, value, note, progress, trend }) {
+  const palette = KPI_COLORS[color] ?? KPI_COLORS.blue;
   return (
-    <article className={`crm-kpi-card crm-kpi-card--${color}`}>
-      <div className="crm-kpi-card__header">
-        {icon && <span className="crm-kpi-card__header-icon" aria-hidden="true">{icon}</span>}
-        <span>{question}</span>
+    <article className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow">
+      <div className="flex items-center gap-2">
+        {icon ? (
+          <span
+            aria-hidden="true"
+            className={`flex h-7 w-7 items-center justify-center rounded-lg text-sm ${palette.icon}`}
+          >
+            {icon}
+          </span>
+        ) : null}
+        <span className={`text-[11px] font-semibold uppercase tracking-wide ${palette.accent}`}>{question}</span>
       </div>
-      <div className="crm-kpi-card__label">{label}</div>
-      <div className="crm-kpi-card__value">{value}</div>
-      {progress != null && (
-        <div className="crm-kpi-card__bar">
-          <div className="crm-kpi-card__bar-fill" style={{ width: `${Math.min(progress, 100)}%` }} />
+      <div className="text-[12px] font-medium text-slate-500">{label}</div>
+      <div className={`text-2xl font-semibold tracking-tight ${palette.accent}`}>{value}</div>
+      {progress != null ? (
+        <div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
+          <div className={`h-full rounded-full ${palette.bar}`} style={{ width: `${Math.min(progress, 100)}%` }} />
         </div>
-      )}
-      {(note || trend) && (
-        <div className="crm-kpi-card__note">
-          {note}
-          {trend && <span className="crm-kpi-card__trend">{trend}</span>}
+      ) : null}
+      {note || trend ? (
+        <div className="flex items-center justify-between gap-2 text-[11px] text-slate-500">
+          <span>{note}</span>
+          {trend ? <span className={`font-medium ${palette.accent}`}>{trend}</span> : null}
         </div>
-      )}
+      ) : null}
     </article>
   );
 }
 
 function SectionTitle({ description, kicker, title }) {
   return (
-    <div className="crm-section-title">
-      <span>{kicker}</span>
-      <h2>{title}</h2>
-      {description ? <p>{description}</p> : null}
+    <div className="flex flex-col gap-1 mb-3">
+      {kicker ? (
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{kicker}</span>
+      ) : null}
+      <h2 className="text-base font-semibold tracking-tight text-slate-900">{title}</h2>
+      {description ? <p className="text-[12px] text-slate-500">{description}</p> : null}
     </div>
   );
 }
 
+const TIMELINE_TONE = {
+  positive: "before:bg-emerald-500",
+  warning: "before:bg-amber-500",
+  danger: "before:bg-rose-500",
+  neutral: "before:bg-slate-400",
+};
+
 function ActivityTimeline({ activities }) {
   return (
-    <div className="crm-timeline">
+    <div className="flex flex-col gap-3">
       {activities.map((activity) => (
-        <article key={activity.id} className={`crm-timeline-item crm-timeline-item--${activity.tone}`}>
-          <span aria-hidden="true" />
-          <div>
-            <strong>
-              {activity.title} - {activity.local}
-            </strong>
-            <p>{activity.detail}</p>
-            <small>{activity.meta}</small>
-          </div>
+        <article
+          key={activity.id}
+          className={`relative pl-5 before:absolute before:left-0 before:top-1.5 before:h-2 before:w-2 before:rounded-full ${
+            TIMELINE_TONE[activity.tone] ?? TIMELINE_TONE.neutral
+          }`}
+        >
+          <strong className="block text-[13px] font-semibold text-slate-900">
+            {activity.title} · {activity.local}
+          </strong>
+          <p className="text-[12px] leading-relaxed text-slate-600">{activity.detail}</p>
+          <small className="text-[11px] text-slate-500">{activity.meta}</small>
         </article>
       ))}
     </div>
   );
 }
 
+const STATUS_TONE = {
+  positive: "bg-emerald-50 text-emerald-700",
+  warning: "bg-amber-50 text-amber-700",
+  danger: "bg-rose-50 text-rose-700",
+  neutral: "bg-slate-100 text-slate-600",
+};
+
 function VisitList({ visits, onOpenLocal }) {
   return (
-    <div className="crm-visit-list">
+    <div className="flex flex-col gap-2">
       {visits.map((visit) => (
-        <button key={visit.id} className="crm-visit-row" type="button" onClick={() => onOpenLocal(visit.localId)}>
-          <span>
-            <strong>{visit.local}</strong>
-            <small>
-              {visit.description} - {visit.objective}
+        <button
+          key={visit.id}
+          type="button"
+          onClick={() => onOpenLocal(visit.localId)}
+          className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 text-left transition hover:border-slate-300 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+        >
+          <span className="flex flex-1 flex-col">
+            <strong className="text-[13px] font-semibold text-slate-900">{visit.local}</strong>
+            <small className="text-[11px] text-slate-500">
+              {visit.description} · {visit.objective}
             </small>
           </span>
-          <span className={`crm-status crm-status--${visit.tone}`}>{visit.status}</span>
-          <span className="crm-progress">
-            <i style={{ width: `${visit.progress}%` }} />
+          <span className={`rounded-md px-2 py-0.5 text-[11px] font-medium ${STATUS_TONE[visit.tone] ?? STATUS_TONE.neutral}`}>
+            {visit.status}
+          </span>
+          <span className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-100">
+            <i className="block h-full bg-slate-900" style={{ width: `${visit.progress}%` }} />
           </span>
         </button>
       ))}
@@ -1710,45 +1812,62 @@ function VisitList({ visits, onOpenLocal }) {
   );
 }
 
-const PRIORITY_COLOR = { Alta: "#dc2626", Media: "#d97706", Baja: "var(--text-3)" };
+const PRIORITY_TONE = {
+  Alta: "text-rose-600",
+  Media: "text-amber-600",
+  Baja: "text-slate-500",
+};
 
 function KanbanBoard({ columns, draggedCardId, onCardDragStart, onCardDrop, onOpenLocal }) {
   return (
-    <div className="crm-kanban">
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
       {columns.map((column) => (
         <section
           key={column.id}
-          className="crm-kanban-column"
           onDragOver={(event) => event.preventDefault()}
           onDrop={() => onCardDrop(column.id)}
+          className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3"
         >
-          <header>
-            <strong>{column.title}</strong>
-            <span>{column.cards.length}</span>
+          <header className="flex items-center justify-between px-1">
+            <strong className="text-[12px] font-semibold uppercase tracking-wide text-slate-700">
+              {column.title}
+            </strong>
+            <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-medium text-slate-600">
+              {column.cards.length}
+            </span>
           </header>
-          <div className="crm-kanban-column__body">
+          <div className="flex flex-col gap-2">
             {column.cards.map((card) => (
               <article
                 key={card.id}
-                className={draggedCardId === card.id ? "crm-kanban-card crm-kanban-card--dragging" : "crm-kanban-card"}
                 draggable
                 onDragStart={() => onCardDragStart(card.id)}
+                className={`flex flex-col gap-1 rounded-lg border bg-white p-3 shadow-sm transition hover:shadow ${
+                  draggedCardId === card.id ? "border-slate-900 opacity-60" : "border-slate-200"
+                }`}
               >
-                <span style={{ color: "var(--text-3)", fontSize: "0.73rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".04em" }}>{card.origin}</span>
-                <strong>{card.local}</strong>
-                <p style={{ fontSize: "0.8rem", color: "var(--text-2)", margin: "2px 0 4px", lineHeight: 1.4 }}>{card.title}</p>
-                <footer style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 4 }}>
-                  <b style={{ fontSize: "0.73rem", color: PRIORITY_COLOR[card.priority] ?? "var(--text-3)", fontWeight: 700 }}>{card.priority}</b>
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                  {card.origin}
+                </span>
+                <strong className="text-[13px] font-semibold text-slate-900">{card.local}</strong>
+                <p className="text-[12px] leading-relaxed text-slate-600">{card.title}</p>
+                <footer className="mt-1 flex items-center justify-between">
+                  <b className={`text-[11px] font-bold ${PRIORITY_TONE[card.priority] ?? "text-slate-500"}`}>
+                    {card.priority}
+                  </b>
                   {onOpenLocal && card.localId ? (
                     <button
                       type="button"
-                      style={{ fontSize: "0.73rem", color: "var(--accent)", background: "none", border: "none", cursor: "pointer", padding: 0, fontWeight: 600 }}
-                      onClick={(e) => { e.stopPropagation(); onOpenLocal(card.localId); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onOpenLocal(card.localId);
+                      }}
+                      className="text-[11px] font-semibold text-slate-900 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
                     >
                       Ver cuenta →
                     </button>
                   ) : (
-                    <em style={{ fontSize: "0.73rem", color: "var(--text-3)" }}>{card.due}</em>
+                    <em className="text-[11px] not-italic text-slate-500">{card.due}</em>
                   )}
                 </footer>
               </article>
@@ -2962,11 +3081,11 @@ function RequestList({ requests }) {
 
 function ProgressRow({ label, value }) {
   return (
-    <div className="crm-progress-row">
-      <span>{label}</span>
-      <strong>{value}%</strong>
-      <div className="crm-progress crm-progress--wide">
-        <i style={{ width: `${value}%` }} />
+    <div className="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1.5">
+      <span className="text-[12px] text-slate-700">{label}</span>
+      <strong className="text-[12px] font-semibold text-slate-900">{value}%</strong>
+      <div className="col-span-2 h-1.5 overflow-hidden rounded-full bg-slate-100">
+        <i className="block h-full rounded-full bg-slate-900" style={{ width: `${value}%` }} />
       </div>
     </div>
   );
