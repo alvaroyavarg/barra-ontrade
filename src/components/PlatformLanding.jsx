@@ -21,23 +21,32 @@ const PILLARS = [
 
 function PlatformLanding({ onSelectModule }) {
   return (
-    <section className="landing-page" aria-label="BARRA · On Trade Execution">
-      <div className="landing-header">
-        <span>Diageo Chile · On Trade Execution</span>
-        <h1>🪩 BARRA</h1>
+    <section
+      aria-label="BARRA · On Trade Execution"
+      className="mx-auto flex w-full max-w-6xl flex-col gap-12 p-8"
+    >
+      <div className="flex flex-col gap-4">
+        <span className="text-sm font-medium uppercase tracking-wide text-slate-500">
+          Diageo Chile · On Trade Execution
+        </span>
+        <h1 className="text-5xl font-semibold tracking-tight text-slate-900">🪩 BARRA</h1>
       </div>
 
-      <div className="pillar-grid">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {PILLARS.map((pillar) => (
           <button
             key={pillar.key}
-            className={`pillar-card pillar-card--${pillar.key}`}
             type="button"
             onClick={() => onSelectModule(pillar.key)}
+            className="group flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-8 text-left shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 active:translate-y-0 active:shadow-sm"
           >
-            <span>{pillar.eyebrow}</span>
-            <strong>{pillar.title}</strong>
-            <small>{pillar.description}</small>
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              {pillar.eyebrow}
+            </span>
+            <strong className="text-2xl font-semibold tracking-tight text-slate-900">
+              {pillar.title}
+            </strong>
+            <small className="text-sm leading-relaxed text-slate-500">{pillar.description}</small>
           </button>
         ))}
       </div>
