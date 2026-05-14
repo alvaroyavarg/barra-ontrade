@@ -75,6 +75,24 @@ const BOTTLER_OPTIONS = [
   { key: "KOE", label: "KOE" },
 ];
 
+const CARD = "rounded-xl border border-slate-200 bg-white p-5 shadow-sm";
+const CARD_TITLE = "text-base font-semibold tracking-tight text-slate-900";
+const SECTION_TITLE = "text-[14px] font-semibold leading-tight text-slate-900";
+const EYEBROW = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
+const BODY_TEXT = "text-[13px] text-slate-700";
+const META_TEXT = "text-[11px] text-slate-500";
+const BTN_PRIMARY =
+  "rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700";
+const BTN_SECONDARY =
+  "rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-[13px] font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1";
+const SEGMENT_BTN =
+  "rounded-md px-3 py-1.5 text-[12px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1";
+const SEGMENT_BTN_ACTIVE = "bg-slate-900 text-white shadow-sm";
+const SEGMENT_BTN_INACTIVE = "text-slate-600 hover:bg-white hover:text-slate-900";
+const SEGMENT_GROUP = "inline-flex w-full gap-1 rounded-lg border border-slate-200 bg-slate-50 p-1";
+const INPUT =
+  "rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
+
 function AaccProfitabilityPage({ locals = [], onBackHome }) {
   const defaultModel = useMemo(() => {
     const aaccLocals = locals.filter((l) => l.hasAacc);
@@ -179,61 +197,49 @@ function AaccProfitabilityPage({ locals = [], onBackHome }) {
   }
 
   return (
-    <section className="module-page aacc-page" aria-label="Rentabilidad AACC">
-      <div className="module-topbar">
-        <button className="back-button" type="button" onClick={onBackHome}>
+    <section className="flex flex-col gap-4" aria-label="Rentabilidad AACC">
+      <div className="flex items-center justify-between gap-3 pb-2">
+        <button className={BTN_SECONDARY} type="button" onClick={onBackHome}>
           Volver al inicio
         </button>
-        <span>Rentabilidad AACC</span>
+        <span className={EYEBROW}>Rentabilidad AACC</span>
       </div>
 
-      <div className="module-hero aacc-module-hero">
-        <div>
-          <span className="eyebrow">Pilar 2</span>
-          <h1>Rentabilidad AACC</h1>
-          <p>Decisión por acuerdo comercial: mantener, potenciar, renegociar o no renovar.</p>
+      <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col gap-1">
+          <span className={EYEBROW}>Pilar 2</span>
+          <h1 className="text-xl font-semibold tracking-tight text-slate-900">Rentabilidad AACC</h1>
+          <p className={`max-w-2xl ${BODY_TEXT}`}>
+            Decisión por acuerdo comercial: mantener, potenciar, renegociar o no renovar.
+          </p>
         </div>
-        <label className="aacc-upload-button">
-          <input accept=".xlsx,.xls" type="file" onChange={handleSalesUpload} />
+        <label className={`${BTN_PRIMARY} cursor-pointer self-start sm:self-end`}>
+          <input className="hidden" accept=".xlsx,.xls" type="file" onChange={handleSalesUpload} />
           {isLoading ? "Leyendo ventas..." : "Cargar sábana de ventas"}
         </label>
       </div>
 
       {error ? (
-        <div className="alert-card alert-card--error" role="alert">
-          <strong>No se pudo cargar el tracker</strong>
+        <AlertCard tone="danger" title="No se pudo cargar el tracker">
           <p>{error}</p>
-        </div>
+        </AlertCard>
       ) : null}
 
-      <section className="aacc-source-strip">
-        <div>
-          <span>Fuente activa</span>
-          <strong>{trackerMeta ? trackerMeta.fileName : "Maestro DBA"}</strong>
-        </div>
-        <div>
-          <span>Cuentas AACC</span>
-          <strong>{formatNumber(model.accounts.length)}</strong>
-        </div>
-        <div>
-          <span>Con datos de venta</span>
-          <strong>{formatNumber(model.accounts.filter((a) => a.hasSalesData).length)}</strong>
-        </div>
-        <div>
-          <span>Fuente futura</span>
-          <strong>ProjectLighthouse</strong>
-        </div>
+      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <SourceStripCell label="Fuente activa" value={trackerMeta ? trackerMeta.fileName : "Maestro DBA"} />
+        <SourceStripCell label="Cuentas AACC" value={formatNumber(model.accounts.length)} />
+        <SourceStripCell label="Con datos de venta" value={formatNumber(model.accounts.filter((a) => a.hasSalesData).length)} />
+        <SourceStripCell label="Fuente futura" value="ProjectLighthouse" />
       </section>
 
       {trackerMeta && model.accounts.filter((a) => a.hasSalesData).length < model.accounts.length * 0.5 ? (
-        <div className="alert-card alert-card--warning" role="alert">
-          <strong>Cruce parcial de datos</strong>
+        <AlertCard tone="warning" title="Cruce parcial de datos">
           <p>
             {model.accounts.filter((a) => a.hasSalesData).length} de {model.accounts.length} cuentas AACC tienen datos de venta en este archivo.
             El archivo usa razón social y código de embotelladora; el Maestro usa código Diageo PDV.
             Para cruce completo se necesita un archivo con los mismos códigos PDV del Maestro.
           </p>
-        </div>
+        </AlertCard>
       ) : null}
 
       <AaccSectionMarker
@@ -264,7 +270,7 @@ function AaccProfitabilityPage({ locals = [], onBackHome }) {
 
       <AaccPerformanceChart lensMode={lensMode} metricMode={metricMode} series={monthlySeries} />
 
-      <section className="aacc-decision-board">
+      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         {DECISION_OPTIONS.map((option) => (
           <DecisionCard
             key={option.key}
@@ -299,48 +305,38 @@ function AaccProfitabilityPage({ locals = [], onBackHome }) {
         tone="account"
       />
 
-      <div className="aacc-workbench">
-        <aside className="aacc-sidebar">
-          <section className="card search-card">
-            <label htmlFor="aacc-search">Buscar acuerdo</label>
+      <div className="grid gap-4 lg:grid-cols-[320px_minmax(0,1fr)]">
+        <aside className="flex flex-col gap-3">
+          <section className={`${CARD} flex flex-col gap-2`}>
+            <label className={`${EYEBROW}`} htmlFor="aacc-search">Buscar acuerdo</label>
             <input
               id="aacc-search"
+              className={INPUT}
               placeholder="Cliente, cadena, ID, ciudad, estado o segmento"
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
             />
-            <p>
+            <p className={META_TEXT}>
               {activeDecision
                 ? `${filteredAccounts.length} de ${activeDecisionAccounts.length} acuerdos en ${activeDecision.label}`
                 : `${filteredAccounts.length} de ${model.accounts.length} acuerdos`}
             </p>
           </section>
 
-          <section className="aacc-account-list" aria-label="Lista de acuerdos AACC">
+          <section className="flex flex-col gap-2" aria-label="Lista de acuerdos AACC">
             {filteredAccounts.map((account) => (
-              <button
+              <AccountRow
                 key={account.agreementId}
-                className={account.agreementId === selectedAccount?.agreementId ? "aacc-account-row aacc-account-row--selected" : "aacc-account-row"}
-                type="button"
-                onClick={() => setSelectedId(account.agreementId)}
-              >
-                <span>
-                  <strong>{account.customerName}</strong>
-                  <small>{[account.bottler, account.city, account.subSegmentation].filter(Boolean).join(" · ")}</small>
-                </span>
-                <span>
-                  <StatusPill status={account.status} />
-                  {account.hasSalesData !== undefined
-                    ? <b style={{ fontSize: "0.7rem", color: account.hasSalesData ? "#16a34a" : "#9ca3af" }}>{account.hasSalesData ? "Con datos" : "Sin datos"}</b>
-                    : <b>{formatSharePercent(account.metrics.roi)}</b>}
-                </span>
-              </button>
+                account={account}
+                selected={account.agreementId === selectedAccount?.agreementId}
+                onSelect={() => setSelectedId(account.agreementId)}
+              />
             ))}
           </section>
         </aside>
 
-        <div className="aacc-main-panel">
+        <div className="flex flex-col gap-4">
           <AaccAccountBrief
             account={selectedAccount}
             dateRange={dateRange}
@@ -355,15 +351,103 @@ function AaccProfitabilityPage({ locals = [], onBackHome }) {
   );
 }
 
-function AaccSectionMarker({ copy, label, title, tone = "portfolio" }) {
+function AlertCard({ children, title, tone = "danger" }) {
+  const tones = {
+    danger: "border-rose-200 bg-rose-50 text-rose-800",
+    warning: "border-amber-200 bg-amber-50 text-amber-800",
+  };
   return (
-    <section className={`aacc-section-marker aacc-section-marker--${tone}`} aria-label={label}>
-      <span>{label}</span>
-      <div>
-        <h2>{title}</h2>
-        <p>{copy}</p>
+    <div className={`flex flex-col gap-1 rounded-xl border p-4 ${tones[tone] ?? tones.danger}`} role="alert">
+      <strong className="text-[13px] font-semibold">{title}</strong>
+      <div className={`text-[13px] leading-relaxed ${tone === "warning" ? "text-amber-700" : "text-rose-700"}`}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function SourceStripCell({ label, value }) {
+  return (
+    <div className="flex flex-col gap-1 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <span className={EYEBROW}>{label}</span>
+      <strong className="text-[14px] font-semibold tracking-tight text-slate-900 break-words">{value}</strong>
+    </div>
+  );
+}
+
+function AccountRow({ account, onSelect, selected }) {
+  const selectedClasses = selected
+    ? "border-slate-900 ring-2 ring-slate-900/10"
+    : "border-slate-200 hover:border-slate-300 hover:shadow";
+  return (
+    <button
+      className={`flex w-full items-start justify-between gap-3 rounded-xl border bg-white p-3 text-left shadow-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 ${selectedClasses}`}
+      type="button"
+      onClick={onSelect}
+    >
+      <span className="flex min-w-0 flex-col gap-1">
+        <strong className="text-[13px] font-semibold text-slate-900">{account.customerName}</strong>
+        <small className={META_TEXT}>{[account.bottler, account.city, account.subSegmentation].filter(Boolean).join(" · ")}</small>
+      </span>
+      <span className="flex flex-shrink-0 flex-col items-end gap-1">
+        <StatusPill status={account.status} />
+        {account.hasSalesData !== undefined ? (
+          <b className={`text-[11px] font-semibold ${account.hasSalesData ? "text-emerald-600" : "text-slate-400"}`}>
+            {account.hasSalesData ? "Con datos" : "Sin datos"}
+          </b>
+        ) : (
+          <b className="text-[13px] font-semibold tabular-nums text-slate-900">{formatSharePercent(account.metrics.roi)}</b>
+        )}
+      </span>
+    </button>
+  );
+}
+
+function AaccSectionMarker({ copy, label, title, tone = "portfolio" }) {
+  const toneStyles = {
+    portfolio: "border-l-emerald-600 bg-emerald-50/60 border-emerald-100",
+    account: "border-l-slate-700 bg-slate-50 border-slate-200",
+  };
+  const labelTone = tone === "account" ? "text-slate-700" : "text-emerald-700";
+  return (
+    <section
+      className={`flex flex-col gap-1 rounded-xl border border-l-4 p-4 ${toneStyles[tone] ?? toneStyles.portfolio}`}
+      aria-label={label}
+    >
+      <span className={`text-[10px] font-semibold uppercase tracking-wide ${labelTone}`}>{label}</span>
+      <div className="flex flex-col gap-1">
+        <h2 className={CARD_TITLE}>{title}</h2>
+        <p className={BODY_TEXT}>{copy}</p>
       </div>
     </section>
+  );
+}
+
+function ControlGroup({ children, label }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <span className={EYEBROW}>{label}</span>
+      {children}
+    </div>
+  );
+}
+
+function SegmentedControl({ ariaLabel, options, value, onChange }) {
+  return (
+    <div className={SEGMENT_GROUP} role="radiogroup" aria-label={ariaLabel}>
+      {options.map((option) => (
+        <button
+          key={option.key}
+          aria-checked={value === option.key}
+          className={`flex-1 ${SEGMENT_BTN} ${value === option.key ? SEGMENT_BTN_ACTIVE : SEGMENT_BTN_INACTIVE}`}
+          role="radio"
+          type="button"
+          onClick={() => onChange(option.key)}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
   );
 }
 
@@ -378,76 +462,44 @@ function AaccControls({
   onMetricModeChange,
 }) {
   return (
-    <section className="card aacc-controls-card" aria-label="Controles de lectura AACC">
-      <div className="basis-control-group">
-        <span>Lectura</span>
-        <div className="segmented-control segmented-control--two" role="radiogroup" aria-label="Lectura por volumen o valor">
-          <button
-            aria-checked={metricMode === "volume"}
-            className={metricMode === "volume" ? "segmented-control__button segmented-control__button--active" : "segmented-control__button"}
-            role="radio"
-            type="button"
-            onClick={() => onMetricModeChange("volume")}
-          >
-            Volumen
-          </button>
-          <button
-            aria-checked={metricMode === "value"}
-            className={metricMode === "value" ? "segmented-control__button segmented-control__button--active" : "segmented-control__button"}
-            role="radio"
-            type="button"
-            onClick={() => onMetricModeChange("value")}
-          >
-            Valor
-          </button>
-        </div>
-      </div>
+    <section className={`${CARD} grid gap-3 sm:grid-cols-2 lg:grid-cols-5`} aria-label="Controles de lectura AACC">
+      <ControlGroup label="Lectura">
+        <SegmentedControl
+          ariaLabel="Lectura por volumen o valor"
+          options={[
+            { key: "volume", label: "Volumen" },
+            { key: "value", label: "Valor" },
+          ]}
+          value={metricMode}
+          onChange={onMetricModeChange}
+        />
+      </ControlGroup>
 
-      <div className="basis-control-group">
-        <span>Vista</span>
-        <div className="segmented-control segmented-control--two" role="radiogroup" aria-label="Vista comercial o financiera">
-          <button
-            aria-checked={lensMode === "commercial"}
-            className={lensMode === "commercial" ? "segmented-control__button segmented-control__button--active" : "segmented-control__button"}
-            role="radio"
-            type="button"
-            onClick={() => onLensModeChange("commercial")}
-          >
-            Comercial
-          </button>
-          <button
-            aria-checked={lensMode === "financial"}
-            className={lensMode === "financial" ? "segmented-control__button segmented-control__button--active" : "segmented-control__button"}
-            role="radio"
-            type="button"
-            onClick={() => onLensModeChange("financial")}
-          >
-            Financiera
-          </button>
-        </div>
-      </div>
+      <ControlGroup label="Vista">
+        <SegmentedControl
+          ariaLabel="Vista comercial o financiera"
+          options={[
+            { key: "commercial", label: "Comercial" },
+            { key: "financial", label: "Financiera" },
+          ]}
+          value={lensMode}
+          onChange={onLensModeChange}
+        />
+      </ControlGroup>
 
-      <div className="basis-control-group">
-        <span>Embotellador</span>
-        <div className="segmented-control segmented-control--three" role="radiogroup" aria-label="Filtro por embotellador">
-          {BOTTLER_OPTIONS.map((option) => (
-            <button
-              key={option.key}
-              aria-checked={bottlerFilter === option.key}
-              className={bottlerFilter === option.key ? "segmented-control__button segmented-control__button--active" : "segmented-control__button"}
-              role="radio"
-              type="button"
-              onClick={() => onBottlerFilterChange(option.key)}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <ControlGroup label="Embotellador">
+        <SegmentedControl
+          ariaLabel="Filtro por embotellador"
+          options={BOTTLER_OPTIONS}
+          value={bottlerFilter}
+          onChange={onBottlerFilterChange}
+        />
+      </ControlGroup>
 
-      <label className="aacc-date-control">
-        <span>Desde</span>
+      <label className="flex flex-col gap-2">
+        <span className={EYEBROW}>Desde</span>
         <input
+          className={INPUT}
           max={dateRange.to}
           min={AACC_PERIODS[0].key}
           type="month"
@@ -456,9 +508,10 @@ function AaccControls({
         />
       </label>
 
-      <label className="aacc-date-control">
-        <span>Hasta</span>
+      <label className="flex flex-col gap-2">
+        <span className={EYEBROW}>Hasta</span>
         <input
+          className={INPUT}
           max={AACC_PERIODS[AACC_PERIODS.length - 1].key}
           min={dateRange.from}
           type="month"
@@ -467,6 +520,22 @@ function AaccControls({
         />
       </label>
     </section>
+  );
+}
+
+function MetricCell({ label, tone = "", value }) {
+  const toneStyles = {
+    primary: "border-slate-900/20 bg-slate-50",
+    good: "border-emerald-200 bg-emerald-50",
+    danger: "border-rose-200 bg-rose-50",
+  };
+  const valueTone =
+    tone === "good" ? "text-emerald-700" : tone === "danger" ? "text-rose-700" : "text-slate-900";
+  return (
+    <div className={`flex flex-col justify-between gap-2 rounded-xl border p-4 shadow-sm ${toneStyles[tone] ?? "border-slate-200 bg-white"}`}>
+      <span className={EYEBROW}>{label}</span>
+      <strong className={`text-[15px] font-semibold tabular-nums tracking-tight ${valueTone} break-words`}>{value}</strong>
+    </div>
   );
 }
 
@@ -496,17 +565,16 @@ function AaccSummary({ accounts, lensMode, metricMode, summary }) {
         ];
 
   return (
-    <section className="card general-card">
-      <div className="section-heading">
-        <span className="eyebrow">Resumen ejecutivo</span>
-        <h2>{lensMode === "commercial" ? "Lectura comercial de acuerdos" : "Salud financiera de acuerdos comerciales"}</h2>
+    <section className={`${CARD} flex flex-col gap-4`}>
+      <div className="flex flex-col gap-1">
+        <span className={EYEBROW}>Resumen ejecutivo</span>
+        <h2 className={CARD_TITLE}>
+          {lensMode === "commercial" ? "Lectura comercial de acuerdos" : "Salud financiera de acuerdos comerciales"}
+        </h2>
       </div>
-      <div className="metrics-grid">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {metrics.map(([label, value, tone]) => (
-          <div key={label} className={`metric-card ${tone ? `metric-card--${tone}` : ""}`}>
-            <span>{label}</span>
-            <strong>{value}</strong>
-          </div>
+          <MetricCell key={label} label={label} tone={tone} value={value} />
         ))}
       </div>
     </section>
@@ -515,15 +583,15 @@ function AaccSummary({ accounts, lensMode, metricMode, summary }) {
 
 function AaccMixPanel({ brandMix, categoryMix, metricMode, selectedPeriods }) {
   return (
-    <section className="card aacc-mix-card">
-      <div className="section-heading">
-        <span className="eyebrow">Mix comercial</span>
-        <h2>Participación por categoría y marca</h2>
-        <p className="muted-copy">
+    <section className={`${CARD} flex flex-col gap-4`}>
+      <div className="flex flex-col gap-1">
+        <span className={EYEBROW}>Mix comercial</span>
+        <h2 className={CARD_TITLE}>Participación por categoría y marca</h2>
+        <p className={META_TEXT}>
           {selectedPeriods.length} meses seleccionados · lectura por {metricMode === "volume" ? "volumen" : "valor"}
         </p>
       </div>
-      <div className="aacc-mix-grid">
+      <div className="grid gap-5 lg:grid-cols-2">
         <MixList title="Mix de categoría" items={categoryMix} metricMode={metricMode} />
         <MixList title="Mix de marca" items={brandMix} metricMode={metricMode} />
       </div>
@@ -533,24 +601,27 @@ function AaccMixPanel({ brandMix, categoryMix, metricMode, selectedPeriods }) {
 
 function MixList({ items, metricMode, title }) {
   return (
-    <div className="aacc-mix-list">
-      <span className="eyebrow">{title}</span>
+    <div className="flex flex-col gap-2">
+      <span className={EYEBROW}>{title}</span>
       {items.length ? (
         items.slice(0, 7).map((item) => (
-          <div key={item.name} className="aacc-mix-row">
-            <div className="aacc-mix-row__label">
-              <strong>{item.name}</strong>
-              <span>
+          <div key={item.name} className="flex flex-col gap-2 border-t border-slate-100 py-2 first:border-t-0">
+            <div className="flex items-baseline justify-between gap-3">
+              <strong className="text-[13px] font-semibold text-slate-900">{item.name}</strong>
+              <span className={`${META_TEXT} flex-shrink-0 text-right tabular-nums`}>
                 {formatSharePercent(item.share)} · {formatMetricValue(item.value, metricMode)}
               </span>
             </div>
-            <div className="aacc-mix-bar" aria-hidden="true">
-              <span style={{ width: `${Math.max(4, Math.round(item.share * 100))}%` }} />
+            <div className="h-2 overflow-hidden rounded-full bg-slate-100" aria-hidden="true">
+              <span
+                className="block h-full rounded-full bg-slate-900"
+                style={{ width: `${Math.max(4, Math.round(item.share * 100))}%` }}
+              />
             </div>
           </div>
         ))
       ) : (
-        <p className="muted-copy">Sin mix disponible.</p>
+        <p className={META_TEXT}>Sin mix disponible.</p>
       )}
     </div>
   );
@@ -566,25 +637,32 @@ function AaccPerformanceChart({ lensMode, metricMode, series }) {
         : "Valor mensual";
 
   return (
-    <section className="card aacc-performance-card">
-      <div className="aacc-detail-header">
-        <div>
-          <span className="eyebrow">Evolución mensual</span>
-          <h2>{label}</h2>
-          <p>Serie referencial para validar el esqueleto. Se reemplaza por períodos reales al conectar Lighthouse.</p>
-        </div>
+    <section className={`${CARD} flex flex-col gap-4`}>
+      <div className="flex flex-col gap-1">
+        <span className={EYEBROW}>Evolución mensual</span>
+        <h2 className={CARD_TITLE}>{label}</h2>
+        <p className={META_TEXT}>
+          Serie referencial para validar el esqueleto. Se reemplaza por períodos reales al conectar Lighthouse.
+        </p>
       </div>
-      <div className="aacc-chart" role="img" aria-label={`Gráfico de ${label}`}>
+      <div
+        className="grid items-end gap-2"
+        style={{ gridTemplateColumns: `repeat(${Math.max(series.length, 1)}, minmax(0, 1fr))`, minHeight: "240px" }}
+        role="img"
+        aria-label={`Gráfico de ${label}`}
+      >
         {series.map((item) => (
-          <div key={item.key} className="aacc-chart-bar">
-            <div className="aacc-chart-bar__track">
+          <div key={item.key} className="flex min-w-0 flex-col items-center gap-2">
+            <div className="flex h-44 w-full items-end overflow-hidden rounded-lg bg-slate-100">
               <span
-                className={item.value < 0 ? "aacc-chart-bar__fill aacc-chart-bar__fill--negative" : "aacc-chart-bar__fill"}
+                className={`block w-full rounded-t-lg ${item.value < 0 ? "bg-rose-500" : "bg-slate-900"}`}
                 style={{ height: `${Math.max(6, Math.round((Math.abs(item.value) / maxValue) * 100))}%` }}
               />
             </div>
-            <strong>{item.label}</strong>
-            <small>{formatMetricValue(item.value, lensMode === "financial" ? "value" : metricMode)}</small>
+            <strong className="text-[11px] font-semibold text-slate-700">{item.label}</strong>
+            <small className={`${META_TEXT} break-words text-center tabular-nums`}>
+              {formatMetricValue(item.value, lensMode === "financial" ? "value" : metricMode)}
+            </small>
           </div>
         ))}
       </div>
@@ -604,50 +682,80 @@ function AaccAccountTrendLine({ account, dateRange, lensMode, metricMode }) {
   const firstValue = series[0]?.value ?? 0;
   const lastValue = series[series.length - 1]?.value ?? 0;
   const trend = firstValue ? (lastValue - firstValue) / Math.abs(firstValue) : null;
+  const lineDown = lastValue < firstValue;
 
   return (
-    <section className="aacc-account-trend" aria-label={`Evolución cuenta ${account.customerName}`}>
-      <div className="aacc-account-trend__header">
-        <div>
-          <span className="eyebrow">Evolución cuenta</span>
-          <strong>{label}</strong>
+    <section
+      className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-slate-50 p-4"
+      aria-label={`Evolución cuenta ${account.customerName}`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-col gap-0.5">
+          <span className={EYEBROW}>Evolución cuenta</span>
+          <strong className="text-[13px] font-semibold text-slate-900">{label}</strong>
         </div>
-        <div>
-          <span>{formatMetricValue(lastValue, lensMode === "financial" ? "value" : metricMode)}</span>
-          <small>{trend === null ? "Sin base" : `${formatSharePercent(trend)} vs inicio`}</small>
+        <div className="flex flex-col items-end gap-0.5">
+          <span className="text-[13px] font-semibold tabular-nums text-slate-900">
+            {formatMetricValue(lastValue, lensMode === "financial" ? "value" : metricMode)}
+          </span>
+          <small className={META_TEXT}>{trend === null ? "Sin base" : `${formatSharePercent(trend)} vs inicio`}</small>
         </div>
       </div>
 
-      <svg className="aacc-line-chart" viewBox="0 0 320 92" role="img" aria-label={`Línea de ${label}`}>
-        <polyline className="aacc-line-chart__grid" points="0,72 320,72" />
-        <polyline className="aacc-line-chart__area" points={`0,88 ${points} 320,88`} />
-        <polyline className={lastValue < firstValue ? "aacc-line-chart__line aacc-line-chart__line--down" : "aacc-line-chart__line"} points={points} />
+      <svg className="block h-24 w-full" viewBox="0 0 320 92" role="img" aria-label={`Línea de ${label}`}>
+        <polyline className="fill-none stroke-slate-200" strokeWidth="1" points="0,72 320,72" />
+        <polyline className="fill-slate-900/5 stroke-none" points={`0,88 ${points} 320,88`} />
+        <polyline
+          className={`fill-none ${lineDown ? "stroke-rose-500" : "stroke-slate-900"}`}
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          points={points}
+        />
         {series.map((item, index) => {
           const [x, y] = points.split(" ")[index]?.split(",") ?? [0, 80];
-          return <circle key={item.key} className="aacc-line-chart__dot" cx={x} cy={y} r="3" />;
+          return (
+            <circle
+              key={item.key}
+              className={`fill-white ${lineDown ? "stroke-rose-500" : "stroke-slate-900"}`}
+              strokeWidth="2"
+              cx={x}
+              cy={y}
+              r="3"
+            />
+          );
         })}
       </svg>
 
-      <div className="aacc-account-trend__axis">
+      <div className="flex justify-between text-[11px] font-semibold text-slate-500">
         <span>{series[0]?.label ?? ""}</span>
         <span>{series[series.length - 1]?.label ?? ""}</span>
       </div>
 
-      <div className="aacc-account-trend-table">
-        <div className="aacc-account-trend-table__head">
-          <span>Mes</span>
-          <span>{lensMode === "financial" ? "CAAP" : metricMode === "volume" ? "Volumen" : "Valor"}</span>
-          <span>Vs mes ant.</span>
+      <div className="max-h-52 overflow-auto rounded-lg border border-slate-200 bg-white">
+        <div className="sticky top-0 z-10 grid grid-cols-[0.8fr_minmax(0,1.2fr)_0.9fr] items-center gap-2 border-b border-slate-200 bg-slate-50 px-3 py-2">
+          <span className={EYEBROW}>Mes</span>
+          <span className={EYEBROW}>{lensMode === "financial" ? "CAAP" : metricMode === "volume" ? "Volumen" : "Valor"}</span>
+          <span className={EYEBROW}>Vs mes ant.</span>
         </div>
         {series.map((item, index) => {
           const previous = series[index - 1]?.value ?? null;
           const trend = previous ? (item.value - previous) / Math.abs(previous) : null;
 
           return (
-            <div key={item.key} className="aacc-account-trend-table__row">
+            <div
+              key={item.key}
+              className="grid grid-cols-[0.8fr_minmax(0,1.2fr)_0.9fr] items-center gap-2 border-t border-slate-100 px-3 py-2 text-[12px] text-slate-700 first:border-t-0"
+            >
               <span>{item.label}</span>
-              <strong>{formatMetricValue(item.value, lensMode === "financial" ? "value" : metricMode)}</strong>
-              <span className={trend !== null && trend < 0 ? "trend-negative" : "trend-positive"}>
+              <strong className="font-semibold tabular-nums text-slate-900 break-words">
+                {formatMetricValue(item.value, lensMode === "financial" ? "value" : metricMode)}
+              </strong>
+              <span
+                className={`text-[12px] font-semibold tabular-nums ${
+                  trend !== null && trend < 0 ? "text-rose-700" : "text-emerald-700"
+                }`}
+              >
                 {trend === null ? "Sin base" : formatSharePercent(trend)}
               </span>
             </div>
@@ -664,9 +772,9 @@ function AaccAccountBrief({ account, dateRange, lensMode, metricMode, trendAccou
 
   if (!account) {
     return (
-      <section className="card brief-empty">
-        <span className="eyebrow">Ficha AACC</span>
-        <h2>Selecciona un acuerdo</h2>
+      <section className={`${CARD} flex min-h-[170px] flex-col gap-1`}>
+        <span className={EYEBROW}>Ficha AACC</span>
+        <h2 className={CARD_TITLE}>Selecciona un acuerdo</h2>
       </section>
     );
   }
@@ -685,12 +793,14 @@ function AaccAccountBrief({ account, dateRange, lensMode, metricMode, trendAccou
   ];
 
   return (
-    <section className="card aacc-brief-card">
-      <div className="brief-title-row">
-        <div>
-          <span className="eyebrow">Ficha de rentabilidad</span>
-          <h2>{account.customerName}</h2>
-          <p className="scope-label">{[account.chainName, account.diageoCustomerId, account.subSegmentation].filter(Boolean).join(" · ")}</p>
+    <section className={`${CARD} flex flex-col gap-4`}>
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col gap-1">
+          <span className={EYEBROW}>Ficha de rentabilidad</span>
+          <h2 className={CARD_TITLE}>{account.customerName}</h2>
+          <p className={`${BODY_TEXT} font-medium`}>
+            {[account.chainName, account.diageoCustomerId, account.subSegmentation].filter(Boolean).join(" · ")}
+          </p>
         </div>
         <StatusPill status={account.status} />
       </div>
@@ -702,25 +812,24 @@ function AaccAccountBrief({ account, dateRange, lensMode, metricMode, trendAccou
         metricMode={metricMode}
       />
 
-      <div className="metrics-grid metrics-grid--compact">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {metrics.map(([label, value, tone]) => (
-          <div key={label} className={`metric-card ${tone ? `metric-card--${tone}` : ""}`}>
-            <span>{label}</span>
-            <strong>{value}</strong>
-          </div>
+          <MetricCell key={label} label={label} tone={tone} value={value} />
         ))}
       </div>
 
-      <div className="aacc-check-grid">
+      <div className="grid gap-3 sm:grid-cols-2">
         <Check label="GM Check" ok={account.checks.gmOk} target={formatSharePercent(account.checks.grossMarginTarget)} />
         <Check label="ROI Check" ok={account.checks.roiOk} target={formatSharePercent(account.checks.roiTarget)} />
       </div>
 
-      <div className="aacc-section">
-        <span className="eyebrow">Lectura comercial</span>
-        <ul className="insight-list">
+      <div className="flex flex-col gap-2">
+        <span className={EYEBROW}>Lectura comercial</span>
+        <ul className="flex flex-col gap-2">
           {account.insights.map((insight) => (
-            <li key={insight}>{insight}</li>
+            <li key={insight} className="relative pl-5 text-[13px] leading-relaxed text-slate-700 before:absolute before:left-0 before:top-2 before:h-2 before:w-2 before:rounded-full before:bg-amber-500 before:content-['']">
+              {insight}
+            </li>
           ))}
         </ul>
       </div>
@@ -748,76 +857,73 @@ function AaccAccountMixDetail({
   const visibleItems = items.slice(0, 8);
 
   return (
-    <section className="aacc-account-mix-detail">
-      <div className="aacc-account-mix-detail__header">
-        <div>
-          <span className="eyebrow">Mix de la cuenta</span>
-          <h3>{ACCOUNT_MIX_DIMENSIONS.find((option) => option.key === dimension)?.label ?? "Mix"}</h3>
+    <section className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4">
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-1">
+          <span className={EYEBROW}>Mix de la cuenta</span>
+          <h3 className={SECTION_TITLE}>
+            {ACCOUNT_MIX_DIMENSIONS.find((option) => option.key === dimension)?.label ?? "Mix"}
+          </h3>
         </div>
-        <div className="aacc-account-mix-controls">
-          <div className="segmented-control" role="radiogroup" aria-label="Dimension de mix">
-            {ACCOUNT_MIX_DIMENSIONS.map((option) => (
-              <button
-                key={option.key}
-                aria-checked={dimension === option.key}
-                className={dimension === option.key ? "segmented-control__button segmented-control__button--active" : "segmented-control__button"}
-                role="radio"
-                type="button"
-                onClick={() => onDimensionChange(option.key)}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-          <div className="segmented-control segmented-control--two" role="radiogroup" aria-label="Vista de mix">
-            {ACCOUNT_MIX_VIEWS.map((option) => (
-              <button
-                key={option.key}
-                aria-checked={viewMode === option.key}
-                className={viewMode === option.key ? "segmented-control__button segmented-control__button--active" : "segmented-control__button"}
-                role="radio"
-                type="button"
-                onClick={() => onViewChange(option.key)}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
+        <div className="flex flex-col gap-2">
+          <SegmentedControl
+            ariaLabel="Dimension de mix"
+            options={ACCOUNT_MIX_DIMENSIONS}
+            value={dimension}
+            onChange={onDimensionChange}
+          />
+          <SegmentedControl
+            ariaLabel="Vista de mix"
+            options={ACCOUNT_MIX_VIEWS}
+            value={viewMode}
+            onChange={onViewChange}
+          />
         </div>
       </div>
 
       {visibleItems.length ? (
         viewMode === "chart" ? (
-          <div className="aacc-account-mix-chart" role="img" aria-label="Grafico de mix de la cuenta">
+          <div
+            className="grid items-end gap-3"
+            style={{ gridTemplateColumns: `repeat(${Math.min(visibleItems.length, 4)}, minmax(0, 1fr))`, minHeight: "230px" }}
+            role="img"
+            aria-label="Grafico de mix de la cuenta"
+          >
             {visibleItems.map((item) => (
-              <div key={item.name} className="aacc-account-mix-chart__item">
-                <div className="aacc-account-mix-chart__track">
-                  <span style={{ height: `${Math.max(6, Math.round(item.share * 100))}%` }} />
+              <div key={item.name} className="flex min-w-0 flex-col items-center gap-1.5">
+                <div className="flex h-32 w-full items-end overflow-hidden rounded-lg bg-slate-100">
+                  <span
+                    className="block w-full rounded-t-lg bg-slate-900"
+                    style={{ height: `${Math.max(6, Math.round(item.share * 100))}%` }}
+                  />
                 </div>
-                <strong>{formatSharePercent(item.share)}</strong>
-                <span>{item.name}</span>
-                <small>{formatMetricValue(item.value, metricMode)}</small>
+                <strong className="text-[13px] font-semibold tabular-nums text-slate-900">{formatSharePercent(item.share)}</strong>
+                <span className="break-words text-center text-[11px] font-semibold leading-tight text-slate-700">{item.name}</span>
+                <small className={`${META_TEXT} break-words text-center tabular-nums`}>{formatMetricValue(item.value, metricMode)}</small>
               </div>
             ))}
           </div>
         ) : (
-          <div className="aacc-account-mix-rows">
+          <div className="flex flex-col gap-3">
             {visibleItems.map((item) => (
-              <div key={item.name} className="aacc-account-mix-row">
-                <div className="aacc-account-mix-row__top">
-                  <strong>{item.name}</strong>
-                  <span>{formatSharePercent(item.share)}</span>
+              <div key={item.name} className="flex flex-col gap-2 rounded-lg border border-slate-100 bg-slate-50 p-3">
+                <div className="flex items-baseline justify-between gap-3">
+                  <strong className="min-w-0 break-words text-[13px] font-semibold text-slate-900">{item.name}</strong>
+                  <span className="flex-shrink-0 text-[12px] font-semibold tabular-nums text-slate-900">{formatSharePercent(item.share)}</span>
                 </div>
-                <div className="aacc-account-mix-row__bar">
-                  <span style={{ width: `${Math.max(4, Math.round(item.share * 100))}%` }} />
+                <div className="h-2 overflow-hidden rounded-full bg-slate-200">
+                  <span
+                    className="block h-full rounded-full bg-slate-900"
+                    style={{ width: `${Math.max(4, Math.round(item.share * 100))}%` }}
+                  />
                 </div>
-                <small>{formatMetricValue(item.value, metricMode)}</small>
+                <small className={`${META_TEXT} tabular-nums`}>{formatMetricValue(item.value, metricMode)}</small>
               </div>
             ))}
           </div>
         )
       ) : (
-        <p className="muted-copy">Sin mix disponible para esta cuenta.</p>
+        <p className={META_TEXT}>Sin mix disponible para esta cuenta.</p>
       )}
     </section>
   );
@@ -825,12 +931,12 @@ function AaccAccountMixDetail({
 
 function AaccRankings({ rankings }) {
   return (
-    <section className="card">
-      <div className="section-heading">
-        <span className="eyebrow">Prioridades de gestión</span>
-        <h2>Dónde actuar primero</h2>
+    <section className={`${CARD} flex flex-col gap-4`}>
+      <div className="flex flex-col gap-1">
+        <span className={EYEBROW}>Prioridades de gestión</span>
+        <h2 className={CARD_TITLE}>Dónde actuar primero</h2>
       </div>
-      <div className="ranking-grid">
+      <div className="grid gap-5 lg:grid-cols-3">
         <Ranking title="Mejor ROI" accounts={rankings.bestRoi} value={(account) => formatSharePercent(account.metrics.roi)} />
         <Ranking title="Mayor presión CAAP" accounts={rankings.caapPressure} value={(account) => formatUsd(account.metrics.caap)} danger />
         <Ranking title="Mayor inversión" accounts={rankings.biggestInvestment} value={(account) => formatUsd(account.totalInvestmentUsd)} />
@@ -841,18 +947,24 @@ function AaccRankings({ rankings }) {
 
 function Ranking({ accounts, danger = false, title, value }) {
   return (
-    <div className="ranking-list-card">
-      <span className="eyebrow">{title}</span>
-      <ol className="top-list">
+    <div className="flex min-w-0 flex-col gap-2">
+      <span className={EYEBROW}>{title}</span>
+      <ol className="flex flex-col gap-1">
         {accounts.map((account, index) => (
-          <li key={account.agreementId}>
-            <span className="ranking-item-text">
-              <span className="ranking-name">
-                <b>{index + 1}.</b> {account.customerName}
+          <li key={account.agreementId} className="flex justify-between gap-3 border-t border-slate-100 py-2 first:border-t-0">
+            <span className="flex min-w-0 flex-col gap-0.5 break-words text-slate-700">
+              <span className="block text-[13px]">
+                <b className="font-semibold text-slate-500">{index + 1}.</b> {account.customerName}
               </span>
-              <small>{account.status.label}</small>
+              <small className={META_TEXT}>{account.status.label}</small>
             </span>
-            <strong className={danger ? "ranking-value--danger" : ""}>{value(account)}</strong>
+            <strong
+              className={`flex-shrink-0 text-right text-[13px] font-semibold tabular-nums ${
+                danger ? "text-rose-700" : "text-slate-900"
+              }`}
+            >
+              {value(account)}
+            </strong>
           </li>
         ))}
       </ol>
@@ -861,16 +973,26 @@ function Ranking({ accounts, danger = false, title, value }) {
 }
 
 function DecisionCard({ active, label, onSelect, tone, value }) {
+  const valueTones = {
+    good: "text-emerald-700",
+    warning: "text-amber-700",
+    danger: "text-rose-700",
+  };
+  const activeClasses = active
+    ? "border-slate-900 ring-2 ring-slate-900/10"
+    : "border-slate-200 hover:border-slate-300 hover:shadow";
   return (
     <button
       aria-pressed={active}
-      className={`aacc-decision-card aacc-decision-card--${tone} ${active ? "aacc-decision-card--active" : ""}`}
+      className={`flex flex-col gap-1 rounded-xl border bg-white p-4 text-left shadow-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 ${activeClasses}`}
       type="button"
       onClick={onSelect}
     >
-      <span>{label}</span>
-      <strong>{formatNumber(value)}</strong>
-      <small>Ver detalle</small>
+      <span className={EYEBROW}>{label}</span>
+      <strong className={`text-2xl font-semibold tabular-nums tracking-tight ${valueTones[tone] ?? "text-slate-900"}`}>
+        {formatNumber(value)}
+      </strong>
+      <small className={META_TEXT}>Ver detalle</small>
     </button>
   );
 }
@@ -883,19 +1005,19 @@ function DecisionDetail({ accounts, decision, onClear, onSelectAccount, selected
   const summary = buildDecisionSummary(accounts);
 
   return (
-    <section className="card aacc-decision-detail" aria-label={`Detalle ${decision.label}`}>
-      <div className="aacc-detail-header">
-        <div>
-          <span className="eyebrow">Detalle de decisión</span>
-          <h2>{decision.label}</h2>
-          <p>{decision.description}</p>
+    <section className={`${CARD} flex flex-col gap-4`} aria-label={`Detalle ${decision.label}`}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-col gap-1">
+          <span className={EYEBROW}>Detalle de decisión</span>
+          <h2 className={CARD_TITLE}>{decision.label}</h2>
+          <p className={BODY_TEXT}>{decision.description}</p>
         </div>
-        <button className="filter-clear-button" type="button" onClick={onClear}>
+        <button className={BTN_SECONDARY} type="button" onClick={onClear}>
           Ver todos
         </button>
       </div>
 
-      <div className="aacc-detail-metrics">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <DetailMetric label="Cuentas" value={formatNumber(accounts.length)} />
         <DetailMetric label="Inversión anual" value={formatUsd(summary.investment)} />
         <DetailMetric label="Volumen real" value={`${formatNumber(summary.volumeEu)} EUs`} />
@@ -905,64 +1027,101 @@ function DecisionDetail({ accounts, decision, onClear, onSelectAccount, selected
       </div>
 
       {accounts.length ? (
-        <div className="aacc-detail-list" role="list">
+        <div className="flex max-h-96 flex-col gap-2 overflow-auto pr-1" role="list">
           {accounts.map((account) => (
-            <button
+            <DetailRow
               key={account.agreementId}
-              className={account.agreementId === selectedAccountId ? "aacc-detail-row aacc-detail-row--active" : "aacc-detail-row"}
-              type="button"
-              onClick={() => onSelectAccount(account.agreementId)}
-            >
-              <span>
-                <strong>{account.customerName}</strong>
-                <small>{[account.bottler, account.city, account.subSegmentation].filter(Boolean).join(" · ")}</small>
-              </span>
-              <span>
-                <small>ROI</small>
-                <strong>{formatSharePercent(account.metrics.roi)}</strong>
-              </span>
-              <span>
-                <small>GM</small>
-                <strong>{formatSharePercent(account.metrics.grossMarginPct)}</strong>
-              </span>
-              <span>
-                <small>CAAP</small>
-                <strong>{formatUsd(account.metrics.caap)}</strong>
-              </span>
-            </button>
+              account={account}
+              selected={account.agreementId === selectedAccountId}
+              onSelect={() => onSelectAccount(account.agreementId)}
+            />
           ))}
         </div>
       ) : (
-        <div className="general-empty">
-          <strong>Sin cuentas en este estado</strong>
-          <p>La celda está en cero porque ningún acuerdo cae en esta clasificación con las reglas actuales.</p>
+        <div className="flex flex-col gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4">
+          <strong className="text-[13px] font-semibold text-amber-800">Sin cuentas en este estado</strong>
+          <p className="text-[13px] text-amber-700">
+            La celda está en cero porque ningún acuerdo cae en esta clasificación con las reglas actuales.
+          </p>
         </div>
       )}
     </section>
   );
 }
 
-function DetailMetric({ label, tone = "", value }) {
+function DetailRow({ account, onSelect, selected }) {
+  const selectedClasses = selected
+    ? "border-slate-900 bg-slate-50"
+    : "border-slate-100 bg-white hover:border-slate-300 hover:shadow";
   return (
-    <div className={`aacc-detail-metric ${tone ? `aacc-detail-metric--${tone}` : ""}`}>
-      <span>{label}</span>
-      <strong>{value}</strong>
+    <button
+      className={`grid w-full grid-cols-1 gap-3 rounded-xl border p-3 text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 sm:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))] sm:items-center ${selectedClasses}`}
+      type="button"
+      onClick={onSelect}
+    >
+      <span className="flex min-w-0 flex-col gap-1">
+        <strong className="break-words text-[13px] font-semibold text-slate-900">{account.customerName}</strong>
+        <small className={META_TEXT}>{[account.bottler, account.city, account.subSegmentation].filter(Boolean).join(" · ")}</small>
+      </span>
+      <span className="flex flex-col gap-0.5">
+        <small className={EYEBROW}>ROI</small>
+        <strong className="text-[13px] font-semibold tabular-nums text-slate-900">{formatSharePercent(account.metrics.roi)}</strong>
+      </span>
+      <span className="flex flex-col gap-0.5">
+        <small className={EYEBROW}>GM</small>
+        <strong className="text-[13px] font-semibold tabular-nums text-slate-900">{formatSharePercent(account.metrics.grossMarginPct)}</strong>
+      </span>
+      <span className="flex flex-col gap-0.5">
+        <small className={EYEBROW}>CAAP</small>
+        <strong className="text-[13px] font-semibold tabular-nums text-slate-900">{formatUsd(account.metrics.caap)}</strong>
+      </span>
+    </button>
+  );
+}
+
+function DetailMetric({ label, tone = "", value }) {
+  const toneStyles = {
+    good: "border-emerald-200 bg-emerald-50",
+    danger: "border-rose-200 bg-rose-50",
+  };
+  const valueTone =
+    tone === "good" ? "text-emerald-700" : tone === "danger" ? "text-rose-700" : "text-slate-900";
+  return (
+    <div className={`flex min-h-[78px] flex-col justify-between gap-2 rounded-xl border p-3 ${toneStyles[tone] ?? "border-slate-200 bg-slate-50"}`}>
+      <span className={EYEBROW}>{label}</span>
+      <strong className={`break-words text-[15px] font-semibold tabular-nums ${valueTone}`}>{value}</strong>
     </div>
   );
 }
 
 function Check({ label, ok, target }) {
+  const okStyles = ok
+    ? "border-emerald-200 bg-emerald-50"
+    : "border-rose-200 bg-rose-50";
+  const valueTone = ok ? "text-emerald-700" : "text-rose-700";
   return (
-    <div className={ok ? "aacc-check aacc-check--ok" : "aacc-check aacc-check--no"}>
-      <span>{label}</span>
-      <strong>{ok ? "OK" : "NO"}</strong>
-      <small>Mínimo {target}</small>
+    <div className={`flex flex-col gap-1 rounded-xl border p-3 ${okStyles}`}>
+      <span className={EYEBROW}>{label}</span>
+      <strong className={`text-lg font-semibold ${valueTone}`}>{ok ? "OK" : "NO"}</strong>
+      <small className={META_TEXT}>Mínimo {target}</small>
     </div>
   );
 }
 
 function StatusPill({ status }) {
-  return <span className={`aacc-status-pill aacc-status-pill--${STATUS_CLASS[status.key] ?? "warning"}`}>{status.label}</span>;
+  const tone = STATUS_CLASS[status.key] ?? "warning";
+  const tones = {
+    good: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    warning: "bg-amber-50 text-amber-700 border-amber-200",
+    danger: "bg-rose-50 text-rose-700 border-rose-200",
+  };
+  return (
+    <span
+      className={`inline-flex items-center whitespace-nowrap rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${tones[tone]}`}
+    >
+      {status.label}
+    </span>
+  );
 }
 
 function buildStatusCounts(accounts) {

@@ -1164,6 +1164,8 @@ function WalkerDashboard({ columns, locals, summary, excelMeta, excelError, drag
         />
       </section>
 
+      <PillarSummaryGrid locals={locals} />
+
       <section className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="On Five" title="Avance por pilar" />
@@ -1321,8 +1323,8 @@ function ExecutionWorkspace({ activeModuleKey, activeUserName, local, onSelectMo
   const activePillar = local.pillars[activeModule.key];
 
   return (
-    <div className="crm-stack">
-      <section className="crm-card crm-onfive-map">
+    <div className="flex flex-col gap-5">
+      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <SectionTitle
           kicker="On Five"
           title={`Plan de desarrollo - ${local.name}`}
@@ -1331,7 +1333,7 @@ function ExecutionWorkspace({ activeModuleKey, activeUserName, local, onSelectMo
         <ExecutionPillars activeKey={activeModule.key} local={local} onSelectPillar={onSelectModule} />
       </section>
 
-      <section className="crm-onfive-layout">
+      <section>
         <OnFiveModuleDetail
           activeUserName={activeUserName}
           local={local}
@@ -1456,6 +1458,8 @@ function CpaDashboard({ locals = [], walkers = [] }) {
           note="con cartera de cuentas asignada"
         />
       </section>
+
+      <PillarSummaryGrid locals={locals} />
 
       <section className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -1705,6 +1709,8 @@ function ManagerDashboard({ locals = [], walkers = [] }) {
         />
       </section>
 
+      <PillarSummaryGrid locals={locals} />
+
       <section className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="Equipo" title="Performance por walker" />
@@ -1728,6 +1734,70 @@ function ManagerTeamView({ walkers = [], locals = [] }) {
         description="Actividad, cobertura y On Five score por zona."
       />
       <WalkerTable walkers={walkers} locals={locals} expanded />
+    </section>
+  );
+}
+
+const PILLAR_SUMMARY_META = [
+  { key: "staff",      label: "Staff",      icon: "👥", accent: "bg-indigo-500",  tint: "bg-indigo-50 text-indigo-700",   ring: "ring-indigo-100"  },
+  { key: "assortment", label: "Assortment", icon: "🍾", accent: "bg-emerald-500", tint: "bg-emerald-50 text-emerald-700", ring: "ring-emerald-100" },
+  { key: "menu",       label: "Menú",       icon: "📋", accent: "bg-violet-500",  tint: "bg-violet-50 text-violet-700",   ring: "ring-violet-100"  },
+  { key: "branding",   label: "Branding",   icon: "✨", accent: "bg-amber-500",   tint: "bg-amber-50 text-amber-700",     ring: "ring-amber-100"   },
+  { key: "activation", label: "Activación", icon: "🎯", accent: "bg-rose-500",    tint: "bg-rose-50 text-rose-700",       ring: "ring-rose-100"    },
+];
+
+function PillarSummaryGrid({ locals = [] }) {
+  const total = locals.length;
+  const stats = PILLAR_SUMMARY_META.map((meta) => {
+    const completados = locals.filter((l) => l.pillars?.[meta.key]?.score === "Completado").length;
+    const pendientes  = locals.filter((l) => l.pillars?.[meta.key]?.score === "Pendiente").length;
+    const sinRegistro = total - completados - pendientes;
+    const pct = total > 0 ? Math.round((completados / total) * 100) : 0;
+    const toneText = pct >= 70 ? "text-emerald-600" : pct >= 40 ? "text-amber-600" : "text-rose-600";
+    return { ...meta, completados, pendientes, sinRegistro, pct, toneText };
+  });
+
+  return (
+    <section aria-label="Resumen On Five por pilar" className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
+      {stats.map((s) => (
+        <article
+          key={s.key}
+          className={`flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm ring-1 ${s.ring} transition hover:shadow-md`}
+        >
+          <header className="flex items-center justify-between gap-2">
+            <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] font-semibold ${s.tint}`}>
+              <span aria-hidden="true">{s.icon}</span>
+              {s.label}
+            </span>
+            <strong className={`text-[20px] font-bold leading-none ${s.toneText}`}>{s.pct}%</strong>
+          </header>
+
+          <div className="flex flex-col gap-1">
+            <div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
+              <div className={`h-full rounded-full ${s.accent} transition-all`} style={{ width: `${s.pct}%` }} />
+            </div>
+            <small className="text-[11px] text-slate-500">
+              {s.completados} de {total} {total === 1 ? "cuenta" : "cuentas"}
+            </small>
+          </div>
+
+          <footer className="flex flex-wrap gap-1.5">
+            <span className="inline-flex items-center rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">
+              ✓ {s.completados}
+            </span>
+            {s.pendientes > 0 && (
+              <span className="inline-flex items-center rounded-md bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">
+                ! {s.pendientes}
+              </span>
+            )}
+            {s.sinRegistro > 0 && (
+              <span className="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">
+                — {s.sinRegistro}
+              </span>
+            )}
+          </footer>
+        </article>
+      ))}
     </section>
   );
 }
@@ -2181,34 +2251,45 @@ function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePil
   const tone = getPillarTone(pillar?.score);
 
   return (
-    <article className="crm-card crm-onfive-detail">
-      <div className="crm-onfive-hero">
-        <div>
-          <span className="crm-eyebrow">On Five / {module.label}</span>
-          <h2>{module.title}</h2>
-          <p>{module.description}</p>
+    <article className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex flex-col gap-1">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+            On Five / {module.label}
+          </span>
+          <h2 className="text-lg font-semibold tracking-tight text-slate-900">{module.title}</h2>
+          <p className="text-[13px] leading-relaxed text-slate-600">{module.description}</p>
         </div>
         {module.key !== "menu" ? (
-          <button className="crm-onfive-primary-action" type="button">{module.primaryAction}</button>
+          <button
+            type="button"
+            className="rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700"
+          >
+            {module.primaryAction}
+          </button>
         ) : null}
       </div>
 
       {module.key !== "menu" ? (
-        <div className="crm-onfive-status-bar">
-          <div className="crm-onfive-status-bar__account">
-            <span className="crm-avatar crm-avatar--sm">{initials(local.name)}</span>
-            <div>
-              <strong>{local.name}</strong>
-              <span>{local.segment} · {local.district}</span>
+        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+          <div className="flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
+              {initials(local.name)}
+            </span>
+            <div className="flex flex-col">
+              <strong className="text-[13px] font-semibold text-slate-900">{local.name}</strong>
+              <span className="text-[11px] text-slate-500">{local.segment} · {local.district}</span>
             </div>
           </div>
-          <span className={`crm-pill crm-pill--${tone}`}>{pillar?.score ?? "Sin dato"}</span>
-          {pillar?.summary && (
-            <span className="crm-onfive-status-bar__summary">{pillar.summary}</span>
-          )}
-          {pillar?.nextAction && (
-            <span className="crm-onfive-status-bar__action">→ {pillar.nextAction}</span>
-          )}
+          <span className={`rounded-md px-2 py-0.5 text-[11px] font-semibold ${PILLAR_TONE_STYLES[tone] ?? PILLAR_TONE_STYLES.neutral}`}>
+            {pillar?.score ?? "Sin dato"}
+          </span>
+          {pillar?.summary ? (
+            <span className="text-[12px] text-slate-600">{pillar.summary}</span>
+          ) : null}
+          {pillar?.nextAction ? (
+            <span className="text-[12px] font-medium text-slate-900">→ {pillar.nextAction}</span>
+          ) : null}
         </div>
       ) : null}
 
@@ -2225,8 +2306,8 @@ function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePil
         <ActivationPanel activeUserName={activeUserName} local={local} pillar={pillar} onUpdatePillar={onUpdatePillar} />
       ) : (
         <>
-          <section className="crm-onfive-content">
-            <div className="crm-onfive-content__main">
+          <section className="grid grid-cols-1 gap-4 lg:grid-cols-[2fr_1fr]">
+            <div>
               <OnFiveRegisterPanel
                 module={module}
                 activeIncentives={activeIncentives}
@@ -2246,43 +2327,58 @@ function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePil
                 }}
               />
             </div>
-            <div className="crm-onfive-content__side">
-              {module.key === "staff" && (
-                <div className="crm-onfive-panel">
+            <div className="flex flex-col gap-3">
+              {module.key === "staff" ? (
+                <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
                   <SectionTitle kicker="Contactos clave" title="Equipo de la cuenta" />
                   <KeyContacts contacts={local.contacts} />
                 </div>
-              )}
-              <div className="crm-onfive-panel">
+              ) : null}
+              <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
                 <SectionTitle kicker="Evidencia" title="Fotos y soportes" />
-                <div className="crm-evidence-grid">
-                  <div><strong>Foto 1</strong><small>Staff, carta, POP o promo</small></div>
-                  <div><strong>Foto 2</strong><small>Antes / despues</small></div>
-                  <div><strong>Foto 3</strong><small>Resultado o ganador</small></div>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    ["Foto 1", "Staff, carta, POP o promo"],
+                    ["Foto 2", "Antes / despues"],
+                    ["Foto 3", "Resultado o ganador"],
+                  ].map(([title, desc]) => (
+                    <div
+                      key={title}
+                      className="flex flex-col items-center justify-center gap-0.5 rounded-lg border border-dashed border-slate-300 bg-slate-50 p-3 text-center"
+                    >
+                      <strong className="text-[12px] font-semibold text-slate-700">{title}</strong>
+                      <small className="text-[10px] text-slate-500">{desc}</small>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </section>
 
-          <div className="crm-onfive-panel" style={{ marginTop: 14 }}>
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             <SectionTitle kicker="Bitácora" title="Registros recientes" />
             {moduleLogs.length === 0 ? (
-              <p style={{ color: "var(--text-3)", fontSize: "0.84rem", padding: "8px 0" }}>
-                Sin registros aun. Completa el formulario y guarda para ver los registros aqui.
+              <p className="py-2 text-[13px] text-slate-500">
+                Sin registros aún. Completa el formulario y guarda para ver los registros aquí.
               </p>
             ) : (
-              <div className="crm-menu-eval-log">
+              <div className="flex flex-col gap-3">
                 {moduleLogs.map((record, i) => {
                   const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
                   const text = typeof record === "string" ? record : record.text ?? JSON.stringify(record);
                   return (
-                  <article key={i} className="crm-menu-eval-post">
-                    <div className="crm-menu-eval-post__avatar">{initials(activeUserName ?? "W")}</div>
-                    <div className="crm-menu-eval-post__body">
-                      <header><strong>{activeUserName ?? "Walker"}</strong><span>{ts}</span></header>
-                      <p style={{ margin: "4px 0 0", fontSize: "0.8rem", color: "var(--text-2)" }}>{text}</p>
-                    </div>
-                  </article>
+                    <article key={i} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
+                        {initials(activeUserName ?? "W")}
+                      </div>
+                      <div className="flex flex-1 flex-col">
+                        <header className="flex items-center justify-between gap-2">
+                          <strong className="text-[13px] font-semibold text-slate-900">{activeUserName ?? "Walker"}</strong>
+                          <span className="text-[11px] text-slate-500">{ts}</span>
+                        </header>
+                        <p className="mt-1 text-[12px] leading-relaxed text-slate-700">{text}</p>
+                      </div>
+                    </article>
                   );
                 })}
               </div>
@@ -2298,13 +2394,13 @@ function OnFiveAccountCard({ local }) {
   const contacts = local.contacts?.slice(0, 3) ?? [];
 
   return (
-    <article className="crm-onfive-account-card">
-      <span>Cuenta</span>
-      <strong>{local.name}</strong>
-      <small>
-        {local.segment} - {local.district}
+    <article className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Cuenta</span>
+      <strong className="text-[14px] font-semibold text-slate-900">{local.name}</strong>
+      <small className="text-[11px] text-slate-500">
+        {local.segment} · {local.district}
       </small>
-      <div className="crm-onfive-contact-list" aria-label="Contactos clave">
+      <div className="mt-2 flex flex-col gap-2" aria-label="Contactos clave">
         {contacts.map((contact) => (
           <a
             key={contact.id}
@@ -2312,13 +2408,16 @@ function OnFiveAccountCard({ local }) {
             href={`https://wa.me/${contact.phone}`}
             rel="noreferrer"
             target="_blank"
+            className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2 transition hover:border-slate-300 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
           >
-            <span>{initials(contact.name)}</span>
-            <div>
-              <strong>{contact.name}</strong>
-              <small>{contact.role}</small>
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
+              {initials(contact.name)}
+            </span>
+            <div className="flex flex-1 flex-col">
+              <strong className="text-[12px] font-semibold text-slate-900">{contact.name}</strong>
+              <small className="text-[10px] text-slate-500">{contact.role}</small>
             </div>
-            <b>WPP</b>
+            <b className="rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">WPP</b>
           </a>
         ))}
       </div>
@@ -2364,63 +2463,88 @@ function AssortmentPortfolioPanel({ local, pillar, assortmentConfig, assortmentA
   }, {});
 
   return (
-    <section className="crm-onfive-panel crm-assortment-panel">
-      {/* Header */}
-      <div className="crm-assortment-head">
+    <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <SectionTitle
           kicker="Assortment — medición en terreno"
           title="Portafolio objetivo"
           description={`Segmento: ${segmentKey || local.segment || "Sin clasificar"}. Marca lo que está presente en la cuenta.`}
         />
-        <div className="crm-assortment-head__actions">
-          <strong className={`crm-pill crm-pill--${pctTone}`}>{total > 0 ? `${present}/${total} · ${pct}%` : "Sin portafolio"}</strong>
-        </div>
+        <strong className={`shrink-0 rounded-md px-2.5 py-1 text-[12px] font-semibold ${PILLAR_TONE_STYLES[pctTone] ?? PILLAR_TONE_STYLES.neutral}`}>
+          {total > 0 ? `${present}/${total} · ${pct}%` : "Sin portafolio"}
+        </strong>
       </div>
 
-      {/* Métricas */}
-      {total > 0 && (
-        <div className="crm-assortment-metrics">
-          <article>
-            <span>Objetivo</span>
-            <strong>{total} etiquetas</strong>
-            <small>{segmentKey}</small>
+      {total > 0 ? (
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 mt-3">
+          <article className="flex flex-col gap-0.5 rounded-lg border border-slate-200 bg-slate-50 p-3">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Objetivo</span>
+            <strong className="text-[15px] font-semibold text-slate-900">{total} etiquetas</strong>
+            <small className="text-[11px] text-slate-500">{segmentKey}</small>
           </article>
-          <article>
-            <span>Presentes</span>
-            <strong style={{ color: pct === 100 ? "#16a34a" : "#d97706" }}>{present}</strong>
-            <small>marcadas hoy</small>
+          <article className="flex flex-col gap-0.5 rounded-lg border border-slate-200 bg-slate-50 p-3">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Presentes</span>
+            <strong className={`text-[15px] font-semibold ${pct === 100 ? "text-emerald-600" : "text-amber-600"}`}>
+              {present}
+            </strong>
+            <small className="text-[11px] text-slate-500">marcadas hoy</small>
           </article>
-          <article>
-            <span>Faltantes</span>
-            <strong style={{ color: missingLabels.length > 0 ? "#dc2626" : "#16a34a" }}>{missingLabels.length}</strong>
-            <small>{assortmentAudit ? `Últ: ${assortmentAudit.savedAt}` : "Sin auditoría previa"}</small>
+          <article className="flex flex-col gap-0.5 rounded-lg border border-slate-200 bg-slate-50 p-3">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Faltantes</span>
+            <strong className={`text-[15px] font-semibold ${missingLabels.length > 0 ? "text-rose-600" : "text-emerald-600"}`}>
+              {missingLabels.length}
+            </strong>
+            <small className="text-[11px] text-slate-500">
+              {assortmentAudit ? `Últ: ${assortmentAudit.savedAt}` : "Sin auditoría previa"}
+            </small>
           </article>
         </div>
-      )}
+      ) : null}
 
       {total === 0 ? (
-        <div style={{ padding: "20px", textAlign: "center", color: "var(--text-3)", fontSize: "0.84rem" }}>
-          No hay portafolio configurado para el segmento <strong>{local.segment}</strong>.<br />
+        <div className="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-5 text-center text-[13px] text-slate-500">
+          No hay portafolio configurado para el segmento <strong className="text-slate-900">{local.segment}</strong>.
+          <br />
           El CP&A puede configurarlo en Configuración → Assortment.
         </div>
       ) : (
         <>
-          {/* Checklist por categoría */}
-          <div style={{ display: "grid", gap: 14, marginTop: 8 }}>
+          <div className="mt-4 flex flex-col gap-4">
             {Object.entries(byCategory).map(([cat, items]) => (
               <div key={cat}>
-                <p style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".06em", margin: "0 0 8px" }}>{cat}</p>
-                <div style={{ display: "grid", gap: 6 }}>
+                <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-slate-500">{cat}</p>
+                <div className="flex flex-col gap-1.5">
                   {items.map((item) => {
                     const checked = checkedIds.includes(item.id);
+                    const wrapperTone = checked
+                      ? "border-emerald-500 bg-emerald-50"
+                      : "border-rose-500 bg-rose-50";
                     return (
-                      <label key={item.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 12px", borderRadius: 8, border: `1.5px solid ${checked ? "#16a34a" : "#dc2626"}`, background: checked ? "#F0FDF4" : "#FEF2F2", cursor: "pointer", transition: "all .12s" }}>
-                        <input type="checkbox" checked={checked} onChange={() => toggleItem(item.id)} style={{ width: 16, height: 16, accentColor: checked ? "#16a34a" : "#dc2626", flexShrink: 0 }} />
-                        <span style={{ fontWeight: checked ? 700 : 500, fontSize: "0.86rem", color: checked ? "#15803D" : "#991B1B", flex: 1 }}>{item.name}</span>
-                        <span style={{ fontSize: "0.72rem", color: "var(--text-3)" }}>{item.category}</span>
-                        {checked
-                          ? <span style={{ fontSize: "0.7rem", flexShrink: 0, padding: "2px 8px", borderRadius: 99, background: "#DCFCE7", color: "#15803D", fontWeight: 700 }}>✓ Tiene</span>
-                          : <span style={{ fontSize: "0.7rem", flexShrink: 0, padding: "2px 8px", borderRadius: 99, background: "#FEE2E2", color: "#B91C1C", fontWeight: 700 }}>✗ No tiene</span>}
+                      <label
+                        key={item.id}
+                        className={`flex cursor-pointer items-center gap-2.5 rounded-lg border-2 px-3 py-2 transition ${wrapperTone}`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggleItem(item.id)}
+                          className={`h-4 w-4 shrink-0 ${checked ? "accent-emerald-600" : "accent-rose-600"}`}
+                        />
+                        <span
+                          className={`flex-1 text-[13px] ${checked ? "font-bold text-emerald-800" : "font-medium text-rose-900"}`}
+                        >
+                          {item.name}
+                        </span>
+                        <span className="text-[11px] text-slate-500">{item.category}</span>
+                        {checked ? (
+                          <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
+                            ✓ Tiene
+                          </span>
+                        ) : (
+                          <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold text-rose-700">
+                            ✗ No tiene
+                          </span>
+                        )}
                       </label>
                     );
                   })}
@@ -2429,31 +2553,43 @@ function AssortmentPortfolioPanel({ local, pillar, assortmentConfig, assortmentA
             ))}
           </div>
 
-          {/* Innovaciones — informativas */}
-          <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px dashed var(--border-md)" }}>
-            <p style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".06em", margin: "0 0 8px" }}>
-              Innovaciones <span style={{ fontWeight: 400, textTransform: "none", letterSpacing: 0 }}>— informativas, no suman al portafolio</span>
+          <div className="mt-4 border-t border-dashed border-slate-300 pt-4">
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-slate-500">
+              Innovaciones <span className="font-normal normal-case tracking-normal">— informativas, no suman al portafolio</span>
             </p>
-            <div style={{ display: "grid", gap: 6 }}>
+            <div className="flex flex-col gap-1.5">
               {OT_INNOVATIONS.map((item) => {
                 const checked = checkedInnovIds.includes(item.id);
                 return (
-                  <label key={item.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 12px", borderRadius: 8, border: "1px solid var(--border-sm)", background: "var(--canvas)", cursor: "pointer", opacity: 0.85 }}>
-                    <input type="checkbox" checked={checked} onChange={() => toggleInnov(item.id)} style={{ width: 16, height: 16, accentColor: "var(--accent)", flexShrink: 0 }} />
-                    <span style={{ fontSize: "0.84rem", color: "var(--text-2)", flex: 1 }}>{item.name}</span>
-                    <span className="crm-pill crm-pill--soft" style={{ fontSize: "0.68rem" }}>Innovación</span>
+                  <label
+                    key={item.id}
+                    className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 opacity-90"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => toggleInnov(item.id)}
+                      className="h-4 w-4 shrink-0 accent-slate-900"
+                    />
+                    <span className="flex-1 text-[13px] text-slate-700">{item.name}</span>
+                    <span className="rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600">
+                      Innovación
+                    </span>
                   </label>
                 );
               })}
             </div>
           </div>
 
-          {/* Guardar */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 16, gap: 12, flexWrap: "wrap" }}>
-            <small style={{ color: "var(--text-3)", fontSize: "0.78rem" }}>
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+            <small className="text-[12px] text-slate-500">
               {assortmentAudit ? `Última auditoría: ${assortmentAudit.savedAt} · ${assortmentAudit.author}` : "Sin auditoría previa"}
             </small>
-            <button className="crm-menu-save-button" type="button" onClick={saveTerreno}>
+            <button
+              type="button"
+              onClick={saveTerreno}
+              className="rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700"
+            >
               {justSaved ? "✓ Guardado" : "Guardar auditoría terreno"}
             </button>
           </div>
@@ -2491,41 +2627,54 @@ function AssortmentPostWall({ activeUserName, pillar, onUpdatePillar, local }) {
   }
 
   return (
-    <section className="crm-onfive-panel crm-assortment-wall">
+    <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <SectionTitle
         kicker="Muro Assortment"
         title="Comentarios de la cuenta"
         description="Notas comerciales, acuerdos y pendientes del portafolio."
       />
 
-      <div className="crm-assortment-composer">
-        <div className="crm-assortment-composer__who">
-          <span className="crm-avatar crm-avatar--sm" style={{ flexShrink: 0 }}>{initials(activeUserName ?? "Walker")}</span>
-          <span style={{ fontSize: "0.82rem", color: "var(--text-2)", fontWeight: 500 }}>{activeUserName ?? "Walker"}</span>
+      <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+        <div className="flex items-center gap-2">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
+            {initials(activeUserName ?? "Walker")}
+          </span>
+          <span className="text-[13px] font-medium text-slate-700">{activeUserName ?? "Walker"}</span>
         </div>
-        <label>
-          <span>Comentario</span>
+        <label className="flex flex-col gap-1">
+          <FieldLabel>Comentario</FieldLabel>
           <textarea
             placeholder="Contexto que deberia ver el proximo usuario..."
             value={postText}
             onChange={(event) => setPostText(event.target.value)}
+            className="min-h-[72px] resize-y rounded-lg border border-slate-200 bg-white p-2.5 text-[13px] text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10"
           />
         </label>
-        <button disabled={!canPublish} type="button" onClick={publishPost}>
+        <button
+          disabled={!canPublish}
+          type="button"
+          onClick={publishPost}
+          className="self-end rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+        >
           Publicar
         </button>
       </div>
 
-      <div className="crm-assortment-post-list">
+      <div className="mt-4 flex flex-col gap-3">
         {posts.map((post) => (
-          <article key={post.id} className="crm-assortment-post">
-            <div className="crm-assortment-post__avatar">{initials(post.author)}</div>
-            <div>
-              <header>
-                <strong>{post.author}</strong>
-                <span>{post.date}</span>
+          <article
+            key={post.id}
+            className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3"
+          >
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
+              {initials(post.author)}
+            </div>
+            <div className="flex flex-1 flex-col">
+              <header className="flex items-center justify-between gap-2">
+                <strong className="text-[13px] font-semibold text-slate-900">{post.author}</strong>
+                <span className="text-[11px] text-slate-500">{post.date}</span>
               </header>
-              <p>{post.text}</p>
+              <p className="mt-1 text-[12px] leading-relaxed text-slate-700">{post.text}</p>
             </div>
           </article>
         ))}
@@ -2604,53 +2753,54 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar }) {
   }
 
   return (
-    <section className="crm-menu-scanner crm-menu-kpi-workspace">
+    <section className="flex flex-col gap-4">
 
       {/* Status strip */}
-      <div className="crm-menu-status-strip">
-        <div className="crm-menu-status-strip__left">
-          <span className="crm-avatar crm-avatar--sm" style={{ background: "var(--surface-3)", color: "var(--text-2)", fontSize: "0.7rem" }}>
+      <div className="flex flex-wrap items-start gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="flex items-center gap-2">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
             {initials(local.name)}
           </span>
-          <div>
-            <strong>{local.name}</strong>
-            <small>{local.segment} · {local.district}</small>
+          <div className="flex flex-col">
+            <strong className="text-[13px] font-semibold text-slate-900">{local.name}</strong>
+            <small className="text-[11px] text-slate-500">{local.segment} · {local.district}</small>
           </div>
         </div>
-        <div className="crm-menu-status-strip__kpis">
-          <span className={`crm-pill crm-pill--${kpis.authorTone}`}>Coctelería de Autor: {kpis.authorStatus}</span>
-          <span className={`crm-pill crm-pill--${kpis.drinkTone}`}>Drink Strategy: {kpis.drinkStatus}</span>
-          <span className={`crm-pill crm-pill--${kpis.overallTone}`}>{kpis.overallStatus}</span>
+        <div className="flex flex-wrap gap-2">
+          <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${PILLAR_TONE_STYLES[kpis.authorTone === "good" ? "positive" : kpis.authorTone === "danger" ? "danger" : "neutral"] ?? PILLAR_TONE_STYLES.neutral}`}>Coctelería de Autor: {kpis.authorStatus}</span>
+          <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${PILLAR_TONE_STYLES[kpis.drinkTone === "good" ? "positive" : kpis.drinkTone === "danger" ? "danger" : "neutral"] ?? PILLAR_TONE_STYLES.neutral}`}>Drink Strategy: {kpis.drinkStatus}</span>
+          <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${PILLAR_TONE_STYLES[kpis.overallTone === "good" ? "positive" : kpis.overallTone === "warning" ? "warning" : "neutral"] ?? PILLAR_TONE_STYLES.neutral}`}>{kpis.overallStatus}</span>
         </div>
-        <label className="crm-menu-status-strip__selector">
-          <span>Situacion comercial</span>
-          <select value={evaluation.commercialStatus} onChange={(event) => updateEvaluation("commercialStatus", event.target.value)}>
+        <label className="flex flex-col gap-1">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Situacion comercial</span>
+          <select value={evaluation.commercialStatus} onChange={(event) => updateEvaluation("commercialStatus", event.target.value)}
+            className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none">
             <option value="diageo">AACC Diageo</option>
             <option value="none">Sin AACC</option>
             <option value="competitor">AACC competencia</option>
           </select>
         </label>
-        <div className="crm-menu-status-strip__action">
-          <span>Proxima accion</span>
+        <div className="flex flex-col gap-1">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Proxima accion</span>
           {nextGap ? (
-            <strong className={`crm-pill crm-pill--${nextGap.tone}`} style={{ fontSize: "0.76rem", fontWeight: 600, maxWidth: 260, whiteSpace: "normal", lineHeight: 1.3, padding: "4px 9px" }}>
+            <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${nextGap.tone === "danger" ? "bg-rose-50 text-rose-700" : "bg-amber-50 text-amber-700"}`} style={{ maxWidth: 260, whiteSpace: "normal", lineHeight: 1.3 }}>
               {nextGap.title}
-            </strong>
+            </span>
           ) : (
-            <span className="crm-pill crm-pill--good">Menu alineado ✓</span>
+            <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-emerald-50 text-emerald-700">Menu alineado ✓</span>
           )}
         </div>
       </div>
 
       {/* KPI panels */}
-      <div className="crm-menu-results-grid crm-menu-results-grid--manual">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 
         {/* KPI 1 */}
-        <div className="crm-onfive-panel crm-menu-kpi-panel">
-          <div className="crm-menu-kpi-panel__head">
-            <span className="crm-eyebrow">KPI 1</span>
-            <h3 style={{ margin: "3px 0 2px", color: "var(--text-1)", fontWeight: 680, letterSpacing: 0 }}>Cocteleria de Autor</h3>
-            <p style={{ margin: 0, color: "var(--text-2)", fontSize: "0.84rem", lineHeight: 1.45 }}>
+        <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">KPI 1</span>
+            <h3 className="text-[14px] font-semibold text-slate-900">Cocteleria de Autor</h3>
+            <p className="text-[12px] leading-relaxed text-slate-600">
               {evaluation.commercialStatus === "diageo"
                 ? "AACC Diageo: al menos 60% de los CA debe usar nuestras marcas."
                 : "Sin AACC: debe existir un CA con whisky y un CA con gin."}
@@ -2658,113 +2808,119 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar }) {
           </div>
 
           {evaluation.commercialStatus === "diageo" ? (
-            <div className="crm-menu-kpi-form-grid" style={{ marginTop: 12 }}>
-              <label>
-                <span>Total CA en carta</span>
+            <div className="grid grid-cols-2 gap-3">
+              <label className="flex flex-col gap-1">
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Total CA en carta</span>
                 <input min="0" type="number" value={evaluation.authorCocktailsTotal}
-                  onChange={(event) => updateEvaluation("authorCocktailsTotal", Number(event.target.value) || 0)} />
+                  onChange={(event) => updateEvaluation("authorCocktailsTotal", Number(event.target.value) || 0)}
+                  className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none" />
               </label>
-              <label>
-                <span>CA con marcas Diageo</span>
+              <label className="flex flex-col gap-1">
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">CA con marcas Diageo</span>
                 <input min="0" type="number" value={evaluation.authorCocktailsDiageo}
-                  onChange={(event) => updateEvaluation("authorCocktailsDiageo", Number(event.target.value) || 0)} />
+                  onChange={(event) => updateEvaluation("authorCocktailsDiageo", Number(event.target.value) || 0)}
+                  className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none" />
               </label>
-              <div className="crm-menu-ratio-box">
-                <span>Mix Diageo</span>
-                <strong>{kpis.authorShare}%</strong>
-                <small>Meta minima: 60%</small>
+              <div className="col-span-2 flex flex-col gap-0.5 rounded-lg border border-slate-200 bg-slate-50 p-3">
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Mix Diageo</span>
+                <strong className="text-[18px] font-semibold text-slate-900">{kpis.authorShare}%</strong>
+                <small className="text-[11px] text-slate-500">Meta minima: 60%</small>
               </div>
             </div>
           ) : (
-            <div className="crm-menu-checklist" style={{ marginTop: 12 }}>
-              <label className="crm-menu-check-item">
+            <div className="flex flex-col gap-2">
+              <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2.5">
                 <input checked={evaluation.hasWhiskyAuthorCocktail} type="checkbox"
-                  onChange={(event) => updateEvaluation("hasWhiskyAuthorCocktail", event.target.checked)} />
-                <span><strong>CA con whisky</strong><small>Coctel de autor con whisky en carta</small></span>
+                  onChange={(event) => updateEvaluation("hasWhiskyAuthorCocktail", event.target.checked)}
+                  className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-slate-900" />
+                <span className="flex flex-col gap-0.5">
+                  <strong className="text-[13px] font-semibold text-slate-900">CA con whisky</strong>
+                  <small className="text-[11px] text-slate-500">Coctel de autor con whisky en carta</small>
+                </span>
               </label>
-              <label className="crm-menu-check-item">
+              <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2.5">
                 <input checked={evaluation.hasGinAuthorCocktail} type="checkbox"
-                  onChange={(event) => updateEvaluation("hasGinAuthorCocktail", event.target.checked)} />
-                <span><strong>CA con gin</strong><small>Coctel de autor con gin en carta</small></span>
+                  onChange={(event) => updateEvaluation("hasGinAuthorCocktail", event.target.checked)}
+                  className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-slate-900" />
+                <span className="flex flex-col gap-0.5">
+                  <strong className="text-[13px] font-semibold text-slate-900">CA con gin</strong>
+                  <small className="text-[11px] text-slate-500">Coctel de autor con gin en carta</small>
+                </span>
               </label>
             </div>
           )}
 
-          <label className="crm-menu-photo-slot">
-            <span>Foto de respaldo KPI 1</span>
-            <input accept="image/*" type="file" />
+          <label className="flex cursor-pointer flex-col gap-1 rounded-lg border border-dashed border-slate-200 p-3">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Foto de respaldo KPI 1</span>
+            <input accept="image/*" type="file" className="text-[12px] text-slate-600" />
           </label>
         </div>
 
         {/* KPI 2 */}
-        <div className="crm-onfive-panel crm-menu-kpi-panel">
-          <div className="crm-menu-kpi-panel__head">
-            <span className="crm-eyebrow">KPI 2</span>
-            <h3 style={{ margin: "3px 0 2px", color: "var(--text-1)", fontWeight: 680, letterSpacing: 0 }}>Drink Strategy</h3>
-            <p style={{ margin: 0, color: "var(--text-2)", fontSize: "0.84rem", lineHeight: 1.45 }}>
+        <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">KPI 2</span>
+            <h3 className="text-[14px] font-semibold text-slate-900">Drink Strategy</h3>
+            <p className="text-[12px] leading-relaxed text-slate-600">
               {evaluation.commercialStatus === "competitor"
                 ? "AACC competencia: Drink Strategy es foco recomendado, no mandatorio."
                 : "Serves mandatorios en carta. Whiscola debe usar naming correcto."}
             </p>
           </div>
-          <div className="crm-menu-checklist" style={{ marginTop: 12 }}>
-            <label className="crm-menu-check-item">
-              <input checked={evaluation.hasTropicalGin} type="checkbox"
-                onChange={(event) => updateEvaluation("hasTropicalGin", event.target.checked)} />
-              <span><strong>Tropical Gin</strong><small>Con Tanqueray o Gordon&apos;s</small></span>
-            </label>
-            <label className="crm-menu-check-item">
-              <input checked={evaluation.hasWhiscolaNaming} type="checkbox"
-                onChange={(event) => updateEvaluation("hasWhiscolaNaming", event.target.checked)} />
-              <span><strong>Whiscola Johnnie Walker Red</strong><small>Naming exacto requerido en menu</small></span>
-            </label>
-            <label className="crm-menu-check-item">
-              <input checked={evaluation.hasTanquerayGt} type="checkbox"
-                onChange={(event) => updateEvaluation("hasTanquerayGt", event.target.checked)} />
-              <span><strong>Tanqueray Gin &amp; Tonic</strong><small>Serve visible en carta</small></span>
-            </label>
-            <label className="crm-menu-check-item">
-              <input checked={evaluation.hasWhiskySourBlack} type="checkbox"
-                onChange={(event) => updateEvaluation("hasWhiskySourBlack", event.target.checked)} />
-              <span><strong>Whisky Sour Johnnie Walker Black</strong><small>Whisky Sour con JW Black</small></span>
-            </label>
+          <div className="flex flex-col gap-2">
+            {[
+              { key: "hasTropicalGin", label: "Tropical Gin", sub: "Con Tanqueray o Gordon’s" },
+              { key: "hasWhiscolaNaming", label: "Whiscola Johnnie Walker Red", sub: "Naming exacto requerido en menu" },
+              { key: "hasTanquerayGt", label: "Tanqueray Gin & Tonic", sub: "Serve visible en carta" },
+              { key: "hasWhiskySourBlack", label: "Whisky Sour Johnnie Walker Black", sub: "Whisky Sour con JW Black" },
+            ].map(({ key, label, sub }) => (
+              <label key={key} className="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2.5">
+                <input checked={evaluation[key]} type="checkbox"
+                  onChange={(event) => updateEvaluation(key, event.target.checked)}
+                  className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-slate-900" />
+                <span className="flex flex-col gap-0.5">
+                  <strong className="text-[13px] font-semibold text-slate-900">{label}</strong>
+                  <small className="text-[11px] text-slate-500">{sub}</small>
+                </span>
+              </label>
+            ))}
           </div>
 
-          <label className="crm-menu-photo-slot">
-            <span>Foto de respaldo KPI 2</span>
-            <input accept="image/*" type="file" />
+          <label className="flex cursor-pointer flex-col gap-1 rounded-lg border border-dashed border-slate-200 p-3">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Foto de respaldo KPI 2</span>
+            <input accept="image/*" type="file" className="text-[12px] text-slate-600" />
           </label>
         </div>
       </div>
 
       {/* Save row */}
-      <div className="crm-menu-save-row">
+      <div className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3">
         {evaluation.lastSaved ? (
-          <small>Ultimo guardado: {evaluation.lastSaved}</small>
+          <small className="text-[11px] text-slate-500">Ultimo guardado: {evaluation.lastSaved}</small>
         ) : (
-          <small>Sin evaluaciones guardadas aun</small>
+          <small className="text-[11px] text-slate-500">Sin evaluaciones guardadas aun</small>
         )}
-        <button className="crm-menu-save-button" type="button" onClick={saveEvaluation}>
+        <button className="rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700" type="button" onClick={saveEvaluation}>
           {justSaved ? "✓ Guardado" : "Guardar evaluacion"}
         </button>
       </div>
 
       {/* Gaps */}
-      <div className="crm-onfive-panel crm-menu-action-panel">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <SectionTitle kicker="Lectura comercial" title="Gaps y proxima accion" />
-        <div className="crm-menu-gap-list">
+        <div className="mt-4 flex flex-col gap-3">
           {gaps.map((gap) => (
-            <article key={gap.title}>
-              <span className={`crm-pill crm-pill--${gap.tone}`}>{gap.type}</span>
-              <strong>{gap.title}</strong>
-              <p>{gap.copy}</p>
+            <article key={gap.title} className="flex flex-col gap-1.5 rounded-lg border border-slate-200 bg-slate-50 p-3">
+              <span className={`inline-flex w-fit items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${gap.tone === "good" ? "bg-emerald-50 text-emerald-700" : gap.tone === "danger" ? "bg-rose-50 text-rose-700" : gap.tone === "warning" ? "bg-amber-50 text-amber-700" : "bg-slate-100 text-slate-600"}`}>{gap.type}</span>
+              <strong className="text-[13px] font-semibold text-slate-900">{gap.title}</strong>
+              <p className="text-[12px] leading-relaxed text-slate-600">{gap.copy}</p>
             </article>
           ))}
           {gaps.length === 0 ? (
-            <article>
-              <span className="crm-pill crm-pill--good">OK</span>
-              <strong>Menu alineado a los criterios mandatorios</strong>
-              <p>Defender ejecucion, precio, visibilidad y entrenamiento de staff para sostener rotacion.</p>
+            <article className="flex flex-col gap-1.5 rounded-lg border border-slate-200 bg-slate-50 p-3">
+              <span className="inline-flex w-fit items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-emerald-50 text-emerald-700">OK</span>
+              <strong className="text-[13px] font-semibold text-slate-900">Menu alineado a los criterios mandatorios</strong>
+              <p className="text-[12px] leading-relaxed text-slate-600">Defender ejecucion, precio, visibilidad y entrenamiento de staff para sostener rotacion.</p>
             </article>
           ) : null}
         </div>
@@ -2772,9 +2928,9 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar }) {
 
       {/* Historial de evaluaciones */}
       {localLogs.length > 0 && (
-        <div className="crm-onfive-panel">
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
           <SectionTitle kicker="Historial" title="Evaluaciones guardadas" />
-          <div className="crm-menu-eval-log">
+          <div className="mt-4 flex flex-col gap-3">
             {localLogs.map((log) => {
               const isOpen = expandedLogId === log.id;
               const MENU_FIELDS_DETAIL = [
@@ -2786,47 +2942,47 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar }) {
                 { key: "hasWhiskySourBlack",      label: "Whisky Sour" },
               ];
               return (
-                <article key={log.id} className="crm-menu-eval-post" style={{ display: "block", padding: 0, border: "1px solid var(--border-sm)", borderRadius: 12, overflow: "hidden" }}>
+                <article key={log.id} className="overflow-hidden rounded-xl border border-slate-200">
                   <button
                     type="button"
                     onClick={() => setExpandedLogId(isOpen ? null : log.id)}
-                    style={{ width: "100%", display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 14px", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}
+                    className="flex w-full items-start gap-3 p-3 text-left hover:bg-slate-50 focus:outline-none"
                   >
-                    <div className="crm-menu-eval-post__avatar">{initials(log.author)}</div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <header style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                        <strong style={{ fontSize: "0.875rem" }}>{log.author}</strong>
-                        <span style={{ color: "var(--text-3)", fontSize: "0.78rem" }}>{log.date}</span>
-                        <span style={{ marginLeft: "auto", color: "var(--text-3)", fontSize: "0.8rem" }}>{isOpen ? "▲" : "▼"}</span>
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">{initials(log.author)}</div>
+                    <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                      <header className="flex items-center gap-2">
+                        <strong className="text-[13px] font-semibold text-slate-900">{log.author}</strong>
+                        <span className="text-[11px] text-slate-500">{log.date}</span>
+                        <span className="ml-auto text-[11px] text-slate-400">{isOpen ? "▲" : "▼"}</span>
                       </header>
-                      <div className="crm-menu-eval-post__pills">
-                        <span className={`crm-pill crm-pill--${log.caTone}`} style={{ fontSize: "0.74rem" }}>C. de Autor: {log.caStatus}</span>
-                        <span className={`crm-pill crm-pill--${log.dsTone}`} style={{ fontSize: "0.74rem" }}>Drink Strategy: {log.dsStatus}</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${log.caTone === "good" ? "bg-emerald-50 text-emerald-700" : log.caTone === "danger" ? "bg-rose-50 text-rose-700" : "bg-slate-100 text-slate-600"}`}>C. de Autor: {log.caStatus}</span>
+                        <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${log.dsTone === "good" ? "bg-emerald-50 text-emerald-700" : log.dsTone === "danger" ? "bg-rose-50 text-rose-700" : "bg-slate-100 text-slate-600"}`}>Drink Strategy: {log.dsStatus}</span>
                         {log.gapsCount === 0
-                          ? <span className="crm-pill crm-pill--good" style={{ fontSize: "0.74rem" }}>Sin gaps</span>
-                          : <span className="crm-pill crm-pill--warning" style={{ fontSize: "0.74rem" }}>{log.gapsCount} gap{log.gapsCount > 1 ? "s" : ""}</span>
+                          ? <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-emerald-50 text-emerald-700">Sin gaps</span>
+                          : <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-amber-50 text-amber-700">{log.gapsCount} gap{log.gapsCount > 1 ? "s" : ""}</span>
                         }
                       </div>
                     </div>
                   </button>
 
                   {isOpen && log.snap && (
-                    <div style={{ borderTop: "1px solid var(--border-sm)", padding: "14px 16px", background: "var(--canvas)", display: "grid", gap: 14 }}>
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                        <div>
-                          <p style={{ fontSize: "0.72rem", color: "var(--text-3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".04em", marginBottom: 6 }}>Cocteleria de Autor</p>
-                          <p style={{ fontSize: "0.84rem", marginBottom: 4 }}>
-                            <strong>{log.snap.authorCocktailsDiageo} de {log.snap.authorCocktailsTotal}</strong> cocktails son Diageo
-                            {log.kpis?.authorShare != null && <span style={{ color: "var(--text-3)" }}> ({log.kpis.authorShare}%)</span>}
+                    <div className="grid gap-4 border-t border-slate-200 bg-slate-50 p-4">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="flex flex-col gap-2">
+                          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Cocteleria de Autor</p>
+                          <p className="text-[13px] text-slate-700">
+                            <strong className="text-slate-900">{log.snap.authorCocktailsDiageo} de {log.snap.authorCocktailsTotal}</strong> cocktails son Diageo
+                            {log.kpis?.authorShare != null && <span className="text-slate-500"> ({log.kpis.authorShare}%)</span>}
                           </p>
-                          <p style={{ fontSize: "0.78rem", color: "var(--text-3)" }}>{log.kpis?.authorRule}</p>
+                          <p className="text-[11px] text-slate-500">{log.kpis?.authorRule}</p>
                         </div>
-                        <div>
-                          <p style={{ fontSize: "0.72rem", color: "var(--text-3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".04em", marginBottom: 6 }}>Drink Strategy</p>
-                          <p style={{ fontSize: "0.78rem", color: "var(--text-3)", marginBottom: 6 }}>{log.kpis?.drinkRule}</p>
-                          <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                        <div className="flex flex-col gap-2">
+                          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Drink Strategy</p>
+                          <p className="text-[11px] text-slate-500">{log.kpis?.drinkRule}</p>
+                          <div className="flex flex-wrap gap-1.5">
                             {MENU_FIELDS_DETAIL.map(({ key, label }) => (
-                              <span key={key} className={`crm-pill crm-pill--${log.snap[key] ? "good" : "danger"}`} style={{ fontSize: "0.72rem" }}>
+                              <span key={key} className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${log.snap[key] ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700"}`}>
                                 {label}: {log.snap[key] ? "OK" : "No"}
                               </span>
                             ))}
@@ -2835,13 +2991,13 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar }) {
                       </div>
 
                       {log.gaps && log.gaps.length > 0 && (
-                        <div>
-                          <p style={{ fontSize: "0.72rem", color: "var(--text-3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".04em", marginBottom: 6 }}>Gaps detectados</p>
-                          <div style={{ display: "grid", gap: 6 }}>
+                        <div className="flex flex-col gap-2">
+                          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Gaps detectados</p>
+                          <div className="flex flex-col gap-2">
                             {log.gaps.map((gap, i) => (
-                              <div key={i} style={{ fontSize: "0.82rem", padding: "8px 12px", background: "var(--surface-1,#f4f6f5)", borderRadius: 8, borderLeft: `3px solid ${gap.tone === "danger" ? "#dc2626" : "#d97706"}` }}>
-                                <strong style={{ display: "block", marginBottom: 2 }}>{gap.title}</strong>
-                                <span style={{ color: "var(--text-2)" }}>{gap.copy}</span>
+                              <div key={i} className={`rounded-lg border-l-4 bg-white p-3 text-[12px] ${gap.tone === "danger" ? "border-rose-500" : "border-amber-400"}`}>
+                                <strong className="block text-slate-900">{gap.title}</strong>
+                                <span className="text-slate-600">{gap.copy}</span>
                               </div>
                             ))}
                           </div>
@@ -2857,22 +3013,22 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar }) {
       )}
 
       {/* Stand by */}
-      <div className="crm-menu-standby-grid">
-        <div className="crm-menu-link-placeholder">
-          <div>
-            <span>Stand by</span>
-            <strong>Lectura por link QR</strong>
-            <p>Solucion escalable para Gourmedia, fu.do, Toteat y similares. Se desarrollara fuera de esta maqueta.</p>
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <div className="flex flex-col justify-between gap-4 rounded-xl border border-dashed border-slate-200 bg-slate-50 p-4">
+          <div className="flex flex-col gap-1.5">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Stand by</span>
+            <strong className="text-[14px] font-semibold text-slate-900">Lectura por link QR</strong>
+            <p className="text-[12px] leading-relaxed text-slate-600">Solucion escalable para Gourmedia, fu.do, Toteat y similares. Se desarrollara fuera de esta maqueta.</p>
           </div>
-          <button disabled type="button">Leer link con IA</button>
+          <button disabled type="button" className="cursor-not-allowed self-start rounded-lg border border-slate-200 bg-slate-100 px-3.5 py-1.5 text-[13px] font-semibold text-slate-400">Leer link con IA</button>
         </div>
-        <div className="crm-menu-link-placeholder">
-          <div>
-            <span>Stand by</span>
-            <strong>Escaneo PDF con IA</strong>
-            <p>Por ahora los KPIs se mantienen por actualizacion manual del Walker.</p>
+        <div className="flex flex-col justify-between gap-4 rounded-xl border border-dashed border-slate-200 bg-slate-50 p-4">
+          <div className="flex flex-col gap-1.5">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Stand by</span>
+            <strong className="text-[14px] font-semibold text-slate-900">Escaneo PDF con IA</strong>
+            <p className="text-[12px] leading-relaxed text-slate-600">Por ahora los KPIs se mantienen por actualizacion manual del Walker.</p>
           </div>
-          <button disabled type="button">Analizar PDF</button>
+          <button disabled type="button" className="cursor-not-allowed self-start rounded-lg border border-slate-200 bg-slate-100 px-3.5 py-1.5 text-[13px] font-semibold text-slate-400">Analizar PDF</button>
         </div>
       </div>
     </section>
@@ -2888,11 +3044,12 @@ function OnFiveRegisterPanel({ module, onSave, activeIncentives }) {
     return (
       <>
         <SectionTitle kicker="Registro" title="Campos del modulo" />
-        <div className="crm-field-grid">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {module.fields.map((field) => (
-            <label key={field}>
-              <span>{field}</span>
-              <input placeholder="Pendiente registrar" type="text" />
+            <label key={field} className="flex flex-col gap-1">
+              <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{field}</span>
+              <input placeholder="Pendiente registrar" type="text"
+                className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10" />
             </label>
           ))}
         </div>
@@ -2941,23 +3098,23 @@ function OnFiveRegisterPanel({ module, onSave, activeIncentives }) {
         title="Que vas a registrar"
         description="Elige el tipo de actividad para capturar solo los campos que sirven en terreno."
       />
-      <div className="crm-register-type-row" aria-label="Tipo de registro Staff">
+      <div className="flex flex-wrap gap-2" aria-label="Tipo de registro Staff">
         {STAFF_REGISTER_TYPES.map((type) => (
           <button
             key={type.key}
-            className={
-              type.key === registerType.key
-                ? "crm-register-type-button crm-register-type-button--active"
-                : "crm-register-type-button"
-            }
             type="button"
             onClick={() => selectRegisterType(type.key)}
+            className={`rounded-lg px-3 py-1.5 text-[13px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 ${
+              type.key === registerType.key
+                ? "bg-slate-900 text-white"
+                : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+            }`}
           >
             {type.label}
           </button>
         ))}
       </div>
-      <div className="crm-field-grid crm-field-grid--contextual">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {resolvedFields.map((field) => (
           <RegisterField
             key={field.key}
@@ -2968,14 +3125,14 @@ function OnFiveRegisterPanel({ module, onSave, activeIncentives }) {
           />
         ))}
       </div>
-      <div className="crm-register-actions">
-        <button className="crm-register-save" disabled={!hasValues} type="button" onClick={saveRegister}>
+      <div className="flex flex-wrap items-center gap-3">
+        <button className="rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50" disabled={!hasValues} type="button" onClick={saveRegister}>
           Guardar registro
         </button>
-        <button className="crm-register-mail" disabled type="button">
+        <button className="cursor-not-allowed rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-[13px] font-medium text-slate-400" disabled type="button">
           Enviar minuta por correo
         </button>
-        <small>{hasValues ? "Quedara en la bitacora de esta cuenta." : "Completa al menos un campo para guardar."}</small>
+        <small className="text-[11px] text-slate-500">{hasValues ? "Quedara en la bitacora de esta cuenta." : "Completa al menos un campo para guardar."}</small>
       </div>
     </>
   );
@@ -2983,28 +3140,28 @@ function OnFiveRegisterPanel({ module, onSave, activeIncentives }) {
 
 function RegisterField({ field, onChange, scope, value }) {
   const listId = `crm-${scope}-${field.key}`;
+  const inputCls = "rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
+  const labelCls = "flex flex-col gap-1";
+  const spanCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
 
   if (field.type === "textarea") {
     return (
-      <label className="crm-field-grid__wide">
-        <span>{field.label}</span>
-        <textarea placeholder={field.placeholder ?? "Pendiente registrar"} value={value ?? ""} onChange={(event) => onChange(event.target.value)} />
+      <label className={`col-span-full ${labelCls}`}>
+        <span className={spanCls}>{field.label}</span>
+        <textarea placeholder={field.placeholder ?? "Pendiente registrar"} value={value ?? ""} onChange={(event) => onChange(event.target.value)}
+          className={`min-h-[72px] resize-y ${inputCls}`} />
       </label>
     );
   }
 
   if (field.type === "select") {
     return (
-      <label>
-        <span>{field.label}</span>
-        <select value={value ?? ""} onChange={(event) => onChange(event.target.value)}>
-          <option value="" disabled>
-            Seleccionar
-          </option>
+      <label className={labelCls}>
+        <span className={spanCls}>{field.label}</span>
+        <select value={value ?? ""} onChange={(event) => onChange(event.target.value)} className={inputCls}>
+          <option value="" disabled>Seleccionar</option>
           {field.options?.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
+            <option key={option} value={option}>{option}</option>
           ))}
         </select>
       </label>
@@ -3013,9 +3170,9 @@ function RegisterField({ field, onChange, scope, value }) {
 
   if (field.type === "datalist") {
     return (
-      <label>
-        <span>{field.label}</span>
-        <input list={listId} placeholder="Buscar o agregar persona" type="text" value={value ?? ""} onChange={(event) => onChange(event.target.value)} />
+      <label className={labelCls}>
+        <span className={spanCls}>{field.label}</span>
+        <input list={listId} placeholder="Buscar o agregar persona" type="text" value={value ?? ""} onChange={(event) => onChange(event.target.value)} className={inputCls} />
         <datalist id={listId}>
           {field.options?.map((option) => (
             <option key={option} value={option} />
@@ -3027,20 +3184,22 @@ function RegisterField({ field, onChange, scope, value }) {
 
   if (field.type === "dateRange") {
     return (
-      <label className="crm-field-grid__wide">
-        <span>{field.label}</span>
-        <div className="crm-date-range">
+      <label className={`col-span-full ${labelCls}`}>
+        <span className={spanCls}>{field.label}</span>
+        <div className="flex gap-2">
           <input
             aria-label={`${field.label} inicio`}
             type="date"
             value={value?.start ?? ""}
             onChange={(event) => onChange({ ...(value ?? {}), start: event.target.value })}
+            className={`flex-1 ${inputCls}`}
           />
           <input
             aria-label={`${field.label} termino`}
             type="date"
             value={value?.end ?? ""}
             onChange={(event) => onChange({ ...(value ?? {}), end: event.target.value })}
+            className={`flex-1 ${inputCls}`}
           />
         </div>
       </label>
@@ -3049,22 +3208,23 @@ function RegisterField({ field, onChange, scope, value }) {
 
   if (field.type === "file") {
     return (
-      <label className="crm-register-upload">
-        <span>{field.label}</span>
-        <input accept="image/*" multiple type="file" onChange={(event) => onChange(`${event.target.files?.length ?? 0} foto(s) adjuntas`)} />
-        <small>Subir evidencia desde camara o galeria</small>
+      <label className={`cursor-pointer rounded-lg border border-dashed border-slate-200 p-3 ${labelCls}`}>
+        <span className={spanCls}>{field.label}</span>
+        <input accept="image/*" multiple type="file" onChange={(event) => onChange(`${event.target.files?.length ?? 0} foto(s) adjuntas`)} className="text-[12px] text-slate-600" />
+        <small className="text-[11px] text-slate-500">Subir evidencia desde camara o galeria</small>
       </label>
     );
   }
 
   return (
-    <label>
-      <span>{field.label}</span>
+    <label className={labelCls}>
+      <span className={spanCls}>{field.label}</span>
       <input
         placeholder={field.placeholder ?? "Pendiente registrar"}
         type={field.type === "date" ? "date" : "text"}
         value={value ?? ""}
         onChange={(event) => onChange(event.target.value)}
+        className={inputCls}
       />
     </label>
   );
@@ -3464,125 +3624,131 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar }) {
     setTimeout(() => setReqSent(false), 2500);
   }
 
+  const checkItemCls = "flex cursor-pointer items-start gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2.5";
+  const checkboxCls = "mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-slate-900";
+
   return (
-    <div style={{ display: "grid", gap: 14 }}>
+    <div className="flex flex-col gap-4">
 
       {/* Cristalería */}
-      <div className="crm-onfive-panel">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 14 }}>
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
           <SectionTitle kicker="Auditoria de branding" title="Cristaleria presente" />
-          <span className={`crm-pill crm-pill--${tone}`}>{score}</span>
+          <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${tone === "good" ? "bg-emerald-50 text-emerald-700" : tone === "warning" ? "bg-amber-50 text-amber-700" : "bg-slate-100 text-slate-600"}`}>{score}</span>
         </div>
 
-        <div className="crm-branding-audit-grid">
-          <fieldset className="crm-branding-fieldset">
-            <legend>Johnnie Walker</legend>
-            <label className="crm-menu-check-item">
-              <input type="checkbox" checked={audit.jwHighball} onChange={() => toggle("jwHighball")} />
-              <span><strong>Vaso Highball</strong><small>Copa alta para whisky</small></span>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <fieldset className="flex flex-col gap-2 rounded-lg border border-slate-200 p-3">
+            <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Johnnie Walker</legend>
+            <label className={checkItemCls}>
+              <input type="checkbox" checked={audit.jwHighball} onChange={() => toggle("jwHighball")} className={checkboxCls} />
+              <span className="flex flex-col gap-0.5"><strong className="text-[13px] font-semibold text-slate-900">Vaso Highball</strong><small className="text-[11px] text-slate-500">Copa alta para whisky</small></span>
             </label>
-            <label className="crm-menu-check-item">
-              <input type="checkbox" checked={audit.jwPhoenix} onChange={() => toggle("jwPhoenix")} />
-              <span><strong>Phoenix (corto)</strong><small>Vaso bajo JW</small></span>
-            </label>
-          </fieldset>
-
-          <fieldset className="crm-branding-fieldset">
-            <legend>Tanqueray / Gordon&apos;s</legend>
-            <label className="crm-menu-check-item">
-              <input type="checkbox" checked={audit.tqCopa} onChange={() => toggle("tqCopa")} />
-              <span><strong>Copa Tanqueray</strong></span>
-            </label>
-            <label className="crm-menu-check-item">
-              <input type="checkbox" checked={audit.gordCopa} onChange={() => toggle("gordCopa")} />
-              <span><strong>Copa Gordon&apos;s</strong></span>
+            <label className={checkItemCls}>
+              <input type="checkbox" checked={audit.jwPhoenix} onChange={() => toggle("jwPhoenix")} className={checkboxCls} />
+              <span className="flex flex-col gap-0.5"><strong className="text-[13px] font-semibold text-slate-900">Phoenix (corto)</strong><small className="text-[11px] text-slate-500">Vaso bajo JW</small></span>
             </label>
           </fieldset>
 
-          <fieldset className="crm-branding-fieldset">
-            <legend>Don Julio</legend>
-            <label className="crm-menu-check-item">
-              <input type="checkbox" checked={audit.djCatrina} onChange={() => toggle("djCatrina")} />
-              <span><strong>Catrina</strong><small>Copa DJ</small></span>
+          <fieldset className="flex flex-col gap-2 rounded-lg border border-slate-200 p-3">
+            <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Tanqueray / Gordon&apos;s</legend>
+            <label className={checkItemCls}>
+              <input type="checkbox" checked={audit.tqCopa} onChange={() => toggle("tqCopa")} className={checkboxCls} />
+              <span className="flex flex-col gap-0.5"><strong className="text-[13px] font-semibold text-slate-900">Copa Tanqueray</strong></span>
             </label>
-            <label className="crm-menu-check-item">
-              <input type="checkbox" checked={audit.djShotCatrina} onChange={() => toggle("djShotCatrina")} />
-              <span><strong>Shot Catrina</strong><small>Caballito DJ</small></span>
+            <label className={checkItemCls}>
+              <input type="checkbox" checked={audit.gordCopa} onChange={() => toggle("gordCopa")} className={checkboxCls} />
+              <span className="flex flex-col gap-0.5"><strong className="text-[13px] font-semibold text-slate-900">Copa Gordon&apos;s</strong></span>
+            </label>
+          </fieldset>
+
+          <fieldset className="flex flex-col gap-2 rounded-lg border border-slate-200 p-3">
+            <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Don Julio</legend>
+            <label className={checkItemCls}>
+              <input type="checkbox" checked={audit.djCatrina} onChange={() => toggle("djCatrina")} className={checkboxCls} />
+              <span className="flex flex-col gap-0.5"><strong className="text-[13px] font-semibold text-slate-900">Catrina</strong><small className="text-[11px] text-slate-500">Copa DJ</small></span>
+            </label>
+            <label className={checkItemCls}>
+              <input type="checkbox" checked={audit.djShotCatrina} onChange={() => toggle("djShotCatrina")} className={checkboxCls} />
+              <span className="flex flex-col gap-0.5"><strong className="text-[13px] font-semibold text-slate-900">Shot Catrina</strong><small className="text-[11px] text-slate-500">Caballito DJ</small></span>
             </label>
           </fieldset>
         </div>
 
-        <label className="crm-menu-check-item" style={{ marginTop: 10, borderTop: "1px solid var(--border)", paddingTop: 10 }}>
-          <input type="checkbox" checked={audit.noAplicaCristaleria} onChange={() => toggle("noAplicaCristaleria")} />
-          <span>
-            <strong>No aplica cristaleria</strong>
-            <small style={{ color: "var(--amber-tx)" }}>Requiere visacion de CP&A u On Trade Manager para no contar en el pilar</small>
+        <label className={`mt-3 border-t border-slate-200 pt-3 ${checkItemCls}`}>
+          <input type="checkbox" checked={audit.noAplicaCristaleria} onChange={() => toggle("noAplicaCristaleria")} className={checkboxCls} />
+          <span className="flex flex-col gap-0.5">
+            <strong className="text-[13px] font-semibold text-slate-900">No aplica cristaleria</strong>
+            <small className="text-[11px] text-amber-600">Requiere visacion de CP&A u On Trade Manager para no contar en el pilar</small>
           </span>
         </label>
       </div>
 
       {/* Neon */}
-      <div className="crm-onfive-panel">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <SectionTitle kicker="Auditoria de branding" title="Neon presente" />
-        <div className="crm-menu-checklist" style={{ marginTop: 12 }}>
+        <div className="mt-3 flex flex-col gap-2">
           {[
             { key: "neonJw", label: "Neon Johnnie Walker" },
             { key: "neonTq", label: "Neon Tanqueray" },
             { key: "neonDj", label: "Neon Don Julio" },
             { key: "neonGord", label: "Neon Gordon's" },
           ].map(({ key, label }) => (
-            <label key={key} className="crm-menu-check-item">
-              <input type="checkbox" checked={audit[key]} onChange={() => toggle(key)} />
-              <span><strong>{label}</strong></span>
+            <label key={key} className={checkItemCls}>
+              <input type="checkbox" checked={audit[key]} onChange={() => toggle(key)} className={checkboxCls} />
+              <strong className="text-[13px] font-semibold text-slate-900">{label}</strong>
             </label>
           ))}
-          <label className="crm-menu-check-item">
-            <input type="checkbox" checked={Boolean(audit.neonOtro)} onChange={(e) => { if (!e.target.checked) setField("neonOtro", ""); }} />
-            <span style={{ flex: 1 }}>
-              <strong>Otro neon</strong>
+          <label className={checkItemCls}>
+            <input type="checkbox" checked={Boolean(audit.neonOtro)} onChange={(e) => { if (!e.target.checked) setField("neonOtro", ""); }} className={checkboxCls} />
+            <span className="flex flex-1 flex-col gap-1">
+              <strong className="text-[13px] font-semibold text-slate-900">Otro neon</strong>
               <input
-                className="crm-branding-inline-input"
                 placeholder="Especificar marca o tipo..."
                 type="text"
                 value={audit.neonOtro}
                 onChange={(e) => setField("neonOtro", e.target.value)}
+                className="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[12px] focus:border-slate-900 focus:outline-none"
               />
             </span>
           </label>
         </div>
 
-        <label className="crm-menu-check-item" style={{ marginTop: 10, borderTop: "1px solid var(--border)", paddingTop: 10 }}>
-          <input type="checkbox" checked={audit.noAplicaNeon} onChange={() => toggle("noAplicaNeon")} />
-          <span>
-            <strong>No aplica neon</strong>
-            <small style={{ color: "var(--amber-tx)" }}>Requiere visacion de CP&A u On Trade Manager</small>
+        <label className={`mt-3 border-t border-slate-200 pt-3 ${checkItemCls}`}>
+          <input type="checkbox" checked={audit.noAplicaNeon} onChange={() => toggle("noAplicaNeon")} className={checkboxCls} />
+          <span className="flex flex-col gap-0.5">
+            <strong className="text-[13px] font-semibold text-slate-900">No aplica neon</strong>
+            <small className="text-[11px] text-amber-600">Requiere visacion de CP&A u On Trade Manager</small>
           </span>
         </label>
       </div>
 
       {/* Foto + guardar */}
-      <div className="crm-onfive-panel" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, alignItems: "end" }}>
-        <label className="crm-menu-photo-slot">
-          <span>Foto de evidencia branding</span>
-          <input accept="image/*" type="file" />
+      <div className="grid grid-cols-2 items-end gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+        <label className="flex cursor-pointer flex-col gap-1 rounded-lg border border-dashed border-slate-200 p-3">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Foto de evidencia branding</span>
+          <input accept="image/*" type="file" className="text-[12px] text-slate-600" />
         </label>
-        <button className="crm-menu-save-button" style={{ alignSelf: "end" }} type="button" onClick={saveAudit}>
+        <button className="rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700" type="button" onClick={saveAudit}>
           Guardar auditoria
         </button>
       </div>
 
       {/* Historial */}
       {logs.length > 0 && (
-        <div className="crm-onfive-panel">
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
           <SectionTitle kicker="Historial" title="Auditorias guardadas" />
-          <div className="crm-menu-eval-log">
+          <div className="mt-4 flex flex-col gap-3">
             {logs.map((log) => (
-              <article key={log.id} className="crm-menu-eval-post">
-                <div className="crm-menu-eval-post__avatar">{initials(log.author)}</div>
-                <div className="crm-menu-eval-post__body">
-                  <header><strong>{log.author}</strong><span>{log.date}</span></header>
-                  <div className="crm-menu-eval-post__pills">
-                    <span className={`crm-pill crm-pill--${log.tone}`} style={{ fontSize: "0.74rem" }}>{log.score}</span>
+              <article key={log.id} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">{initials(log.author)}</div>
+                <div className="flex flex-1 flex-col gap-1.5">
+                  <header className="flex items-center gap-2">
+                    <strong className="text-[13px] font-semibold text-slate-900">{log.author}</strong>
+                    <span className="text-[11px] text-slate-500">{log.date}</span>
+                  </header>
+                  <div className="flex flex-wrap gap-1.5">
+                    <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${log.tone === "good" ? "bg-emerald-50 text-emerald-700" : log.tone === "warning" ? "bg-amber-50 text-amber-700" : "bg-slate-100 text-slate-600"}`}>{log.score}</span>
                   </div>
                 </div>
               </article>
@@ -3592,70 +3758,69 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar }) {
       )}
 
       {/* Solicitud a CP&A — multi-material */}
-      <div className="crm-onfive-panel">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <SectionTitle kicker="Solicitud a CP&A" title="Pedir material de marca" />
-        <p style={{ fontSize: "0.82rem", color: "var(--text-2)", margin: "0 0 14px" }}>
+        <p className="mt-1 text-[12px] leading-relaxed text-slate-600">
           Agrega uno o más materiales. La solicitud llega al portal CP&A con todos los datos de la cuenta.
         </p>
 
-        {/* Stock catalog + add to cart */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 70px auto", gap: 8, alignItems: "end", marginBottom: 12 }}>
-          <label style={{ display: "grid", gap: 4 }}>
-            <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".04em" }}>Material</span>
-            <select value={cartMaterial} onChange={(e) => setCartMaterial(e.target.value)} style={{ border: "1px solid var(--border-md)", borderRadius: 8, padding: "7px 10px", fontSize: "0.84rem", background: "var(--canvas)", outline: "none" }}>
+        <div className="mt-4 grid items-end gap-2" style={{ gridTemplateColumns: "1fr 70px auto" }}>
+          <label className="flex flex-col gap-1">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Material</span>
+            <select value={cartMaterial} onChange={(e) => setCartMaterial(e.target.value)}
+              className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none">
               <option value="">Elegir material...</option>
               {BRANDING_MATERIALS_CATALOG.map((m) => (
                 <option key={m.code} value={m.code}>{m.code} — {m.name} (Stock: {m.stock})</option>
               ))}
             </select>
           </label>
-          <label style={{ display: "grid", gap: 4 }}>
-            <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".04em" }}>Cant.</span>
+          <label className="flex flex-col gap-1">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Cant.</span>
             <input type="number" min="1" max="99" value={cartQty} onChange={(e) => setCartQty(Number(e.target.value))}
-              style={{ border: "1px solid var(--border-md)", borderRadius: 8, padding: "7px 10px", fontSize: "0.84rem", background: "var(--canvas)", outline: "none", textAlign: "center" }} />
+              className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-center text-[13px] focus:border-slate-900 focus:outline-none" />
           </label>
           <button type="button" onClick={addToCart} disabled={!cartMaterial}
-            style={{ padding: "8px 14px", borderRadius: 8, border: "none", background: cartMaterial ? "var(--accent)" : "#D1D5DB", color: "#fff", cursor: cartMaterial ? "pointer" : "not-allowed", fontSize: "0.84rem", fontWeight: 600, alignSelf: "end" }}>
+            className="rounded-lg px-3.5 py-1.5 text-[13px] font-semibold text-white transition focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 bg-slate-900 hover:bg-slate-800 active:bg-slate-700">
             + Agregar
           </button>
         </div>
 
-        {/* Cart */}
         {cartItems.length > 0 && (
-          <div style={{ background: "#F9FAFB", borderRadius: 8, border: "1px solid #E5E7EB", marginBottom: 12 }}>
+          <div className="mt-3 overflow-hidden rounded-lg border border-slate-200">
             {cartItems.map((item) => (
-              <div key={item.code} style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 14px", borderBottom: "1px solid #F3F4F6", fontSize: "0.82rem" }}>
-                <code style={{ fontSize: "0.68rem", background: "#E5E7EB", borderRadius: 4, padding: "2px 6px", fontFamily: "monospace", color: "#374151" }}>{item.code}</code>
-                <span style={{ flex: 1, color: "#111827" }}>{item.name}</span>
-                <strong style={{ color: "#111827" }}>×{item.qty}</strong>
-                <button type="button" onClick={() => removeFromCart(item.code)} style={{ background: "none", border: "none", cursor: "pointer", color: "#9CA3AF", fontSize: "1rem", lineHeight: 1 }}>×</button>
+              <div key={item.code} className="flex items-center gap-2 border-b border-slate-100 px-3 py-2 last:border-b-0">
+                <code className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] text-slate-700">{item.code}</code>
+                <span className="flex-1 text-[13px] text-slate-900">{item.name}</span>
+                <strong className="text-[13px] text-slate-900">×{item.qty}</strong>
+                <button type="button" onClick={() => removeFromCart(item.code)} className="text-slate-400 hover:text-rose-500 focus:outline-none text-base leading-none">×</button>
               </div>
             ))}
           </div>
         )}
 
-        <label style={{ display: "grid", gap: 4, marginBottom: 12 }}>
-          <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".04em" }}>Notas de entrega</span>
+        <label className="mt-3 flex flex-col gap-1">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Notas de entrega</span>
           <input type="text" placeholder="Ej: Dejar con el bartender de turno, entrada por Av. Italia" value={deliveryNotes}
             onChange={(e) => setDeliveryNotes(e.target.value)}
-            style={{ border: "1px solid var(--border-md)", borderRadius: 8, padding: "7px 10px", fontSize: "0.84rem", background: "var(--canvas)", outline: "none" }} />
+            className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none" />
         </label>
 
-        <button className="crm-menu-save-button" disabled={cartItems.length === 0} type="button" onClick={sendRequest}>
+        <button className="mt-3 rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50" disabled={cartItems.length === 0} type="button" onClick={sendRequest}>
           {reqSent ? "✓ Solicitud enviada a CP&A" : `Enviar solicitud${cartItems.length > 0 ? ` (${cartItems.length} ítem${cartItems.length > 1 ? "s" : ""})` : ""}`}
         </button>
 
         {requests.length > 0 && (
-          <div style={{ display: "grid", gap: 8, marginTop: 14 }}>
-            <span className="crm-eyebrow">Solicitudes enviadas</span>
+          <div className="mt-4 flex flex-col gap-3">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Solicitudes enviadas</span>
             {requests.map((req) => (
-              <div key={req.id} style={{ display: "flex", flexDirection: "column", gap: 4, padding: "10px 0", borderTop: "1px solid var(--border)", fontSize: "0.82rem" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <strong style={{ color: "var(--text-1)" }}>{req.items.length} material{req.items.length > 1 ? "es" : ""} · {req.date}</strong>
-                  <span className="crm-pill crm-pill--soft" style={{ fontSize: "0.74rem" }}>{req.status}</span>
+              <div key={req.id} className="flex flex-col gap-1 border-t border-slate-100 pt-3">
+                <div className="flex items-center justify-between gap-2">
+                  <strong className="text-[13px] font-semibold text-slate-900">{req.items.length} material{req.items.length > 1 ? "es" : ""} · {req.date}</strong>
+                  <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-600">{req.status}</span>
                 </div>
-                {req.items.map((i) => <span key={i.code} style={{ color: "var(--text-2)", fontSize: "0.78rem" }}>{i.code} — {i.name} ×{i.qty}</span>)}
-                {req.deliveryNotes && <span style={{ color: "var(--text-3)", fontSize: "0.76rem" }}>Notas: {req.deliveryNotes}</span>}
+                {req.items.map((i) => <span key={i.code} className="text-[12px] text-slate-600">{i.code} — {i.name} ×{i.qty}</span>)}
+                {req.deliveryNotes && <span className="text-[11px] text-slate-500">Notas: {req.deliveryNotes}</span>}
               </div>
             ))}
           </div>
@@ -3752,23 +3917,27 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
 
   const activeNow = activations.filter((a) => a.dateEnd >= new Date().toISOString().slice(0, 10) || !a.dateEnd);
 
+  const inputCls = "rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none";
+  const fieldLabelCls = "flex flex-col gap-1";
+  const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
+
   return (
-    <div style={{ display: "grid", gap: 14 }}>
+    <div className="flex flex-col gap-4">
 
       {/* Resumen activo */}
       {activeNow.length > 0 && (
-        <div className="crm-onfive-panel">
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="mb-3 flex items-center justify-between gap-2">
             <SectionTitle kicker="En curso" title="Activaciones activas" />
-            <span className="crm-pill crm-pill--good">{activeNow.length} activa{activeNow.length > 1 ? "s" : ""}</span>
+            <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-emerald-50 text-emerald-700">{activeNow.length} activa{activeNow.length > 1 ? "s" : ""}</span>
           </div>
-          <div style={{ display: "grid", gap: 8 }}>
+          <div className="flex flex-col gap-2">
             {activeNow.slice(0, 3).map((act) => (
-              <div key={act.id} style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 0", borderTop: "1px solid var(--border)", fontSize: "0.84rem" }}>
-                <span className="crm-pill crm-pill--violet" style={{ fontSize: "0.74rem", flexShrink: 0 }}>{act.typeLabel ?? act.label}</span>
-                <span style={{ color: "var(--text-1)", fontWeight: 500 }}>{act.brand ?? ""}</span>
-                {act.mechanic && <span style={{ color: "var(--text-2)", fontSize: "0.78rem", flex: 1 }}>{act.mechanic}</span>}
-                {act.dateEnd && <span style={{ color: "var(--text-3)", fontSize: "0.76rem", flexShrink: 0 }}>Hasta {act.dateEnd}</span>}
+              <div key={act.id} className="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-2">
+                <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-violet-50 text-violet-700 shrink-0">{act.typeLabel ?? act.label}</span>
+                <span className="text-[13px] font-medium text-slate-900">{act.brand ?? ""}</span>
+                {act.mechanic && <span className="flex-1 text-[12px] text-slate-600">{act.mechanic}</span>}
+                {act.dateEnd && <span className="ml-auto shrink-0 text-[11px] text-slate-500">Hasta {act.dateEnd}</span>}
               </div>
             ))}
           </div>
@@ -3776,66 +3945,70 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
       )}
 
       {/* Formulario nueva activacion */}
-      <div className="crm-onfive-panel">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <SectionTitle kicker="Registro" title="Nueva activacion" />
 
-        {/* Tipo — selector visual */}
-        <div className="crm-activation-type-grid">
+        <div className="mt-3 flex flex-wrap gap-2">
           {ACTIVATION_TYPES.map((t) => (
             <button
               key={t.key}
-              className={`crm-activation-type-btn${form.type === t.key ? " crm-activation-type-btn--active" : ""}`}
               type="button"
               onClick={() => setField("type", t.key)}
+              className={`rounded-lg px-3 py-1.5 text-[13px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 ${
+                form.type === t.key
+                  ? "bg-slate-900 text-white"
+                  : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+              }`}
             >
               {t.label}
             </button>
           ))}
         </div>
 
-        <div className="crm-field-grid crm-activation-fields">
-          <div className="crm-activation-row-3">
-            <label>
-              <span>Marca</span>
-              <select value={form.brand} onChange={(e) => setField("brand", e.target.value)}>
+        <div className="mt-4 flex flex-col gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <label className={fieldLabelCls}>
+              <span className={eyebrowCls}>Marca</span>
+              <select value={form.brand} onChange={(e) => setField("brand", e.target.value)} className={inputCls}>
                 <option value="">Seleccionar marca...</option>
                 {ACTIVATION_BRANDS.map((b) => <option key={b} value={b}>{b}</option>)}
               </select>
             </label>
-            <label>
-              <span>Fecha inicio</span>
-              <input type="date" value={form.dateStart} onChange={(e) => setField("dateStart", e.target.value)} />
+            <label className={fieldLabelCls}>
+              <span className={eyebrowCls}>Fecha inicio</span>
+              <input type="date" value={form.dateStart} onChange={(e) => setField("dateStart", e.target.value)} className={inputCls} />
             </label>
-            <label>
-              <span>Fecha termino</span>
-              <input type="date" value={form.dateEnd} onChange={(e) => setField("dateEnd", e.target.value)} />
+            <label className={fieldLabelCls}>
+              <span className={eyebrowCls}>Fecha termino</span>
+              <input type="date" value={form.dateEnd} onChange={(e) => setField("dateEnd", e.target.value)} className={inputCls} />
             </label>
           </div>
 
-          <label>
-            <span>Mecanica</span>
+          <label className={fieldLabelCls}>
+            <span className={eyebrowCls}>Mecanica</span>
             <textarea
               placeholder="Ej: 2x1 en gin tonic de lunes a jueves de 19 a 21 hrs. Con carta especial en barra."
               rows={3}
               value={form.mechanic}
               onChange={(e) => setField("mechanic", e.target.value)}
+              className={`resize-y ${inputCls}`}
             />
           </label>
 
-          <div className="crm-activation-footer">
-            <label className="crm-activation-photo-zone">
+          <div className="flex flex-wrap items-center gap-3">
+            <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-slate-200 px-3 py-1.5 text-[13px] text-slate-600 hover:bg-slate-50">
               <input accept="image/*" style={{ display: "none" }} type="file" />
-              <span>+ Adjuntar foto</span>
+              + Adjuntar foto
             </label>
             <button
               type="button"
-              style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid var(--border-md)", background: noActivation ? "var(--surface-1,#f4f6f5)" : "none", cursor: "pointer", fontSize: "0.82rem", color: "var(--text-2)", fontWeight: noActivation ? 700 : 400 }}
               onClick={markNoActivation}
+              className={`rounded-lg border px-3 py-1.5 text-[13px] transition focus:outline-none ${noActivation ? "border-slate-900 bg-slate-900 font-semibold text-white" : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}`}
             >
               {noActivation ? "✓ Sin activación registrado" : "No tiene activación"}
             </button>
             <button
-              className="crm-menu-save-button"
+              className="rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={!canSave}
               type="button"
               onClick={saveActivation}
@@ -3848,46 +4021,35 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
 
       {/* Pendientes de cierre — activaciones vencidas sin resultados */}
       {expiredNeedingResults.length > 0 && (
-        <div className="crm-onfive-panel" style={{ border: "1.5px solid #F59E0B", borderRadius: 10 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-            <span style={{ fontSize: "1rem" }}>⚠️</span>
+        <div className="rounded-xl border-2 border-amber-400 bg-white p-4">
+          <div className="mb-3 flex items-center gap-2">
+            <span>⚠️</span>
             <SectionTitle kicker="Pendiente de cierre" title="Activaciones vencidas — reportar resultados" />
           </div>
-          <p style={{ fontSize: "0.82rem", color: "var(--text-2)", marginBottom: 14 }}>
+          <p className="mb-4 text-[12px] leading-relaxed text-slate-600">
             Estas activaciones terminaron. Para darlas por ejecutadas debes reportar los resultados.
           </p>
           {expiredNeedingResults.map((act) => {
             const rf = resultForms[act.id] ?? { unitsSold: "", notes: "" };
             return (
-              <div key={act.id} style={{ padding: "12px 14px", background: "#FFFBEB", borderRadius: 8, border: "1px solid #FDE68A", marginBottom: 10 }}>
-                <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 10, flexWrap: "wrap" }}>
-                  <strong style={{ fontSize: "0.88rem" }}>{act.typeLabel ?? act.label}</strong>
-                  <span className="crm-pill crm-pill--soft" style={{ fontSize: "0.74rem" }}>{act.brand}</span>
-                  <span style={{ fontSize: "0.76rem", color: "var(--text-3)", marginLeft: "auto" }}>Terminó {act.dateEnd}</span>
+              <div key={act.id} className="mb-3 rounded-lg border border-amber-200 bg-amber-50 p-3">
+                <div className="mb-3 flex flex-wrap items-center gap-2">
+                  <strong className="text-[13px] font-semibold text-slate-900">{act.typeLabel ?? act.label}</strong>
+                  <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-600">{act.brand}</span>
+                  <span className="ml-auto text-[11px] text-slate-500">Terminó {act.dateEnd}</span>
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 10 }}>
-                  <label style={{ display: "grid", gap: 4 }}>
-                    <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".04em" }}>
-                      {act.brand ? `Unidades ${act.brand} vendidas` : "Unidades vendidas"}
-                    </span>
-                    <input
-                      type="number"
-                      min="0"
-                      placeholder="Ej: 24"
-                      value={rf.unitsSold}
+                <div className="mb-3 grid grid-cols-2 gap-3">
+                  <label className={fieldLabelCls}>
+                    <span className={eyebrowCls}>{act.brand ? `Unidades ${act.brand} vendidas` : "Unidades vendidas"}</span>
+                    <input type="number" min="0" placeholder="Ej: 24" value={rf.unitsSold}
                       onChange={(e) => setResultForms((prev) => ({ ...prev, [act.id]: { ...rf, unitsSold: e.target.value } }))}
-                      style={{ border: "1px solid var(--border-md)", borderRadius: 8, padding: "7px 10px", fontSize: "0.84rem", background: "var(--canvas)", outline: "none" }}
-                    />
+                      className={inputCls} />
                   </label>
-                  <label style={{ display: "grid", gap: 4 }}>
-                    <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".04em" }}>Notas de resultado</span>
-                    <input
-                      type="text"
-                      placeholder="Ej: Buena recepción, quieren repetir"
-                      value={rf.notes}
+                  <label className={fieldLabelCls}>
+                    <span className={eyebrowCls}>Notas de resultado</span>
+                    <input type="text" placeholder="Ej: Buena recepción, quieren repetir" value={rf.notes}
                       onChange={(e) => setResultForms((prev) => ({ ...prev, [act.id]: { ...rf, notes: e.target.value } }))}
-                      style={{ border: "1px solid var(--border-md)", borderRadius: 8, padding: "7px 10px", fontSize: "0.84rem", background: "var(--canvas)", outline: "none" }}
-                    />
+                      className={inputCls} />
                   </label>
                 </div>
                 <button
@@ -3899,7 +4061,7 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
                       onUpdatePillar("activation", { score: "Completado", summary: `${act.typeLabel ?? act.brand} cerrada · ${rf.unitsSold} unid.` });
                     }
                   }}
-                  style={{ padding: "7px 18px", borderRadius: 8, border: "none", background: rf.unitsSold ? "#059669" : "#D1D5DB", color: "#fff", cursor: rf.unitsSold ? "pointer" : "not-allowed", fontSize: "0.82rem", fontWeight: 600 }}
+                  className="rounded-lg bg-emerald-600 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-emerald-700 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Cerrar activación
                 </button>
@@ -3911,24 +4073,24 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
 
       {/* Historial */}
       {activations.length > 0 && (
-        <div className="crm-onfive-panel">
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
           <SectionTitle kicker="Historial" title="Activaciones registradas" />
-          <div className="crm-menu-eval-log">
+          <div className="mt-4 flex flex-col gap-3">
             {activations.map((act) => (
-              <article key={act.id} className="crm-menu-eval-post">
-                <div className="crm-menu-eval-post__avatar">{initials(act.author ?? "W")}</div>
-                <div className="crm-menu-eval-post__body">
-                  <header>
-                    <strong>{act.author ?? "Sistema"}</strong>
-                    <span>{act.date}</span>
+              <article key={act.id} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">{initials(act.author ?? "W")}</div>
+                <div className="flex flex-1 flex-col gap-1.5">
+                  <header className="flex items-center gap-2">
+                    <strong className="text-[13px] font-semibold text-slate-900">{act.author ?? "Sistema"}</strong>
+                    <span className="text-[11px] text-slate-500">{act.date}</span>
                   </header>
-                  <div className="crm-menu-eval-post__pills">
-                    <span className="crm-pill crm-pill--violet" style={{ fontSize: "0.74rem" }}>{act.typeLabel ?? act.label}</span>
-                    {act.brand && <span className="crm-pill crm-pill--soft" style={{ fontSize: "0.74rem" }}>{act.brand}</span>}
-                    {act.results && <span className="crm-pill crm-pill--good" style={{ fontSize: "0.74rem" }}>✓ Cerrada · {act.results.unitsSold} unid.</span>}
-                    {act.dateEnd && act.dateEnd < today && !act.results && <span className="crm-pill crm-pill--warning" style={{ fontSize: "0.74rem" }}>Vencida</span>}
+                  <div className="flex flex-wrap gap-1.5">
+                    <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-violet-50 text-violet-700">{act.typeLabel ?? act.label}</span>
+                    {act.brand && <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-600">{act.brand}</span>}
+                    {act.results && <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-emerald-50 text-emerald-700">✓ Cerrada · {act.results.unitsSold} unid.</span>}
+                    {act.dateEnd && act.dateEnd < today && !act.results && <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-amber-50 text-amber-700">Vencida</span>}
                   </div>
-                  {act.mechanic && <p style={{ margin: "4px 0 0", fontSize: "0.8rem", color: "var(--text-2)" }}>{act.mechanic}</p>}
+                  {act.mechanic && <p className="text-[12px] text-slate-600">{act.mechanic}</p>}
                 </div>
               </article>
             ))}
@@ -4259,21 +4421,24 @@ function BrandingRequestsBoard() {
   }
 
   const pending = requests.filter((r) => r.status === "Pendiente").length;
-  const colStyle = { padding: "9px 12px", fontSize: "0.8rem", verticalAlign: "middle", borderBottom: "1px solid #F3F4F6" };
-  const headStyle = { padding: "8px 12px", fontSize: "0.72rem", fontWeight: 700, color: "#6B7280", textTransform: "uppercase", letterSpacing: ".04em", background: "#F9FAFB", borderBottom: "1px solid #E5E7EB" };
+  const statusSelectCls = (status) => status === "Entregado"
+    ? "bg-emerald-50 text-emerald-700 font-semibold"
+    : status === "En tránsito"
+    ? "bg-blue-50 text-blue-700 font-semibold"
+    : "bg-amber-50 text-amber-700 font-semibold";
 
   return (
-    <div style={{ display: "grid", gap: 14 }}>
+    <div className="flex flex-col gap-4">
 
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "#9CA3AF", textTransform: "uppercase", letterSpacing: ".06em" }}>CP&A · Branding</span>
-          <h2 style={{ fontSize: "1rem", fontWeight: 700, margin: "3px 0 0", color: "#111827" }}>Solicitudes de materiales</h2>
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">CP&A · Branding</span>
+          <h2 className="text-[16px] font-bold text-slate-900">Solicitudes de materiales</h2>
         </div>
-        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-          {pending > 0 && <span className="crm-pill crm-pill--warning">{pending} pendiente{pending > 1 ? "s" : ""}</span>}
-          <button onClick={exportExcel} type="button" style={{ padding: "7px 14px", borderRadius: 8, border: "1px solid #E5E7EB", background: "#fff", cursor: "pointer", fontSize: "0.82rem", fontWeight: 500, color: "#374151" }}>
+        <div className="flex flex-wrap items-center gap-2">
+          {pending > 0 && <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-amber-50 text-amber-700">{pending} pendiente{pending > 1 ? "s" : ""}</span>}
+          <button onClick={exportExcel} type="button" className="rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-[13px] font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1">
             ↓ Exportar Excel
           </button>
         </div>
@@ -4281,74 +4446,72 @@ function BrandingRequestsBoard() {
 
       {/* Bulk actions */}
       {selected.size > 0 && (
-        <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", background: "#EFF6FF", borderRadius: 8, border: "1px solid #BFDBFE" }}>
-          <span style={{ fontSize: "0.84rem", color: "#1D4ED8", fontWeight: 600 }}>{selected.size} seleccionadas</span>
-          <select value={bulkStatus} onChange={(e) => setBulkStatus(e.target.value)} style={{ border: "1px solid #BFDBFE", borderRadius: 6, padding: "4px 8px", fontSize: "0.82rem", background: "#fff" }}>
+        <div className="flex flex-wrap items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2.5">
+          <span className="text-[13px] font-semibold text-blue-700">{selected.size} seleccionadas</span>
+          <select value={bulkStatus} onChange={(e) => setBulkStatus(e.target.value)}
+            className="rounded-lg border border-blue-200 bg-white px-2 py-1 text-[13px] focus:outline-none">
             {["Pendiente", "En tránsito", "Entregado"].map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
-          <button onClick={applyBulk} type="button" style={{ padding: "5px 14px", borderRadius: 6, border: "none", background: "#2563EB", color: "#fff", cursor: "pointer", fontSize: "0.82rem", fontWeight: 600 }}>
+          <button onClick={applyBulk} type="button" className="rounded-lg bg-blue-600 px-3 py-1 text-[13px] font-semibold text-white hover:bg-blue-700 focus:outline-none">
             Aplicar
           </button>
-          <button onClick={() => setSelected(new Set())} type="button" style={{ marginLeft: "auto", padding: "5px 12px", borderRadius: 6, border: "1px solid #BFDBFE", background: "none", cursor: "pointer", fontSize: "0.8rem", color: "#6B7280" }}>
+          <button onClick={() => setSelected(new Set())} type="button" className="ml-auto rounded-lg border border-blue-200 bg-white px-3 py-1 text-[13px] text-slate-600 hover:bg-slate-50 focus:outline-none">
             Cancelar
           </button>
         </div>
       )}
 
       {/* Tabla */}
-      <div style={{ background: "#fff", border: "0.5px solid #E5E7EB", borderRadius: 10, overflow: "hidden" }}>
-      <div className="crm-branding-table-wrap">
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              <th style={{ ...headStyle, width: 36 }}>
-                <input type="checkbox" checked={selected.size === requests.length} onChange={toggleAll} style={{ cursor: "pointer" }} />
-              </th>
-              <th style={headStyle}>Cuenta</th>
-              <th style={headStyle}>Materiales</th>
-              <th style={headStyle}>Contacto</th>
-              <th style={headStyle}>Notas de entrega</th>
-              <th style={headStyle}>Fecha</th>
-              <th style={{ ...headStyle, width: 140 }}>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            {requests.map((req) => (
-              <tr key={req.id} style={{ background: selected.has(req.id) ? "#EFF6FF" : "transparent" }}>
-                <td style={colStyle}>
-                  <input type="checkbox" checked={selected.has(req.id)} onChange={() => toggleSelect(req.id)} style={{ cursor: "pointer" }} />
-                </td>
-                <td style={colStyle}>
-                  <strong style={{ display: "block", fontSize: "0.84rem", color: "#111827" }}>{req.local}</strong>
-                  <span style={{ fontSize: "0.76rem", color: "#6B7280" }}>{req.address}</span>
-                  <span style={{ fontSize: "0.76rem", color: "#6B7280", display: "block" }}>Walker: {req.walker}</span>
-                </td>
-                <td style={colStyle}>
-                  {req.items.map((item) => (
-                    <div key={item.code} style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 4 }}>
-                      <code style={{ fontSize: "0.68rem", background: "#F3F4F6", borderRadius: 4, padding: "1px 5px", color: "#374151", fontFamily: "monospace" }}>{item.code}</code>
-                      <span style={{ fontSize: "0.8rem" }}>{item.name}</span>
-                      <strong style={{ fontSize: "0.8rem", color: "#111827" }}>×{item.qty}</strong>
-                    </div>
-                  ))}
-                </td>
-                <td style={{ ...colStyle, fontSize: "0.8rem", color: "#374151" }}>{req.contact}</td>
-                <td style={{ ...colStyle, fontSize: "0.8rem", color: "#6B7280", maxWidth: 180 }}>{req.deliveryNotes}</td>
-                <td style={{ ...colStyle, fontSize: "0.78rem", color: "#6B7280" }}>{req.date}</td>
-                <td style={colStyle}>
-                  <select
-                    value={req.status}
-                    onChange={(e) => updateStatus(req.id, e.target.value)}
-                    style={{ width: "100%", border: "1px solid #E5E7EB", borderRadius: 6, padding: "4px 8px", fontSize: "0.8rem", background: req.status === "Entregado" ? "#F0FDF4" : req.status === "En tránsito" ? "#EFF6FF" : "#FFFBEB", color: req.status === "Entregado" ? "#15803D" : req.status === "En tránsito" ? "#1D4ED8" : "#92400E", fontWeight: 600, cursor: "pointer" }}
-                  >
-                    {["Pendiente", "En tránsito", "Entregado"].map((s) => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                </td>
+      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-slate-50">
+                <th className="w-9 border-b border-slate-200 p-3">
+                  <input type="checkbox" checked={selected.size === requests.length} onChange={toggleAll} className="cursor-pointer" />
+                </th>
+                {["Cuenta", "Materiales", "Contacto", "Notas de entrega", "Fecha", "Estado"].map((h) => (
+                  <th key={h} className="border-b border-slate-200 p-3 text-left text-[10px] font-semibold uppercase tracking-wide text-slate-500">{h}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {requests.map((req) => (
+                <tr key={req.id} className={`border-b border-slate-100 last:border-b-0 ${selected.has(req.id) ? "bg-blue-50" : "bg-white"}`}>
+                  <td className="p-3">
+                    <input type="checkbox" checked={selected.has(req.id)} onChange={() => toggleSelect(req.id)} className="cursor-pointer" />
+                  </td>
+                  <td className="p-3">
+                    <strong className="block text-[13px] font-semibold text-slate-900">{req.local}</strong>
+                    <span className="text-[11px] text-slate-500">{req.address}</span>
+                    <span className="block text-[11px] text-slate-500">Walker: {req.walker}</span>
+                  </td>
+                  <td className="p-3">
+                    {req.items.map((item) => (
+                      <div key={item.code} className="mb-1 flex items-center gap-2 last:mb-0">
+                        <code className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] text-slate-700">{item.code}</code>
+                        <span className="text-[12px] text-slate-700">{item.name}</span>
+                        <strong className="text-[12px] text-slate-900">×{item.qty}</strong>
+                      </div>
+                    ))}
+                  </td>
+                  <td className="p-3 text-[12px] text-slate-700">{req.contact}</td>
+                  <td className="max-w-[180px] p-3 text-[12px] text-slate-600">{req.deliveryNotes}</td>
+                  <td className="p-3 text-[11px] text-slate-500">{req.date}</td>
+                  <td className="p-3">
+                    <select
+                      value={req.status}
+                      onChange={(e) => updateStatus(req.id, e.target.value)}
+                      className={`w-full cursor-pointer rounded-lg border border-slate-200 px-2 py-1 text-[12px] focus:outline-none ${statusSelectCls(req.status)}`}
+                    >
+                      {["Pendiente", "En tránsito", "Entregado"].map((s) => <option key={s} value={s}>{s}</option>)}
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -4405,9 +4568,9 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, walkers, onAd
   const SUBCANALES = ["DINING", "DISCO", "BAR", "HOTEL", "RESTAURANT", "CAFE", "LATE NIGHT", "OTRO"];
   const ACUERDOS = ["Sin AACC", "Diageo", "Tanqueray", "Johnnie Walker", "Don Julio", "Smirnoff", "Mixto"];
 
-  const inputStyle = { border: "1px solid var(--border-md)", borderRadius: 8, padding: "7px 10px", fontSize: "0.84rem", background: "var(--canvas)", outline: "none", width: "100%" };
-  const labelStyle = { display: "grid", gap: 4 };
-  const eyebrowStyle = { fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".04em" };
+  const inputCls = "w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
+  const labelCls = "flex flex-col gap-1";
+  const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
 
   const CONFIG_SECTIONS = [
     { id: "maestro",     label: "Maestro de cuentas",   icon: "📂", desc: "Carga del Excel maestro" },
@@ -4420,269 +4583,108 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, walkers, onAd
   const [configSection, setConfigSection] = useState("maestro");
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "220px 1fr", gap: 0, background: "#fff", border: "0.5px solid #E5E7EB", borderRadius: 10, overflow: "hidden", minHeight: 600 }}>
+    <div className="grid min-h-[600px] overflow-hidden rounded-xl border border-slate-200 bg-white" style={{ gridTemplateColumns: "220px 1fr" }}>
 
       {/* ── Panel izquierdo — lista de secciones ── */}
-      <div style={{ borderRight: "0.5px solid #E5E7EB", padding: "8px 0" }}>
-        <div style={{ padding: "16px 20px 12px" }}>
-          <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#9CA3AF", textTransform: "uppercase", letterSpacing: ".06em" }}>BARRA · CP&A</span>
-          <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "#111827", margin: "3px 0 0" }}>Configuración</h2>
+      <div className="border-r border-slate-200 py-2">
+        <div className="px-5 pb-3 pt-4">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">BARRA · CP&A</span>
+          <h2 className="text-[16px] font-bold text-slate-900">Configuración</h2>
         </div>
-        <nav style={{ display: "flex", flexDirection: "column", gap: 1, padding: "0 8px" }}>
+        <nav className="flex flex-col gap-0.5 px-2">
           {CONFIG_SECTIONS.map((s) => (
             <button
               key={s.id}
               type="button"
               onClick={() => setConfigSection(s.id)}
-              style={{
-                display: "flex", alignItems: "center", gap: 10,
-                padding: "9px 12px", borderRadius: 7, border: "none", cursor: "pointer", textAlign: "left",
-                background: configSection === s.id ? "#F3F4F6" : "transparent",
-                fontWeight: configSection === s.id ? 600 : 400,
-                color: configSection === s.id ? "#111827" : "#374151",
-                fontSize: "0.86rem",
-                transition: "background 100ms",
-              }}
+              className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-left text-[13px] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 ${
+                configSection === s.id
+                  ? "bg-slate-100 font-semibold text-slate-900"
+                  : "text-slate-700 hover:bg-slate-50"
+              }`}
             >
-              <span style={{ fontSize: "0.9rem", opacity: 0.8 }}>{s.icon}</span>
-              <span style={{ flex: 1 }}>{s.label}</span>
-              {configSection === s.id && <span style={{ color: "#9CA3AF", fontSize: "0.8rem" }}>›</span>}
+              <span className="opacity-80">{s.icon}</span>
+              <span className="flex-1">{s.label}</span>
+              {configSection === s.id && <span className="text-[11px] text-slate-400">›</span>}
             </button>
           ))}
         </nav>
       </div>
 
       {/* ── Panel derecho — contenido de la sección activa ── */}
-      <div style={{ padding: "28px 32px", overflowY: "auto" }}>
+      <div className="overflow-y-auto p-8">
 
       {configSection === "maestro" && (<>
       {/* ── Carga del Excel ── */}
-      <article className="crm-card" style={{ padding: "22px 26px", display: "grid", gap: "16px" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
+      <article className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <span className="crm-eyebrow">CP&A · Administración</span>
-            <h2 style={{ fontSize: "1.05rem", fontWeight: 740, margin: "4px 0 4px", letterSpacing: "-.02em" }}>
-              Maestro de cuentas
-            </h2>
-            <p style={{ color: "var(--text-2)", fontSize: "0.84rem", margin: 0, lineHeight: 1.5 }}>
+            <span className={eyebrowCls}>CP&A · Administración</span>
+            <h2 className="mt-1 text-[16px] font-bold text-slate-900">Maestro de cuentas</h2>
+            <p className="mt-1 text-[13px] leading-relaxed text-slate-600">
               Solo CP&A puede cargar o actualizar la cartera. Los Walkers ven la data lista al ingresar.
             </p>
           </div>
           {excelMeta ? (
-            <span className="crm-pill crm-pill--good" style={{ flexShrink: 0 }}>
+            <span className="inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-emerald-50 text-emerald-700">
               ✓ {excelMeta.count} cuentas · {excelMeta.fileName}
             </span>
           ) : (
-            <span className="crm-pill crm-pill--soft" style={{ flexShrink: 0 }}>Sin datos cargados</span>
+            <span className="inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-600">Sin datos cargados</span>
           )}
         </div>
 
-        <label style={{ cursor: "pointer" }}>
-          <div style={{
-            border: `2px dashed ${excelMeta ? "var(--accent-mid)" : "var(--border-md)"}`,
-            borderRadius: "var(--radius-card)",
-            padding: "22px 26px",
-            background: excelMeta ? "var(--accent-lt)" : "var(--canvas)",
-            display: "flex", alignItems: "center", gap: 16, transition: "all .15s",
-          }}>
-            <span style={{ fontSize: "1.8rem", flexShrink: 0 }}>{excelMeta ? "✅" : "📂"}</span>
+        <label className="cursor-pointer">
+          <div className={`flex items-center gap-4 rounded-xl border-2 border-dashed p-6 transition ${excelMeta ? "border-emerald-300 bg-emerald-50" : "border-slate-200 bg-white hover:bg-slate-50"}`}>
+            <span className="shrink-0 text-3xl">{excelMeta ? "✅" : "📂"}</span>
             <div>
-              <strong style={{ fontSize: "0.9rem", display: "block", color: excelMeta ? "var(--accent)" : "var(--text-1)" }}>
+              <strong className={`block text-[14px] font-semibold ${excelMeta ? "text-emerald-700" : "text-slate-900"}`}>
                 {excelMeta ? `${excelMeta.sheetName} — ${excelMeta.count} cuentas importadas` : "Arrastra o haz click para cargar el Excel"}
               </strong>
-              <small style={{ color: "var(--text-3)", fontSize: "0.76rem" }}>
+              <small className="text-[11px] text-slate-500">
                 {excelMeta ? "Haz click para reemplazar con un archivo nuevo" : "Formato .xlsx — debe tener columna CLIENTE ID como llave"}
               </small>
             </div>
           </div>
-          <input type="file" accept=".xlsx,.xls" style={{ display: "none" }} onChange={onUpload} />
+          <input type="file" accept=".xlsx,.xls" className="hidden" onChange={onUpload} />
         </label>
 
-        {excelError ? (
-          <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: "8px", padding: "10px 14px", color: "#dc2626", fontSize: "0.84rem", fontWeight: 600 }}>
+        {excelError && (
+          <div className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-2.5 text-[13px] font-semibold text-rose-700">
             ⚠️ {excelError}
-          </div>
-        ) : null}
-      </article>
-
-      {/* ── Agregar cuenta manual ── (movido a sección propia) */}
-      <article className="crm-card" style={{ padding: "22px 26px", gap: "14px", display: "none" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-          <div>
-            <span className="crm-eyebrow">CP&A · Cartera manual</span>
-            <h2 style={{ fontSize: "1.05rem", fontWeight: 740, margin: "4px 0 4px", letterSpacing: "-.02em" }}>
-              Agregar cuenta manualmente
-            </h2>
-          </div>
-        </div>
-
-        {justAdded && (
-          <div style={{ background: "var(--accent-lt)", border: "1px solid var(--accent-mid)", borderRadius: 8, padding: "10px 14px", color: "var(--accent)", fontSize: "0.84rem", fontWeight: 600 }}>
-            ✓ "{justAdded}" agregada a la cartera
-          </div>
-        )}
-
-        {showForm && (
-          <div style={{ display: "grid", gap: 16, paddingTop: 8, borderTop: "1px solid var(--border)" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-              <label style={labelStyle}>
-                <span style={eyebrowStyle}>Nombre fantasía *</span>
-                <input style={inputStyle} placeholder="Ej: Bar El Patrón" value={form.nombre}
-                  onChange={(e) => setField("nombre", e.target.value)} />
-              </label>
-              <label style={labelStyle}>
-                <span style={eyebrowStyle}>Razón social</span>
-                <input style={inputStyle} placeholder="Ej: Sociedad Gastronómica..." value={form.razonSocial}
-                  onChange={(e) => setField("razonSocial", e.target.value)} />
-              </label>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
-              <label style={labelStyle}>
-                <span style={eyebrowStyle}>Segmento</span>
-                <select style={inputStyle} value={form.segmento} onChange={(e) => setField("segmento", e.target.value)}>
-                  {SEGMENTOS.map((s) => <option key={s} value={s}>{s}</option>)}
-                </select>
-              </label>
-              <label style={labelStyle}>
-                <span style={eyebrowStyle}>Subcanal</span>
-                <select style={inputStyle} value={form.subcanal} onChange={(e) => setField("subcanal", e.target.value)}>
-                  {SUBCANALES.map((s) => <option key={s} value={s}>{s}</option>)}
-                </select>
-              </label>
-              <label style={labelStyle}>
-                <span style={eyebrowStyle}>Walker asignado</span>
-                <input style={inputStyle} list="config-walkers-list" placeholder="Nombre del Walker"
-                  value={form.walkerName} onChange={(e) => setField("walkerName", e.target.value)} />
-                <datalist id="config-walkers-list">
-                  {(walkers || []).map((w) => <option key={w.id} value={w.name} />)}
-                </datalist>
-              </label>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
-              <label style={labelStyle}>
-                <span style={eyebrowStyle}>Comuna</span>
-                <input style={inputStyle} placeholder="Ej: Providencia" value={form.comuna}
-                  onChange={(e) => setField("comuna", e.target.value)} />
-              </label>
-              <label style={labelStyle}>
-                <span style={eyebrowStyle}>Dirección</span>
-                <input style={inputStyle} placeholder="Ej: Av. Italia 1234" value={form.direccion}
-                  onChange={(e) => setField("direccion", e.target.value)} />
-              </label>
-              <label style={labelStyle}>
-                <span style={eyebrowStyle}>Región</span>
-                <input style={inputStyle} placeholder="07. Metropolitana" value={form.region}
-                  onChange={(e) => setField("region", e.target.value)} />
-              </label>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
-              <label style={labelStyle}>
-                <span style={eyebrowStyle}>Acuerdo comercial</span>
-                <select style={inputStyle} value={form.acuerdo} onChange={(e) => setField("acuerdo", e.target.value)}>
-                  {ACUERDOS.map((a) => <option key={a} value={a}>{a}</option>)}
-                </select>
-              </label>
-              <label style={labelStyle}>
-                <span style={eyebrowStyle}>Fecha término AACC</span>
-                <input style={inputStyle} type="date" value={form.fechaTermino}
-                  onChange={(e) => setField("fechaTermino", e.target.value)} />
-              </label>
-              <label style={labelStyle}>
-                <span style={eyebrowStyle}>Código cliente</span>
-                <input style={inputStyle} placeholder="Ej: 501094460" value={form.accountCode}
-                  onChange={(e) => setField("accountCode", e.target.value)} />
-              </label>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-              <label style={labelStyle}>
-                <span style={eyebrowStyle}>SKUs (separados por coma)</span>
-                <input style={inputStyle} placeholder="Ej: JWB, TQLD, DJB" value={form.skus}
-                  onChange={(e) => setField("skus", e.target.value)} />
-              </label>
-              <label style={labelStyle}>
-                <span style={eyebrowStyle}>URL menú (opcional)</span>
-                <input style={inputStyle} placeholder="https://..." type="url" value={form.menuUrl}
-                  onChange={(e) => setField("menuUrl", e.target.value)} />
-              </label>
-            </div>
-
-            <label style={labelStyle}>
-              <span style={eyebrowStyle}>Observación</span>
-              <textarea style={{ ...inputStyle, resize: "vertical" }} rows={2} placeholder="Contexto relevante de la cuenta..."
-                value={form.observacion} onChange={(e) => setField("observacion", e.target.value)} />
-            </label>
-
-            <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
-              <button type="button" onClick={() => { setShowForm(false); setForm(emptyForm); }}
-                style={{ padding: "8px 18px", borderRadius: 8, border: "1px solid var(--border-md)", background: "none", cursor: "pointer", fontSize: "0.84rem" }}>
-                Cancelar
-              </button>
-              <button type="button" onClick={handleSave} disabled={!form.nombre.trim()}
-                style={{ padding: "8px 20px", borderRadius: 8, border: "none", background: form.nombre.trim() ? "var(--accent)" : "var(--border-md)", color: "#fff", cursor: form.nombre.trim() ? "pointer" : "default", fontSize: "0.84rem", fontWeight: 700 }}>
-                Guardar cuenta
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Cuentas manuales ya creadas */}
-        {manualAccounts.length > 0 && (
-          <div style={{ borderTop: "1px solid var(--border)", paddingTop: 14, display: "grid", gap: 8 }}>
-            <span style={eyebrowStyle}>{manualAccounts.length} cuenta{manualAccounts.length > 1 ? "s" : ""} manual{manualAccounts.length > 1 ? "es" : ""}</span>
-            {manualAccounts.map((acc) => (
-              <div key={acc.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", background: "var(--canvas)", border: "1px solid var(--border)", borderRadius: 10 }}>
-                <span className="crm-avatar" style={{ width: 32, height: 32, fontSize: "0.72rem", flexShrink: 0 }}>{initials(acc.name)}</span>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <strong style={{ fontSize: "0.88rem", display: "block" }}>{acc.name}</strong>
-                  <span style={{ fontSize: "0.74rem", color: "var(--text-3)" }}>{acc.segment} · {acc.district} · {acc.walkerName}</span>
-                </div>
-                <span className="crm-pill crm-pill--soft" style={{ fontSize: "0.7rem", flexShrink: 0 }}>Manual</span>
-                {acc.hasAacc && <span className="crm-pill crm-pill--gold" style={{ fontSize: "0.7rem" }}>{acc.agreement}</span>}
-              </div>
-            ))}
           </div>
         )}
       </article>
 
       {/* ── Asignación por Walker ── */}
       {walkerStats.length > 0 ? (
-        <article className="crm-card" style={{ padding: "22px 26px", display: "grid", gap: "14px" }}>
+        <article className="mt-4 flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <div>
-            <span className="crm-eyebrow">Carteras cargadas</span>
-            <h2 style={{ fontSize: "1.05rem", fontWeight: 740, margin: "4px 0 4px", letterSpacing: "-.02em" }}>
-              {walkerStats.length} Walkers · {localsData.length} cuentas totales
-            </h2>
-            <p style={{ color: "var(--text-2)", fontSize: "0.84rem", margin: 0 }}>
+            <span className={eyebrowCls}>Carteras cargadas</span>
+            <h2 className="mt-1 text-[16px] font-bold text-slate-900">{walkerStats.length} Walkers · {localsData.length} cuentas totales</h2>
+            <p className="mt-1 text-[13px] text-slate-600">
               Cada hoja del Excel corresponde a un Walker. Los filtros en el sidebar permiten ver la cartera individual.
             </p>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div className="flex flex-col gap-2">
             {walkerStats.map((w) => {
-              const healthColor = w.avgHealth >= 76 ? "#16a34a" : w.avgHealth >= 60 ? "#d97706" : "#dc2626";
+              const healthCls = w.avgHealth >= 76 ? "text-emerald-600" : w.avgHealth >= 60 ? "text-amber-600" : "text-rose-600";
               return (
-                <div key={w.id} style={{
-                  display: "grid", gridTemplateColumns: "auto 1fr auto",
-                  alignItems: "center", gap: 14, padding: "12px 16px",
-                  background: "var(--canvas)", border: "1px solid var(--border)", borderRadius: 10,
-                }}>
-                  <span className="crm-avatar" style={{ width:36, height:36, fontSize:"0.78rem", flexShrink:0 }}>
+                <div key={w.id} className="grid items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4" style={{ gridTemplateColumns: "auto 1fr auto" }}>
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-200 text-[11px] font-semibold text-slate-700">
                     {initials(w.name)}
                   </span>
                   <div>
-                    <strong style={{ fontSize:"0.9rem", display:"block" }}>{w.name}</strong>
-                    <span style={{ fontSize:"0.75rem", color:"var(--text-3)" }}>
+                    <strong className="block text-[14px] font-semibold text-slate-900">{w.name}</strong>
+                    <span className="text-[11px] text-slate-500">
                       {w.count} cuentas · {w.aaccCount} AACC · {w.gapsCount} gaps Menú · Health prom.{" "}
-                      <strong style={{ color: healthColor }}>{w.avgHealth}</strong>
+                      <strong className={healthCls}>{w.avgHealth}</strong>
                     </span>
                   </div>
-                  <div style={{ display:"flex", gap:6, flexWrap:"wrap", justifyContent:"flex-end" }}>
-                    <span className="crm-pill crm-pill--soft" style={{ fontSize:"0.7rem" }}>{w.count} cuentas</span>
-                    {w.aaccCount > 0 && <span className="crm-pill crm-pill--gold" style={{ fontSize:"0.7rem" }}>{w.aaccCount} AACC</span>}
-                    {w.gapsCount > 0 && <span className="crm-pill crm-pill--warning" style={{ fontSize:"0.7rem" }}>{w.gapsCount} gaps</span>}
+                  <div className="flex flex-wrap justify-end gap-1.5">
+                    <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-600">{w.count} cuentas</span>
+                    {w.aaccCount > 0 && <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-amber-50 text-amber-700">{w.aaccCount} AACC</span>}
+                    {w.gapsCount > 0 && <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-rose-50 text-rose-700">{w.gapsCount} gaps</span>}
                   </div>
                 </div>
               );
@@ -4690,12 +4692,10 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, walkers, onAd
           </div>
         </article>
       ) : (
-        <article className="crm-card" style={{ padding: "28px", textAlign: "center" }}>
-          <div style={{ fontSize: "1.8rem", marginBottom: 10 }}>👆</div>
-          <strong style={{ fontSize: "0.95rem", display: "block" }}>Carga el Excel para ver la asignación por Walker</strong>
-          <p style={{ fontSize: "0.82rem", color: "var(--text-3)", marginTop: 6 }}>
-            La cartera se distribuirá automáticamente según el campo "Desarrollador Sell Out".
-          </p>
+        <article className="mt-4 rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+          <div className="mb-2 text-3xl">👆</div>
+          <strong className="block text-[14px] text-slate-900">Carga el Excel para ver la asignación por Walker</strong>
+          <p className="mt-1 text-[12px] text-slate-500">La cartera se distribuirá automáticamente según el campo "Desarrollador Sell Out".</p>
         </article>
       )}
 
@@ -4713,60 +4713,62 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, walkers, onAd
         <AccountSegmentSection localsData={localsData} walkers={walkers} onUpdateAccount={onUpdateAccount} />
       )}
       {configSection === "manual" && (<>
-        <div style={{ marginBottom: 20 }}>
-          <h2 style={{ fontSize: "1.05rem", fontWeight: 700, margin: "0 0 4px", color: "#111827" }}>Agregar cuenta manual</h2>
-          <p style={{ color: "#6B7280", fontSize: "0.84rem", margin: 0 }}>Da de alta un PDV que no está en el Excel maestro.</p>
+        <div className="mb-5">
+          <h2 className="text-[16px] font-bold text-slate-900">Agregar cuenta manual</h2>
+          <p className="mt-1 text-[13px] text-slate-600">Da de alta un PDV que no está en el Excel maestro.</p>
         </div>
-        <article className="crm-card" style={{ padding: "22px 26px", display: "grid", gap: "16px" }}>
+        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           {justAdded && (
-            <div style={{ background: "var(--accent-lt)", border: "1px solid var(--accent-mid)", borderRadius: 8, padding: "10px 14px", color: "var(--accent)", fontSize: "0.84rem", fontWeight: 600 }}>
-              ✓ "{justAdded}" agregada a la cartera
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-[13px] font-semibold text-emerald-700">
+              ✓ &ldquo;{justAdded}&rdquo; agregada a la cartera
             </div>
           )}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-            <label style={labelStyle}><span style={eyebrowStyle}>Nombre fantasía *</span>
-              <input style={inputStyle} placeholder="Ej: Bar El Patrón" value={form.nombre} onChange={(e) => setField("nombre", e.target.value)} /></label>
-            <label style={labelStyle}><span style={eyebrowStyle}>Razón social</span>
-              <input style={inputStyle} placeholder="Ej: Sociedad Gastronómica..." value={form.razonSocial} onChange={(e) => setField("razonSocial", e.target.value)} /></label>
+          <div className="grid grid-cols-2 gap-3">
+            <label className={labelCls}><span className={eyebrowCls}>Nombre fantasía *</span>
+              <input className={inputCls} placeholder="Ej: Bar El Patrón" value={form.nombre} onChange={(e) => setField("nombre", e.target.value)} /></label>
+            <label className={labelCls}><span className={eyebrowCls}>Razón social</span>
+              <input className={inputCls} placeholder="Ej: Sociedad Gastronómica..." value={form.razonSocial} onChange={(e) => setField("razonSocial", e.target.value)} /></label>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
-            <label style={labelStyle}><span style={eyebrowStyle}>Segmento</span>
-              <select style={inputStyle} value={form.segmento} onChange={(e) => setField("segmento", e.target.value)}>
+          <div className="grid grid-cols-3 gap-3">
+            <label className={labelCls}><span className={eyebrowCls}>Segmento</span>
+              <select className={inputCls} value={form.segmento} onChange={(e) => setField("segmento", e.target.value)}>
                 {SEGMENTOS.map((s) => <option key={s} value={s}>{s}</option>)}
               </select></label>
-            <label style={labelStyle}><span style={eyebrowStyle}>Subcanal</span>
-              <select style={inputStyle} value={form.subcanal} onChange={(e) => setField("subcanal", e.target.value)}>
+            <label className={labelCls}><span className={eyebrowCls}>Subcanal</span>
+              <select className={inputCls} value={form.subcanal} onChange={(e) => setField("subcanal", e.target.value)}>
                 {SUBCANALES.map((s) => <option key={s} value={s}>{s}</option>)}
               </select></label>
-            <label style={labelStyle}><span style={eyebrowStyle}>Walker asignado</span>
-              <input style={inputStyle} placeholder="Nombre del walker" value={form.walkerName} onChange={(e) => setField("walkerName", e.target.value)} /></label>
+            <label className={labelCls}><span className={eyebrowCls}>Walker asignado</span>
+              <input className={inputCls} placeholder="Nombre del walker" value={form.walkerName} onChange={(e) => setField("walkerName", e.target.value)} /></label>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-            <label style={labelStyle}><span style={eyebrowStyle}>Comuna</span>
-              <input style={inputStyle} placeholder="Ej: Providencia" value={form.comuna} onChange={(e) => setField("comuna", e.target.value)} /></label>
-            <label style={labelStyle}><span style={eyebrowStyle}>Dirección</span>
-              <input style={inputStyle} placeholder="Ej: Av. Italia 123" value={form.direccion} onChange={(e) => setField("direccion", e.target.value)} /></label>
+          <div className="grid grid-cols-2 gap-3">
+            <label className={labelCls}><span className={eyebrowCls}>Comuna</span>
+              <input className={inputCls} placeholder="Ej: Providencia" value={form.comuna} onChange={(e) => setField("comuna", e.target.value)} /></label>
+            <label className={labelCls}><span className={eyebrowCls}>Dirección</span>
+              <input className={inputCls} placeholder="Ej: Av. Italia 123" value={form.direccion} onChange={(e) => setField("direccion", e.target.value)} /></label>
           </div>
-          <label style={labelStyle}><span style={eyebrowStyle}>AACC</span>
-            <select style={inputStyle} value={form.acuerdo} onChange={(e) => setField("acuerdo", e.target.value)}>
+          <label className={labelCls}><span className={eyebrowCls}>AACC</span>
+            <select className={inputCls} value={form.acuerdo} onChange={(e) => setField("acuerdo", e.target.value)}>
               {ACUERDOS.map((a) => <option key={a} value={a}>{a}</option>)}
             </select></label>
-          <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
-            <button type="button" onClick={() => setForm(emptyForm)} style={{ padding: "8px 18px", borderRadius: 8, border: "1px solid var(--border-md)", background: "none", cursor: "pointer", fontSize: "0.84rem" }}>Limpiar</button>
+          <div className="flex justify-end gap-2">
+            <button type="button" onClick={() => setForm(emptyForm)} className="rounded-lg border border-slate-200 bg-white px-4 py-1.5 text-[13px] font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none">Limpiar</button>
             <button type="button" onClick={handleSave} disabled={!form.nombre.trim()}
-              style={{ padding: "8px 20px", borderRadius: 8, border: "none", background: form.nombre.trim() ? "var(--accent)" : "var(--border-md)", color: "#fff", cursor: form.nombre.trim() ? "pointer" : "default", fontSize: "0.84rem", fontWeight: 700 }}>
+              className="rounded-lg bg-slate-900 px-4 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50">
               Guardar cuenta
             </button>
           </div>
           {manualAccounts.length > 0 && (
-            <div style={{ borderTop: "1px solid var(--border)", paddingTop: 14, display: "grid", gap: 8 }}>
-              <span style={eyebrowStyle}>{manualAccounts.length} cuenta{manualAccounts.length > 1 ? "s" : ""} manual{manualAccounts.length > 1 ? "es" : ""}</span>
+            <div className="flex flex-col gap-2 border-t border-slate-200 pt-4">
+              <span className={eyebrowCls}>{manualAccounts.length} cuenta{manualAccounts.length > 1 ? "s" : ""} manual{manualAccounts.length > 1 ? "es" : ""}</span>
               {manualAccounts.map((acc) => (
-                <div key={acc.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", background: "var(--canvas)", border: "1px solid var(--border)", borderRadius: 10 }}>
-                  <span className="crm-avatar" style={{ width: 32, height: 32, fontSize: "0.72rem", flexShrink: 0 }}>{initials(acc.name)}</span>
-                  <div style={{ flex: 1 }}><strong style={{ fontSize: "0.88rem", display: "block" }}>{acc.name}</strong>
-                    <span style={{ fontSize: "0.74rem", color: "var(--text-3)" }}>{acc.segment} · {acc.district} · {acc.walkerName}</span></div>
-                  <span className="crm-pill crm-pill--soft" style={{ fontSize: "0.7rem" }}>Manual</span>
+                <div key={acc.id} className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 text-[11px] font-semibold text-slate-700">{initials(acc.name)}</span>
+                  <div className="flex-1">
+                    <strong className="block text-[13px] font-semibold text-slate-900">{acc.name}</strong>
+                    <span className="text-[11px] text-slate-500">{acc.segment} · {acc.district} · {acc.walkerName}</span>
+                  </div>
+                  <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-600">Manual</span>
                 </div>
               ))}
             </div>
@@ -4819,104 +4821,70 @@ function AccountSegmentSection({ localsData, walkers, onUpdateAccount }) {
     return (e.segment && e.segment !== local.segment) || (e.subcanal && e.subcanal !== local.subcanal);
   }
 
-  const inputS = {
-    border: "1px solid var(--border-md)", borderRadius: 6, padding: "5px 8px",
-    fontSize: "0.8rem", background: "var(--canvas)", outline: "none", cursor: "pointer",
-  };
+  const selectCls = "cursor-pointer rounded-lg border border-slate-200 bg-white px-2 py-1 text-[12px] focus:border-slate-900 focus:outline-none";
 
   return (
-    <article className="crm-card" style={{ padding: "22px 26px", display: "grid", gap: "14px" }}>
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
+    <article className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <span className="crm-eyebrow">CP&A · Cartera</span>
-          <h2 style={{ fontSize: "1.05rem", fontWeight: 740, margin: "4px 0 4px", letterSpacing: "-.02em" }}>
-            Segmento y tipo de outlet por cuenta
-          </h2>
-          <p style={{ color: "var(--text-2)", fontSize: "0.84rem", margin: 0, lineHeight: 1.5 }}>
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">CP&A · Cartera</span>
+          <h2 className="mt-1 text-[16px] font-bold text-slate-900">Segmento y tipo de outlet por cuenta</h2>
+          <p className="mt-1 text-[13px] leading-relaxed text-slate-600">
             Define el segmento y outlet de cada cuenta. Esto determina el portafolio de assortment que se le exige.
           </p>
         </div>
-        <span className="crm-pill crm-pill--soft" style={{ flexShrink: 0, alignSelf: "center" }}>
+        <span className="inline-flex shrink-0 items-center self-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-600">
           {localsData.length} cuentas
         </span>
       </div>
 
-      {/* Buscador */}
       <input
-        style={{ ...inputS, width: "100%", padding: "8px 12px", borderRadius: 8, fontSize: "0.84rem" }}
+        className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-[13px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10"
         placeholder="Buscar por nombre, comuna o walker…"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      {/* Tabla */}
       {filtered.length === 0 ? (
-        <p style={{ color: "var(--text-3)", fontSize: "0.84rem", textAlign: "center", padding: "16px 0" }}>
+        <p className="py-4 text-center text-[13px] text-slate-500">
           Sin resultados. Carga el Excel o agrega cuentas manuales primero.
         </p>
       ) : (
-        <div style={{ display: "grid", gap: 6 }}>
-          {/* Header */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 160px 160px 72px", gap: 8, padding: "4px 10px" }}>
-            <span style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".05em" }}>Cuenta</span>
-            <span style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".05em" }}>Segmento</span>
-            <span style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".05em" }}>Outlet</span>
-            <span />
+        <div className="flex flex-col gap-1.5">
+          <div className="grid items-center gap-2 px-2.5" style={{ gridTemplateColumns: "1fr 160px 160px 72px" }}>
+            {["Cuenta", "Segmento", "Outlet", ""].map((h, i) => (
+              <span key={i} className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">{h}</span>
+            ))}
           </div>
 
           {filtered.map((local) => {
             const dirty = isDirty(local);
             const saved = savedIds[local.id];
             return (
-              <div key={local.id} style={{
-                display: "grid", gridTemplateColumns: "1fr 160px 160px 72px",
-                gap: 8, alignItems: "center", padding: "8px 10px",
-                background: dirty ? "var(--accent-lt,#f0fdf4)" : "var(--canvas)",
-                border: `1px solid ${dirty ? "var(--accent-mid,#86efac)" : "var(--border-sm,var(--border))"}`,
-                borderRadius: 8, transition: "all .15s",
-              }}>
-                {/* Nombre */}
-                <div style={{ minWidth: 0 }}>
-                  <strong style={{ fontSize: "0.86rem", display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {local.name}
-                  </strong>
-                  <span style={{ fontSize: "0.73rem", color: "var(--text-3)" }}>
-                    {local.district} · {local.walkerName}
-                  </span>
+              <div key={local.id} className={`grid items-center gap-2 rounded-lg border px-2.5 py-2 transition ${dirty ? "border-emerald-200 bg-emerald-50" : "border-slate-200 bg-white"}`}
+                style={{ gridTemplateColumns: "1fr 160px 160px 72px" }}>
+                <div className="min-w-0">
+                  <strong className="block truncate text-[13px] font-semibold text-slate-900">{local.name}</strong>
+                  <span className="text-[11px] text-slate-500">{local.district} · {local.walkerName}</span>
                 </div>
 
-                {/* Segmento */}
-                <select
-                  style={inputS}
-                  value={getEdit(local, "segment")}
-                  onChange={(e) => setEdit(local.id, "segment", e.target.value)}
-                >
+                <select className={selectCls} value={getEdit(local, "segment")} onChange={(e) => setEdit(local.id, "segment", e.target.value)}>
                   <option value="">Sin segmento</option>
                   {SEGMENTOS.map((s) => <option key={s} value={s}>{s}</option>)}
                 </select>
 
-                {/* Subcanal / Outlet */}
-                <select
-                  style={inputS}
-                  value={getEdit(local, "subcanal")}
-                  onChange={(e) => setEdit(local.id, "subcanal", e.target.value)}
-                >
+                <select className={selectCls} value={getEdit(local, "subcanal")} onChange={(e) => setEdit(local.id, "subcanal", e.target.value)}>
                   <option value="">Sin outlet</option>
                   {SUBCANALES.map((s) => <option key={s} value={s}>{s}</option>)}
                 </select>
 
-                {/* Guardar */}
                 <button
                   type="button"
                   disabled={!dirty && !saved}
                   onClick={() => saveRow(local.id)}
-                  style={{
-                    padding: "6px 10px", borderRadius: 6, border: "none",
-                    background: saved ? "#16a34a" : dirty ? "var(--accent,#16a34a)" : "var(--border-md)",
-                    color: dirty || saved ? "#fff" : "var(--text-3)",
-                    cursor: dirty ? "pointer" : "default",
-                    fontSize: "0.78rem", fontWeight: 700, transition: "all .15s",
-                  }}
+                  className={`rounded-lg px-2.5 py-1 text-[12px] font-semibold transition focus:outline-none ${
+                    saved ? "bg-emerald-600 text-white" : dirty ? "bg-slate-900 text-white hover:bg-slate-800" : "cursor-not-allowed bg-slate-100 text-slate-400"
+                  }`}
                 >
                   {saved ? "✓" : "Guardar"}
                 </button>
@@ -4946,97 +4914,99 @@ function UserRolesSection() {
   const [wForm, setWForm] = useState(emptyW);
   const [dForm, setDForm] = useState(emptyD);
 
-  const inp = { border: "1px solid var(--border-md)", borderRadius: 8, padding: "7px 10px", fontSize: "0.84rem", background: "var(--canvas)", outline: "none", width: "100%" };
-  const lbl = { display: "grid", gap: 4 };
-  const eye = { fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".04em" };
+  const inputCls = "w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none";
+  const labelCls = "flex flex-col gap-1";
+  const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
+  const thCls = "border-b border-slate-200 bg-slate-50 p-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-slate-500";
+  const tdCls = "border-b border-slate-100 p-2.5 text-[13px]";
 
   return (
-    <article className="crm-card" style={{ padding: "22px 26px", display: "grid", gap: 20 }}>
+    <article className="flex flex-col gap-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <div>
-        <span className="crm-eyebrow">CP&A · Administración</span>
-        <h2 style={{ fontSize: "1.05rem", fontWeight: 740, margin: "4px 0 2px" }}>Usuarios y roles</h2>
-        <p style={{ color: "var(--text-2)", fontSize: "0.84rem", margin: 0 }}>Define los walkers y DBAs del equipo.</p>
+        <span className={eyebrowCls}>CP&A · Administración</span>
+        <h2 className="mt-1 text-[16px] font-bold text-slate-900">Usuarios y roles</h2>
+        <p className="mt-0.5 text-[13px] text-slate-600">Define los walkers y DBAs del equipo.</p>
       </div>
 
       {/* Walkers */}
-      <div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-          <strong style={{ fontSize: "0.9rem", color: "#111827" }}>Walkers</strong>
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between gap-2">
+          <strong className="text-[14px] font-semibold text-slate-900">Walkers</strong>
           <button type="button" onClick={() => setShowWalkerForm((v) => !v)}
-            style={{ padding: "5px 12px", borderRadius: 7, border: "1px solid var(--border-md)", background: "none", cursor: "pointer", fontSize: "0.8rem", color: "var(--accent)" }}>
+            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[13px] font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none">
             + Agregar Walker
           </button>
         </div>
         {showWalkerForm && (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 8, marginBottom: 12, padding: "12px", background: "#F9FAFB", borderRadius: 8 }}>
+          <div className="grid grid-cols-4 gap-2 rounded-lg bg-slate-50 p-3">
             {[["name","Nombre completo","Ana García"],["rut","RUT","12.345.678-9"],["email","Email","ana@diageo.com"],["ruta","Ruta asignada","Ruta Oriente"]].map(([k,l,ph]) => (
-              <label key={k} style={lbl}><span style={eye}>{l}</span>
-                <input style={inp} placeholder={ph} value={wForm[k]} onChange={(e) => setWForm((f) => ({...f,[k]:e.target.value}))} />
+              <label key={k} className={labelCls}><span className={eyebrowCls}>{l}</span>
+                <input className={inputCls} placeholder={ph} value={wForm[k]} onChange={(e) => setWForm((f) => ({...f,[k]:e.target.value}))} />
               </label>
             ))}
-            <div style={{ gridColumn: "1 / -1", display: "flex", justifyContent: "flex-end", gap: 8 }}>
-              <button type="button" onClick={() => setShowWalkerForm(false)} style={{ padding: "6px 14px", borderRadius: 7, border: "1px solid var(--border-md)", background: "none", cursor: "pointer", fontSize: "0.8rem" }}>Cancelar</button>
+            <div className="col-span-full flex justify-end gap-2">
+              <button type="button" onClick={() => setShowWalkerForm(false)} className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[13px] hover:bg-slate-50 focus:outline-none">Cancelar</button>
               <button type="button" onClick={() => { if (!wForm.name.trim()) return; setWalkersList((prev) => [...prev, { ...wForm, id: `w-${Date.now()}`, role: "walker" }]); setWForm(emptyW); setShowWalkerForm(false); }}
-                style={{ padding: "6px 14px", borderRadius: 7, border: "none", background: "var(--accent)", color: "#fff", cursor: "pointer", fontSize: "0.8rem", fontWeight: 600 }}>Guardar</button>
+                className="rounded-lg bg-slate-900 px-3 py-1.5 text-[13px] font-semibold text-white hover:bg-slate-800 focus:outline-none">Guardar</button>
             </div>
           </div>
         )}
-        <div style={{ overflowX: "auto" }}><table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.84rem", minWidth: 520 }}>
-          <thead><tr style={{ background: "#F9FAFB" }}>
-            {["Nombre","RUT","Email","Ruta",""].map((h) => <th key={h} style={{ padding: "8px 10px", textAlign: "left", fontSize: "0.72rem", fontWeight: 700, color: "#6B7280", textTransform: "uppercase", letterSpacing: ".04em", borderBottom: "1px solid #E5E7EB" }}>{h}</th>)}
-          </tr></thead>
-          <tbody>
-            {walkersList.map((w) => (
-              <tr key={w.id} style={{ borderBottom: "1px solid #F3F4F6" }}>
-                <td style={{ padding: "9px 10px", fontWeight: 600, color: "#111827" }}>{w.name}</td>
-                <td style={{ padding: "9px 10px", color: "#6B7280" }}>{w.rut}</td>
-                <td style={{ padding: "9px 10px", color: "#6B7280" }}>{w.email}</td>
-                <td style={{ padding: "9px 10px", color: "#6B7280" }}>{w.ruta}</td>
-                <td style={{ padding: "9px 10px" }}><button type="button" onClick={() => setWalkersList((prev) => prev.filter((x) => x.id !== w.id))} style={{ background: "none", border: "none", cursor: "pointer", color: "#EF4444", fontSize: "0.8rem" }}>Eliminar</button></td>
-              </tr>
-            ))}
-          </tbody>
-        </table></div>
+        <div className="overflow-x-auto rounded-xl border border-slate-200">
+          <table className="w-full min-w-[520px] border-collapse">
+            <thead><tr>{["Nombre","RUT","Email","Ruta",""].map((h) => <th key={h} className={thCls}>{h}</th>)}</tr></thead>
+            <tbody>
+              {walkersList.map((w) => (
+                <tr key={w.id} className="last:border-b-0">
+                  <td className={`${tdCls} font-semibold text-slate-900`}>{w.name}</td>
+                  <td className={`${tdCls} text-slate-600`}>{w.rut}</td>
+                  <td className={`${tdCls} text-slate-600`}>{w.email}</td>
+                  <td className={`${tdCls} text-slate-600`}>{w.ruta}</td>
+                  <td className={tdCls}><button type="button" onClick={() => setWalkersList((prev) => prev.filter((x) => x.id !== w.id))} className="text-[12px] text-rose-500 hover:text-rose-700 focus:outline-none">Eliminar</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* DBAs */}
-      <div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-          <strong style={{ fontSize: "0.9rem", color: "#111827" }}>DBAs (Desarrolladores de Marca)</strong>
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between gap-2">
+          <strong className="text-[14px] font-semibold text-slate-900">DBAs (Desarrolladores de Marca)</strong>
           <button type="button" onClick={() => setShowDbaForm((v) => !v)}
-            style={{ padding: "5px 12px", borderRadius: 7, border: "1px solid var(--border-md)", background: "none", cursor: "pointer", fontSize: "0.8rem", color: "var(--accent)" }}>
+            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[13px] font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none">
             + Agregar DBA
           </button>
         </div>
         {showDbaForm && (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 12, padding: "12px", background: "#F9FAFB", borderRadius: 8 }}>
+          <div className="grid grid-cols-3 gap-2 rounded-lg bg-slate-50 p-3">
             {[["name","Nombre completo","Carlos Muñoz DBA"],["email","Email","carlos@partner.com"],["brand","Marcas asignadas","Tanqueray / Gordon's"]].map(([k,l,ph]) => (
-              <label key={k} style={lbl}><span style={eye}>{l}</span>
-                <input style={inp} placeholder={ph} value={dForm[k]} onChange={(e) => setDForm((f) => ({...f,[k]:e.target.value}))} />
+              <label key={k} className={labelCls}><span className={eyebrowCls}>{l}</span>
+                <input className={inputCls} placeholder={ph} value={dForm[k]} onChange={(e) => setDForm((f) => ({...f,[k]:e.target.value}))} />
               </label>
             ))}
-            <div style={{ gridColumn: "1 / -1", display: "flex", justifyContent: "flex-end", gap: 8 }}>
-              <button type="button" onClick={() => setShowDbaForm(false)} style={{ padding: "6px 14px", borderRadius: 7, border: "1px solid var(--border-md)", background: "none", cursor: "pointer", fontSize: "0.8rem" }}>Cancelar</button>
+            <div className="col-span-full flex justify-end gap-2">
+              <button type="button" onClick={() => setShowDbaForm(false)} className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[13px] hover:bg-slate-50 focus:outline-none">Cancelar</button>
               <button type="button" onClick={() => { if (!dForm.name.trim()) return; setDbasList((prev) => [...prev, { ...dForm, id: `d-${Date.now()}` }]); setDForm(emptyD); setShowDbaForm(false); }}
-                style={{ padding: "6px 14px", borderRadius: 7, border: "none", background: "var(--accent)", color: "#fff", cursor: "pointer", fontSize: "0.8rem", fontWeight: 600 }}>Guardar</button>
+                className="rounded-lg bg-slate-900 px-3 py-1.5 text-[13px] font-semibold text-white hover:bg-slate-800 focus:outline-none">Guardar</button>
             </div>
           </div>
         )}
-        <div style={{ overflowX: "auto" }}><table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.84rem", minWidth: 440 }}>
-          <thead><tr style={{ background: "#F9FAFB" }}>
-            {["Nombre","Email","Marcas",""].map((h) => <th key={h} style={{ padding: "8px 10px", textAlign: "left", fontSize: "0.72rem", fontWeight: 700, color: "#6B7280", textTransform: "uppercase", letterSpacing: ".04em", borderBottom: "1px solid #E5E7EB" }}>{h}</th>)}
-          </tr></thead>
-          <tbody>
-            {dbasList.map((d) => (
-              <tr key={d.id} style={{ borderBottom: "1px solid #F3F4F6" }}>
-                <td style={{ padding: "9px 10px", fontWeight: 600, color: "#111827" }}>{d.name}</td>
-                <td style={{ padding: "9px 10px", color: "#6B7280" }}>{d.email}</td>
-                <td style={{ padding: "9px 10px", color: "#6B7280" }}>{d.brand}</td>
-                <td style={{ padding: "9px 10px" }}><button type="button" onClick={() => setDbasList((prev) => prev.filter((x) => x.id !== d.id))} style={{ background: "none", border: "none", cursor: "pointer", color: "#EF4444", fontSize: "0.8rem" }}>Eliminar</button></td>
-              </tr>
-            ))}
-          </tbody>
-        </table></div>
+        <div className="overflow-x-auto rounded-xl border border-slate-200">
+          <table className="w-full min-w-[440px] border-collapse">
+            <thead><tr>{["Nombre","Email","Marcas",""].map((h) => <th key={h} className={thCls}>{h}</th>)}</tr></thead>
+            <tbody>
+              {dbasList.map((d) => (
+                <tr key={d.id} className="last:border-b-0">
+                  <td className={`${tdCls} font-semibold text-slate-900`}>{d.name}</td>
+                  <td className={`${tdCls} text-slate-600`}>{d.email}</td>
+                  <td className={`${tdCls} text-slate-600`}>{d.brand}</td>
+                  <td className={tdCls}><button type="button" onClick={() => setDbasList((prev) => prev.filter((x) => x.id !== d.id))} className="text-[12px] text-rose-500 hover:text-rose-700 focus:outline-none">Eliminar</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </article>
   );
@@ -5063,41 +5033,41 @@ function OnFiveWeightsSection() {
   }
 
   return (
-    <article className="crm-card" style={{ padding: "22px 26px", display: "grid", gap: 16 }}>
+    <article className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <div>
-        <span className="crm-eyebrow">CP&A · Configuración</span>
-        <h2 style={{ fontSize: "1.05rem", fontWeight: 740, margin: "4px 0 2px" }}>Pesos ponderados On Five Score</h2>
-        <p style={{ color: "var(--text-2)", fontSize: "0.84rem", margin: 0 }}>
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">CP&A · Configuración</span>
+        <h2 className="mt-1 text-[16px] font-bold text-slate-900">Pesos ponderados On Five Score</h2>
+        <p className="mt-0.5 text-[13px] text-slate-600">
           Define qué porcentaje aporta cada pilar al Health Score final de cada cuenta. Deben sumar exactamente 100%.
         </p>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10 }}>
+      <div className="grid grid-cols-5 gap-3">
         {Object.entries(weights).map(([key, val]) => (
-          <div key={key} style={{ display: "grid", gap: 6 }}>
-            <label style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".04em" }}>{val.label}</label>
-            <div style={{ display: "flex", alignItems: "center", gap: 4, border: "1px solid var(--border-md)", borderRadius: 8, overflow: "hidden", background: "var(--canvas)" }}>
+          <div key={key} className="flex flex-col gap-2">
+            <label className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{val.label}</label>
+            <div className="flex overflow-hidden rounded-lg border border-slate-200">
               <input
                 type="number" min="0" max="100" value={val.weight}
                 onChange={(e) => setWeights((prev) => ({ ...prev, [key]: { ...prev[key], weight: Number(e.target.value) } }))}
-                style={{ border: "none", padding: "8px 10px", fontSize: "0.9rem", fontWeight: 700, background: "transparent", outline: "none", width: "100%", textAlign: "center" }}
+                className="w-full bg-transparent px-2.5 py-2 text-center text-[14px] font-bold text-slate-900 focus:outline-none"
               />
-              <span style={{ padding: "8px 10px", fontSize: "0.84rem", color: "var(--text-3)", borderLeft: "1px solid var(--border-md)", background: "#F9FAFB" }}>%</span>
+              <span className="border-l border-slate-200 bg-slate-50 px-2.5 py-2 text-[13px] text-slate-500">%</span>
             </div>
-            <div style={{ height: 4, borderRadius: 99, background: "#E5E7EB", overflow: "hidden" }}>
-              <div style={{ height: "100%", width: `${val.weight}%`, background: "#3B82F6", borderRadius: 99, transition: "width .2s" }} />
+            <div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
+              <div className="h-full rounded-full bg-blue-500 transition-all" style={{ width: `${val.weight}%` }} />
             </div>
           </div>
         ))}
       </div>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-        <span style={{ fontSize: "0.86rem", fontWeight: 600, color: valid ? "#059669" : "#DC2626" }}>
+      <div className="flex items-center justify-between gap-3">
+        <span className={`text-[13px] font-semibold ${valid ? "text-emerald-600" : "text-rose-600"}`}>
           Total: {total}% {valid ? "✓ OK" : `— faltan ${100 - total}%`}
         </span>
         <button
           type="button"
           onClick={save}
           disabled={!valid}
-          style={{ padding: "8px 20px", borderRadius: 8, border: "none", background: valid ? "var(--accent)" : "#D1D5DB", color: "#fff", cursor: valid ? "pointer" : "not-allowed", fontSize: "0.84rem", fontWeight: 600 }}
+          className="rounded-lg bg-slate-900 px-4 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
         >
           {justSaved ? "✓ Guardado" : "Guardar configuración"}
         </button>
@@ -5132,54 +5102,53 @@ function AssortmentConfigSection({ assortmentConfig, onSave }) {
   }, {});
 
   return (
-    <article className="crm-card" style={{ padding: "22px 26px", display: "grid", gap: "16px" }}>
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
+    <article className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <span className="crm-eyebrow">CP&A · Assortment</span>
-          <h2 style={{ fontSize: "1.05rem", fontWeight: 740, margin: "4px 0 4px", letterSpacing: "-.02em" }}>
-            Portafolio objetivo por segmento
-          </h2>
-          <p style={{ color: "var(--text-2)", fontSize: "0.84rem", margin: 0, lineHeight: 1.5 }}>
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">CP&A · Assortment</span>
+          <h2 className="mt-1 text-[16px] font-bold text-slate-900">Portafolio objetivo por segmento</h2>
+          <p className="mt-0.5 text-[13px] leading-relaxed text-slate-600">
             Define qué etiquetas debe tener cada segmento. El Walker las audita en terreno.
           </p>
         </div>
         <button
           type="button"
-          className="crm-menu-save-button"
           onClick={handleSave}
-          style={{ flexShrink: 0, alignSelf: "center" }}
+          className="shrink-0 self-center rounded-lg bg-slate-900 px-4 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none"
         >
           {justSaved ? "✓ Guardado" : "Guardar configuración"}
         </button>
       </div>
 
-      {/* Selector de segmento */}
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+      <div className="flex flex-wrap gap-2">
         {OT_SEGMENTS.map((seg) => (
           <button
             key={seg}
             type="button"
-            className={activeSegment === seg ? "crm-pill crm-pill--active" : "crm-pill"}
-            style={{ cursor: "pointer", border: "1px solid var(--border-md)", fontWeight: activeSegment === seg ? 700 : 400 }}
             onClick={() => setActiveSegment(seg)}
+            className={`rounded-lg px-3 py-1.5 text-[13px] transition focus:outline-none ${
+              activeSegment === seg
+                ? "bg-slate-900 font-semibold text-white"
+                : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+            }`}
           >
-            {seg} <span style={{ opacity: 0.6, fontWeight: 400 }}>({(localConfig[seg] ?? []).length})</span>
+            {seg} <span className="opacity-60 font-normal">({(localConfig[seg] ?? []).length})</span>
           </button>
         ))}
       </div>
 
-      {/* Grilla de etiquetas */}
-      <div style={{ display: "grid", gap: 16 }}>
+      <div className="flex flex-col gap-4">
         {Object.entries(byCategory).map(([cat, items]) => (
           <div key={cat}>
-            <p style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".06em", margin: "0 0 8px" }}>{cat}</p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 6 }}>
+            <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-slate-500">{cat}</p>
+            <div className="grid gap-1.5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}>
               {items.map((item) => {
                 const active = activeIds.includes(item.id);
                 return (
-                  <label key={item.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", borderRadius: 8, border: `1px solid ${active ? "var(--accent-mid)" : "var(--border-sm)"}`, background: active ? "var(--accent-lt)" : "var(--canvas)", cursor: "pointer", fontSize: "0.84rem", transition: "all .12s" }}>
-                    <input type="checkbox" checked={active} onChange={() => toggleLabel(activeSegment, item.id)} style={{ width: 15, height: 15, accentColor: "var(--accent)", flexShrink: 0 }} />
-                    <span style={{ fontWeight: active ? 700 : 400, color: active ? "var(--accent)" : "var(--text-1)" }}>{item.name}</span>
+                  <label key={item.id} className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-[13px] transition ${active ? "border-emerald-200 bg-emerald-50" : "border-slate-200 bg-white hover:bg-slate-50"}`}>
+                    <input type="checkbox" checked={active} onChange={() => toggleLabel(activeSegment, item.id)}
+                      className="h-4 w-4 shrink-0 rounded border-slate-300 accent-slate-900" />
+                    <span className={active ? "font-semibold text-emerald-700" : "text-slate-700"}>{item.name}</span>
                   </label>
                 );
               })}
@@ -5187,17 +5156,16 @@ function AssortmentConfigSection({ assortmentConfig, onSave }) {
           </div>
         ))}
 
-        {/* Innovaciones — siempre informativas */}
         <div>
-          <p style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".06em", margin: "0 0 4px" }}>
-            Innovaciones <span style={{ fontWeight: 400, textTransform: "none" }}>— siempre presentes en todas las cuentas, solo informativas</span>
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+            Innovaciones <span className="font-normal normal-case text-slate-400">— siempre presentes, solo informativas</span>
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 6 }}>
+          <div className="grid gap-1.5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}>
             {OT_INNOVATIONS.map((item) => (
-              <div key={item.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", borderRadius: 8, border: "1px dashed var(--border-md)", background: "var(--canvas)", fontSize: "0.84rem", opacity: 0.7 }}>
-                <span style={{ width: 15, height: 15, borderRadius: 3, border: "1px dashed var(--border-md)", flexShrink: 0 }} />
-                <span style={{ color: "var(--text-2)" }}>{item.name}</span>
-                <span className="crm-pill crm-pill--soft" style={{ fontSize: "0.68rem", marginLeft: "auto" }}>Innov.</span>
+              <div key={item.id} className="flex items-center gap-2 rounded-lg border border-dashed border-slate-200 px-3 py-2 opacity-60">
+                <span className="h-4 w-4 shrink-0 rounded border border-dashed border-slate-300" />
+                <span className="text-[13px] text-slate-600">{item.name}</span>
+                <span className="ml-auto inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold bg-slate-100 text-slate-500">Innov.</span>
               </div>
             ))}
           </div>

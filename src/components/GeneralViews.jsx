@@ -22,21 +22,29 @@ function GeneralViews({ onYearBasisChange, scope = "portfolio", scopeName, views
   const activeView = views[activeViewKey] ?? views.yearOverYearMonth;
 
   return (
-    <section className="card general-card" aria-label="Vista general">
-      <div className="general-header">
-        <div className="section-heading">
-          <span className="eyebrow">{scope === "customer" ? "Vista cuenta" : "Vista general"}</span>
-          <h2>{activeView.title}</h2>
-          {scopeName ? <p className="scope-label">{scopeName}</p> : null}
+    <section className="flex flex-col gap-3.5 rounded-xl border border-slate-200 bg-white p-5 shadow-sm" aria-label="Vista general">
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-1">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{scope === "customer" ? "Vista cuenta" : "Vista general"}</span>
+          <h2 className="text-base font-semibold tracking-tight text-slate-900">{activeView.title}</h2>
+          {scopeName ? <p className="m-0 text-[13px] font-black leading-snug text-slate-600">{scopeName}</p> : null}
         </div>
-        <div className="basis-control-group">
-          <span>Base YTD</span>
-          <div className="segmented-control segmented-control--two" role="radiogroup" aria-label="Base para YTD">
+        <div className="flex flex-col gap-1.5">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Base YTD</span>
+          <div
+            className="grid grid-cols-2 gap-1 rounded-lg border border-slate-200 bg-slate-100 p-1"
+            role="radiogroup"
+            aria-label="Base para YTD"
+          >
             {YEAR_BASIS_OPTIONS.map((option) => (
               <button
                 key={option.key}
                 aria-checked={yearBasis === option.key}
-                className={yearBasis === option.key ? "segmented-control__button segmented-control__button--active" : "segmented-control__button"}
+                className={
+                  yearBasis === option.key
+                    ? "rounded-md bg-white px-3 py-1.5 text-[13px] font-semibold text-slate-900 shadow-sm transition"
+                    : "rounded-md px-3 py-1.5 text-[13px] font-medium text-slate-500 transition hover:text-slate-700"
+                }
                 role="radio"
                 type="button"
                 onClick={() => onYearBasisChange?.(option.key)}
@@ -46,12 +54,20 @@ function GeneralViews({ onYearBasisChange, scope = "portfolio", scopeName, views
             ))}
           </div>
         </div>
-        <div className="segmented-control" role="tablist" aria-label="Comparación general">
+        <div
+          className="grid grid-cols-3 gap-1 rounded-lg border border-slate-200 bg-slate-100 p-1"
+          role="tablist"
+          aria-label="Comparación general"
+        >
           {VIEW_OPTIONS.map((option) => (
             <button
               key={option.key}
               aria-selected={activeViewKey === option.key}
-              className={activeViewKey === option.key ? "segmented-control__button segmented-control__button--active" : "segmented-control__button"}
+              className={
+                activeViewKey === option.key
+                  ? "rounded-md bg-white px-3 py-1.5 text-[13px] font-semibold text-slate-900 shadow-sm transition"
+                  : "rounded-md px-3 py-1.5 text-[13px] font-medium text-slate-500 transition hover:text-slate-700"
+              }
               role="tab"
               type="button"
               onClick={() => setActiveViewKey(option.key)}
@@ -78,32 +94,35 @@ function AvailableView({ scope, view }) {
   ];
 
   return (
-    <div className="general-content">
-      <p className="comparison-label">
+    <div className="flex flex-col gap-3.5">
+      <p className="m-0 text-[13px] font-black text-slate-700">
         {view.currentLabel} vs {view.comparisonLabel}
       </p>
 
-      <div className="metrics-grid metrics-grid--compact">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
         {metrics.map(([label, value, tone]) => (
-          <div key={label} className={`metric-card ${tone ? `metric-card--${tone}` : ""}`}>
-            <span>{label}</span>
-            <strong>{value}</strong>
+          <div
+            key={label}
+            className={`flex min-h-[86px] flex-col justify-between gap-2 rounded-lg border p-3 ${getMetricCardClass(tone)}`}
+          >
+            <span className="text-[11px] font-medium text-slate-500">{label}</span>
+            <strong className={`text-[18px] font-semibold leading-tight ${getMetricValueClass(tone)}`}>{value}</strong>
           </div>
         ))}
       </div>
 
-      <ul className="insight-list">
+      <ul className="flex flex-col gap-1.5 pl-4 text-[13px] leading-relaxed text-slate-700 [list-style-type:disc] marker:text-slate-400">
         {view.bullets.map((bullet) => (
           <li key={bullet}>{bullet}</li>
         ))}
       </ul>
 
-      <div className="ranking-section">
-        <div className="ranking-section__header">
-          <span className="eyebrow">Crecimiento vs referencia</span>
-          <h3>Dónde estamos ganando</h3>
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Crecimiento vs referencia</span>
+          <h3 className="text-[13px] font-semibold text-slate-900">Dónde estamos ganando</h3>
         </div>
-        <div className="ranking-grid">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <RankingList title="Categorías que más crecen" items={view.topCategories} />
           <RankingList title="Marcas que más crecen" items={view.topBrands} />
           <RankingList
@@ -113,12 +132,12 @@ function AvailableView({ scope, view }) {
         </div>
       </div>
 
-      <div className="ranking-section">
-        <div className="ranking-section__header">
-          <span className="eyebrow">Decrecimiento vs referencia</span>
-          <h3>Dónde recuperar venta</h3>
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Decrecimiento vs referencia</span>
+          <h3 className="text-[13px] font-semibold text-slate-900">Dónde recuperar venta</h3>
         </div>
-        <div className="ranking-grid">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <RankingList title="Categorías con mayor caída" items={view.opportunityCategories} />
           <RankingList title="Marcas con mayor caída" items={view.opportunityBrands} />
           <RankingList
@@ -133,9 +152,9 @@ function AvailableView({ scope, view }) {
 
 function UnavailableView({ view }) {
   return (
-    <div className="general-empty">
-      <strong>No disponible con este Excel</strong>
-      <p>{view.reason}</p>
+    <div className="flex flex-col gap-2 rounded-lg border border-amber-200 bg-amber-50 p-4">
+      <strong className="text-[13px] font-semibold text-amber-800">No disponible con este Excel</strong>
+      <p className="m-0 text-[13px] text-amber-700">{view.reason}</p>
     </div>
   );
 }
@@ -143,29 +162,29 @@ function UnavailableView({ view }) {
 function RankingList({ items, title }) {
   if (!items.length) {
     return (
-      <div className="ranking-list-card">
-        <span className="eyebrow">{title}</span>
-        <p className="muted-copy">Sin variación relevante.</p>
+      <div className="flex flex-col gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3">
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{title}</span>
+        <p className="m-0 text-[12px] italic text-slate-400">Sin variación relevante.</p>
       </div>
     );
   }
 
   return (
-    <div className="ranking-list-card">
-      <span className="eyebrow">{title}</span>
-      <ol className="top-list">
+    <div className="flex flex-col gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3">
+      <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{title}</span>
+      <ol className="flex flex-col gap-1.5 pl-0 [list-style:none]">
         {items.map((item, index) => (
-          <li key={item.name}>
-            <span className="ranking-item-text">
-              <span className="ranking-name">
-                <b>{index + 1}.</b> {item.name}
+          <li key={item.name} className="flex items-start justify-between gap-2 border-b border-slate-200 pb-1.5 last:border-b-0 last:pb-0">
+            <span className="flex min-w-0 flex-col gap-0.5">
+              <span className="truncate text-[12px] text-slate-700">
+                <b className="font-semibold">{index + 1}.</b> {item.name}
               </span>
-              <small>
+              <small className="text-[11px] text-slate-400">
                 Actual {formatCurrency(item.current)} · Ref. {formatCurrency(item.comparison)}
                 {isFiniteNumber(item.trend) ? ` · ${formatTrendPercent(item.trend)}` : ""}
               </small>
             </span>
-            <strong className={item.delta < 0 ? "ranking-value ranking-value--danger" : "ranking-value ranking-value--good"}>
+            <strong className={`shrink-0 text-[12px] font-semibold ${item.delta < 0 ? "text-rose-600" : "text-emerald-600"}`}>
               {formatSignedCurrency(item.delta)}
             </strong>
           </li>
@@ -173,6 +192,20 @@ function RankingList({ items, title }) {
       </ol>
     </div>
   );
+}
+
+function getMetricCardClass(tone) {
+  if (tone === "good") return "border-emerald-200 bg-emerald-50";
+  if (tone === "danger") return "border-rose-200 bg-rose-50";
+  if (tone === "primary") return "border-slate-900 bg-slate-900";
+  return "border-slate-200 bg-slate-50";
+}
+
+function getMetricValueClass(tone) {
+  if (tone === "good") return "text-emerald-700";
+  if (tone === "danger") return "text-rose-700";
+  if (tone === "primary") return "text-white";
+  return "text-slate-900";
 }
 
 function getTrendTone(value) {
