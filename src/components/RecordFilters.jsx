@@ -10,6 +10,10 @@ import { formatNumber } from "../utils/formatters.js";
 
 const MAX_VISIBLE_OPTIONS = 120;
 
+const FIELD_LABEL_CLASS = "flex flex-col gap-1 text-[11px] font-medium text-slate-600";
+const FIELD_INPUT_CLASS =
+  "rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400";
+
 function RecordFilters({
   baseRecords,
   filteredRecords,
@@ -107,21 +111,29 @@ function RecordFilters({
   }
 
   return (
-    <section className="card filter-card" aria-label="Filtros de detalle">
-      <div className="filter-card__header">
-        <div className="section-heading">
-          <span className="eyebrow">Filtros</span>
-          <h2>Detalle de {scopeLabel}</h2>
+    <section
+      aria-label="Filtros de detalle"
+      className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-col gap-1">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+            Filtros
+          </span>
+          <h2 className="text-base font-semibold tracking-tight text-slate-900">
+            Detalle de {scopeLabel}
+          </h2>
         </div>
-        <p>
+        <p className="text-[12px] text-slate-500">
           {formatNumber(filteredRecords.length)} de {formatNumber(baseRecords.length)} filas
         </p>
       </div>
 
-      <div className="filter-controls">
-        <label>
+      <div className="flex flex-col gap-3">
+        <label className={FIELD_LABEL_CLASS}>
           <span>Columna</span>
           <select
+            className={FIELD_INPUT_CLASS}
             disabled={availableFields.length === 0}
             value={selectedField}
             onChange={(event) => {
@@ -138,9 +150,10 @@ function RecordFilters({
           </select>
         </label>
 
-        <label>
+        <label className={FIELD_LABEL_CLASS}>
           <span>Buscar valor</span>
           <input
+            className={FIELD_INPUT_CLASS}
             disabled={!selectedField}
             placeholder="Filtrar valores"
             type="search"
@@ -149,9 +162,10 @@ function RecordFilters({
           />
         </label>
 
-        <label>
+        <label className={FIELD_LABEL_CLASS}>
           <span>Valor</span>
           <select
+            className={FIELD_INPUT_CLASS}
             disabled={!visibleValueOptions.length}
             value={selectedValue}
             onChange={(event) => setSelectedValue(event.target.value)}
@@ -165,7 +179,7 @@ function RecordFilters({
         </label>
 
         <button
-          className="filter-add-button"
+          className="rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-300"
           disabled={!selectedField || !selectedValue}
           type="button"
           onClick={addFilter}
@@ -175,25 +189,29 @@ function RecordFilters({
       </div>
 
       {selectedField && matchedValueOptions.length > MAX_VISIBLE_OPTIONS ? (
-        <p className="filter-note">
+        <p className="text-[11px] italic text-slate-500">
           {formatNumber(matchedValueOptions.length)} valores en {getFilterFieldLabel(selectedField)}. Refina la búsqueda para acotar.
         </p>
       ) : null}
 
       {filters.length ? (
-        <div className="filter-chip-list" aria-label="Filtros activos">
+        <div aria-label="Filtros activos" className="flex flex-wrap items-center gap-2">
           {filters.map((filter) => (
             <button
               key={`${filter.field}-${filter.value}`}
-              className="filter-chip"
+              className="inline-flex items-center gap-1.5 rounded-full border border-slate-900 bg-slate-900 px-2.5 py-1 text-[11px] font-medium text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
               type="button"
               onClick={() => removeFilter(filter)}
             >
               {getFilterDisplayLabel(filter)}
-              <span aria-hidden="true">×</span>
+              <span aria-hidden="true" className="text-[12px] leading-none">×</span>
             </button>
           ))}
-          <button className="filter-clear-button" type="button" onClick={clearFilters}>
+          <button
+            className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600 transition hover:border-slate-300 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+            type="button"
+            onClick={clearFilters}
+          >
             Limpiar filtros
           </button>
         </div>

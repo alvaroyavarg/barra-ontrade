@@ -153,8 +153,12 @@ function CommercialConsultationModule({ onBackHome }) {
 
   return (
     <>
-      <div className="module-topbar">
-        <button className="back-button" type="button" onClick={onBackHome}>
+      <div className="flex items-center justify-between gap-3.5 pb-3 pt-1.5 text-[13px] font-black uppercase text-slate-500">
+        <button
+          className="rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-[13px] font-medium text-slate-700 transition hover:bg-slate-50"
+          type="button"
+          onClick={onBackHome}
+        >
           Volver al inicio
         </button>
         <span>Consulta Comercial PDV</span>
@@ -162,22 +166,22 @@ function CommercialConsultationModule({ onBackHome }) {
 
       <Header />
 
-      <section className="workspace-grid" aria-label="Consulta comercial PDV">
-        <div className="left-rail">
+      <section className="grid gap-4" aria-label="Consulta comercial PDV">
+        <div className="grid gap-3.5 content-start">
           <UploadCard fileName={fileSummary?.fileName} isLoading={isLoading} onFileSelected={handleFileSelected} />
 
           {error ? (
-            <div className="alert-card alert-card--error" role="alert">
-              <strong>No se pudo cargar el archivo</strong>
-              <p>{error}</p>
+            <div className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3.5 text-rose-800" role="alert">
+              <strong className="mb-1 block font-semibold">No se pudo cargar el archivo</strong>
+              <p className="m-0 text-[13px]">{error}</p>
             </div>
           ) : null}
 
           {warnings.length > 0 ? (
-            <div className="alert-card alert-card--warning" role="status">
-              <strong>Datos revisados</strong>
+            <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3.5 text-amber-800" role="status">
+              <strong className="mb-1 block font-semibold">Datos revisados</strong>
               {warnings.map((warning) => (
-                <p key={warning}>{warning}</p>
+                <p key={warning} className="m-0 text-[13px]">{warning}</p>
               ))}
             </div>
           ) : null}
@@ -241,7 +245,7 @@ function CommercialConsultationModule({ onBackHome }) {
           ) : null}
         </div>
 
-        <div className="brief-rail">
+        <div className="grid gap-3.5 content-start">
           {activePage === "general" ? (
             <PortfolioPage
               fileSummary={fileSummary}

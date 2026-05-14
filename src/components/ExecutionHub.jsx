@@ -13,26 +13,42 @@ const EXECUTION_PILLARS = [
 
 function ExecutionHub({ onBackHome }) {
   return (
-    <section className="module-page execution-page" aria-label="Ejecucion PDV">
-      <div className="module-topbar">
-        <button className="back-button" type="button" onClick={onBackHome}>
+    <section
+      aria-label="Ejecucion PDV"
+      className="mx-auto flex w-full max-w-6xl flex-col gap-8 p-8"
+    >
+      <div className="flex items-center gap-4 text-[13px] font-medium text-slate-500">
+        <button
+          className="rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-[13px] font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+          type="button"
+          onClick={onBackHome}
+        >
           Volver al inicio
         </button>
         <span>Ejecucion PDV</span>
       </div>
 
-      <div className="module-hero execution-hero">
-        <span className="eyebrow">Pilar 3</span>
-        <h1>Ejecucion PDV</h1>
-        <p>El cierre del ciclo comercial: medir lo que pasa en carta, visita y punto de venta.</p>
+      <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+          Pilar 3
+        </span>
+        <h1 className="text-xl font-semibold tracking-tight text-slate-900">Ejecucion PDV</h1>
+        <p className="text-[13px] text-slate-500">
+          El cierre del ciclo comercial: medir lo que pasa en carta, visita y punto de venta.
+        </p>
       </div>
 
-      <div className="execution-grid">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {EXECUTION_PILLARS.map((pillar) => (
-          <article key={pillar.title} className="execution-card">
-            <span>{pillar.status}</span>
-            <h2>{pillar.title}</h2>
-            <p>{pillar.description}</p>
+          <article
+            key={pillar.title}
+            className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-slate-300 hover:shadow"
+          >
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+              {pillar.status}
+            </span>
+            <h2 className="text-base font-semibold tracking-tight text-slate-900">{pillar.title}</h2>
+            <p className="text-[13px] text-slate-500">{pillar.description}</p>
           </article>
         ))}
       </div>
