@@ -1164,6 +1164,8 @@ function WalkerDashboard({ columns, locals, summary, excelMeta, excelError, drag
         />
       </section>
 
+      <PillarSummaryGrid locals={locals} />
+
       <section className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="On Five" title="Avance por pilar" />
@@ -1457,6 +1459,8 @@ function CpaDashboard({ locals = [], walkers = [] }) {
         />
       </section>
 
+      <PillarSummaryGrid locals={locals} />
+
       <section className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="Backoffice" title="Solicitudes recientes" />
@@ -1705,6 +1709,8 @@ function ManagerDashboard({ locals = [], walkers = [] }) {
         />
       </section>
 
+      <PillarSummaryGrid locals={locals} />
+
       <section className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="Equipo" title="Performance por walker" />
@@ -1728,6 +1734,70 @@ function ManagerTeamView({ walkers = [], locals = [] }) {
         description="Actividad, cobertura y On Five score por zona."
       />
       <WalkerTable walkers={walkers} locals={locals} expanded />
+    </section>
+  );
+}
+
+const PILLAR_SUMMARY_META = [
+  { key: "staff",      label: "Staff",      icon: "👥", accent: "bg-indigo-500",  tint: "bg-indigo-50 text-indigo-700",   ring: "ring-indigo-100"  },
+  { key: "assortment", label: "Assortment", icon: "🍾", accent: "bg-emerald-500", tint: "bg-emerald-50 text-emerald-700", ring: "ring-emerald-100" },
+  { key: "menu",       label: "Menú",       icon: "📋", accent: "bg-violet-500",  tint: "bg-violet-50 text-violet-700",   ring: "ring-violet-100"  },
+  { key: "branding",   label: "Branding",   icon: "✨", accent: "bg-amber-500",   tint: "bg-amber-50 text-amber-700",     ring: "ring-amber-100"   },
+  { key: "activation", label: "Activación", icon: "🎯", accent: "bg-rose-500",    tint: "bg-rose-50 text-rose-700",       ring: "ring-rose-100"    },
+];
+
+function PillarSummaryGrid({ locals = [] }) {
+  const total = locals.length;
+  const stats = PILLAR_SUMMARY_META.map((meta) => {
+    const completados = locals.filter((l) => l.pillars?.[meta.key]?.score === "Completado").length;
+    const pendientes  = locals.filter((l) => l.pillars?.[meta.key]?.score === "Pendiente").length;
+    const sinRegistro = total - completados - pendientes;
+    const pct = total > 0 ? Math.round((completados / total) * 100) : 0;
+    const toneText = pct >= 70 ? "text-emerald-600" : pct >= 40 ? "text-amber-600" : "text-rose-600";
+    return { ...meta, completados, pendientes, sinRegistro, pct, toneText };
+  });
+
+  return (
+    <section aria-label="Resumen On Five por pilar" className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
+      {stats.map((s) => (
+        <article
+          key={s.key}
+          className={`flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm ring-1 ${s.ring} transition hover:shadow-md`}
+        >
+          <header className="flex items-center justify-between gap-2">
+            <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] font-semibold ${s.tint}`}>
+              <span aria-hidden="true">{s.icon}</span>
+              {s.label}
+            </span>
+            <strong className={`text-[20px] font-bold leading-none ${s.toneText}`}>{s.pct}%</strong>
+          </header>
+
+          <div className="flex flex-col gap-1">
+            <div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
+              <div className={`h-full rounded-full ${s.accent} transition-all`} style={{ width: `${s.pct}%` }} />
+            </div>
+            <small className="text-[11px] text-slate-500">
+              {s.completados} de {total} {total === 1 ? "cuenta" : "cuentas"}
+            </small>
+          </div>
+
+          <footer className="flex flex-wrap gap-1.5">
+            <span className="inline-flex items-center rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">
+              ✓ {s.completados}
+            </span>
+            {s.pendientes > 0 && (
+              <span className="inline-flex items-center rounded-md bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">
+                ! {s.pendientes}
+              </span>
+            )}
+            {s.sinRegistro > 0 && (
+              <span className="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">
+                — {s.sinRegistro}
+              </span>
+            )}
+          </footer>
+        </article>
+      ))}
     </section>
   );
 }
