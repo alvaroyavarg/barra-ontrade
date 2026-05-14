@@ -441,99 +441,126 @@ function OnTradeCrm({ onOpenModule }) {
   }
 
   return (
-    <section className="crm-shell" aria-label="BARRA · On Trade Execution">
-      <header className="crm-topbar">
-        <div className="crm-brand">
-          <span className="crm-brand__mark">🪩</span>
-          <div>
-            <strong>BARRA</strong>
-            <small>On Trade Execution · Diageo Chile</small>
+    <section
+      aria-label="BARRA · On Trade Execution"
+      className="flex min-h-screen flex-col bg-slate-50 text-slate-900"
+    >
+      <header className="flex items-center justify-between gap-4 border-b border-slate-200 bg-white px-8 py-4">
+        <div className="flex items-center gap-3">
+          <span
+            aria-hidden="true"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-2xl"
+          >
+            🪩
+          </span>
+          <div className="flex flex-col">
+            <strong className="text-base font-semibold tracking-tight text-slate-900">BARRA</strong>
+            <small className="text-xs text-slate-500">On Trade Execution · Diageo Chile</small>
           </div>
         </div>
 
-        <div className="crm-role-switcher" aria-label="Selector de rol">
-          {CRM_ROLES.map((item) => (
-            <button
-              key={item.id}
-              className={roleId === item.id ? "crm-role-button crm-role-button--active" : "crm-role-button"}
-              type="button"
-              onClick={() => handleRoleChange(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
+        <div
+          aria-label="Selector de rol"
+          className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1"
+        >
+          {CRM_ROLES.map((item) => {
+            const isActive = roleId === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => handleRoleChange(item.id)}
+                className={`rounded-lg px-4 py-1.5 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100 ${
+                  isActive
+                    ? "bg-white text-slate-900 shadow-sm"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </div>
       </header>
 
-      <div className="crm-layout">
-        <aside className="crm-sidebar">
-          <div className="crm-user-card">
-            <span>{role.label}</span>
-            <strong>{role.name}</strong>
-            <small>{excelMeta ? `${excelMeta.count} cuentas · ${excelMeta.walkerCount} walkers` : role.subtitle}</small>
+      <div className="flex flex-1">
+        <aside className="flex w-72 shrink-0 flex-col gap-6 border-r border-slate-200 bg-white p-4">
+          <div className="flex flex-col gap-1 rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">{role.label}</span>
+            <strong className="text-base font-semibold text-slate-900">{role.name}</strong>
+            <small className="text-xs text-slate-500">
+              {excelMeta ? `${excelMeta.count} cuentas · ${excelMeta.walkerCount} walkers` : role.subtitle}
+            </small>
           </div>
 
-          {/* Walker filter — solo visible para Walker cuando hay datos cargados */}
           {roleId === "walker" && walkers.length > 0 ? (
-            <div className="crm-sidebar__section">
-              <span>Walker</span>
-              <button
-                className={activeWalker === "all" ? "crm-nav__item crm-nav__item--active" : "crm-nav__item"}
-                type="button"
+            <div className="flex flex-col gap-2">
+              <span className="px-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Walker</span>
+              <SidebarNavButton
+                isActive={activeWalker === "all"}
                 onClick={() => setActiveWalker("all")}
               >
                 Todos ({localsData.length})
-              </button>
+              </SidebarNavButton>
               {walkers.map((w) => (
-                <button
+                <SidebarNavButton
                   key={w.id}
-                  className={activeWalker === w.id ? "crm-nav__item crm-nav__item--active" : "crm-nav__item"}
-                  type="button"
+                  isActive={activeWalker === w.id}
                   onClick={() => { setActiveWalker(w.id); setSelectedLocalId(null); setActiveView("contacts"); }}
                 >
                   {w.name} ({w.count})
-                </button>
+                </SidebarNavButton>
               ))}
             </div>
           ) : null}
 
-          <nav className="crm-nav" aria-label="Navegacion CRM">
+          <nav aria-label="Navegacion CRM" className="flex flex-col gap-1">
             {ROLE_NAV[roleId].map((item, idx) => {
               if (item.section) {
-                return <span key={`sec-${idx}`} className="crm-nav__section-label">{item.section}</span>;
+                return (
+                  <span
+                    key={`sec-${idx}`}
+                    className="mt-4 px-3 text-xs font-semibold uppercase tracking-wide text-slate-400"
+                  >
+                    {item.section}
+                  </span>
+                );
               }
-              const isActive = activeView === item.id || (item.id === "team" && (activeView === "team" || activeView.startsWith("walker-")));
+              const isActive =
+                activeView === item.id ||
+                (item.id === "team" && (activeView === "team" || activeView.startsWith("walker-")));
               return (
                 <React.Fragment key={item.id}>
-                  <button
-                    className={isActive ? "crm-nav__item crm-nav__item--active" : "crm-nav__item"}
-                    type="button"
-                    onClick={() => item.openModule ? onOpenModule(item.openModule) : setActiveView(item.id)}
+                  <SidebarNavButton
+                    isActive={isActive}
+                    onClick={() => (item.openModule ? onOpenModule(item.openModule) : setActiveView(item.id))}
+                    icon={item.icon}
                   >
-                    {item.icon && <span style={{ fontSize: "0.78rem", opacity: 0.8 }} aria-hidden="true">{item.icon}</span>}
                     {item.label}
-                  </button>
-                  {/* Walkers individuales — inmediatamente después de "Equipo Walkers" */}
-                  {item.id === "team" && roleId === "manager" && walkers.map((w) => (
-                    <button
-                      key={`walker-nav-${w.id}`}
-                      className={activeView === `walker-${w.id}` ? "crm-nav__item crm-nav__item--sub crm-nav__item--active" : "crm-nav__item crm-nav__item--sub"}
-                      type="button"
-                      onClick={() => { setActiveWalker(w.id); setActiveView(`walker-${w.id}`); }}
-                    >
-                      {w.name}
-                      <span style={{ marginLeft: "auto", fontSize: "0.7rem", opacity: 0.6 }}>{w.count}</span>
-                    </button>
-                  ))}
+                  </SidebarNavButton>
+                  {item.id === "team" && roleId === "manager"
+                    ? walkers.map((w) => (
+                        <SidebarNavButton
+                          key={`walker-nav-${w.id}`}
+                          isActive={activeView === `walker-${w.id}`}
+                          onClick={() => {
+                            setActiveWalker(w.id);
+                            setActiveView(`walker-${w.id}`);
+                          }}
+                          indented
+                          trailing={w.count}
+                        >
+                          {w.name}
+                        </SidebarNavButton>
+                      ))
+                    : null}
                 </React.Fragment>
               );
             })}
           </nav>
-
-          {/* legacy modules section eliminada — items integrados en ROLE_NAV */}
         </aside>
 
-        <main className="crm-main">
+        <main className="flex-1 p-8 space-y-6">
           <CrmPageHeader
             activeView={activeView}
             roleId={roleId}
@@ -646,6 +673,28 @@ function OnTradeCrm({ onOpenModule }) {
   );
 }
 
+function SidebarNavButton({ children, icon, indented = false, isActive, onClick, trailing }) {
+  const base =
+    "flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 focus-visible:ring-offset-white";
+  const active = isActive
+    ? "bg-slate-900 text-white shadow-sm"
+    : "text-slate-700 hover:bg-slate-100 active:bg-slate-200";
+  const indent = indented ? "ml-3" : "";
+  return (
+    <button type="button" onClick={onClick} className={`${base} ${active} ${indent}`}>
+      {icon ? (
+        <span aria-hidden="true" className="text-xs opacity-80">
+          {icon}
+        </span>
+      ) : null}
+      <span className="flex-1">{children}</span>
+      {trailing != null ? (
+        <span className="text-xs opacity-70">{trailing}</span>
+      ) : null}
+    </button>
+  );
+}
+
 function CrmPageHeader({ activeView, roleId }) {
   const titles = {
     cpa: {
@@ -679,21 +728,20 @@ function CrmPageHeader({ activeView, roleId }) {
   };
 
   return (
-    <section className="crm-page-header">
-      <div>
-        <span className="crm-eyebrow">BARRA</span>
-        <h1>{titles[roleId]?.[activeView] ?? "CRM On Trade"}</h1>
-        <p>
-          {activeView === "contacts"
-            ? "Lista limpia de cuentas, contactos y proyectos activos para priorizar el trabajo de ejecucion."
-            : activeView === "local"
-            ? "Ficha accionable para preparar la visita, registrar avances y desarrollar la cuenta."
-            : activeView === "config"
-            ? "Administracion de la cartera: carga del maestro de cuentas y asignacion por Walker."
-            : "Tareas, misiones, ejecucion y performance conectadas en una sola rutina comercial."}
-        </p>
-      </div>
-
+    <section className="flex flex-col gap-2 border-b border-slate-200 pb-6">
+      <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">BARRA</span>
+      <h1 className="text-3xl font-semibold tracking-tight text-slate-900">
+        {titles[roleId]?.[activeView] ?? "CRM On Trade"}
+      </h1>
+      <p className="max-w-3xl text-sm leading-relaxed text-slate-500">
+        {activeView === "contacts"
+          ? "Lista limpia de cuentas, contactos y proyectos activos para priorizar el trabajo de ejecucion."
+          : activeView === "local"
+          ? "Ficha accionable para preparar la visita, registrar avances y desarrollar la cuenta."
+          : activeView === "config"
+          ? "Administracion de la cartera: carga del maestro de cuentas y asignacion por Walker."
+          : "Tareas, misiones, ejecucion y performance conectadas en una sola rutina comercial."}
+      </p>
     </section>
   );
 }
