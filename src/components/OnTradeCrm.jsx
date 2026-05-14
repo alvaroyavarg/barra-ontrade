@@ -1228,26 +1228,40 @@ function WalkerDashboard({ columns, locals, summary, excelMeta, excelError, drag
 }
 
 function LocalProfile({ draftNote, extraContacts, local, notes, onAddContact, onDraftNoteChange, onOpenOnFive, onPublishNote }) {
+  const healthTone =
+    local.healthScore >= 76
+      ? "text-emerald-600"
+      : local.healthScore >= 68
+      ? "text-amber-600"
+      : "text-rose-600";
+
   return (
-    <div className="crm-stack">
-      <section className="crm-local-grid">
-        <article className="crm-card crm-local-hero">
-          <div className="crm-local-identity">
-            <span className="crm-avatar">{initials(local.name)}</span>
-            <div>
-              <h2>{local.name}</h2>
-              <p>{local.address}</p>
+    <div className="flex flex-col gap-5">
+      <section className="grid grid-cols-1 gap-4 lg:grid-cols-[2fr_1fr_1fr]">
+        <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex items-start gap-4">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-700">
+              {initials(local.name)}
+            </span>
+            <div className="flex flex-1 flex-col">
+              <h2 className="text-lg font-semibold tracking-tight text-slate-900">{local.name}</h2>
+              <p className="text-[12px] text-slate-500">{local.address}</p>
             </div>
-            <strong className="crm-health">{local.healthScore}</strong>
+            <strong className={`text-2xl font-bold ${healthTone}`}>{local.healthScore}</strong>
           </div>
-          <div className="crm-chip-row">
+
+          <div className="mt-4 flex flex-wrap gap-1.5">
             {[local.segment, local.occasion, ...local.tags].map((tag) => (
-              <span key={tag} className="crm-chip">
+              <span
+                key={tag}
+                className="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700"
+              >
                 {tag}
               </span>
             ))}
           </div>
-          <div className="crm-kpi-grid">
+
+          <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
             {local.kpis.map((item) => (
               <MetricCard key={item.label} compact label={item.label} note={item.note} value={item.value} />
             ))}
@@ -1261,23 +1275,26 @@ function LocalProfile({ draftNote, extraContacts, local, notes, onAddContact, on
           </div>
         </article>
 
-        <article className="crm-card">
+        <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="Relacion" title="Contactos clave" />
           <KeyContacts contacts={extraContacts ?? local.contacts} onAdd={onAddContact} />
         </article>
 
-        <article className="crm-card">
+        <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="Performance" title="Ventas mensuales vs AA" />
-          <MiniLineChart series={local.monthlySales} seed={local.accountCode ? parseInt(local.accountCode.toString().slice(-3), 10) : 7} />
+          <MiniLineChart
+            series={local.monthlySales}
+            seed={local.accountCode ? parseInt(local.accountCode.toString().slice(-3), 10) : 7}
+          />
         </article>
       </section>
 
-      <section className="crm-card">
+      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <SectionTitle kicker="Desarrollo de cuenta" title="Misiones recomendadas" />
         <MissionGrid missions={local.missions} />
       </section>
 
-      <section className="crm-card">
+      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <SectionTitle
           kicker="Estrategia en local"
           title="On Five"
@@ -1286,7 +1303,7 @@ function LocalProfile({ draftNote, extraContacts, local, notes, onAddContact, on
         <ExecutionPillars local={local} onSelectPillar={onOpenOnFive} />
       </section>
 
-      <section className="crm-card">
+      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <SectionTitle kicker="Muro del local" title="Minuta y seguimiento" />
         <VisitWall
           draftNote={draftNote}
@@ -1330,37 +1347,58 @@ function ExecutionWorkspace({ activeModuleKey, activeUserName, local, onSelectMo
   );
 }
 
+function ChecklistList({ items }) {
+  return (
+    <ul className="flex flex-col gap-2 text-[13px] text-slate-700">
+      {items.map((item) => (
+        <li key={item} className="flex items-start gap-2">
+          <span aria-hidden="true" className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400" />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function VisitPlaybook({ local }) {
   const mainMission = local.missions[0];
 
   return (
-    <div className="crm-playbook-grid">
-      <article className="crm-card">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <SectionTitle kicker="Objetivo" title={`Visita a ${local.name}`} />
-        <div className="crm-playbook-focus">
-          <strong>{mainMission?.title ?? "Revisar oportunidades del local"}</strong>
-          <p>{mainMission?.reason ?? "Preparar conversacion comercial segun perfil y estado de ejecucion."}</p>
+        <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+          <strong className="block text-[13px] font-semibold text-slate-900">
+            {mainMission?.title ?? "Revisar oportunidades del local"}
+          </strong>
+          <p className="mt-1 text-[12px] leading-relaxed text-slate-600">
+            {mainMission?.reason ?? "Preparar conversacion comercial segun perfil y estado de ejecucion."}
+          </p>
         </div>
       </article>
 
-      <article className="crm-card">
+      <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <SectionTitle kicker="Conversacion" title="Preguntas sugeridas" />
-        <ul className="crm-checklist">
-          <li>Que producto esta rotando mejor esta semana?</li>
-          <li>Que etiqueta falta para cerrar el assortment objetivo?</li>
-          <li>Que apoyo necesita el staff para vender mejor?</li>
-          <li>Que activacion tiene sentido para el proximo fin de semana?</li>
-        </ul>
+        <ChecklistList
+          items={[
+            "Que producto esta rotando mejor esta semana?",
+            "Que etiqueta falta para cerrar el assortment objetivo?",
+            "Que apoyo necesita el staff para vender mejor?",
+            "Que activacion tiene sentido para el proximo fin de semana?",
+          ]}
+        />
       </article>
 
-      <article className="crm-card">
+      <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <SectionTitle kicker="Cierre" title="Checklist de salida" />
-        <ul className="crm-checklist">
-          <li>Registrar minuta de visita.</li>
-          <li>Actualizar estado de misiones.</li>
-          <li>Subir evidencia de branding o activacion.</li>
-          <li>Definir proxima accion con fecha.</li>
-        </ul>
+        <ChecklistList
+          items={[
+            "Registrar minuta de visita.",
+            "Actualizar estado de misiones.",
+            "Subir evidencia de branding o activacion.",
+            "Definir proxima accion con fecha.",
+          ]}
+        />
       </article>
     </div>
   );
@@ -1382,8 +1420,8 @@ function CpaDashboard({ locals = [], walkers = [] }) {
   });
 
   return (
-    <div className="crm-stack">
-      <section className="crm-metrics-grid crm-metrics-grid--four">
+    <div className="flex flex-col gap-5">
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           color="blue"
           icon="📊"
@@ -1419,14 +1457,14 @@ function CpaDashboard({ locals = [], walkers = [] }) {
         />
       </section>
 
-      <section className="crm-dashboard-grid">
-        <article className="crm-card">
+      <section className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+        <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="Backoffice" title="Solicitudes recientes" />
           <RequestList requests={CPA_REQUESTS} />
         </article>
-        <article className="crm-card">
+        <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="On Five" title="Ejecución por pilar" />
-          <div className="crm-progress-list">
+          <div className="flex flex-col gap-3">
             {pilarScores.map(({ key, label, pct }) => (
               <ProgressRow key={key} label={label} value={pct} />
             ))}
@@ -1438,22 +1476,28 @@ function CpaDashboard({ locals = [], walkers = [] }) {
 }
 
 function CpaExecutionBoard() {
+  const STATUSES = ["Solicitado", "En revision", "Aprobado", "Enviado", "Instalado"];
   return (
-    <section className="crm-card">
+    <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
       <SectionTitle
         kicker="CP&A"
         title="Solicitudes de visibilidad"
         description="Vista inicial para coordinar material POP, activos, aprobaciones y seguimiento de instalacion."
       />
-      <div className="crm-request-board">
-        {["Solicitado", "En revision", "Aprobado", "Enviado", "Instalado"].map((status) => (
-          <div key={status} className="crm-request-column">
-            <strong>{status}</strong>
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3 xl:grid-cols-5">
+        {STATUSES.map((status) => (
+          <div key={status} className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-slate-50 p-3">
+            <strong className="text-[12px] font-semibold uppercase tracking-wide text-slate-700">{status}</strong>
             {CPA_REQUESTS.filter((request) => request.status === status).map((request) => (
-              <article key={request.id} className="crm-request-card">
-                <span>{request.local}</span>
-                <p>{request.type}</p>
-                <small>{request.owner}</small>
+              <article
+                key={request.id}
+                className="flex flex-col gap-1 rounded-lg border border-slate-200 bg-white p-3 shadow-sm"
+              >
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                  {request.local}
+                </span>
+                <p className="text-[13px] font-semibold text-slate-900">{request.type}</p>
+                <small className="text-[11px] text-slate-500">{request.owner}</small>
               </article>
             ))}
           </div>
@@ -1463,14 +1507,15 @@ function CpaExecutionBoard() {
   );
 }
 
-/* ── Placeholder genérico para módulos CP&A en desarrollo ─── */
 function CpaPlaceholder({ icon = "🔧", title, desc, tag = "En desarrollo" }) {
   return (
-    <div className="crm-placeholder">
-      <div className="crm-placeholder__icon">{icon}</div>
-      <h2>{title}</h2>
-      <p>{desc}</p>
-      <small>{tag}</small>
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-slate-300 bg-white p-12 text-center shadow-sm">
+      <div className="text-5xl" aria-hidden="true">{icon}</div>
+      <h2 className="text-lg font-semibold tracking-tight text-slate-900">{title}</h2>
+      <p className="max-w-md text-[13px] leading-relaxed text-slate-500">{desc}</p>
+      <small className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-semibold text-amber-800">
+        {tag}
+      </small>
     </div>
   );
 }
@@ -1481,36 +1526,37 @@ function CpaPlaceholder({ icon = "🔧", title, desc, tag = "En desarrollo" }) {
 ────────────────────────────────────────────────────────────── */
 function CpaSolicitudesView({ locals = [] }) {
   const STATUSES = ["Solicitado", "En revision", "Aprobado", "Rechazado"];
-  const STATUS_COLOR = {
-    "Solicitado":  "crm-badge--blue",
-    "En revision": "crm-badge--amber",
-    "Aprobado":    "crm-badge--green",
-    "Rechazado":   "crm-badge--red",
+  const STATUS_TONE = {
+    Solicitado: "bg-blue-50 text-blue-700",
+    "En revision": "bg-amber-50 text-amber-700",
+    Aprobado: "bg-emerald-50 text-emerald-700",
+    Rechazado: "bg-rose-50 text-rose-700",
   };
   return (
-    <div className="crm-stack">
-      <section className="crm-metrics-grid">
+    <div className="flex flex-col gap-5">
+      <section className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {STATUSES.map((s) => {
           const n = CPA_REQUESTS.filter((r) => r.status === s).length;
-          return <MetricCard key={s} label={s} value={n} compact />;
+          return <MetricCard key={s} compact label={s} value={n} />;
         })}
       </section>
-      <article className="crm-card">
+      <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <SectionTitle kicker="Walker → CP&A" title="Solicitudes recibidas" />
-        <div>
+        <div className="flex flex-col gap-2">
           {CPA_REQUESTS.map((req) => (
-            <div key={req.id} className="crm-solicitudes-item">
-              <div>
-                <div className="crm-solicitudes-item__title">{req.type}</div>
-                <div className="crm-solicitudes-item__meta">
-                  {req.local} &nbsp;·&nbsp; {req.owner}
-                </div>
-              </div>
-              <div className="crm-solicitudes-item__status">
-                <span className={`crm-badge ${STATUS_COLOR[req.status] ?? "crm-badge--gray"}`}>
-                  {req.status}
+            <div
+              key={req.id}
+              className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3"
+            >
+              <div className="flex flex-col">
+                <span className="text-[13px] font-semibold text-slate-900">{req.type}</span>
+                <span className="text-[11px] text-slate-500">
+                  {req.local} · {req.owner}
                 </span>
               </div>
+              <span className={`rounded-md px-2 py-0.5 text-[11px] font-semibold ${STATUS_TONE[req.status] ?? "bg-slate-100 text-slate-600"}`}>
+                {req.status}
+              </span>
             </div>
           ))}
         </div>
@@ -1545,59 +1591,70 @@ function CpaKpiWalkersView({ locals = [], walkers = [] }) {
   });
 
   function barColor(pct) {
-    if (pct >= 70) return "";
-    if (pct >= 40) return "crm-bar__fill--warn";
-    return "crm-bar__fill--danger";
+    if (pct >= 70) return "bg-emerald-500";
+    if (pct >= 40) return "bg-amber-500";
+    return "bg-rose-500";
+  }
+  function valueTone(pct) {
+    if (pct >= 70) return "text-emerald-600";
+    if (pct >= 40) return "text-amber-600";
+    return "text-rose-600";
   }
 
   return (
-    <div className="crm-stack">
-      <section className="crm-metrics-grid crm-metrics-grid--four">
-        <MetricCard label="Walkers activos"    value={walkers.length} />
-        <MetricCard label="Total cuentas"      value={locals.length} />
-        <MetricCard label="Cuentas auditadas"  value={locals.filter((l) => l.pillars && Object.values(l.pillars).some((p) => p.lastAudit)).length} />
+    <div className="flex flex-col gap-5">
+      <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <MetricCard label="Walkers activos" value={walkers.length} />
+        <MetricCard label="Total cuentas" value={locals.length} />
+        <MetricCard
+          label="Cuentas auditadas"
+          value={locals.filter((l) => l.pillars && Object.values(l.pillars).some((p) => p.lastAudit)).length}
+        />
         <MetricCard
           label="On Five promedio"
-          value={walkerStats.length > 0 ? `${Math.round(walkerStats.reduce((a, w) => a + w.onFiveScore, 0) / walkerStats.length)}%` : "—"}
+          value={
+            walkerStats.length > 0
+              ? `${Math.round(walkerStats.reduce((a, w) => a + w.onFiveScore, 0) / walkerStats.length)}%`
+              : "—"
+          }
           tone="good"
         />
       </section>
 
-      <article className="crm-card">
+      <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <SectionTitle kicker="Equipo walker" title="Performance individual" />
-        <div>
-          {/* Header */}
-          <div className="crm-walker-kpi-row" style={{ fontWeight: 600, fontSize: "0.72rem", color: "#9CA3AF", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        <div className="overflow-x-auto">
+          <div className="grid min-w-[640px] grid-cols-[1.5fr_2fr_0.6fr_0.7fr_0.7fr] items-center gap-3 border-b border-slate-200 px-2 py-2 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
             <span>Walker</span>
             <span>Cobertura auditoría</span>
-            <span style={{ textAlign: "right" }}>Cuentas</span>
-            <span style={{ textAlign: "right" }}>Auditadas</span>
-            <span style={{ textAlign: "right" }}>On Five</span>
+            <span className="text-right">Cuentas</span>
+            <span className="text-right">Auditadas</span>
+            <span className="text-right">On Five</span>
           </div>
           {walkerStats.map((w) => (
-            <div key={w.id} className="crm-walker-kpi-row">
-              <span className="crm-walker-kpi-row__name">{w.name}</span>
-              <div className="crm-walker-kpi-row__bar">
-                <div className="crm-bar">
-                  <div
-                    className={`crm-bar__fill ${barColor(w.cobertura)}`}
-                    style={{ width: `${w.cobertura}%` }}
-                  />
+            <div
+              key={w.id}
+              className="grid min-w-[640px] grid-cols-[1.5fr_2fr_0.6fr_0.7fr_0.7fr] items-center gap-3 border-b border-slate-100 px-2 py-2.5 text-[13px]"
+            >
+              <span className="font-medium text-slate-900">{w.name}</span>
+              <div className="flex items-center gap-2">
+                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
+                  <div className={`h-full rounded-full ${barColor(w.cobertura)}`} style={{ width: `${w.cobertura}%` }} />
                 </div>
-                <span style={{ fontSize: "0.76rem", color: "#6B7280", minWidth: 30 }}>{w.cobertura}%</span>
+                <span className="min-w-[2rem] text-[11px] text-slate-600">{w.cobertura}%</span>
               </div>
-              <span className="crm-walker-kpi-row__val">{w.total}</span>
-              <span className="crm-walker-kpi-row__val">{w.auditados}</span>
-              <span className={`crm-walker-kpi-row__val ${w.onFiveScore >= 70 ? "crm-status--good" : w.onFiveScore >= 40 ? "crm-status--warning" : "crm-status--danger"}`}>
+              <span className="text-right text-slate-700">{w.total}</span>
+              <span className="text-right text-slate-700">{w.auditados}</span>
+              <span className={`text-right font-semibold ${valueTone(w.onFiveScore)}`}>
                 {w.onFiveScore > 0 ? `${w.onFiveScore}%` : "—"}
               </span>
             </div>
           ))}
-          {walkerStats.length === 0 && (
-            <p style={{ color: "#9CA3AF", fontSize: "0.84rem", padding: "16px 0", textAlign: "center" }}>
+          {walkerStats.length === 0 ? (
+            <p className="px-2 py-4 text-center text-[13px] text-slate-500">
               Sube el Excel de cuentas en Configuración para ver los KPIs.
             </p>
-          )}
+          ) : null}
         </div>
       </article>
     </div>
@@ -1611,8 +1668,8 @@ function ManagerDashboard({ locals = [], walkers = [] }) {
   const enRiesgo      = locals.filter((l) => !l.pillars || Object.values(l.pillars).every((p) => !p.lastAudit)).length;
 
   return (
-    <div className="crm-stack">
-      <section className="crm-metrics-grid crm-metrics-grid--four">
+    <div className="flex flex-col gap-5">
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           color="blue"
           icon="🏪"
@@ -1648,12 +1705,12 @@ function ManagerDashboard({ locals = [], walkers = [] }) {
         />
       </section>
 
-      <section className="crm-dashboard-grid">
-        <article className="crm-card">
+      <section className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+        <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="Equipo" title="Performance por walker" />
           <WalkerTable walkers={walkers} locals={locals} />
         </article>
-        <article className="crm-card">
+        <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="Prioridades" title="Cuentas a revisar esta semana" />
           <VisitList visits={CRM_VISITS.slice(0, 4)} onOpenLocal={() => {}} />
         </article>
@@ -1664,7 +1721,7 @@ function ManagerDashboard({ locals = [], walkers = [] }) {
 
 function ManagerTeamView({ walkers = [], locals = [] }) {
   return (
-    <section className="crm-card">
+    <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
       <SectionTitle
         kicker="BARRA · Manager"
         title="Performance del equipo Walker"
@@ -1679,7 +1736,9 @@ function MetricCard({ compact = false, label, note, tone = "neutral", value }) {
   const toneStyles = {
     neutral: "border-slate-200 bg-white text-slate-900",
     positive: "border-emerald-200 bg-emerald-50 text-emerald-900",
+    good: "border-emerald-200 bg-emerald-50 text-emerald-900",
     negative: "border-rose-200 bg-rose-50 text-rose-900",
+    warning: "border-amber-200 bg-amber-50 text-amber-900",
     accent: "border-slate-900 bg-slate-900 text-white",
   };
   const labelTone = tone === "accent" ? "text-slate-300" : "text-slate-500";
@@ -1879,6 +1938,15 @@ function KanbanBoard({ columns, draggedCardId, onCardDragStart, onCardDrop, onOp
   );
 }
 
+function FieldLabel({ children }) {
+  return (
+    <span className="text-[10px] font-bold uppercase tracking-wide text-slate-500">{children}</span>
+  );
+}
+
+const TEXT_INPUT_CLASS =
+  "rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
+
 function KeyContacts({ contacts, onAdd }) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ nombre: "", apellido: "", cargo: "", telefono: "" });
@@ -1899,57 +1967,74 @@ function KeyContacts({ contacts, onAdd }) {
   }
 
   return (
-    <div className="crm-contact-list">
+    <div className="flex flex-col gap-2">
       {contacts.map((contact) => (
-        <article key={contact.id} className="crm-contact-row">
-          <span className="crm-contact-avatar">{initials(contact.name)}</span>
-          <div>
-            <strong>{contact.name}</strong>
-            <small>{contact.role}{contact.note ? ` - ${contact.note}` : ""}</small>
+        <article
+          key={contact.id}
+          className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-2.5"
+        >
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
+            {initials(contact.name)}
+          </span>
+          <div className="flex flex-1 flex-col">
+            <strong className="text-[13px] font-semibold text-slate-900">{contact.name}</strong>
+            <small className="text-[11px] text-slate-500">
+              {contact.role}
+              {contact.note ? ` · ${contact.note}` : ""}
+            </small>
           </div>
-          {contact.phone
-            ? <a className="crm-wpp-button" href={`https://wa.me/${contact.phone}`} target="_blank" rel="noreferrer">WhatsApp</a>
-            : <span />}
+          {contact.phone ? (
+            <a
+              href={`https://wa.me/${contact.phone}`}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-md bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 transition hover:bg-emerald-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+            >
+              WhatsApp
+            </a>
+          ) : null}
         </article>
       ))}
 
       {open ? (
-        <div style={{ display: "grid", gap: 10, padding: "14px 0 4px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-            <label style={{ display: "grid", gap: 4 }}>
-              <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".04em" }}>Nombre</span>
+        <div className="flex flex-col gap-2.5 pt-3">
+          <div className="grid grid-cols-2 gap-2">
+            <label className="flex flex-col gap-1">
+              <FieldLabel>Nombre</FieldLabel>
               <input
-                style={{ border: "1px solid var(--border-md)", borderRadius: 8, padding: "7px 10px", fontSize: "0.84rem", background: "var(--canvas)", outline: "none" }}
+                className={TEXT_INPUT_CLASS}
                 placeholder="Juan"
                 value={form.nombre}
                 onChange={(e) => setForm((f) => ({ ...f, nombre: e.target.value }))}
               />
             </label>
-            <label style={{ display: "grid", gap: 4 }}>
-              <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".04em" }}>Apellido</span>
+            <label className="flex flex-col gap-1">
+              <FieldLabel>Apellido</FieldLabel>
               <input
-                style={{ border: "1px solid var(--border-md)", borderRadius: 8, padding: "7px 10px", fontSize: "0.84rem", background: "var(--canvas)", outline: "none" }}
+                className={TEXT_INPUT_CLASS}
                 placeholder="Pérez"
                 value={form.apellido}
                 onChange={(e) => setForm((f) => ({ ...f, apellido: e.target.value }))}
               />
             </label>
           </div>
-          <label style={{ display: "grid", gap: 4 }}>
-            <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".04em" }}>Cargo</span>
+          <label className="flex flex-col gap-1">
+            <FieldLabel>Cargo</FieldLabel>
             <input
-              style={{ border: "1px solid var(--border-md)", borderRadius: 8, padding: "7px 10px", fontSize: "0.84rem", background: "var(--canvas)", outline: "none" }}
+              className={TEXT_INPUT_CLASS}
               placeholder="Bartender, Encargado, Dueño..."
               value={form.cargo}
               onChange={(e) => setForm((f) => ({ ...f, cargo: e.target.value }))}
             />
           </label>
-          <label style={{ display: "grid", gap: 4 }}>
-            <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--text-3)", textTransform: "uppercase", letterSpacing: ".04em" }}>Teléfono</span>
-            <div style={{ display: "flex", alignItems: "center", border: "1px solid var(--border-md)", borderRadius: 8, background: "var(--canvas)", overflow: "hidden" }}>
-              <span style={{ padding: "7px 10px", fontSize: "0.84rem", color: "var(--text-2)", borderRight: "1px solid var(--border-md)", background: "var(--surface-1,#f4f6f5)", flexShrink: 0 }}>+56</span>
+          <label className="flex flex-col gap-1">
+            <FieldLabel>Teléfono</FieldLabel>
+            <div className="flex items-center overflow-hidden rounded-lg border border-slate-200 bg-white focus-within:border-slate-900 focus-within:ring-2 focus-within:ring-slate-900/10">
+              <span className="border-r border-slate-200 bg-slate-50 px-2.5 py-1.5 text-[13px] text-slate-600">
+                +56
+              </span>
               <input
-                style={{ border: "none", padding: "7px 10px", fontSize: "0.84rem", background: "transparent", outline: "none", width: "100%" }}
+                className="w-full border-none px-2.5 py-1.5 text-[13px] text-slate-900 placeholder:text-slate-400 focus:outline-none"
                 placeholder="9 1234 5678"
                 type="tel"
                 value={form.telefono}
@@ -1957,16 +2042,28 @@ function KeyContacts({ contacts, onAdd }) {
               />
             </div>
           </label>
-          <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
-            <button type="button" onClick={() => setOpen(false)} style={{ padding: "7px 16px", borderRadius: 8, border: "1px solid var(--border-md)", background: "none", cursor: "pointer", fontSize: "0.82rem" }}>Cancelar</button>
-            <button type="button" onClick={handleSave} style={{ padding: "7px 16px", borderRadius: 8, border: "none", background: "var(--accent)", color: "#fff", cursor: "pointer", fontSize: "0.82rem", fontWeight: 600 }}>Guardar</button>
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-[12px] font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              className="rounded-lg bg-slate-900 px-3.5 py-1.5 text-[12px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700"
+            >
+              Guardar
+            </button>
           </div>
         </div>
       ) : (
         <button
           type="button"
           onClick={() => setOpen(true)}
-          style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 6, fontSize: "0.82rem", color: "var(--accent)", background: "none", border: "1px dashed var(--border-md)", borderRadius: 8, padding: "7px 14px", cursor: "pointer", width: "100%" }}
+          className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-lg border border-dashed border-slate-300 bg-white px-3.5 py-1.5 text-[12px] font-medium text-slate-700 transition hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
         >
           + Agregar contacto
         </button>
@@ -1997,23 +2094,52 @@ function MiniLineChart({ series, seed = 7 }) {
   const isPlaceholder = !series || series.length === 0;
 
   return (
-    <div className="crm-chart-block">
-      <svg className="crm-line-chart" viewBox="0 0 360 150" role="img" aria-label="Ventas mensuales vs AA">
-        <polyline className="crm-line-chart__previous" fill="none" points={pointsPrevious} />
-        <polyline className="crm-line-chart__current" fill="none" points={pointsCurrent} />
+    <div className="flex flex-col gap-2">
+      <svg
+        viewBox="0 0 360 150"
+        role="img"
+        aria-label="Ventas mensuales vs AA"
+        className="h-32 w-full text-slate-400"
+      >
+        <polyline
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeDasharray="3 3"
+          points={pointsPrevious}
+        />
+        <polyline
+          fill="none"
+          stroke="rgb(15 23 42)"
+          strokeWidth="2"
+          points={pointsCurrent}
+        />
         {data.map((item, index) => {
           const x = 24 + (index * 312) / Math.max(data.length - 1, 1);
           return (
-            <text key={item.month} x={x} y="145" textAnchor="middle">
+            <text
+              key={item.month}
+              x={x}
+              y="145"
+              textAnchor="middle"
+              fontSize="9"
+              fill="rgb(100 116 139)"
+            >
               {item.month}
             </text>
           );
         })}
       </svg>
-      <div className="crm-chart-legend">
-        <span>Actual</span>
-        <span>AA</span>
-        {isPlaceholder && <small style={{ color: "var(--text-3)", fontSize: "0.72rem", marginLeft: 8 }}>Datos ilustrativos — conectar con Lighthouse</small>}
+      <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-500">
+        <span className="flex items-center gap-1">
+          <span className="inline-block h-0.5 w-3 bg-slate-900" /> Actual
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="inline-block h-0.5 w-3 border-t border-dashed border-slate-400" /> AA
+        </span>
+        {isPlaceholder ? (
+          <small className="text-[11px] text-slate-400">Datos ilustrativos — conectar con Lighthouse</small>
+        ) : null}
       </div>
     </div>
   );
@@ -2021,20 +2147,27 @@ function MiniLineChart({ series, seed = 7 }) {
 
 function MissionGrid({ missions }) {
   return (
-    <div className="crm-mission-grid">
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
       {missions.map((mission) => (
-        <article key={mission.id} className="crm-mission-card">
-          <div>
-            <span>{mission.origin}</span>
-            <strong>{mission.status}</strong>
+        <article
+          key={mission.id}
+          className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow"
+        >
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+              {mission.origin}
+            </span>
+            <strong className="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-700">
+              {mission.status}
+            </strong>
           </div>
-          <h3>{mission.title}</h3>
-          <p>{mission.reason}</p>
-          <div className="crm-progress crm-progress--wide">
-            <i style={{ width: `${mission.progress}%` }} />
+          <h3 className="text-[14px] font-semibold leading-tight text-slate-900">{mission.title}</h3>
+          <p className="text-[12px] leading-relaxed text-slate-600">{mission.reason}</p>
+          <div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
+            <i className="block h-full rounded-full bg-slate-900" style={{ width: `${mission.progress}%` }} />
           </div>
-          <small>
-            {mission.impact} - Proximo paso: {mission.nextStep}
+          <small className="text-[11px] text-slate-500">
+            {mission.impact} · Próximo paso: {mission.nextStep}
           </small>
         </article>
       ))}
@@ -2997,6 +3130,13 @@ function getAssortmentAnalysis(local) {
   };
 }
 
+const PILLAR_TONE_STYLES = {
+  positive: "bg-emerald-100 text-emerald-700",
+  warning: "bg-amber-100 text-amber-700",
+  danger: "bg-rose-100 text-rose-700",
+  neutral: "bg-slate-100 text-slate-600",
+};
+
 function ExecutionPillars({ activeKey = "", local, onSelectPillar }) {
   const pillars = ON_FIVE_MODULES.map((module) => ({
     ...module,
@@ -3004,59 +3144,88 @@ function ExecutionPillars({ activeKey = "", local, onSelectPillar }) {
   }));
 
   return (
-    <div className="crm-pillar-grid">
-      {pillars.map((pillar) => (
-        <button
-          key={pillar.key}
-          className={pillar.key === activeKey ? "crm-pillar-card crm-pillar-card--active" : "crm-pillar-card"}
-          type="button"
-          onClick={() => onSelectPillar?.(pillar.key)}
-        >
-          <header>
-            <span>{pillar.label}</span>
-            <strong className={`crm-pill crm-pill--${getPillarTone(pillar.score)}`}>{pillar.score}</strong>
-          </header>
-          <h3>{pillar.summary}</h3>
-        </button>
-      ))}
+    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-5">
+      {pillars.map((pillar) => {
+        const isActive = pillar.key === activeKey;
+        const tone = getPillarTone(pillar.score);
+        return (
+          <button
+            key={pillar.key}
+            type="button"
+            onClick={() => onSelectPillar?.(pillar.key)}
+            className={`flex flex-col gap-2 rounded-xl border p-3 text-left shadow-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 ${
+              isActive
+                ? "border-slate-900 bg-slate-900 text-white"
+                : "border-slate-200 bg-white text-slate-900 hover:border-slate-300 hover:shadow"
+            }`}
+          >
+            <header className="flex items-center justify-between gap-2">
+              <span className={`text-[11px] font-semibold uppercase tracking-wide ${isActive ? "text-slate-300" : "text-slate-500"}`}>
+                {pillar.label}
+              </span>
+              <strong className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${PILLAR_TONE_STYLES[tone] ?? PILLAR_TONE_STYLES.neutral}`}>
+                {pillar.score}
+              </strong>
+            </header>
+            <h3 className={`text-[12px] leading-relaxed ${isActive ? "text-slate-100" : "text-slate-700"}`}>
+              {pillar.summary}
+            </h3>
+          </button>
+        );
+      })}
     </div>
   );
 }
 
 function OnFiveStat({ label, note, tone = "", value }) {
+  const valueTone = tone ? PILLAR_TONE_STYLES[tone] ?? PILLAR_TONE_STYLES.neutral : "";
   return (
-    <article className="crm-onfive-stat">
-      <span>{label}</span>
-      {tone ? <strong className={`crm-pill crm-pill--${tone}`}>{value}</strong> : <strong>{value}</strong>}
-      {note ? <small>{note}</small> : null}
+    <article className="flex flex-col gap-1 rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
+      <span className="text-[11px] font-medium uppercase tracking-wide text-slate-500">{label}</span>
+      {tone ? (
+        <strong className={`inline-flex w-fit rounded-md px-2 py-0.5 text-[12px] font-semibold ${valueTone}`}>
+          {value}
+        </strong>
+      ) : (
+        <strong className="text-[15px] font-semibold text-slate-900">{value}</strong>
+      )}
+      {note ? <small className="text-[11px] text-slate-500">{note}</small> : null}
     </article>
   );
 }
 
 function VisitWall({ draftNote, notes, onDraftNoteChange, onPublishNote }) {
   return (
-    <div className="crm-wall">
-      <div className="crm-note-box">
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-slate-50 p-3">
         <textarea
           placeholder="Escribe que viste, que se acordo y cual es el proximo paso..."
           value={draftNote}
           onChange={(event) => onDraftNoteChange(event.target.value)}
+          className="min-h-[88px] resize-y rounded-lg border border-slate-200 bg-white p-2.5 text-[13px] text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10"
         />
-        <button type="button" onClick={onPublishNote}>
+        <button
+          type="button"
+          onClick={onPublishNote}
+          className="self-end rounded-lg bg-slate-900 px-4 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700"
+        >
           Publicar minuta
         </button>
       </div>
 
-      <div className="crm-note-list">
+      <div className="flex flex-col gap-3">
         {notes.map((note) => (
-          <article key={note.id} className="crm-note">
-            <header>
-              <strong>{note.author}</strong>
-              <span>{note.date}</span>
+          <article
+            key={note.id}
+            className="flex flex-col gap-1 rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+          >
+            <header className="flex items-center justify-between gap-2">
+              <strong className="text-[13px] font-semibold text-slate-900">{note.author}</strong>
+              <span className="text-[11px] text-slate-500">{note.date}</span>
             </header>
-            <small>{note.type}</small>
-            <p>{note.text}</p>
-            <footer>{note.nextAction}</footer>
+            <small className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{note.type}</small>
+            <p className="text-[13px] leading-relaxed text-slate-700">{note.text}</p>
+            <footer className="mt-1 text-[11px] font-medium text-slate-500">{note.nextAction}</footer>
           </article>
         ))}
       </div>
@@ -3064,15 +3233,31 @@ function VisitWall({ draftNote, notes, onDraftNoteChange, onPublishNote }) {
   );
 }
 
+const REQUEST_STATUS_TONE = {
+  Solicitado: "bg-blue-50 text-blue-700",
+  "En revision": "bg-amber-50 text-amber-700",
+  Aprobado: "bg-emerald-50 text-emerald-700",
+  Enviado: "bg-violet-50 text-violet-700",
+  Instalado: "bg-slate-100 text-slate-700",
+  Rechazado: "bg-rose-50 text-rose-700",
+};
+
 function RequestList({ requests }) {
   return (
-    <div className="crm-request-list">
+    <div className="flex flex-col gap-2">
       {requests.map((request) => (
-        <article key={request.id} className="crm-request-row">
-          <span>{request.status}</span>
-          <strong>{request.local}</strong>
-          <p>{request.type}</p>
-          <small>{request.owner}</small>
+        <article
+          key={request.id}
+          className="grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-0.5 rounded-lg border border-slate-200 bg-slate-50 p-3"
+        >
+          <span
+            className={`row-span-2 self-start rounded-md px-2 py-0.5 text-[11px] font-semibold ${REQUEST_STATUS_TONE[request.status] ?? "bg-slate-100 text-slate-600"}`}
+          >
+            {request.status}
+          </span>
+          <strong className="text-[13px] font-semibold text-slate-900">{request.local}</strong>
+          <p className="text-[12px] text-slate-600">{request.type}</p>
+          <small className="col-start-2 text-[11px] text-slate-500">{request.owner}</small>
         </article>
       ))}
     </div>
@@ -3093,36 +3278,51 @@ function ProgressRow({ label, value }) {
 
 function WalkerTable({ expanded = false, walkers = [], locals = [] }) {
   const walkerStats = walkers.map((walker) => {
-    const misLocals  = locals.filter((l) => l.walkerName === walker.name || l.walker === walker.id);
-    const total      = misLocals.length;
-    const auditados  = misLocals.filter((l) =>
-      l.pillars && Object.values(l.pillars).some((p) => p.lastAudit)
+    const misLocals = locals.filter((l) => l.walkerName === walker.name || l.walker === walker.id);
+    const total = misLocals.length;
+    const auditados = misLocals.filter(
+      (l) => l.pillars && Object.values(l.pillars).some((p) => p.lastAudit),
     ).length;
-    const cobertura  = total > 0 ? Math.round((auditados / total) * 100) : 0;
+    const cobertura = total > 0 ? Math.round((auditados / total) * 100) : 0;
     return { ...walker, total, auditados, cobertura };
   });
 
   return (
-    <div className="crm-walker-table">
-      {walkerStats.map((walker) => (
-        <article key={walker.id} style={{ display: "grid", gridTemplateColumns: "1fr auto auto auto", gap: "8px 16px", alignItems: "center", padding: "10px 0", borderBottom: "0.5px solid #F3F4F6" }}>
-          <span>
-            <strong style={{ fontSize: "0.84rem", color: "#111827" }}>{walker.name}</strong>
-            {walker.area ? <small style={{ display: "block", color: "#9CA3AF", fontSize: "0.74rem" }}>{walker.area}</small> : null}
-          </span>
-          <span style={{ fontSize: "0.8rem", color: "#6B7280", textAlign: "right" }}>{walker.total} cuentas</span>
-          <span style={{ fontSize: "0.8rem", color: "#6B7280", textAlign: "right" }}>{walker.auditadas ?? walker.auditados} auditadas</span>
-          <span style={{ fontSize: "0.84rem", fontWeight: 700, textAlign: "right", color: walker.cobertura >= 70 ? "#15803D" : walker.cobertura >= 40 ? "#B45309" : "#B91C1C" }}>
-            {walker.cobertura}%
-          </span>
-          {expanded ? <small style={{ gridColumn: "1/-1", color: "#9CA3AF", fontSize: "0.74rem" }}>Cobertura de auditoría On Five</small> : null}
-        </article>
-      ))}
-      {walkerStats.length === 0 && (
-        <p style={{ color: "#9CA3AF", fontSize: "0.84rem", padding: "16px 0" }}>
+    <div className="flex flex-col">
+      {walkerStats.map((walker) => {
+        const tone =
+          walker.cobertura >= 70
+            ? "text-emerald-600"
+            : walker.cobertura >= 40
+            ? "text-amber-600"
+            : "text-rose-600";
+        return (
+          <article
+            key={walker.id}
+            className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-x-4 gap-y-1 border-b border-slate-100 py-2.5 last:border-b-0"
+          >
+            <span className="flex flex-col">
+              <strong className="text-[13px] font-semibold text-slate-900">{walker.name}</strong>
+              {walker.area ? <small className="text-[11px] text-slate-500">{walker.area}</small> : null}
+            </span>
+            <span className="text-right text-[12px] text-slate-600">{walker.total} cuentas</span>
+            <span className="text-right text-[12px] text-slate-600">
+              {walker.auditadas ?? walker.auditados} auditadas
+            </span>
+            <span className={`text-right text-[13px] font-bold ${tone}`}>{walker.cobertura}%</span>
+            {expanded ? (
+              <small className="col-span-full text-[11px] text-slate-400">
+                Cobertura de auditoría On Five
+              </small>
+            ) : null}
+          </article>
+        );
+      })}
+      {walkerStats.length === 0 ? (
+        <p className="py-4 text-[13px] text-slate-500">
           Sin walkers asignados. Sube el Excel en Configuración.
         </p>
-      )}
+      ) : null}
     </div>
   );
 }
