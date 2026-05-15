@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { parseOnFiveWorkbook, summarizeOnFiveLocals } from "../utils/onFiveExcelParser.js";
 import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCuentas.js";
+import { useSupabaseData } from "../hooks/useSupabaseData.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
 const CRM_ROLES = [
@@ -288,64 +289,56 @@ function buildKanbanFromLocals(locals) {
 function OnTradeCrm({ onOpenModule }) {
   const [roleId, setRoleId] = useState("walker");
   const [activeView, setActiveView] = useState("dashboard");
-  const [localsData, setLocalsData] = useState(MAESTRO_LOCALS);
-  const [walkers, setWalkers] = useState(MAESTRO_WALKERS);
   const [activeWalker, setActiveWalker] = useState("all");
-  const [excelMeta, setExcelMeta] = useState(MAESTRO_META);
   const [excelError, setExcelError] = useState("");
   const [selectedLocalId, setSelectedLocalId] = useState(MAESTRO_LOCALS[0]?.id ?? null);
-  const [kanbanColumns, setKanbanColumns] = useState(() => ([
-    { id: "todo",     title: "Pendiente",   cards: buildKanbanFromLocals(MAESTRO_LOCALS) },
-    { id: "progress", title: "En progreso", cards: [] },
-    { id: "done",     title: "Completado",  cards: [] },
-  ]));
   const [draggedCardId, setDraggedCardId] = useState(null);
   const [draftNote, setDraftNote] = useState("");
-  const [extraNotes, setExtraNotes] = useState({});
   const [extraContacts, setExtraContacts] = useState({});
   const [activeOnFiveModule, setActiveOnFiveModule] = useState("staff");
   const [assortmentConfig, setAssortmentConfig] = useState(DEFAULT_ASSORTMENT_CONFIG);
   const [assortmentAudits, setAssortmentAudits] = useState({});
 
+  const {
+    locals: localsData,
+    setLocals: setLocalsData,
+    walkers,
+    setWalkers,
+    meta: excelMeta,
+    setMeta: setExcelMeta,
+    kanbanColumns: supabaseKanban,
+    setKanbanColumns,
+    extraNotes,
+    loading: supabaseLoading,
+    syncError,
+    isSupabaseEnabled,
+    loadNotesForLocal,
+    publishNote: persistNote,
+    updateLocalPillar,
+    saveAssortmentAudit: persistAssortmentAudit,
+    updateMission,
+    importLocalsFromExcel,
+    moveKanbanCardFn,
+    addManualLocal,
+  } = useSupabaseData({
+    fallbackLocals: MAESTRO_LOCALS,
+    fallbackWalkers: MAESTRO_WALKERS,
+    fallbackMeta: MAESTRO_META,
+  });
+
+  const [localKanbanColumns, setLocalKanbanColumns] = useState(() => ([
+    { id: "todo",     title: "Pendiente",   cards: buildKanbanFromLocals(MAESTRO_LOCALS) },
+    { id: "progress", title: "En progreso", cards: [] },
+    { id: "done",     title: "Completado",  cards: [] },
+  ]));
+
+  const kanbanColumns = supabaseKanban ?? localKanbanColumns;
+  function setKanbanColumnsCompat(val) {
+    setKanbanColumns(val);
+    setLocalKanbanColumns(val);
+  }
+
   const role = CRM_ROLES.find((item) => item.id === roleId) ?? CRM_ROLES[0];
-
-  // ── Actualiza un pilar real de una cuenta (sin recalcular health por ahora) ──
-  function updateLocalPillar(localId, pillarKey, pillarData) {
-    setLocalsData((current) =>
-      current.map((local) => {
-        if (local.id !== localId) return local;
-        const updatedPillars = {
-          ...local.pillars,
-          [pillarKey]: { ...(local.pillars[pillarKey] ?? {}), ...pillarData },
-        };
-        return { ...local, pillars: updatedPillars };
-      })
-    );
-  }
-
-  // ── Guarda una auditoría de assortment en terreno ──
-  function saveAssortmentAudit(localId, checkedIds, author, segmentIds) {
-    const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date());
-    const total = segmentIds.length;
-    const present = checkedIds.filter((id) => segmentIds.includes(id)).length;
-    const pct = total > 0 ? Math.round((present / total) * 100) : 0;
-    const score = total === 0 ? "Sin registro" : present === total ? "Completado" : present > 0 ? "Pendiente" : "Sin registro";
-    setAssortmentAudits((prev) => ({
-      ...prev,
-      [localId]: { checkedIds, savedAt: ts, author, present, total, pct },
-    }));
-    updateLocalPillar(localId, "assortment", {
-      score,
-      summary: total > 0 ? `${present}/${total} etiquetas · ${pct}% cumplimiento` : "Sin portafolio configurado",
-      nextAction: present < total ? `Recuperar ${total - present} etiqueta${total - present > 1 ? "s" : ""}` : "Defender foto de éxito",
-      lastAudit: ts,
-    });
-  }
-
-  // ── Agrega una cuenta manual creada desde Config CP&A ──
-  function addManualLocal(newLocal) {
-    setLocalsData((current) => [newLocal, ...current]);
-  }
 
   // Cuentas filtradas por Walker activo (columna WALKER del Excel)
   const visibleLocals = useMemo(() =>
@@ -363,12 +356,10 @@ function OnTradeCrm({ onOpenModule }) {
     setExcelError("");
     try {
       const result = await parseOnFiveWorkbook(file);
-      setLocalsData(result.locals);
-      setWalkers(result.walkers);
+      await importLocalsFromExcel(result);
       setActiveWalker("all");
       setSelectedLocalId(result.locals[0]?.id ?? null);
-      setExcelMeta({ fileName: result.fileName, count: result.locals.length, walkerCount: result.walkers.length });
-      setKanbanColumns([
+      setKanbanColumnsCompat([
         { id: "todo",     title: "Pendiente",   cards: buildKanbanFromLocals(result.locals) },
         { id: "progress", title: "En progreso", cards: [] },
         { id: "done",     title: "Completado",  cards: [] },
@@ -391,7 +382,8 @@ function OnTradeCrm({ onOpenModule }) {
       return;
     }
 
-    setKanbanColumns((currentColumns) => {
+    moveKanbanCardFn(draggedCardId, targetColumnId);
+    setLocalKanbanColumns((currentColumns) => {
       let movedCard = null;
       const withoutCard = currentColumns.map((column) => {
         const cards = column.cards.filter((card) => {
@@ -419,11 +411,7 @@ function OnTradeCrm({ onOpenModule }) {
 
   function publishNote() {
     const noteText = draftNote.trim();
-
-    if (!noteText) {
-      return;
-    }
-
+    if (!noteText || !selectedLocal) return;
     const note = {
       id: `note-${Date.now()}`,
       author: role.name,
@@ -432,11 +420,7 @@ function OnTradeCrm({ onOpenModule }) {
       text: noteText,
       type: "Minuta",
     };
-
-    setExtraNotes((current) => ({
-      ...current,
-      [selectedLocal.id]: [note, ...(current[selectedLocal.id] ?? [])],
-    }));
+    persistNote(selectedLocal.id, note);
     setDraftNote("");
   }
 
@@ -457,6 +441,11 @@ function OnTradeCrm({ onOpenModule }) {
             <strong className="text-[13px] font-semibold tracking-tight text-white">BARRA</strong>
             <small className="text-[11px] text-slate-400">On Trade Execution · Diageo Chile</small>
           </div>
+          {isSupabaseEnabled && (
+            <span className={`ml-2 rounded-full px-2 py-0.5 text-[10px] font-medium ${supabaseLoading ? "bg-yellow-500/20 text-yellow-300" : syncError ? "bg-red-500/20 text-red-300" : "bg-emerald-500/20 text-emerald-300"}`}>
+              {supabaseLoading ? "Sincronizando…" : syncError ? "Error sync" : "Supabase ✓"}
+            </span>
+          )}
         </div>
 
         <div
@@ -574,6 +563,7 @@ function OnTradeCrm({ onOpenModule }) {
               onOpenLocal={(localId) => {
                 setSelectedLocalId(localId);
                 setActiveView("local");
+                loadNotesForLocal(localId);
               }}
             />
           ) : null}
@@ -592,6 +582,7 @@ function OnTradeCrm({ onOpenModule }) {
               onOpenLocal={(localId) => {
                 setSelectedLocalId(localId);
                 setActiveView("local");
+                loadNotesForLocal(localId);
               }}
             />
           ) : null}
@@ -632,7 +623,10 @@ function OnTradeCrm({ onOpenModule }) {
               onUpdatePillar={(pillarKey, data) => updateLocalPillar(selectedLocal.id, pillarKey, data)}
               assortmentConfig={assortmentConfig}
               assortmentAudit={assortmentAudits[selectedLocal.id] ?? null}
-              onSaveAssortmentAudit={(checkedIds, segmentIds) => saveAssortmentAudit(selectedLocal.id, checkedIds, role.name, segmentIds)}
+              onSaveAssortmentAudit={async (checkedIds, segmentIds) => {
+                const audit = await persistAssortmentAudit(selectedLocal.id, checkedIds, role.name, segmentIds);
+                setAssortmentAudits((prev) => ({ ...prev, [selectedLocal.id]: audit }));
+              }}
             />
           ) : null}
 
