@@ -1,4 +1,4 @@
-// Auto-generado el 06 may 2026 — no editar manualmente.
+// Auto-generado el 15 may 2026 — no editar manualmente.
 // Para regenerar: node scripts/buildMaestro.mjs <ruta-al-excel>
 export const MAESTRO_LOCALS = [
   {
@@ -23,7 +23,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://www.aos.cl/carta",
     "observation": "acuerdo con pepsi",
     "occasion": "DISCO",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -81,64 +81,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 02-09-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Cristian Croxatto",
-          "Fecha: 02-09-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, SMIR21, DJB, DJA, DJ70, TQLD, TQ10, TQR, TQS, TQB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -153,16 +134,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-0",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "acuerdo con pepsi",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-1-501041180",
@@ -186,7 +158,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://www.clubambar.cl/menu/menu_ambar.pdf",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 77,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -244,64 +216,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 09-04-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Santiago Izurieta",
-          "Fecha: 09-04-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Bueno",
-        "summary": "Foto: 3/4",
-        "details": [
-          "SKUs: JWR, JWB, JWGLR, TQLD, BAILEYS",
-          "Foto: 3/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: NA",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -316,16 +269,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-1",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-2-500305582",
@@ -349,7 +293,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "",
     "observation": "Sin patente de alcoholes actualmente",
     "occasion": "BAR",
-    "healthScore": 54,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -414,57 +358,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 31-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Santiago Izurieta",
-          "Fecha: 31-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Pendiente",
-        "summary": "Pendiente foto",
-        "details": [
-          "SKUs: Sin dato",
-          "Foto: Sin dato"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: NA",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NA",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -479,16 +404,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-2",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Sin patente de alcoholes actualmente",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-3-500847596",
@@ -512,7 +428,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://barderene.cl/carta/",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -570,64 +486,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "1/6 KPIs",
         "status": "Sugerida",
-        "progress": 17,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 28-11-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Rocio Jorquera",
-          "Fecha: 28-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "1/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: NA",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -642,16 +539,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-3",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-4-501318849",
@@ -675,7 +563,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "Menú – Bar el bosque",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -733,64 +621,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "5/6 KPIs",
         "status": "Sugerida",
-        "progress": 83,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 09-04-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Santiago Izurieta",
-          "Fecha: 09-04-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: TQLD, TQS, JWR, JWBlonde, JWB, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "5/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -805,16 +674,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-4",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-5-501148194",
@@ -838,7 +698,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "Inicio - Bar Sit Down",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -895,65 +755,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 09-04-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Santiago Izurieta",
-          "Fecha: 09-04-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: TQR, TQB, TQS, TQLD, JWR, JWB, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -968,16 +809,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-5",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-6-501134174",
@@ -1001,7 +833,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1c59OnYIGiAZSqpvvUblHNOUleRE0BJkw/view",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -1059,64 +891,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "5/6 KPIs",
         "status": "Sugerida",
-        "progress": 83,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 28-01-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Santiago Izurieta",
-          "Fecha: 28-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWGLR, S12, SMIR21, TQLD, TQS, TQR, TQB, TQ10, DJB, JWBlonde, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "5/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -1131,16 +944,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-6",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-7-501125715",
@@ -1164,7 +968,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1c59OnYIGiAZSqpvvUblHNOUleRE0BJkw/view",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -1222,64 +1026,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "5/6 KPIs",
         "status": "Sugerida",
-        "progress": 83,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 08-04-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Santiago Izurieta",
-          "Fecha: 08-04-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, TQLD, TQS, TQR, TQB, TQ10, SMIR21, DJB, S12",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "5/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -1294,16 +1079,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-7",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-8-501178033",
@@ -1327,7 +1103,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1c59OnYIGiAZSqpvvUblHNOUleRE0BJkw/view",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -1385,64 +1161,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "5/6 KPIs",
         "status": "Sugerida",
-        "progress": 83,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 09-04-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Santiago Izurieta",
-          "Fecha: 09-04-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, TQLD, TQS, TQR, TQB, TQ10, SMIR21, DJB, S12",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "5/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -1457,16 +1214,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-8",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-9-501007003",
@@ -1490,7 +1238,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "Menu Restaurant – California Cantina",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -1547,65 +1295,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 05-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Cristian Croxatto",
-          "Fecha: 05-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, TQLD, TQR, TQB, GORDON'S, DJB, JWB, TQ10",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -1620,16 +1349,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-9",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-10-14",
@@ -1653,7 +1373,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1VDLyj5JhJyo9GuTR-Qtl28U3wvHtbaOx/view",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 81,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -1711,64 +1431,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 27-01-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Sebastian Cornejo",
-          "Fecha: 27-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQR, SMIR21, BAILEYS, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -1783,16 +1484,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-10",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-11-500870499",
@@ -1816,7 +1508,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1VDLyj5JhJyo9GuTR-Qtl28U3wvHtbaOx/view?usp=drivesdk",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 81,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -1874,64 +1566,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 15-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Sebastian Cornejo",
-          "Fecha: 15-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQR, SMIR21, BAILEYS, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -1946,16 +1619,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-11",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-12-500859920",
@@ -1979,7 +1643,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1VDLyj5JhJyo9GuTR-Qtl28U3wvHtbaOx/view",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 81,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -2037,64 +1701,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 21-10-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Sebastian Cornejo",
-          "Fecha: 21-10-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQR, SMIR21, BAILEYS, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -2109,16 +1754,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-12",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-13-501057628",
@@ -2142,7 +1778,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1VDLyj5JhJyo9GuTR-Qtl28U3wvHtbaOx/view?usp=drivesdk",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 81,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -2200,64 +1836,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 02-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Sebastian Cornejo",
-          "Fecha: 02-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, SMIR21, BAILEYS, DJB, DJR, TQR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -2272,16 +1889,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-13",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-14-500870497",
@@ -2305,7 +1913,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1VDLyj5JhJyo9GuTR-Qtl28U3wvHtbaOx/view",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 81,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -2363,64 +1971,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 25-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Sebastian Cornejo",
-          "Fecha: 25-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQR, SMIR21, BAILEYS, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -2435,16 +2024,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-14",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-15-501028817",
@@ -2468,7 +2048,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "",
     "observation": "sin carta on line local sin venta de cocteleria, solo combinados",
     "occasion": "DISCO",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -2526,64 +2106,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 04-10-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Valentina",
-          "Fecha: 04-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQR, DJB, SMIR21",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: NA",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -2598,16 +2159,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-15",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "sin carta on line local sin venta de cocteleria, solo combinados",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-16-501062976",
@@ -2631,7 +2183,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://elbodegondelima.cl/cartaqr-drinks/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -2689,64 +2241,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 05-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo Del Barrio",
-          "Fecha: 05-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: Sin dato",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -2761,16 +2294,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-16",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-17-501267256",
@@ -2794,7 +2318,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://fridakahlorestaurante.cl/frida-kahlo-restaurant/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 76,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -2852,64 +2376,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 05-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo del Barrio",
-          "Fecha: 05-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWGLR, JWBLUE, TQLD, TQ10, BAILEYS, DJR, DJB, DJ70, S12",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -2924,16 +2429,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-17",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-18-50066909",
@@ -2957,7 +2453,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "CARTA-WEB-EUFORIA3",
     "observation": "",
     "occasion": "HOTEL / CASINO / CLUB",
-    "healthScore": 76,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -3015,64 +2511,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 15-10-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Sebastian",
-          "Fecha: 15-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: TQLD, TQR, TQB, JWBlonde, JWR, JWB, JWGLR, JWBLUE, DJB, DJR, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -3087,16 +2564,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-18",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-19-500669099",
@@ -3120,7 +2588,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://sommelierboutique.cl/restaurant-sky-sommelier/#carta-sky",
     "observation": "",
     "occasion": "HOTEL / CASINO / CLUB",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -3178,64 +2646,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 15-10-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Sebastian",
-          "Fecha: 15-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWBLUE, JWGLR, DJB, DJR, DJ70, BAILEYS, TQLD, TQS, TQR, TQB, TQ10, SMIR21",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -3250,16 +2699,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-19",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-20-501158164",
@@ -3283,7 +2723,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://gour.media/kairos-garden/garden/barra/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -3341,64 +2781,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 31-10-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo del Barrio",
-          "Fecha: 31-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, TQLD, TQS, TQR, TQ10, BAILEYS, S12, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -3413,16 +2834,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-20",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-21-500908286",
@@ -3446,7 +2858,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://gour.media/krossbar/borderio/bebe-rico/",
     "observation": "le debemos el contrato y cuando se lo demos ahcemos los cambios",
     "occasion": "BAR",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -3504,64 +2916,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 05-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Cristian Croxatto",
-          "Fecha: 05-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, S12, DJB, TQR, SMIR21, TQLD, TQ10, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -3576,16 +2969,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-21",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "le debemos el contrato y cuando se lo demos ahcemos los cambios",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-22-501179626",
@@ -3609,7 +2993,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://gour.media/krossbar/barrio-italia/bebe-rico/",
     "observation": "le debemos el contrato y cuando se lo demos ahcemos los cambios",
     "occasion": "BAR",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -3667,64 +3051,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 05-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Cristian Croxatto",
-          "Fecha: 05-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, S12, DJB, TQR, SMIR21, TQLD, TQ10, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -3739,16 +3104,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-22",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "le debemos el contrato y cuando se lo demos ahcemos los cambios",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-23-501046772",
@@ -3772,7 +3128,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://gour.media/krossbar/mall-sport/bebe-rico/",
     "observation": "le debemos el contrato y cuando se lo demos ahcemos los cambios",
     "occasion": "BAR",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -3830,64 +3186,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 29-10-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Cristian Croxatto",
-          "Fecha: 29-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, S12, DJB, DJR, SMIR21, TQLD, TQ10, TQR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -3902,16 +3239,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-23",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "le debemos el contrato y cuando se lo demos ahcemos los cambios",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-24-500908285",
@@ -3935,7 +3263,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://gour.media/krossbar/orrego-luco/bebe-rico/",
     "observation": "le debemos el contrato y cuando se lo demos ahcemos los cambios",
     "occasion": "BAR",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -3993,64 +3321,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 05-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Cristian Croxatto",
-          "Fecha: 05-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, S12, DJB, TQR, SMIR21, TQLD, TQ10, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -4065,16 +3374,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-24",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "le debemos el contrato y cuando se lo demos ahcemos los cambios",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-25-501116885",
@@ -4098,7 +3398,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1Sag-FwouSPGHLOCv2IKCMbNBI012avbm/view",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -4155,65 +3455,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 08-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 08-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, TQLD, TQS, TQR, TQ10, SMIR21, DJB, DJR, S15",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -4228,16 +3509,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-25",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-26-501039489",
@@ -4261,7 +3533,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1Sag-FwouSPGHLOCv2IKCMbNBI012avbm/view",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -4318,65 +3590,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 03-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 03-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, TQLD, TQS, TQR, TQ10, SMIR21, BAILEYS, S15, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -4391,16 +3644,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-26",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-27-501167637",
@@ -4424,7 +3668,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1Sag-FwouSPGHLOCv2IKCMbNBI012avbm/view",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -4481,65 +3725,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 05-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 05-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, TQLD, TQS, TQR, TQ10, SMIR21, BAILEYS, S15, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -4554,16 +3779,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-27",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-28-501162406",
@@ -4587,7 +3803,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1Sag-FwouSPGHLOCv2IKCMbNBI012avbm/view",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -4644,65 +3860,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 05-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 05-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, TQLD, TQS, TQR, TQ10, SMIR21, BAILEYS, S15, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -4717,16 +3914,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-28",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-29-501203315",
@@ -4750,7 +3938,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1Sag-FwouSPGHLOCv2IKCMbNBI012avbm/view",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -4807,65 +3995,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 04-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 04-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, TQLD, TQS, TQR, TQ10, SMIR21, BAILEYS, S15, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -4880,16 +4049,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-29",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-30-501129473",
@@ -4913,7 +4073,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1Sag-FwouSPGHLOCv2IKCMbNBI012avbm/view",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -4970,65 +4130,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 31-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 31-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, TQLD, TQS, TQR, TQ10, DJB, DJR, S15, SMIR21",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -5043,16 +4184,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-30",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-31-500977501",
@@ -5076,7 +4208,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1Sag-FwouSPGHLOCv2IKCMbNBI012avbm/view",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -5133,65 +4265,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 15-01-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 15-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, TQLD, TQS, TQR, TQ10, SMIR21, DJB, DJR, S15",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -5206,16 +4319,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-31",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-32-501028820",
@@ -5239,7 +4343,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1Sag-FwouSPGHLOCv2IKCMbNBI012avbm/view",
     "observation": "Cerro",
     "occasion": "BAR",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -5296,65 +4400,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 12-11-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 12-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, TQLD, TQS, TQR, TQ10, SMIR21, BAILEYS, S15, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -5369,16 +4454,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-32",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cerro",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-33-21",
@@ -5402,7 +4478,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://mesonmarinero.chefcloud.dotsolutions.cl/meson-del-marinero-open-kennedy",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 54,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -5460,64 +4536,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "1/6 KPIs",
         "status": "Sugerida",
-        "progress": 17,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 03-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo Del Barrio",
-          "Fecha: 03-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Pendiente",
-        "summary": "Pendiente foto",
-        "details": [
-          "SKUs: Sin dato",
-          "Foto: Sin dato"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "1/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: NA",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -5532,16 +4589,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-33",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-34-500281246",
@@ -5565,7 +4613,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://ai.qrmenu.cl/l7-m/categories",
     "observation": "",
     "occasion": "HOTEL / CASINO / CLUB",
-    "healthScore": 54,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -5630,57 +4678,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 28-10-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Valentina",
-          "Fecha: 28-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Bueno",
-        "summary": "Foto: 3/4",
-        "details": [
-          "SKUs: TQLD, TQ10, JWR, JWB, BAILEYS, JWBLUE",
-          "Foto: 3/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: NA",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NA",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Pendiente",
-        "summary": "0/2 elementos",
-        "details": [
-          "Glassware: Pendiente",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Solicitar POP."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -5695,16 +4724,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-34",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-35-22",
@@ -5728,7 +4748,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://muusteak.cl/cartaqr/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -5786,64 +4806,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 22-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo Del Barrio",
-          "Fecha: 22-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, DJB, DJR, DJA, S12, BAILEYS, TQ10, TQB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -5858,16 +4859,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-35",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-36-16",
@@ -5891,7 +4883,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://muusteak.cl/cartaqr/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -5949,64 +4941,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 27-01-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo del Barrio",
-          "Fecha: 27-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, S12, S15, TQLD, TQS, TQR, TQ10, SMIR21, DJB, DJR, DJA, DJ70, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -6021,16 +4994,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-36",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-37-23",
@@ -6054,7 +5018,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://muusteak.cl/cartaqr/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -6112,64 +5076,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 26-11-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo Del Barrio",
-          "Fecha: 26-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, DJB, DJR, DJA, S12, BAILEYS, TQ10, TQB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -6184,16 +5129,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-37",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-38-24",
@@ -6217,7 +5153,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://muusteak.cl/cartaqr/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -6275,64 +5211,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 06-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo Del Barrio",
-          "Fecha: 06-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, DJB, DJR, DJA, S12, BAILEYS, TQ10, TQB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -6347,16 +5264,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-38",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-39-501135124",
@@ -6380,7 +5288,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "Muu Grill 🍖",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -6438,64 +5346,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 14-10-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo del Barrio",
-          "Fecha: 14-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQR, TQS, SMIR21, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -6510,16 +5399,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-39",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-40-500872473",
@@ -6543,7 +5423,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://muusteak.cl/cartaqr/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -6601,64 +5481,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 25-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo Del Barrio",
-          "Fecha: 25-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, DJB, DJR, DJA, S12, BAILEYS, TQ10, TQB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -6673,16 +5534,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-40",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-41-501106531",
@@ -6706,7 +5558,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://muugrill.chefcloud.dotsolutions.cl/muu-grill-mercado",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -6764,64 +5616,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 14-10-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo del Barrio",
-          "Fecha: 14-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQS, TQR, SMIR21, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -6836,16 +5669,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-41",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-42-19",
@@ -6869,7 +5693,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "Muu Grill 🍖",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -6927,64 +5751,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 14-11-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo del Barrio",
-          "Fecha: 14-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, S12, S15, TQLD, TQS, TQR, SMIR21, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -6999,16 +5804,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-42",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-43-500832725",
@@ -7032,7 +5828,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://toto.menu/apoquindo/category/7030",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 81,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -7090,64 +5886,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 25-11-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Sin dato",
-          "Fecha: 25-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWGLR, JWBLUE, TQLD, TQS, TQR, TQB, JWBlonde, TQ10, SMIR21, BAILEYS, GORDON'S, DJB, DJR, DJA, DJ70",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -7162,16 +5939,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-43",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-44-501240626",
@@ -7195,7 +5963,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://barorigin.cl/#menu",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -7252,65 +6020,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 09-04-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Santiago Izurieta",
-          "Fecha: 09-04-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Bueno",
-        "summary": "Foto: 3/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQ10, BAILEYS, GORDON'S",
-          "Foto: 3/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -7325,16 +6074,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-44",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-45-26",
@@ -7358,7 +6098,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://qr.me-qr.com/Lz1fZBfg",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 81,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -7416,64 +6156,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 16-10-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Sebastian Cornejo",
-          "Fecha: 16-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWBlonde, JWGLR, JWBLUE, TQLD, TQR, SMIR21, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -7488,16 +6209,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-45",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-46-500283769",
@@ -7521,7 +6233,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://qr.me-qr.com/Lz1fZBfg",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 81,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -7579,64 +6291,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 02-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Sebastian Cornejo",
-          "Fecha: 02-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWBlonde, JWGLR, JWBLUE, TQLD, TQR, SMIR21, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -7651,16 +6344,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-46",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-47-500332185",
@@ -7684,7 +6368,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://qr.me-qr.com/Lz1fZBfg",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 81,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -7742,64 +6426,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 25-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Sebastian Cornejo",
-          "Fecha: 25-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWBlonde, JWGLR, JWBLUE, TQLD, TQR, SMIR21, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -7814,16 +6479,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-47",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-48-501048214",
@@ -7847,7 +6503,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://redpub.cl/Carta_RedPub.pdf",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -7905,64 +6561,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "5/6 KPIs",
         "status": "Sugerida",
-        "progress": 83,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 16-10-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Sebastian Cornejo",
-          "Fecha: 16-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: TQLD, TQS, TQ10, GORDON'S, DJB, DJR, DJ70, S12, JWR, JWB, JWBLUE, BAILEYS, SMIR21",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "5/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -7977,16 +6614,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-48",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-49-501160746",
@@ -8010,7 +6638,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://gour.media/roatan/barra/",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 49,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -8075,57 +6703,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 14-10-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 14-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Atencion",
-        "summary": "Foto: 2/4",
-        "details": [
-          "SKUs: JWR, JWB, DJB, DJR",
-          "Foto: 2/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: NA",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NA",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Pendiente",
-        "summary": "0/2 elementos",
-        "details": [
-          "Glassware: Pendiente",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Solicitar POP."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -8140,16 +6749,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-49",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-50-501114102",
@@ -8173,7 +6773,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://fiweex.com/qr_bienvenido_fx/3204/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -8231,64 +6831,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "5/6 KPIs",
         "status": "Sugerida",
-        "progress": 83,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 15-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Valentina",
-          "Fecha: 15-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQS, TQR, TQB, TQ10, SMIR21, BAILEYS, DJB, DJR, S12",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "5/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -8303,16 +6884,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-50",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-51-501062976",
@@ -8336,7 +6908,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://sietecortes.chefcloud.dotsolutions.cl/siete-cortes-open-kennedy",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -8394,64 +6966,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "1/6 KPIs",
         "status": "Sugerida",
-        "progress": 17,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 03-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo Del Barrio",
-          "Fecha: 03-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: Sin dato",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "1/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NA",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -8466,16 +7019,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-51",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-52-501062121",
@@ -8499,7 +7043,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://gour.media/sociedad-0306/santiago/barra/",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 76,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -8557,64 +7101,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 02-05-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Fernando Perez",
-          "Fecha: 02-05-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWGLR, JWBLUE, TQLD, TQS, TQR, TQB, SMIR21, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -8629,16 +7154,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-52",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-53-500625969",
@@ -8662,7 +7178,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://tanta.cl/cartalicores/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -8720,64 +7236,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 22-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo Del Barrio",
-          "Fecha: 22-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQR, TQS, TQB, SMIR21, TQ10, DJB, DJR, DJA, DJ70, S12, S15, S18, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -8792,16 +7289,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-53",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-54-500625965",
@@ -8825,7 +7313,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://tanta.cl/cartaqrlinks/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -8883,64 +7371,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 15-01-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo del Barrio",
-          "Fecha: 15-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQS, TQR, TQB, TQ10, SMIR21, BAILEYS, DJB, DJR, DJ70, S12, S15, S18",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -8955,16 +7424,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-54",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-55-501074255",
@@ -8988,7 +7448,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://tanta.cl/cartalicores/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -9046,64 +7506,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 05-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo Del Barrio",
-          "Fecha: 05-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQR, TQS, TQB, SMIR21, TQ10, DJB, DJR, DJA, DJ70, S12, S15, S18, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -9118,16 +7559,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-55",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-56-501104964",
@@ -9151,7 +7583,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://tanta.cl/cartalicores/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -9209,64 +7641,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 19-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo Del Barrio",
-          "Fecha: 19-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQR, TQS, TQB, SMIR21, TQ10, DJB, DJR, DJA, DJ70, S12, S15, S18, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -9281,16 +7694,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-56",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-57-501134148",
@@ -9314,7 +7718,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://tanta.cl/cartalicores/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -9372,64 +7776,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 03-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo Del Barrio",
-          "Fecha: 03-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQR, TQS, TQB, SMIR21, TQ10, DJB, DJR, DJA, DJ70, S12, S15, S18, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -9444,16 +7829,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-57",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-58-501158164",
@@ -9477,7 +7853,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://tanta.cl/cartalicores/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -9535,64 +7911,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 14-10-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo del Barrio",
-          "Fecha: 14-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQS, TQR, TQB, TQ10, SMIR21, BAILEYS, DJB, DJR, DJ70, S12, S15, S18",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -9607,16 +7964,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-58",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-59-500625971",
@@ -9640,7 +7988,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://tanta.cl/cartalicores/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -9698,64 +8046,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 25-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo Del Barrio",
-          "Fecha: 25-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQR, TQS, TQB, SMIR21, TQ10, DJB, DJR, DJA, DJ70, S12, S15, S18, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -9770,16 +8099,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-59",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-60-501074263",
@@ -9803,7 +8123,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "Tanta 🍲",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -9861,64 +8181,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 10-11-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo del Barrio",
-          "Fecha: 10-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQS, TQR, TQB, TQ10, SMIR21, BAILEYS, DJB, DJR, DJ70, S12, S15, S18",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -9933,16 +8234,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-60",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-61-501154946",
@@ -9966,7 +8258,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "Tanta 🍲",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -10024,64 +8316,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 03-11-2025",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo del Barrio",
-          "Fecha: 03-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQS, TQR, TQB, TQ10, SMIR21, BAILEYS, DJB, DJR, DJ70, S12, S15, S18",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -10096,16 +8369,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-61",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-62-501140683",
@@ -10129,7 +8393,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://queresto.com/barteclados?b=99PR",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -10186,65 +8450,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 31-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 31-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, S12, SMIR21, TQLD, TQS, TQB, TQR, TQ10, BAILEYS, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -10259,16 +8504,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-62",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-63-501140739",
@@ -10292,7 +8528,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://queresto.com/barteclados?b=99PR",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -10349,65 +8585,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 31-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 31-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, S12, SMIR21, TQLD, TQS, TQB, TQR, TQ10, BAILEYS, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -10422,16 +8639,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-63",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-64-28",
@@ -10455,7 +8663,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://queresto.com/barteclados?b=99PR",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -10512,65 +8720,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 07-04-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 07-04-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, S12, SMIR21, TQLD, TQS, TQB, TQR, TQ10, BAILEYS, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -10585,16 +8774,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-64",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-65-501140735",
@@ -10618,7 +8798,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://queresto.com/barteclados",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -10675,65 +8855,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 27-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 27-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQS, TQR, TQB, TQ10, BAILEYS, SMIR21, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -10748,16 +8909,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-65",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-66-500283769",
@@ -10781,7 +8933,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://queresto.com/barteclados",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -10838,65 +8990,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 03-05-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 03-05-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQS, TQR, TQB, TQ10, BAILEYS, SMIR21, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -10911,16 +9044,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-66",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-67-501140688",
@@ -10944,7 +9068,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://queresto.com/barteclados",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -11001,65 +9125,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 03-05-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 03-05-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQS, TQR, TQB, TQ10, BAILEYS, SMIR21, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -11074,16 +9179,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-67",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-68-500294369",
@@ -11107,7 +9203,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://www.vittamina.cl/nuestro-menu/",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 82,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -11165,64 +9261,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 18-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Horeca Ruta",
-          "Fecha: 18-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Bueno",
-        "summary": "Foto: 3/4",
-        "details": [
-          "SKUs: JWR, JWB, BAILEYS, TQLD",
-          "Foto: 3/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: NA",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -11237,16 +9314,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-68",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-69-501103678",
@@ -11270,7 +9338,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "Carta-Zeratti-Providencia-2025.pdf",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -11327,65 +9395,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 18-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Rocio Jorquera",
-          "Fecha: 18-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWBLUE, SMIR21, TQLD, TQS, TQR, TQB, DJB, DJR, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -11400,16 +9449,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-69",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-70-501180997",
@@ -11433,7 +9473,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://www.clubgordos.cl/carta-general/CARTA-GENERAL.pdf",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -11491,64 +9531,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 11-04-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Alexis Fuentes",
-          "Fecha: 11-04-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWBlonde, TQLD, TQS, TQR, TQB, TQ10, SMIR21, GORDON'S, DJB, DJR, S12",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -11563,16 +9584,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-70",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-71-501151198",
@@ -11596,7 +9608,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://www.clubgordos.cl/carta-general/CARTA-GENERAL.pdf",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 76,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -11654,64 +9666,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 03-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Alexis Fuentes",
-          "Fecha: 03-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWBlonde, TQLD, TQS, TQR, TQB, TQ10, SMIR21, GORDON'S, DJB, DJR, S12",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -11726,16 +9719,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-71",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-72-501051003",
@@ -11759,7 +9743,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://sky300.cl/cartaqrskybar-comida/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 63,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -11817,64 +9801,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "1/6 KPIs",
         "status": "Sugerida",
-        "progress": 17,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 23-01-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Pablo del Barrio",
-          "Fecha: 23-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Bueno",
-        "summary": "Foto: 3/4",
-        "details": [
-          "SKUs: JWR, JWB, JWGLR, JWBLUE, S12, S18, DJB, DJA, TQLD, TQ10, BAILEYS",
-          "Foto: 3/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "1/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -11889,16 +9854,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-72",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-73-31",
@@ -11922,7 +9878,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://mesti.app/menu/buteco",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 58,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -11987,57 +9943,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 17-02-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Cristian Croxato",
-          "Fecha: 17-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Atencion",
-        "summary": "Foto: 2/4",
-        "details": [
-          "SKUs: JWR, JWB, BAILEYS",
-          "Foto: 2/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: NA",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NA",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -12052,16 +9989,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-73",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-74-501008891",
@@ -12085,7 +10013,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://www.tumenuya.com/elbistroloungebar",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 81,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -12143,64 +10071,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 05-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Valentina",
-          "Fecha: 05-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: TQLD, TQS, TQR, TQB, DJB, DJR, BAILEYS, JWR, JWBlonde, JWB, JWGLR, JWBLUE",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: NA",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -12215,16 +10124,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-74",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-75-501136101",
@@ -12248,7 +10148,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://gour.media/buena-barra/las-condes/barra/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 68,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -12306,64 +10206,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 08-04-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 08-04-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Bueno",
-        "summary": "Foto: 3/4",
-        "details": [
-          "SKUs: TQLD, SMIR21, DJB, JWB, JWR",
-          "Foto: 3/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -12378,16 +10259,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-75",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-76-500860885",
@@ -12411,7 +10283,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://gour.media/buena-barra/providencia/barra/",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 82,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -12469,64 +10341,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 10-04-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 10-04-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Bueno",
-        "summary": "Foto: 3/4",
-        "details": [
-          "SKUs: TQLD, SMIR21, JWB, JWR, DJB, DJR",
-          "Foto: 3/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -12541,16 +10394,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-76",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-77-501175840",
@@ -12574,7 +10418,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://gour.media/buena-barra/las-condes/barra/",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 68,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -12632,64 +10476,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 02-04-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 02-04-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Bueno",
-        "summary": "Foto: 3/4",
-        "details": [
-          "SKUs: TQLD, SMIR21, JWB, JWR",
-          "Foto: 3/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -12704,16 +10529,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-77",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-78-501142462",
@@ -12737,7 +10553,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://gour.media/tquila/plaza-vespucio/barra/",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 49,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -12802,57 +10618,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Pendiente",
-        "summary": "Sin visita registrada",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: Sin registro"
-        ],
-        "nextAction": "Registrar visita rutinaria."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Atencion",
-        "summary": "Foto: 1/4",
-        "details": [
-          "SKUs: JWB, DJB, DJR, DJA, DJ70, DJ1942",
-          "Foto: 1/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -12867,16 +10664,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-78",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-79-500456123",
@@ -12900,7 +10688,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://gour.media/tquila/plaza-vespucio/barra/",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 49,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -12965,57 +10753,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Pendiente",
-        "summary": "Sin visita registrada",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: Sin registro"
-        ],
-        "nextAction": "Registrar visita rutinaria."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Atencion",
-        "summary": "Foto: 1/4",
-        "details": [
-          "SKUs: JWB, DJB, DJR, DJA, DJ70, DJ1942",
-          "Foto: 1/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -13030,16 +10799,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-79",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-80-500456121",
@@ -13063,7 +10823,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://gour.media/tquila/plaza-vespucio/barra/",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 58,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -13128,57 +10888,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 11-04-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Vicho Chellew",
-          "Fecha: 11-04-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Atencion",
-        "summary": "Foto: 1/4",
-        "details": [
-          "SKUs: JWB, DJB, DJR, DJA, DJ70, DJ1942",
-          "Foto: 1/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -13193,16 +10934,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-80",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-81-501249874",
@@ -13226,7 +10958,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1BTaVZ_yGo4hw18Dt4Zxi6_S-C7IOaMfb/view",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 81,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -13284,64 +11016,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 01-04-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Santiago Izurieta",
-          "Fecha: 01-04-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQR, TQ10, TQS, SMIR21, BAILEYS, DJB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NA",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -13356,16 +11069,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-81",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-82-501049798",
@@ -13389,7 +11093,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://gour.media/furo/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 77,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -13447,64 +11151,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 24-03-2026",
-        "details": [
-          "Walker: Luis Felipe Cruz",
-          "Desarrollador: Sebastian Cornejo",
-          "Fecha: 24-03-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Bueno",
-        "summary": "Foto: 3/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD",
-          "Foto: 3/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: NA",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -13519,16 +11204,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-82",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-83-500969279",
@@ -13552,7 +11228,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "bahia grill",
     "observation": "categoria gin conciderada como gin tonic,  no esoecifica whisky sour",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -13610,64 +11286,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "1/6 KPIs",
         "status": "Sugerida",
-        "progress": 17,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 31-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Leandro Vendedor",
-          "Fecha: 31-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWBLUE, TQLD, TQS, BAILEYS, DJB, GORDON'S",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "1/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -13682,16 +11339,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-83",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "categoria gin conciderada como gin tonic,  no esoecifica whisky sour",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-84-501023182",
@@ -13715,7 +11363,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "bahia grill",
     "observation": "categoria gin conciderada como gin tonic,  no esoecifica whisky sour",
     "occasion": "RESTAURANT",
-    "healthScore": 76,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -13773,64 +11421,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "1/6 KPIs",
         "status": "Sugerida",
-        "progress": 17,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 11-12-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Leandro Vendedor",
-          "Fecha: 11-12-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWBLUE, TQLD, TQS, BAILEYS, DJB, GORDON'S",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "1/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -13845,16 +11474,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-84",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "categoria gin conciderada como gin tonic,  no esoecifica whisky sour",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-85-501127447",
@@ -13878,7 +11498,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://queresto.com/BHT",
     "observation": "categoria gin conciderada como gin tonic,  no esoecifica whisky sour",
     "occasion": "BAR",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -13936,64 +11556,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "1/6 KPIs",
         "status": "Sugerida",
-        "progress": 17,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 31-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Leandro Vendedor",
-          "Fecha: 31-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, GORDON'S, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "1/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -14008,16 +11609,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-85",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "categoria gin conciderada como gin tonic,  no esoecifica whisky sour",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-86-500366555",
@@ -14041,7 +11633,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://www.gour-net.cl/apps/carta/#/classic/-O39qcgLMCp4sPAxIMQn/-O39qppi786vx1Uq-aWo",
     "observation": "local tiene buenas relaciones con la competencia",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -14106,57 +11698,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 11-12-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Ingrid Martinez Vendedora",
-          "Fecha: 11-12-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: NA",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NA",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -14171,16 +11744,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-86",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "local tiene buenas relaciones con la competencia",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-87-500476434",
@@ -14204,7 +11768,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://hotel.antaycasinohotel.cl/",
     "observation": "no especifica detalle en whisky sour esta en cambio",
     "occasion": "HOTEL / CASINO / CLUB",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -14262,64 +11826,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 07-11-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Ingrid Martinez Vendedora",
-          "Fecha: 07-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, TQB, TQ10, SMIR21, BAILEYS, GORDON'S",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -14334,16 +11879,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-87",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en whisky sour esta en cambio",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-88-501012404",
@@ -14367,7 +11903,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "Omina",
     "observation": "no especifica detalle en cocteleria",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -14425,64 +11961,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 07-11-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Ingrid Martinez Vendedora",
-          "Fecha: 07-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, BAILEYS, TQS, TQLD, TQR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -14497,16 +12014,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-88",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en cocteleria",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-89-501124067",
@@ -14530,7 +12038,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "Drive in",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 76,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -14588,64 +12096,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 06-11-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Ingrid Martinez Vendedora",
-          "Fecha: 06-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, TQ10, BAILEYS, GORDON'S, DJB, SMIR21",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -14660,16 +12149,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-89",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-90-500920795",
@@ -14693,7 +12173,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "fisica",
     "observation": "no especifica detalle en cocteleria, no trabaja tropical",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -14758,57 +12238,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 31-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Leandro Vendedor",
-          "Fecha: 31-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQR, BAILEYS, TQS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -14823,16 +12284,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-90",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en cocteleria, no trabaja tropical",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-91-500729154",
@@ -14856,7 +12308,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://queresto.com/Entrejotes",
     "observation": "no especifica detalle en cocteleria,",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -14921,57 +12373,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 31-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Leandro Vendedor",
-          "Fecha: 31-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQS, TQR, BAILEYS, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -14986,16 +12419,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-91",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en cocteleria,",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-92-500932085",
@@ -15019,7 +12443,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://menu.fu.do/frontierrestobar/qr-menu",
     "observation": "no especifica detalle en cocteleria,",
     "occasion": "BAR",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -15084,57 +12508,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 31-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Leandro Vendedor",
-          "Fecha: 31-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, DJB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -15149,16 +12554,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-92",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en cocteleria,",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-93-501159127",
@@ -15182,7 +12578,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "",
     "observation": "",
     "occasion": "DISCO",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -15240,64 +12636,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 12-12-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Ingrid Martinez Vendedora",
-          "Fecha: 12-12-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWBlonde, JWGLR, JWBLUE, TQLD, TQS, TQR, TQB, TQ10, SMIR21, BAILEYS, DJB, GORDON'S",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -15312,16 +12689,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-93",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-94-501125967",
@@ -15345,7 +12713,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://digitalmenucheck.com/bdb4634c-30d3-4841-80f5-2f3e2169f966/index.htl",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -15410,57 +12778,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 07-11-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Ingrid Martinez Vendedora",
-          "Fecha: 07-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQR, BAILEYS, DJB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -15475,16 +12824,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-94",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-95-501027421",
@@ -15508,7 +12848,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "kaya",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -15566,64 +12906,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "5/6 KPIs",
         "status": "Sugerida",
-        "progress": 83,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 12-12-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Ingrid Martinez Vendedora",
-          "Fecha: 12-12-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQS, TQR, TQ10, SMIR21, GORDON'S, BAILEYS, DJB, DJR, DJA, DJ70, DJ1942, S12, S15",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "5/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -15638,16 +12959,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-95",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-96-500728654",
@@ -15671,7 +12983,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "http://jotemelancolico.cl/latorre/?fbclid=PAY2xjawH1ZJBle|HRuA2FlbQIxMQABpj1JX0KH1x6gNe7XhsucJcLkyyqYPVmWr8nRTCTx31HgY0s6x1CJZPqh6w_aem_WBGyxyuJcph_gdQZclwtog",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -15729,64 +13041,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 07-11-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Ingrid Martinez Vendedora",
-          "Fecha: 07-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWGLR, JWBLUE, TQLD, TQS, TQR, TQ10, TQB, BAILEYS, GORDON'S, DJB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -15801,16 +13094,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-96",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-97-501129469",
@@ -15834,7 +13118,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://linktr.ee/matanzabar?utm_source=qr_code",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 76,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -15892,64 +13176,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 06-11-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Ingrid Martinez Vendedora",
-          "Fecha: 06-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQS, TQR, TQB, TQ10, BAILEYS, DJB, DJR, JWBlonde, GORDON'S",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -15964,16 +13229,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-97",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-98-501166045",
@@ -15997,7 +13253,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/14XmFVd4GZMGJ8mr6326k_bFRrun5bEp4/view?fbclid=PAY2xjawGzAKJleHRuA2FlbQIxMQABpvlSTwV3UMV5auaJ4iM7_OokfyMBvlLoXNtbPoMa06_DyPtJb0ZdjxJoHw_aem_ZdjC7mjHGor0wemOuEEDJg",
     "observation": "cambio de carta se hara efectivo en mes de verano, naming generico",
     "occasion": "BAR",
-    "healthScore": 76,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -16062,57 +13318,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 07-11-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Leandro Vendedor",
-          "Fecha: 07-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWGLR, TQLD, TQ10, DJB, DJR, DJA, JWBlonde",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -16127,16 +13364,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-98",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "cambio de carta se hara efectivo en mes de verano, naming generico",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-99-501124099",
@@ -16160,7 +13388,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/160qrdpoM_VbEZsKkMSkV-5wZM7it-RYo/view",
     "observation": "Cerrado Remodelacion",
     "occasion": "BAR",
-    "healthScore": 57,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -16225,57 +13453,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Pendiente",
-        "summary": "Sin visita registrada",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Sin dato",
-          "Fecha: NA"
-        ],
-        "nextAction": "Registrar visita rutinaria."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQS, TQR, TQB, DJB, BAILEYS, GORDON'S",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: NA",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NA",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -16290,16 +13499,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-99",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cerrado Remodelacion",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-100-500914477",
@@ -16323,7 +13523,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://piscologiabar.cl/carta-de-bar/",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -16381,64 +13581,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 06-11-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Ingrid Martinez Vendedora",
-          "Fecha: 06-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQS, TQR, TQB, TQ10, GORDON'S, BAILEYS, DJB, DJR, DJA, DJ70, DJ1942, S12",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -16453,16 +13634,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-100",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-101-500748307",
@@ -16486,7 +13658,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://qr.me-qr.com/es/data/image-pack/XaxS5nhS",
     "observation": "no especifica detalle en cocteleria,",
     "occasion": "BAR",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -16551,57 +13723,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 31-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Leandro Vendedor",
-          "Fecha: 31-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWBlonde, TQLD, TQS, TQR, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "1/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -16616,16 +13769,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-101",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en cocteleria,",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-102-500842445",
@@ -16649,7 +13793,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://uqr.to/p9wu",
     "observation": "no especifica detalle en cocteleria,",
     "occasion": "RESTAURANT",
-    "healthScore": 76,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -16714,57 +13858,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 19-10-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 19-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, DJB, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -16779,16 +13904,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-102",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en cocteleria,",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-103-500986196",
@@ -16812,7 +13928,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://beergarden.qrfour.com/app/menu/MzE0",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -16870,64 +13986,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 08-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 08-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWBLUE, TQLD, TQS, TQR, BAILEYS, GORDON'S",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -16942,16 +14039,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-103",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-104-501054909",
@@ -16975,7 +14063,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "",
     "observation": "no especifica detalle en cocteleria,",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -17040,57 +14128,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 20-10-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: alejandro",
-          "Fecha: 20-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWBlonde, JWGLR, TQLD, TQS, TQR, TQB, BAILEYS, SMIR21, GORDON'S, DJB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -17105,16 +14174,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-104",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en cocteleria,",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-105-501145143",
@@ -17138,7 +14198,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://qrco.de/bel9Ov",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 76,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -17196,64 +14256,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 10-11-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 10-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, DJB, BAILEYS, GORDON'S",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -17268,16 +14309,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-105",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-106-500981102",
@@ -17301,7 +14333,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://linktr.ee/O2RestobaryTerrazas?utm_source=qr_code",
     "observation": "no especifica detalle en cocteleria,",
     "occasion": "DISCO",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -17359,64 +14391,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 14-02-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 14-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWGLR, JWBLUE, TQLD, TQS, TQ10, BAILEYS, DJB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -17431,16 +14444,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-106",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en cocteleria,",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-107-500354429",
@@ -17464,7 +14468,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://tumesa.cl/viewer.php?key=5f4560ab969f0",
     "observation": "",
     "occasion": "DISCO",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -17529,57 +14533,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 13-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 13-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWBlonde, TQLD, TQS, TQR, BAILEYS, TQB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -17594,16 +14579,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-107",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-108-501012813",
@@ -17627,7 +14603,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://restobarlaestacionls.tiiny.co/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -17685,64 +14661,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "5/6 KPIs",
         "status": "Sugerida",
-        "progress": 83,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 20-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 20-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, TQLD, JWBLUE, TQS, TQR, TQB, TQ10, SMIR21, BAILEYS, GORDON'S, DJB, DJR, DJA, DJ70, DJ1942",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "5/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -17757,16 +14714,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-108",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-109-501180197",
@@ -17790,7 +14738,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -17855,57 +14803,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 16-10-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: alejandor",
-          "Fecha: 16-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQB, TQR, SMIR21, BAILEYS, DJB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -17920,16 +14849,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-109",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-110-500349158",
@@ -17953,7 +14873,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://huentelauquenrestobarpizzeria.ola.click/producs",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 68,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -18011,64 +14931,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 17-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: camilo y italo",
-          "Fecha: 17-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Bueno",
-        "summary": "Foto: 3/4",
-        "details": [
-          "SKUs: BAILEYS, JWR, JWB, TQLD",
-          "Foto: 3/4"
-        ],
-        "nextAction": "Validar foto de exito."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -18083,16 +14984,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-110",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-111-500915323",
@@ -18116,7 +15008,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://invictussportbar.cl/web/carta-tragos/",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -18174,64 +15066,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "1/6 KPIs",
         "status": "Sugerida",
-        "progress": 17,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 20-11-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 20-11-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQS, TQR, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "1/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -18246,16 +15119,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-111",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-112-500716423",
@@ -18279,7 +15143,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/file/d/1aOMzS3haUprqcp3h5qTatAhiKwSKcrsW/view?usp=sharing",
     "observation": "no especifica detalle en cocteleria,",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -18344,57 +15208,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 23-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Alejandro",
-          "Fecha: 23-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, TQB, SMIR21, GORDON'S, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -18409,16 +15254,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-112",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en cocteleria,",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-113-501092655",
@@ -18442,7 +15278,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://menu.fu.do/jardinulriksen/qr-menu",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 89,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -18499,65 +15335,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 19-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 19-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 5/5",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQS, TQR, TQB, TQ10, BAILEYS, DJB",
-          "Foto: 5/5"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -18572,16 +15389,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-113",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-114-501181320",
@@ -18605,7 +15413,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://menu.fu.do/larusiabarranikkei",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -18663,64 +15471,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 19-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 19-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, TQB, TQ10, BAILEYS, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -18735,16 +15524,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-114",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-115-501118097",
@@ -18768,7 +15548,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://www.restaurantdonaana.cl/carta/",
     "observation": "no especifica detalle en cocteleria,",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -18833,57 +15613,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 13-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 13-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWBlonde, TQLD, TQS, TQR, DJB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -18898,16 +15659,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-115",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en cocteleria,",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-116-500359814",
@@ -18931,7 +15683,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://maradentrorestaurant.cl/cartamenu/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -18989,64 +15741,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "1/6 KPIs",
         "status": "Sugerida",
-        "progress": 17,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 16-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 16-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQS, TQR, TQB, JWBlonde",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "1/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NA",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -19061,16 +15794,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-116",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-117-500875590",
@@ -19094,7 +15818,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://menu.fu.do/maryfuego/qr-menu",
     "observation": "no especifica detalle en cocteleria,",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -19159,57 +15883,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 16-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 16-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -19224,16 +15929,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-117",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en cocteleria,",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-118-500982909",
@@ -19257,7 +15953,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://link-qr.com/s/a1fc255d-71e2-48cc-8bb5-63c558081521",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -19315,64 +16011,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 14-12-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 14-12-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, TQLD, TQS, TQR, TQB, TQ10, BAILEYS, DJB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -19387,16 +16064,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-118",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-119-501190220",
@@ -19420,7 +16088,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://naturalmar.framer.website/?fbclid=PAT01DUAO4K9JleHRuA2FlbQIxMABzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAacqpx1-xZb03a2xBf7pWbyyNq6AH6Eo-WiiSJaL3RyUkFIZ5ifiqVe8LHChUA_aem_Awo54_GgbKO9dte19xPGdw",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -19478,64 +16146,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 23-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: alejandro",
-          "Fecha: 23-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQR, TQS, TQB, GORDON'S, DJB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -19550,16 +16199,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-119",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-120-500915320",
@@ -19583,7 +16223,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://toteat.app/r/cl/No-Se-Diga-Mas/3989/menu",
     "observation": "no especifica detalle en cocteleria,",
     "occasion": "RESTAURANT",
-    "healthScore": 76,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -19641,64 +16281,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 23-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: ale",
-          "Fecha: 23-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, TQLD, TQR, JWBlonde, JWB, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -19713,16 +16334,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-120",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en cocteleria,",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-121-501071823",
@@ -19746,7 +16358,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://drive.google.com/drive/u/0/folders/14vPsvAJRHCAj7LRdtQk5kJfTyANlua2L",
     "observation": "",
     "occasion": "DISCO",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -19804,64 +16416,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 06-12-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 06-12-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, JWBLUE, TQLD, TQS, TQR, TQ10, SMIR21, BAILEYS, GORDON'S, DJB, DJR, DJ1942",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NA",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -19876,16 +16469,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-121",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-122-500866313",
@@ -19909,7 +16493,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://lapicadellupa.cl/",
     "observation": "no especifica detalle en cocteleria,",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -19974,57 +16558,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 09-12-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 09-12-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQR, TQLD, BAILEYS, SMIR21, DJB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -20039,16 +16604,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-122",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en cocteleria,",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-123-500741724",
@@ -20072,7 +16628,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://www.newpirats.cl/carta",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -20137,57 +16693,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 13-12-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: camilo",
-          "Fecha: 13-12-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, BAILEYS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: NA",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -20202,16 +16739,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-123",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-124-501172914",
@@ -20235,7 +16763,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "imagenes",
     "observation": "",
     "occasion": "HOTEL / CASINO / CLUB",
-    "healthScore": 62,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -20293,64 +16821,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 16-10-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 16-10-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, SMIR21, GORDON'S",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: NO",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Pendiente",
-        "summary": "0/2 elementos",
-        "details": [
-          "Glassware: Pendiente",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Solicitar POP."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -20365,16 +16874,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-124",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-125-500977027",
@@ -20398,7 +16898,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://linktr.ee/qr/2ffb1288-1167-4165-b0ea-4cdae3c135a5?utm_source=qr_code",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 76,
+    "healthScore": 50,
     "hasAacc": true,
     "investment": 0,
     "tags": [
@@ -20456,64 +16956,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 13-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 13-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, BAILEYS, TQB, TQ10, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: NO",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -20528,16 +17009,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-125",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-126-501144700",
@@ -20561,7 +17033,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://qrcc.me/s9b6dcazbujq",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -20619,64 +17091,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 14-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: alejandro",
-          "Fecha: 14-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, TQB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -20691,16 +17144,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-126",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-127-501043940",
@@ -20724,7 +17168,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://www.terrazadeltoro.cl/carta-cocteles/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAb21jcAO4LXdleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAacHcJfDtf9omOLfhCE4cOYelQeE_BsMzDZe2II-0G61VTElPxfxqlyL2_n9Uw_aem_cqmnRbKAzuhAbvfpYx7bIQ",
     "observation": "no especifica detalle en cocteleria,",
     "occasion": "BAR",
-    "healthScore": 76,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -20782,64 +17226,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 16-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 16-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWGLR, TQLD, BAILEYS, GORDON'S, DJB, DJ1942",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -20854,16 +17279,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-127",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "no especifica detalle en cocteleria,",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-128-500353931",
@@ -20887,7 +17303,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://uqrmecdn.s3.us-east-2.amazonaws.com/u/280203/663472-1121004dd4efde83076aa7b30e17e99ce2f1d52.p|df",
     "observation": "",
     "occasion": "BAR",
-    "healthScore": 57,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -20945,64 +17361,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "1/6 KPIs",
         "status": "Sugerida",
-        "progress": 17,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 13-12-2025",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: italo y camilo",
-          "Fecha: 13-12-2025"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQS",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "1/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NA",
-          "CA c/ Gin: NA",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NA"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Pendiente",
-        "summary": "0/2 elementos",
-        "details": [
-          "Glassware: Pendiente",
-          "Neon: Pendiente"
-        ],
-        "nextAction": "Solicitar POP."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -21017,16 +17414,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-128",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-129-501143922",
@@ -21050,7 +17438,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://menu.fu.do/wanaku",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 71,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -21108,64 +17496,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "3/6 KPIs",
         "status": "Sugerida",
-        "progress": 50,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 13-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: julia",
-          "Fecha: 13-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, TQLD, TQS, TQR, TQB, BAILEYS, DJB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Atencion",
-        "summary": "3/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: OK",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -21180,16 +17549,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-129",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-130-501152601",
@@ -21213,7 +17573,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://qrco.de/bdwzbo",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 86,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -21271,64 +17631,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "4/6 KPIs",
         "status": "Sugerida",
-        "progress": 67,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 23-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: italo",
-          "Fecha: 23-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWBlonde, JWB, JWGLR, TQLD, TQS, TQR, TQB, TQ10, BAILEYS, DJB",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Bueno",
-        "summary": "4/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Bueno",
-        "summary": "Always On activo",
-        "details": [
-          "Always On: OK"
-        ],
-        "nextAction": "Medir resultado."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -21343,16 +17684,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-130",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-131-501283186",
@@ -21376,7 +17708,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://spleatweb.app/restaurants/VYFbR2EG3Jd1Z98gsoZ2Dlsakix1/menu?fbclid=PAb21jcAQMeqpleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAad_1gS3nGxYssLmZY9TvQ02fpXCFpsRI5McI4lsQ_xPqBCvzePEyqr939OEHw_aem_ai86N0HaNHj-snA2445M9A",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -21434,64 +17766,45 @@ export const MAESTRO_LOCALS = [
         "impact": "Menu",
         "reason": "2/6 KPIs",
         "status": "Sugerida",
-        "progress": 33,
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 06-01-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 06-01-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, TQLD, TQS, TQR, TQB, GORDON'S, DJB, DJR, DJA, DJ70, DJ1942",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "2/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NA",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: NA",
-          "Gin & Tonic: NO",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -21506,16 +17819,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-131",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-132-501143922",
@@ -21539,7 +17843,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://restaurantcannoli.cl/carta-puerto-velero-cannoli-1/",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 67,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -21604,57 +17908,38 @@ export const MAESTRO_LOCALS = [
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 11-02-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: Italo",
-          "Fecha: 11-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWGLR, JWBLUE, TQLD, TQR, TQS, TQB, TQ10, GORDON'S, BAILEYS, DJB, DJR, DJ1942",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Pendiente",
-        "summary": "0/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: NO",
-          "CA c/ Whisky: NO",
-          "CA c/ Gin: NO",
-          "JW + Coca Cola: NO",
-          "Gin & Tonic: NO",
-          "Whisky Sour: NO"
-        ],
-        "nextAction": "Cerrar gaps."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -21669,16 +17954,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": false,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-132",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   },
   {
     "id": "BASE-133-500915323",
@@ -21702,7 +17978,7 @@ export const MAESTRO_LOCALS = [
     "menuUrl": "https://www.canva.com/design/DAHBEAuDJQM/PmjDBiqGeyRQlGgpgOienA/edit",
     "observation": "",
     "occasion": "RESTAURANT",
-    "healthScore": 80,
+    "healthScore": 50,
     "hasAacc": false,
     "investment": 0,
     "tags": [
@@ -21759,65 +18035,46 @@ export const MAESTRO_LOCALS = [
         "origin": "Maestro DBA",
         "impact": "Menu",
         "reason": "6/6 KPIs",
-        "status": "Aceptada",
-        "progress": 100,
+        "status": "Sugerida",
+        "progress": 0,
         "nextStep": "Revisar detalle de Menu en On Five."
       }
     ],
     "pillars": {
       "staff": {
         "title": "Staff",
-        "score": "Bueno",
-        "summary": "Visita: 25-02-2026",
-        "details": [
-          "Walker: Michael Yañez",
-          "Desarrollador: italo y camilo",
-          "Fecha: 25-02-2026"
-        ],
-        "nextAction": "Mantener frecuencia y registrar minuta."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "assortment": {
         "title": "Assortment",
-        "score": "Fuerte",
-        "summary": "Foto: 4/4",
-        "details": [
-          "SKUs: JWR, JWB, JWGLR, JWBLUE, TQLD, TQS, TQR, TQB, TQ10, BAILEYS, GORDON'S, DJB, DJR",
-          "Foto: 4/4"
-        ],
-        "nextAction": "Mantener."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "menu": {
         "title": "Menu",
-        "score": "Fuerte",
-        "summary": "6/6 KPIs cumplidos",
-        "details": [
-          "Tropical Gin: OK",
-          "CA c/ Whisky: OK",
-          "CA c/ Gin: OK",
-          "JW + Coca Cola: OK",
-          "Gin & Tonic: OK",
-          "Whisky Sour: OK"
-        ],
-        "nextAction": "Menu OK."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "branding": {
         "title": "Branding",
-        "score": "Bueno",
-        "summary": "2/2 elementos",
-        "details": [
-          "Glassware: OK",
-          "Neon: OK"
-        ],
-        "nextAction": "Registrar evidencia."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       },
       "activation": {
         "title": "Activacion",
-        "score": "Pendiente",
-        "summary": "Sin activacion",
-        "details": [
-          "Always On: Pendiente"
-        ],
-        "nextAction": "Levantar activacion."
+        "score": "Sin registro",
+        "summary": "",
+        "details": [],
+        "nextAction": ""
       }
     },
     "menuEvaluation": {
@@ -21832,16 +18089,7 @@ export const MAESTRO_LOCALS = [
       "hasWhiskySourBlack": true,
       "lastSaved": "Maestro DBA"
     },
-    "notes": [
-      {
-        "id": "note-BASE-133",
-        "author": "Maestro DBA",
-        "date": "Cargado",
-        "type": "Observacion",
-        "text": "Cuenta importada desde Maestro DBA.",
-        "nextAction": "Validar con venta real usando CLIENTE ID."
-      }
-    ]
+    "notes": []
   }
 ];
 export const MAESTRO_WALKERS = [

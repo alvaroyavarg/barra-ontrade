@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { parseOnFiveWorkbook, summarizeOnFiveLocals } from "../utils/onFiveExcelParser.js";
 import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCuentas.js";
 import { useSupabaseData } from "../hooks/useSupabaseData.js";
+import { signOut } from "../lib/auth.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
 const CRM_ROLES = [
@@ -233,29 +234,6 @@ const DEFAULT_ASSORTMENT_CONFIG = {
 const ASSORTMENT_PORTFOLIOS = {};
 
 
-const MENU_DETECTION_MOCKS = {
-  "bar-lagarto": [
-    { id: "m1", name: "Tanqueray & Tonic", category: "Gin", brand: "Tanqueray", owner: "Diageo", price: 8900, confidence: 0.94 },
-    { id: "m2", name: "Don Julio Paloma", category: "Tequila", brand: "Don Julio", owner: "Diageo", price: 10900, confidence: 0.9 },
-    { id: "m3", name: "JW Black Highball", category: "Whisky", brand: "Johnnie Walker", owner: "Diageo", price: 9900, confidence: 0.92 },
-    { id: "m4", name: "Aperol Spritz", category: "Aperitivo", brand: "Aperol", owner: "Competencia", price: 8200, confidence: 0.88 },
-    { id: "m5", name: "Margarita Casa", category: "Tequila", brand: "Competidor tequila", owner: "Competencia", price: 9500, confidence: 0.81 },
-  ],
-  "hotel-alvear": [
-    { id: "m1", name: "Blue Label neat", category: "Whisky", brand: "Johnnie Walker", owner: "Diageo", price: 32000, confidence: 0.91 },
-    { id: "m2", name: "Tanqueray No. Ten Martini", category: "Gin", brand: "Tanqueray", owner: "Diageo", price: 14500, confidence: 0.93 },
-    { id: "m3", name: "Zacapa Old Fashioned", category: "Rum", brand: "Zacapa", owner: "Diageo", price: 16800, confidence: 0.85 },
-    { id: "m4", name: "Macallan 12", category: "Whisky", brand: "Macallan", owner: "Competencia", price: 28500, confidence: 0.89 },
-    { id: "m5", name: "Grey Goose Martini", category: "Vodka", brand: "Grey Goose", owner: "Competencia", price: 14200, confidence: 0.84 },
-  ],
-  "club-crobar": [
-    { id: "m1", name: "Smirnoff Red Energy", category: "Vodka", brand: "Smirnoff", owner: "Diageo", price: 7200, confidence: 0.9 },
-    { id: "m2", name: "JW Red Cola", category: "Whisky", brand: "Johnnie Walker", owner: "Diageo", price: 7600, confidence: 0.88 },
-    { id: "m3", name: "Tanqueray Gin Tonic", category: "Gin", brand: "Tanqueray", owner: "Diageo", price: 8400, confidence: 0.92 },
-    { id: "m4", name: "Jager Bomb", category: "Liqueur", brand: "Jagermeister", owner: "Competencia", price: 6900, confidence: 0.87 },
-    { id: "m5", name: "Vodka house", category: "Vodka", brand: "Marca local", owner: "Competencia", price: 6200, confidence: 0.76 },
-  ],
-};
 
 const GAP_RULES = [
   { pillar: "staff",      label: "Staff",       title: "Registrar visita de terreno",    priority: "Alta"  },
@@ -286,7 +264,7 @@ function buildKanbanFromLocals(locals) {
   return cards;
 }
 
-function OnTradeCrm({ onOpenModule }) {
+function OnTradeCrm({ onOpenModule, authUser, userProfile }) {
   const [roleId, setRoleId] = useState("walker");
   const [activeView, setActiveView] = useState("dashboard");
   const [activeWalker, setActiveWalker] = useState("all");
@@ -414,7 +392,7 @@ function OnTradeCrm({ onOpenModule }) {
     if (!noteText || !selectedLocal) return;
     const note = {
       id: `note-${Date.now()}`,
-      author: role.name,
+      author: userProfile?.nombre || authUser?.email || role.name,
       date: "Ahora",
       nextAction: "Definir siguiente paso desde el playbook.",
       text: noteText,
@@ -470,6 +448,22 @@ function OnTradeCrm({ onOpenModule }) {
             );
           })}
         </div>
+
+        {/* Usuario autenticado + cerrar sesión */}
+        {authUser && (
+          <div className="flex items-center gap-3">
+            <span className="text-[12px] text-slate-400">
+              {userProfile?.nombre || authUser.email}
+            </span>
+            <button
+              type="button"
+              onClick={() => signOut()}
+              className="rounded-md border border-white/10 px-2.5 py-1 text-[11px] font-medium text-slate-400 transition hover:border-white/20 hover:text-white focus:outline-none"
+            >
+              Salir
+            </button>
+          </div>
+        )}
       </header>
 
       <div className="flex flex-1">
@@ -4098,49 +4092,16 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
 
 function buildDefaultMenuEvaluation(local) {
   const hasDiageoAacc = Boolean(local.hasAacc);
-  const seed = {
-    "bar-lagarto": {
-      authorCocktailsTotal: 8,
-      authorCocktailsDiageo: 5,
-      hasWhiskyAuthorCocktail: true,
-      hasGinAuthorCocktail: true,
-      hasTropicalGin: true,
-      hasWhiscolaNaming: false,
-      hasTanquerayGt: true,
-      hasWhiskySourBlack: false,
-    },
-    "hotel-alvear": {
-      authorCocktailsTotal: 12,
-      authorCocktailsDiageo: 9,
-      hasWhiskyAuthorCocktail: true,
-      hasGinAuthorCocktail: true,
-      hasTropicalGin: true,
-      hasWhiscolaNaming: true,
-      hasTanquerayGt: true,
-      hasWhiskySourBlack: true,
-    },
-    "club-crobar": {
-      authorCocktailsTotal: 4,
-      authorCocktailsDiageo: 1,
-      hasWhiskyAuthorCocktail: false,
-      hasGinAuthorCocktail: true,
-      hasTropicalGin: true,
-      hasWhiscolaNaming: false,
-      hasTanquerayGt: false,
-      hasWhiskySourBlack: false,
-    },
-  }[local.id] ?? {};
-
   return {
     commercialStatus: hasDiageoAacc ? "diageo" : "none",
-    authorCocktailsTotal: seed.authorCocktailsTotal ?? 0,
-    authorCocktailsDiageo: seed.authorCocktailsDiageo ?? 0,
-    hasWhiskyAuthorCocktail: seed.hasWhiskyAuthorCocktail ?? false,
-    hasGinAuthorCocktail: seed.hasGinAuthorCocktail ?? false,
-    hasTropicalGin: seed.hasTropicalGin ?? false,
-    hasWhiscolaNaming: seed.hasWhiscolaNaming ?? false,
-    hasTanquerayGt: seed.hasTanquerayGt ?? false,
-    hasWhiskySourBlack: seed.hasWhiskySourBlack ?? false,
+    authorCocktailsTotal: 0,
+    authorCocktailsDiageo: 0,
+    hasWhiskyAuthorCocktail: false,
+    hasGinAuthorCocktail: false,
+    hasTropicalGin: false,
+    hasWhiscolaNaming: false,
+    hasTanquerayGt: false,
+    hasWhiskySourBlack: false,
     lastSaved: null,
   };
 }
@@ -4354,13 +4315,6 @@ function initials(name) {
     .toUpperCase();
 }
 
-const BRANDING_REQUESTS_MOCK = [
-  { id: "br1", local: "Bar Lagarto", address: "Av. Italia 123, Providencia", walker: "Ana Garcia", contact: "Juan Pérez - Bartender", items: [{ code: "BRD-011", name: "Table tent Tanqueray", qty: 2 }], status: "Pendiente", date: "02 may 2026", deliveryNotes: "Dejar en barra principal, preguntar por Juan" },
-  { id: "br2", local: "Hotel Las Condes", address: "El Bosque Norte 0440, Las Condes", walker: "Marcos Ruiz", contact: "Pedro Salas - Encargado", items: [{ code: "BRD-015", name: "Backbar Johnnie Walker Blue", qty: 1 }], status: "En tránsito", date: "01 may 2026", deliveryNotes: "Reposición de botellero dañado" },
-  { id: "br3", local: "Bar Lagarto", address: "Av. Italia 123, Providencia", walker: "Ana Garcia", contact: "Juan Pérez - Bartender", items: [{ code: "BRD-014", name: "Cooler Smirnoff", qty: 1 }, { code: "BRD-016", name: "Banner de barra Diageo", qty: 2 }], status: "Entregado", date: "28 abr 2026", deliveryNotes: "Entrada del bar, a la derecha" },
-  { id: "br4", local: "Club Crobar", address: "Marchant Pereira 145, Providencia", walker: "Lucas Prima", contact: "Sofía Mora - Gerente", items: [{ code: "BRD-017", name: "Lanyards staff (x10)", qty: 2 }], status: "Entregado", date: "25 abr 2026", deliveryNotes: "20 lanyards para temporada de verano" },
-];
-
 const REQUEST_STATUS_STYLE = {
   "Pendiente":   "warning",
   "En tránsito": "soft",
@@ -4368,7 +4322,7 @@ const REQUEST_STATUS_STYLE = {
 };
 
 function BrandingRequestsBoard() {
-  const [requests, setRequests] = useState(BRANDING_REQUESTS_MOCK);
+  const [requests, setRequests] = useState([]);
   const [selected, setSelected] = useState(new Set());
   const [bulkStatus, setBulkStatus] = useState("En tránsito");
 
@@ -4510,12 +4464,6 @@ function BrandingRequestsBoard() {
     </div>
   );
 }
-
-const CONFIG_WALKERS_MOCK = [
-  { id: "w1", name: "Ana Garcia", ruta: "Ruta Oriente", locals: ["Bar Lagarto", "Vitacura Club", "Sushi Osaka Las Condes"] },
-  { id: "w2", name: "Marcos Ruiz", ruta: "Ruta Centro-Sur", locals: ["Hotel Las Condes", "Clandestino", "Bar Nacional"] },
-  { id: "w3", name: "Lucas Prima", ruta: "Ruta Centro-Norte", locals: ["Club Crobar", "Liguria", "The Clinic Bar"] },
-];
 
 function ConfigView({ excelMeta, excelError, onUpload, localsData, walkers, onAddManualLocal, assortmentConfig, onSaveAssortmentConfig, onUpdateAccount }) {
   const [showForm, setShowForm] = useState(false);

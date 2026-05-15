@@ -110,43 +110,13 @@ const locals = dataRows.map((row, idx) => {
   const hasAct    = yes(item["Always On"]);
   const hasVisit  = isFilled(item["Visitas"]);
 
+  const blankPillar = (title) => ({ title, score: "Sin registro", summary: "", details: [], nextAction: "" });
   const pillars = {
-    staff: {
-      title: "Staff", score: hasVisit ? "Bueno" : "Pendiente",
-      summary: hasVisit ? `Visita: ${formatDate(item["Visitas"])}` : "Sin visita registrada",
-      details: [`Walker: ${walkerName}`, `Desarrollador: ${developer || "Sin dato"}`, `Fecha: ${formatDate(item["Visitas"])}`],
-      nextAction: hasVisit ? "Mantener frecuencia y registrar minuta." : "Registrar visita rutinaria.",
-    },
-    assortment: {
-      title: "Assortment",
-      score: (() => {
-        if (!assortRaw || assortRaw.toUpperCase() === "NA") return "Pendiente";
-        const m = assortRaw.match(/^(\d+)\/(\d+)$/);
-        if (m) { const r = parseInt(m[1]) / parseInt(m[2]); return r >= 1 ? "Fuerte" : r >= 0.6 ? "Bueno" : "Atencion"; }
-        return "Atencion";
-      })(),
-      summary: assortRaw && assortRaw.toUpperCase() !== "NA" ? `Foto: ${assortRaw}` : "Pendiente foto",
-      details: [`SKUs: ${clean(item["SKU's"]) || "Sin dato"}`, `Foto: ${assortRaw || "Sin dato"}`],
-      nextAction: assortRaw === "4/4" || assortRaw === "5/5" ? "Mantener." : "Validar foto de exito.",
-    },
-    menu: {
-      title: "Menu", score: scoreFromRate(menuRate),
-      summary: `${menuOk}/${MENU_FIELDS.length} KPIs cumplidos`,
-      details: MENU_FIELDS.map(([, label]) => `${label}: ${yes(item[label]) ? "OK" : clean(item[label]) || "Pendiente"}`),
-      nextAction: menuOk === MENU_FIELDS.length ? "Menu OK." : "Cerrar gaps.",
-    },
-    branding: {
-      title: "Branding", score: brandOk ? "Bueno" : "Pendiente",
-      summary: `${brandOk}/2 elementos`,
-      details: [`Glassware: ${yes(item["Glassware"]) ? "OK" : "Pendiente"}`, `Neon: ${yes(item["Neones y otros"]) ? "OK" : "Pendiente"}`],
-      nextAction: brandOk ? "Registrar evidencia." : "Solicitar POP.",
-    },
-    activation: {
-      title: "Activacion", score: hasAct ? "Bueno" : "Pendiente",
-      summary: hasAct ? "Always On activo" : "Sin activacion",
-      details: [`Always On: ${yes(item["Always On"]) ? "OK" : "Pendiente"}`],
-      nextAction: hasAct ? "Medir resultado." : "Levantar activacion.",
-    },
+    staff:      blankPillar("Staff"),
+    assortment: blankPillar("Assortment"),
+    menu:       blankPillar("Menu"),
+    branding:   blankPillar("Branding"),
+    activation: blankPillar("Activacion"),
   };
 
   return {
@@ -168,7 +138,7 @@ const locals = dataRows.map((row, idx) => {
     menuUrl:     clean(item["Carta"]),
     observation: clean(item["Observación"]),
     occasion:    clean(item["SUBCANAL"]) || "On Trade",
-    healthScore: healthFromPillars(pillars),
+    healthScore: 50,
     hasAacc:     clean(item["Acuerdo Comercial Vigente"]).toLowerCase().includes("diageo"),
     investment:  0,
     tags: [clean(item["CANAL"]), clean(item["Segmento"]), clean(item["SUBCANAL"])].filter(Boolean),
@@ -182,17 +152,9 @@ const locals = dataRows.map((row, idx) => {
       { label: "Branding",     value: `${brandOk}/2`,                                   note: "Glassware / Neon" },
     ],
     monthlySales: [],
-    missions: [{
-      id: `mission-BASE-${idx}`,
-      title:    menuOk === MENU_FIELDS.length ? "Mantener KPIs de menu" : "Cerrar gaps de Menu ON FIVE",
-      origin:   "Maestro DBA", impact: "Menu", reason: `${menuOk}/${MENU_FIELDS.length} KPIs`,
-      status:   menuOk === MENU_FIELDS.length ? "Aceptada" : "Sugerida",
-      progress: Math.round(menuRate * 100), nextStep: "Revisar detalle de Menu en On Five.",
-    }],
+    missions: [],
     pillars, menuEvaluation: menuEval,
-    notes: [{ id: `note-BASE-${idx}`, author: "Maestro DBA", date: "Cargado", type: "Observacion",
-      text: clean(item["Observación"]) || "Cuenta importada desde Maestro DBA.",
-      nextAction: "Validar con venta real usando CLIENTE ID." }],
+    notes: [],
   };
 });
 

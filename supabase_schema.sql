@@ -114,24 +114,51 @@ create table if not exists kanban_cards (
   updated_at timestamptz default now()
 );
 
--- ── Row-Level Security (RLS) ────────────────────────────────
--- Habilitar RLS en todas las tablas
-alter table locals           enable row level security;
-alter table contacts         enable row level security;
-alter table notes            enable row level security;
-alter table missions         enable row level security;
-alter table pillars          enable row level security;
-alter table assortment_audits enable row level security;
-alter table kanban_cards     enable row level security;
+-- Perfiles de usuario (linked a Supabase Auth)
+create table if not exists user_profiles (
+  id          uuid primary key references auth.users(id) on delete cascade,
+  email       text unique not null,
+  nombre      text default '',
+  rol         text default 'walker',   -- walker | manager | cpa
+  walker_name text default '',         -- debe coincidir con walkerName en locals
+  created_at  timestamptz default now(),
+  updated_at  timestamptz default now()
+);
 
--- Política abierta para anon (ajustar según auth real en el futuro)
-create policy "anon_all_locals"            on locals            for all using (true) with check (true);
-create policy "anon_all_contacts"          on contacts          for all using (true) with check (true);
-create policy "anon_all_notes"             on notes             for all using (true) with check (true);
-create policy "anon_all_missions"          on missions          for all using (true) with check (true);
-create policy "anon_all_pillars"           on pillars           for all using (true) with check (true);
-create policy "anon_all_audits"            on assortment_audits for all using (true) with check (true);
-create policy "anon_all_kanban"            on kanban_cards      for all using (true) with check (true);
+-- ── Row-Level Security (RLS) ────────────────────────────────
+alter table locals            enable row level security;
+alter table contacts          enable row level security;
+alter table notes             enable row level security;
+alter table missions          enable row level security;
+alter table pillars           enable row level security;
+alter table assortment_audits enable row level security;
+alter table kanban_cards      enable row level security;
+alter table user_profiles     enable row level security;
+
+-- Usuarios ven y editan solo su propio perfil
+create policy "own_profile"
+  on user_profiles for all
+  using (auth.uid() = id)
+  with check (auth.uid() = id);
+
+-- Managers y CP&A ven todos los perfiles
+create policy "managers_see_all_profiles"
+  on user_profiles for select
+  using (
+    exists (
+      select 1 from user_profiles up
+      where up.id = auth.uid() and up.rol in ('manager', 'cpa')
+    )
+  );
+
+-- Política: usuarios autenticados acceden a todos los datos de negocio
+create policy "auth_all_locals"            on locals            for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+create policy "auth_all_contacts"          on contacts          for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+create policy "auth_all_notes"             on notes             for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+create policy "auth_all_missions"          on missions          for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+create policy "auth_all_pillars"           on pillars           for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+create policy "auth_all_audits"            on assortment_audits for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+create policy "auth_all_kanban"            on kanban_cards      for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 
 -- ── Índices de apoyo ─────────────────────────────────────────
 create index if not exists idx_contacts_local      on contacts (local_id);
@@ -141,3 +168,4 @@ create index if not exists idx_pillars_local       on pillars (local_id);
 create index if not exists idx_audits_local        on assortment_audits (local_id, created_at desc);
 create index if not exists idx_kanban_local        on kanban_cards (local_id);
 create index if not exists idx_locals_walker       on locals (walker_name);
+create index if not exists idx_profiles_walker     on user_profiles (walker_name);
