@@ -4840,116 +4840,173 @@ function AccountSegmentSection({ localsData, walkers, onUpdateAccount }) {
 }
 
 function UserRolesSection() {
-  const [walkersList, setWalkersList] = useState([
-    { id: "w1", name: "Ana Garcia",   rut: "12.345.678-9", email: "ana.garcia@diageo.com",  ruta: "Ruta Oriente",      role: "walker" },
-    { id: "w2", name: "Marcos Ruiz",  rut: "13.456.789-0", email: "marcos.ruiz@diageo.com", ruta: "Ruta Centro-Sur",   role: "walker" },
-    { id: "w3", name: "Lucas Prima",  rut: "14.567.890-1", email: "lucas.prima@diageo.com",  ruta: "Ruta Centro-Norte", role: "walker" },
-  ]);
-  const [dbasList, setDbasList] = useState([
-    { id: "d1", name: "Carlos Muñoz DBA",  email: "carlos.dba@partner.com", brand: "Tanqueray / Gordon's" },
-    { id: "d2", name: "Valentina Soto DBA", email: "valentina.dba@partner.com", brand: "Don Julio" },
-  ]);
-  const [showWalkerForm, setShowWalkerForm] = useState(false);
-  const [showDbaForm, setShowDbaForm] = useState(false);
-  const emptyW = { name: "", rut: "", email: "", ruta: "" };
-  const emptyD = { name: "", email: "", brand: "" };
-  const [wForm, setWForm] = useState(emptyW);
-  const [dForm, setDForm] = useState(emptyD);
+  const [users, setUsers]       = useState([]);
+  const [loading, setLoading]   = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [saving, setSaving]     = useState(false);
+  const [feedback, setFeedback] = useState(null); // { type: "ok"|"err", msg }
 
-  const inputCls = "w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none";
-  const labelCls = "flex flex-col gap-1";
+  const ROLES = [
+    { id: "walker",  label: "Walker" },
+    { id: "manager", label: "On Trade Manager" },
+    { id: "cpa",     label: "CP&A" },
+  ];
+  const WALKER_NAMES = MAESTRO_WALKERS.map((w) => w.name);
+
+  const emptyForm = { nombre: "", email: "", password: "", rol: "walker", walker_name: "" };
+  const [form, setForm] = useState(emptyForm);
+
+  const inputCls  = "w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
+  const labelCls  = "flex flex-col gap-1";
   const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
-  const thCls = "border-b border-slate-200 bg-slate-50 p-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-slate-500";
-  const tdCls = "border-b border-slate-100 p-2.5 text-[13px]";
+  const thCls     = "border-b border-slate-200 bg-slate-50 p-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-slate-500";
+  const tdCls     = "border-b border-slate-100 p-2.5 text-[13px]";
+
+  const ROL_BADGE = {
+    walker:  "bg-blue-50 text-blue-700",
+    manager: "bg-violet-50 text-violet-700",
+    cpa:     "bg-amber-50 text-amber-700",
+  };
+
+  useEffect(() => {
+    import("../services/usersService.js").then(({ listUsers }) =>
+      listUsers()
+        .then(setUsers)
+        .catch(() => setFeedback({ type: "err", msg: "No se pudo cargar la lista de usuarios." }))
+        .finally(() => setLoading(false))
+    );
+  }, []);
+
+  function setField(k, v) { setForm((f) => ({ ...f, [k]: v })); }
+
+  async function handleCreate(e) {
+    e.preventDefault();
+    if (!form.nombre || !form.email || !form.password) return;
+    setSaving(true);
+    setFeedback(null);
+    try {
+      const { createUser } = await import("../services/usersService.js");
+      const result = await createUser(form);
+      setUsers((prev) => [...prev, {
+        id: result.userId, email: form.email, nombre: form.nombre,
+        rol: form.rol, walker_name: form.walker_name, created_at: new Date().toISOString(),
+      }]);
+      setFeedback({ type: "ok", msg: `Usuario "${form.nombre}" creado correctamente.` });
+      setForm(emptyForm);
+      setShowForm(false);
+    } catch (err) {
+      setFeedback({ type: "err", msg: err.message });
+    } finally {
+      setSaving(false);
+    }
+  }
 
   return (
     <article className="flex flex-col gap-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <div>
-        <span className={eyebrowCls}>CP&A · Administración</span>
-        <h2 className="mt-1 text-[16px] font-bold text-slate-900">Usuarios y roles</h2>
-        <p className="mt-0.5 text-[13px] text-slate-600">Define los walkers y DBAs del equipo.</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <span className={eyebrowCls}>CP&A · Administración</span>
+          <h2 className="mt-1 text-[16px] font-bold text-slate-900">Usuarios y accesos</h2>
+          <p className="mt-0.5 text-[13px] text-slate-600">
+            Crea y gestiona los accesos del equipo. Solo CP&A puede agregar usuarios.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => { setShowForm((v) => !v); setFeedback(null); }}
+          className="shrink-0 rounded-lg bg-slate-900 px-3 py-1.5 text-[13px] font-semibold text-white hover:bg-slate-700 focus:outline-none"
+        >
+          {showForm ? "Cancelar" : "+ Nuevo usuario"}
+        </button>
       </div>
 
-      {/* Walkers */}
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between gap-2">
-          <strong className="text-[14px] font-semibold text-slate-900">Walkers</strong>
-          <button type="button" onClick={() => setShowWalkerForm((v) => !v)}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[13px] font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none">
-            + Agregar Walker
-          </button>
+      {/* Feedback banner */}
+      {feedback && (
+        <div className={`rounded-lg border px-4 py-2.5 text-[13px] font-medium ${
+          feedback.type === "ok"
+            ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+            : "border-red-200 bg-red-50 text-red-700"
+        }`}>
+          {feedback.msg}
         </div>
-        {showWalkerForm && (
-          <div className="grid grid-cols-4 gap-2 rounded-lg bg-slate-50 p-3">
-            {[["name","Nombre completo","Ana García"],["rut","RUT","12.345.678-9"],["email","Email","ana@diageo.com"],["ruta","Ruta asignada","Ruta Oriente"]].map(([k,l,ph]) => (
-              <label key={k} className={labelCls}><span className={eyebrowCls}>{l}</span>
-                <input className={inputCls} placeholder={ph} value={wForm[k]} onChange={(e) => setWForm((f) => ({...f,[k]:e.target.value}))} />
-              </label>
-            ))}
-            <div className="col-span-full flex justify-end gap-2">
-              <button type="button" onClick={() => setShowWalkerForm(false)} className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[13px] hover:bg-slate-50 focus:outline-none">Cancelar</button>
-              <button type="button" onClick={() => { if (!wForm.name.trim()) return; setWalkersList((prev) => [...prev, { ...wForm, id: `w-${Date.now()}`, role: "walker" }]); setWForm(emptyW); setShowWalkerForm(false); }}
-                className="rounded-lg bg-slate-900 px-3 py-1.5 text-[13px] font-semibold text-white hover:bg-slate-800 focus:outline-none">Guardar</button>
-            </div>
+      )}
+
+      {/* Formulario de nuevo usuario */}
+      {showForm && (
+        <form onSubmit={handleCreate} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <label className={labelCls}>
+            <span className={eyebrowCls}>Nombre completo *</span>
+            <input className={inputCls} placeholder="Luis Felipe Cruz" value={form.nombre}
+              onChange={(e) => setField("nombre", e.target.value)} required />
+          </label>
+          <label className={labelCls}>
+            <span className={eyebrowCls}>Email *</span>
+            <input className={inputCls} type="email" placeholder="luis@diageo.com" value={form.email}
+              onChange={(e) => setField("email", e.target.value)} required />
+          </label>
+          <label className={labelCls}>
+            <span className={eyebrowCls}>Contraseña temporal *</span>
+            <input className={inputCls} type="password" placeholder="Mínimo 8 caracteres" value={form.password}
+              onChange={(e) => setField("password", e.target.value)} required minLength={8} />
+          </label>
+          <label className={labelCls}>
+            <span className={eyebrowCls}>Rol *</span>
+            <select className={inputCls} value={form.rol} onChange={(e) => setField("rol", e.target.value)}>
+              {ROLES.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}
+            </select>
+          </label>
+          {form.rol === "walker" && (
+            <label className={`${labelCls} col-span-full`}>
+              <span className={eyebrowCls}>Walker asignado (debe coincidir con el maestro)</span>
+              <select className={inputCls} value={form.walker_name} onChange={(e) => setField("walker_name", e.target.value)}>
+                <option value="">— Seleccionar —</option>
+                {WALKER_NAMES.map((n) => <option key={n} value={n}>{n}</option>)}
+              </select>
+            </label>
+          )}
+          <div className="col-span-full flex justify-end">
+            <button type="submit" disabled={saving}
+              className="rounded-lg bg-slate-900 px-4 py-2 text-[13px] font-semibold text-white hover:bg-slate-700 disabled:opacity-50 focus:outline-none">
+              {saving ? "Creando…" : "Crear usuario"}
+            </button>
           </div>
-        )}
+        </form>
+      )}
+
+      {/* Tabla de usuarios */}
+      {loading ? (
+        <p className="text-[13px] text-slate-500">Cargando usuarios…</p>
+      ) : users.length === 0 ? (
+        <div className="rounded-xl border border-dashed border-slate-200 py-10 text-center">
+          <p className="text-[13px] text-slate-500">No hay usuarios creados todavía.</p>
+        </div>
+      ) : (
         <div className="overflow-x-auto rounded-xl border border-slate-200">
-          <table className="w-full min-w-[520px] border-collapse">
-            <thead><tr>{["Nombre","RUT","Email","Ruta",""].map((h) => <th key={h} className={thCls}>{h}</th>)}</tr></thead>
+          <table className="w-full min-w-[500px] border-collapse">
+            <thead>
+              <tr>
+                {["Nombre", "Email", "Rol", "Walker asignado"].map((h) => (
+                  <th key={h} className={thCls}>{h}</th>
+                ))}
+              </tr>
+            </thead>
             <tbody>
-              {walkersList.map((w) => (
-                <tr key={w.id} className="last:border-b-0">
-                  <td className={`${tdCls} font-semibold text-slate-900`}>{w.name}</td>
-                  <td className={`${tdCls} text-slate-600`}>{w.rut}</td>
-                  <td className={`${tdCls} text-slate-600`}>{w.email}</td>
-                  <td className={`${tdCls} text-slate-600`}>{w.ruta}</td>
-                  <td className={tdCls}><button type="button" onClick={() => setWalkersList((prev) => prev.filter((x) => x.id !== w.id))} className="text-[12px] text-rose-500 hover:text-rose-700 focus:outline-none">Eliminar</button></td>
+              {users.map((u) => (
+                <tr key={u.id} className="last:border-b-0">
+                  <td className={`${tdCls} font-semibold text-slate-900`}>{u.nombre}</td>
+                  <td className={`${tdCls} text-slate-500`}>{u.email}</td>
+                  <td className={tdCls}>
+                    <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${ROL_BADGE[u.rol] ?? "bg-slate-100 text-slate-600"}`}>
+                      {ROLES.find((r) => r.id === u.rol)?.label ?? u.rol}
+                    </span>
+                  </td>
+                  <td className={`${tdCls} text-slate-500`}>{u.walker_name || "—"}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      </div>
-
-      {/* DBAs */}
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between gap-2">
-          <strong className="text-[14px] font-semibold text-slate-900">DBAs (Desarrolladores de Marca)</strong>
-          <button type="button" onClick={() => setShowDbaForm((v) => !v)}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[13px] font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none">
-            + Agregar DBA
-          </button>
-        </div>
-        {showDbaForm && (
-          <div className="grid grid-cols-3 gap-2 rounded-lg bg-slate-50 p-3">
-            {[["name","Nombre completo","Carlos Muñoz DBA"],["email","Email","carlos@partner.com"],["brand","Marcas asignadas","Tanqueray / Gordon's"]].map(([k,l,ph]) => (
-              <label key={k} className={labelCls}><span className={eyebrowCls}>{l}</span>
-                <input className={inputCls} placeholder={ph} value={dForm[k]} onChange={(e) => setDForm((f) => ({...f,[k]:e.target.value}))} />
-              </label>
-            ))}
-            <div className="col-span-full flex justify-end gap-2">
-              <button type="button" onClick={() => setShowDbaForm(false)} className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[13px] hover:bg-slate-50 focus:outline-none">Cancelar</button>
-              <button type="button" onClick={() => { if (!dForm.name.trim()) return; setDbasList((prev) => [...prev, { ...dForm, id: `d-${Date.now()}` }]); setDForm(emptyD); setShowDbaForm(false); }}
-                className="rounded-lg bg-slate-900 px-3 py-1.5 text-[13px] font-semibold text-white hover:bg-slate-800 focus:outline-none">Guardar</button>
-            </div>
-          </div>
-        )}
-        <div className="overflow-x-auto rounded-xl border border-slate-200">
-          <table className="w-full min-w-[440px] border-collapse">
-            <thead><tr>{["Nombre","Email","Marcas",""].map((h) => <th key={h} className={thCls}>{h}</th>)}</tr></thead>
-            <tbody>
-              {dbasList.map((d) => (
-                <tr key={d.id} className="last:border-b-0">
-                  <td className={`${tdCls} font-semibold text-slate-900`}>{d.name}</td>
-                  <td className={`${tdCls} text-slate-600`}>{d.email}</td>
-                  <td className={`${tdCls} text-slate-600`}>{d.brand}</td>
-                  <td className={tdCls}><button type="button" onClick={() => setDbasList((prev) => prev.filter((x) => x.id !== d.id))} className="text-[12px] text-rose-500 hover:text-rose-700 focus:outline-none">Eliminar</button></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      )}
     </article>
   );
 }
