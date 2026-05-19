@@ -72,7 +72,13 @@ select:disabled {
 .app-shell {
   width: min(1180px, 100%);
   margin: 0 auto;
-  padding: 20px;
+  padding: 12px;
+}
+
+@media (min-width: 640px) {
+  .app-shell {
+    padding: 20px;
+  }
 }
 
 .app-shell--wide {

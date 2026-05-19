@@ -5,9 +5,9 @@ import { useSupabaseData } from "../hooks/useSupabaseData.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
 const CRM_ROLES = [
-  { id: "walker",  label: "Walker",         name: "Walker On Trade",  subtitle: "Carga un Excel maestro para comenzar" },
-  { id: "manager", label: "On Trade Manager", name: "On Trade Manager", subtitle: "Vista ejecutiva del canal" },
-  { id: "cpa",     label: "CP&A",            name: "CP&A",             subtitle: "Branding y activaciones" },
+  { id: "walker",  label: "Walker",           shortLabel: "Walker",  name: "Walker On Trade",  subtitle: "Carga un Excel maestro para comenzar" },
+  { id: "manager", label: "On Trade Manager", shortLabel: "Manager", name: "On Trade Manager", subtitle: "Vista ejecutiva del canal" },
+  { id: "cpa",     label: "CP&A",             shortLabel: "CP&A",    name: "CP&A",             subtitle: "Branding y activaciones" },
 ];
 
 // ── Vacíos — se pueblan desde Excel ───────────────────────────────
@@ -294,6 +294,7 @@ function OnTradeCrm({ onOpenModule }) {
   const [selectedLocalId, setSelectedLocalId] = useState(MAESTRO_LOCALS[0]?.id ?? null);
   const [draggedCardId, setDraggedCardId] = useState(null);
   const [draftNote, setDraftNote] = useState("");
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [extraContacts, setExtraContacts] = useState({});
   const [activeOnFiveModule, setActiveOnFiveModule] = useState("staff");
   const [assortmentConfig, setAssortmentConfig] = useState(DEFAULT_ASSORTMENT_CONFIG);
@@ -429,20 +430,30 @@ function OnTradeCrm({ onOpenModule }) {
       aria-label="BARRA · On Trade Execution"
       className="flex min-h-screen flex-col bg-slate-50 text-slate-900"
     >
-      <header className="flex items-center justify-between gap-4 border-b border-slate-800 bg-slate-900 px-6 py-3 text-slate-100">
-        <div className="flex items-center gap-2.5">
+      <header className="flex items-center justify-between gap-2 border-b border-slate-800 bg-slate-900 px-4 py-3 text-slate-100 sm:gap-4 sm:px-6">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            aria-label="Abrir menú"
+            className="lg:hidden -ml-1 rounded-md p-1.5 text-slate-300 hover:bg-white/10 hover:text-white focus:outline-none"
+            onClick={() => setMobileNavOpen(true)}
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
           <span
             aria-hidden="true"
-            className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-base"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-base"
           >
             🪩
           </span>
           <div className="flex flex-col leading-tight">
             <strong className="text-[13px] font-semibold tracking-tight text-white">BARRA</strong>
-            <small className="text-[11px] text-slate-400">On Trade Execution · Diageo Chile</small>
+            <small className="hidden text-[11px] text-slate-400 sm:block">On Trade Execution · Diageo Chile</small>
           </div>
           {isSupabaseEnabled && (
-            <span className={`ml-2 rounded-full px-2 py-0.5 text-[10px] font-medium ${supabaseLoading ? "bg-yellow-500/20 text-yellow-300" : syncError ? "bg-red-500/20 text-red-300" : "bg-emerald-500/20 text-emerald-300"}`}>
+            <span className={`hidden rounded-full px-2 py-0.5 text-[10px] font-medium sm:inline ${supabaseLoading ? "bg-yellow-500/20 text-yellow-300" : syncError ? "bg-red-500/20 text-red-300" : "bg-emerald-500/20 text-emerald-300"}`}>
               {supabaseLoading ? "Sincronizando…" : syncError ? "Error sync" : "Supabase ✓"}
             </span>
           )}
@@ -459,21 +470,46 @@ function OnTradeCrm({ onOpenModule }) {
                 key={item.id}
                 type="button"
                 onClick={() => handleRoleChange(item.id)}
-                className={`rounded-md px-3 py-1 text-[12px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900 ${
+                className={`rounded-md px-2 py-1 text-[11px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900 sm:px-3 sm:text-[12px] ${
                   isActive
                     ? "bg-white text-slate-900 shadow-sm"
                     : "text-slate-300 hover:text-white"
                 }`}
               >
-                {item.label}
+                <span className="sm:hidden">{item.shortLabel}</span>
+                <span className="hidden sm:inline">{item.label}</span>
               </button>
             );
           })}
         </div>
       </header>
 
-      <div className="flex flex-1">
-        <aside className="flex w-60 shrink-0 flex-col gap-5 border-r border-slate-200 bg-white p-3">
+      {mobileNavOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          aria-hidden="true"
+          onClick={() => setMobileNavOpen(false)}
+        />
+      )}
+
+      <div className="flex flex-1 overflow-hidden">
+        <aside
+          className={`fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col gap-5 border-r border-slate-200 bg-white p-3 transition-transform duration-200 ease-in-out lg:relative lg:inset-auto lg:z-auto lg:w-60 lg:translate-x-0 ${mobileNavOpen ? "translate-x-0" : "-translate-x-full"}`}
+          onClick={() => setMobileNavOpen(false)}
+        >
+          <div className="flex items-center justify-between lg:hidden">
+            <span className="text-[12px] font-semibold text-slate-700">Menú</span>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); setMobileNavOpen(false); }}
+              className="rounded-md p-1 text-slate-500 hover:bg-slate-100 focus:outline-none"
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
           <div className="flex flex-col gap-0.5 rounded-lg border border-slate-200 bg-slate-50 p-3">
             <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{role.label}</span>
             <strong className="text-[13px] font-semibold text-slate-900">{role.name}</strong>
@@ -549,7 +585,7 @@ function OnTradeCrm({ onOpenModule }) {
           </nav>
         </aside>
 
-        <main className="flex-1 space-y-5 p-6">
+        <main className="flex-1 space-y-5 overflow-y-auto p-3 sm:p-6">
           <CrmPageHeader
             activeView={activeView}
             roleId={roleId}
@@ -2330,7 +2366,7 @@ function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePil
               ) : null}
               <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
                 <SectionTitle kicker="Evidencia" title="Fotos y soportes" />
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                   {[
                     ["Foto 1", "Staff, carta, POP o promo"],
                     ["Foto 2", "Antes / despues"],
@@ -3718,7 +3754,7 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar }) {
       </div>
 
       {/* Foto + guardar */}
-      <div className="grid grid-cols-2 items-end gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="grid grid-cols-1 items-end gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-2">
         <label className="flex cursor-pointer flex-col gap-1 rounded-lg border border-dashed border-slate-200 p-3">
           <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Foto de evidencia branding</span>
           <input accept="image/*" type="file" className="text-[12px] text-slate-600" />
@@ -4723,7 +4759,7 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, walkers, onAd
             <label className={labelCls}><span className={eyebrowCls}>Razón social</span>
               <input className={inputCls} placeholder="Ej: Sociedad Gastronómica..." value={form.razonSocial} onChange={(e) => setField("razonSocial", e.target.value)} /></label>
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <label className={labelCls}><span className={eyebrowCls}>Segmento</span>
               <select className={inputCls} value={form.segmento} onChange={(e) => setField("segmento", e.target.value)}>
                 {SEGMENTOS.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -4932,7 +4968,7 @@ function UserRolesSection() {
           </button>
         </div>
         {showWalkerForm && (
-          <div className="grid grid-cols-4 gap-2 rounded-lg bg-slate-50 p-3">
+          <div className="grid grid-cols-1 gap-2 rounded-lg bg-slate-50 p-3 sm:grid-cols-2 md:grid-cols-4">
             {[["name","Nombre completo","Ana García"],["rut","RUT","12.345.678-9"],["email","Email","ana@diageo.com"],["ruta","Ruta asignada","Ruta Oriente"]].map(([k,l,ph]) => (
               <label key={k} className={labelCls}><span className={eyebrowCls}>{l}</span>
                 <input className={inputCls} placeholder={ph} value={wForm[k]} onChange={(e) => setWForm((f) => ({...f,[k]:e.target.value}))} />
@@ -4973,7 +5009,7 @@ function UserRolesSection() {
           </button>
         </div>
         {showDbaForm && (
-          <div className="grid grid-cols-3 gap-2 rounded-lg bg-slate-50 p-3">
+          <div className="grid grid-cols-1 gap-2 rounded-lg bg-slate-50 p-3 sm:grid-cols-3">
             {[["name","Nombre completo","Carlos Muñoz DBA"],["email","Email","carlos@partner.com"],["brand","Marcas asignadas","Tanqueray / Gordon's"]].map(([k,l,ph]) => (
               <label key={k} className={labelCls}><span className={eyebrowCls}>{l}</span>
                 <input className={inputCls} placeholder={ph} value={dForm[k]} onChange={(e) => setDForm((f) => ({...f,[k]:e.target.value}))} />
@@ -5035,7 +5071,7 @@ function OnFiveWeightsSection() {
           Define qué porcentaje aporta cada pilar al Health Score final de cada cuenta. Deben sumar exactamente 100%.
         </p>
       </div>
-      <div className="grid grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {Object.entries(weights).map(([key, val]) => (
           <div key={key} className="flex flex-col gap-2">
             <label className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{val.label}</label>
