@@ -298,6 +298,26 @@ function OnTradeCrm({ onOpenModule }) {
   const [activeOnFiveModule, setActiveOnFiveModule] = useState("staff");
   const [assortmentConfig, setAssortmentConfig] = useState(DEFAULT_ASSORTMENT_CONFIG);
   const [assortmentAudits, setAssortmentAudits] = useState({});
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const DEMO_REGISTERED_WALKERS = [
+    { id: "rw-1", name: "Camila Torres",  rut: "12.111.222-3", email: "camila.torres@diageo.com",  ruta: "Ruta Oriente",       portalAccess: true  },
+    { id: "rw-2", name: "Diego Herrera",  rut: "13.222.333-4", email: "diego.herrera@diageo.com",  ruta: "Ruta Centro-Norte",  portalAccess: true  },
+    { id: "rw-3", name: "Natalia Vega",   rut: "14.333.444-5", email: "natalia.vega@diageo.com",   ruta: "Ruta Centro-Sur",    portalAccess: false },
+    { id: "rw-4", name: "Felipe Araya",   rut: "15.444.555-6", email: "felipe.araya@diageo.com",   ruta: "Ruta Sur",           portalAccess: false },
+    { id: "rw-5", name: "Javiera Castro", rut: "16.555.666-7", email: "javiera.castro@diageo.com", ruta: "Ruta Norte",         portalAccess: true  },
+  ];
+
+  const [registeredWalkers, setRegisteredWalkers] = useState(() => {
+    try {
+      const saved = localStorage.getItem("barra-registered-walkers");
+      return saved ? JSON.parse(saved) : DEMO_REGISTERED_WALKERS;
+    } catch { return DEMO_REGISTERED_WALKERS; }
+  });
+
+  useEffect(() => {
+    localStorage.setItem("barra-registered-walkers", JSON.stringify(registeredWalkers));
+  }, [registeredWalkers]);
 
   const {
     locals: localsData,
@@ -429,8 +449,18 @@ function OnTradeCrm({ onOpenModule }) {
       aria-label="BARRA · On Trade Execution"
       className="flex min-h-screen flex-col bg-slate-50 text-slate-900"
     >
-      <header className="flex items-center justify-between gap-4 border-b border-slate-800 bg-slate-900 px-6 py-3 text-slate-100">
+      <header className="flex items-center justify-between gap-4 border-b border-slate-800 bg-slate-900 px-4 py-3 text-slate-100 md:px-6">
         <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            aria-label="Abrir menú"
+            onClick={() => setSidebarOpen((v) => !v)}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-white transition hover:bg-white/10 focus:outline-none md:hidden"
+          >
+            <svg viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
+              <path fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 5A.75.75 0 012.75 9h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 9zm0 5a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 14.75z" clipRule="evenodd" />
+            </svg>
+          </button>
           <span
             aria-hidden="true"
             className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-base"
@@ -439,10 +469,10 @@ function OnTradeCrm({ onOpenModule }) {
           </span>
           <div className="flex flex-col leading-tight">
             <strong className="text-[13px] font-semibold tracking-tight text-white">BARRA</strong>
-            <small className="text-[11px] text-slate-400">On Trade Execution · Diageo Chile</small>
+            <small className="hidden text-[11px] text-slate-400 sm:block">On Trade Execution · Diageo Chile</small>
           </div>
           {isSupabaseEnabled && (
-            <span className={`ml-2 rounded-full px-2 py-0.5 text-[10px] font-medium ${supabaseLoading ? "bg-yellow-500/20 text-yellow-300" : syncError ? "bg-red-500/20 text-red-300" : "bg-emerald-500/20 text-emerald-300"}`}>
+            <span className={`ml-2 hidden rounded-full px-2 py-0.5 text-[10px] font-medium sm:inline-flex ${supabaseLoading ? "bg-yellow-500/20 text-yellow-300" : syncError ? "bg-red-500/20 text-red-300" : "bg-emerald-500/20 text-emerald-300"}`}>
               {supabaseLoading ? "Sincronizando…" : syncError ? "Error sync" : "Supabase ✓"}
             </span>
           )}
@@ -472,8 +502,37 @@ function OnTradeCrm({ onOpenModule }) {
         </div>
       </header>
 
-      <div className="flex flex-1">
-        <aside className="flex w-60 shrink-0 flex-col gap-5 border-r border-slate-200 bg-white p-3">
+      <div className="relative flex flex-1 overflow-hidden">
+
+        {/* Mobile backdrop */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 z-20 bg-black/40 md:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
+        <aside className={`
+          fixed inset-y-0 left-0 z-30 flex w-72 flex-col gap-5
+          border-r border-slate-200 bg-white p-3
+          transition-transform duration-200 ease-in-out
+          md:relative md:inset-auto md:z-auto md:w-60 md:translate-x-0
+          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+        `}>
+          {/* Mobile close button */}
+          <div className="flex items-center justify-between md:hidden">
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Menú</span>
+            <button
+              type="button"
+              onClick={() => setSidebarOpen(false)}
+              className="flex h-7 w-7 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 focus:outline-none"
+            >
+              <svg viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
+                <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+              </svg>
+            </button>
+          </div>
+
           <div className="flex flex-col gap-0.5 rounded-lg border border-slate-200 bg-slate-50 p-3">
             <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{role.label}</span>
             <strong className="text-[13px] font-semibold text-slate-900">{role.name}</strong>
@@ -522,7 +581,7 @@ function OnTradeCrm({ onOpenModule }) {
                 <React.Fragment key={item.id}>
                   <SidebarNavButton
                     isActive={isActive}
-                    onClick={() => (item.openModule ? onOpenModule(item.openModule) : setActiveView(item.id))}
+                    onClick={() => { setSidebarOpen(false); item.openModule ? onOpenModule(item.openModule) : setActiveView(item.id); }}
                     icon={item.icon}
                   >
                     {item.label}
@@ -533,6 +592,7 @@ function OnTradeCrm({ onOpenModule }) {
                           key={`walker-nav-${w.id}`}
                           isActive={activeView === `walker-${w.id}`}
                           onClick={() => {
+                            setSidebarOpen(false);
                             setActiveWalker(w.id);
                             setActiveView(`walker-${w.id}`);
                           }}
@@ -646,7 +706,10 @@ function OnTradeCrm({ onOpenModule }) {
               excelError={excelError}
               onUpload={handleOnFiveWorkbookUpload}
               localsData={localsData}
+              setLocalsData={setLocalsData}
               walkers={walkers}
+              registeredWalkers={registeredWalkers}
+              onSetRegisteredWalkers={setRegisteredWalkers}
               onAddManualLocal={addManualLocal}
               assortmentConfig={assortmentConfig}
               onSaveAssortmentConfig={setAssortmentConfig}
@@ -4517,7 +4580,7 @@ const CONFIG_WALKERS_MOCK = [
   { id: "w3", name: "Lucas Prima", ruta: "Ruta Centro-Norte", locals: ["Club Crobar", "Liguria", "The Clinic Bar"] },
 ];
 
-function ConfigView({ excelMeta, excelError, onUpload, localsData, walkers, onAddManualLocal, assortmentConfig, onSaveAssortmentConfig, onUpdateAccount }) {
+function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData, walkers, registeredWalkers, onSetRegisteredWalkers, onAddManualLocal, assortmentConfig, onSaveAssortmentConfig, onUpdateAccount }) {
   const [showForm, setShowForm] = useState(false);
   const [justAdded, setJustAdded] = useState(null);
   const emptyForm = {
@@ -4567,12 +4630,13 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, walkers, onAd
   const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
 
   const CONFIG_SECTIONS = [
-    { id: "maestro",     label: "Maestro de cuentas",   icon: "📂", desc: "Carga del Excel maestro" },
-    { id: "walkers",     label: "Walkers y DBAs",        icon: "👥", desc: "Equipo de terreno" },
-    { id: "assortment",  label: "Portafolio Assortment", icon: "🍾", desc: "Portafolio por segmento" },
-    { id: "weights",     label: "Pesos On Five",         icon: "⚖️", desc: "Ponderación del score" },
-    { id: "cuentas",     label: "Segmento por cuenta",   icon: "🏪", desc: "Segmento y tipo de outlet" },
-    { id: "manual",      label: "Agregar cuenta manual", icon: "➕", desc: "Alta manual de PDV" },
+    { id: "maestro",      label: "Maestro de cuentas",   icon: "📂", desc: "Carga del Excel maestro" },
+    { id: "walkers",      label: "Walkers y DBAs",        icon: "👥", desc: "Equipo de terreno" },
+    { id: "carga-masiva", label: "Carga masiva locales",  icon: "📋", desc: "Importar locales por Walker" },
+    { id: "assortment",   label: "Portafolio Assortment", icon: "🍾", desc: "Portafolio por segmento" },
+    { id: "weights",      label: "Pesos On Five",         icon: "⚖️", desc: "Ponderación del score" },
+    { id: "cuentas",      label: "Segmento por cuenta",   icon: "🏪", desc: "Segmento y tipo de outlet" },
+    { id: "manual",       label: "Agregar cuenta manual", icon: "➕", desc: "Alta manual de PDV" },
   ];
   const [configSection, setConfigSection] = useState("maestro");
 
@@ -4695,7 +4759,19 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, walkers, onAd
 
       </>)}
 
-      {configSection === "walkers" && <UserRolesSection />}
+      {configSection === "walkers" && (
+        <UserRolesSection
+          registeredWalkers={registeredWalkers}
+          onSetRegisteredWalkers={onSetRegisteredWalkers}
+        />
+      )}
+      {configSection === "carga-masiva" && (
+        <BulkLocalsUploadSection
+          registeredWalkers={registeredWalkers}
+          localsData={localsData}
+          setLocalsData={setLocalsData}
+        />
+      )}
       {configSection === "weights" && <OnFiveWeightsSection />}
       {configSection === "assortment" && (
         <AssortmentConfigSection
@@ -4891,118 +4967,417 @@ function AccountSegmentSection({ localsData, walkers, onUpdateAccount }) {
   );
 }
 
-function UserRolesSection() {
-  const [walkersList, setWalkersList] = useState([
-    { id: "w1", name: "Ana Garcia",   rut: "12.345.678-9", email: "ana.garcia@diageo.com",  ruta: "Ruta Oriente",      role: "walker" },
-    { id: "w2", name: "Marcos Ruiz",  rut: "13.456.789-0", email: "marcos.ruiz@diageo.com", ruta: "Ruta Centro-Sur",   role: "walker" },
-    { id: "w3", name: "Lucas Prima",  rut: "14.567.890-1", email: "lucas.prima@diageo.com",  ruta: "Ruta Centro-Norte", role: "walker" },
-  ]);
-  const [dbasList, setDbasList] = useState([
-    { id: "d1", name: "Carlos Muñoz DBA",  email: "carlos.dba@partner.com", brand: "Tanqueray / Gordon's" },
-    { id: "d2", name: "Valentina Soto DBA", email: "valentina.dba@partner.com", brand: "Don Julio" },
-  ]);
+function UserRolesSection({ registeredWalkers = [], onSetRegisteredWalkers }) {
   const [showWalkerForm, setShowWalkerForm] = useState(false);
-  const [showDbaForm, setShowDbaForm] = useState(false);
+  const [copiedId, setCopiedId] = useState(null);
   const emptyW = { name: "", rut: "", email: "", ruta: "" };
-  const emptyD = { name: "", email: "", brand: "" };
   const [wForm, setWForm] = useState(emptyW);
-  const [dForm, setDForm] = useState(emptyD);
 
-  const inputCls = "w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none";
-  const labelCls = "flex flex-col gap-1";
+  const inputCls = "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[14px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
+  const labelCls = "flex flex-col gap-1.5";
   const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
-  const thCls = "border-b border-slate-200 bg-slate-50 p-2.5 text-left text-[10px] font-semibold uppercase tracking-wide text-slate-500";
-  const tdCls = "border-b border-slate-100 p-2.5 text-[13px]";
+  const thCls = "border-b border-slate-200 bg-slate-50 p-3 text-left text-[10px] font-semibold uppercase tracking-wide text-slate-500";
+  const tdCls = "border-b border-slate-100 p-3 text-[13px]";
+
+  function addWalker() {
+    if (!wForm.name.trim()) return;
+    const pin = String(Math.floor(100000 + Math.random() * 900000));
+    onSetRegisteredWalkers?.((prev) => [
+      ...prev,
+      { ...wForm, id: `rw-${Date.now()}`, portalAccess: false, tempPin: pin }
+    ]);
+    setWForm(emptyW);
+    setShowWalkerForm(false);
+  }
+
+  function toggleAccess(id) {
+    onSetRegisteredWalkers?.((prev) =>
+      prev.map((w) => w.id === id ? { ...w, portalAccess: !w.portalAccess } : w)
+    );
+  }
+
+  function removeWalker(id) {
+    onSetRegisteredWalkers?.((prev) => prev.filter((w) => w.id !== id));
+  }
+
+  function copyCredentials(w) {
+    const text = `Acceso BARRA On Trade\nUsuario: ${w.email}\nPIN temporal: ${w.tempPin ?? "Por configurar"}\nRuta: ${w.ruta}`;
+    navigator.clipboard.writeText(text).catch(() => {});
+    setCopiedId(w.id);
+    setTimeout(() => setCopiedId(null), 2000);
+  }
 
   return (
-    <article className="flex flex-col gap-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+    <article className="flex flex-col gap-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <div>
         <span className={eyebrowCls}>CP&A · Administración</span>
-        <h2 className="mt-1 text-[16px] font-bold text-slate-900">Usuarios y roles</h2>
-        <p className="mt-0.5 text-[13px] text-slate-600">Define los walkers y DBAs del equipo.</p>
+        <h2 className="mt-1 text-[16px] font-bold text-slate-900">Walkers — Acceso al portal</h2>
+        <p className="mt-0.5 text-[13px] text-slate-600">
+          Crea y gestiona el equipo de terreno. Cada walker creado aquí tiene acceso al portal de ejecución.
+        </p>
       </div>
 
       {/* Walkers */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
-          <strong className="text-[14px] font-semibold text-slate-900">Walkers</strong>
-          <button type="button" onClick={() => setShowWalkerForm((v) => !v)}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[13px] font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none">
+          <div className="flex items-center gap-2">
+            <strong className="text-[14px] font-semibold text-slate-900">Walkers</strong>
+            <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
+              {registeredWalkers.length}
+            </span>
+            <span className="rounded-md bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">
+              {registeredWalkers.filter((w) => w.portalAccess).length} activos
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowWalkerForm((v) => !v)}
+            className="rounded-lg bg-slate-900 px-3 py-2 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none"
+          >
             + Agregar Walker
           </button>
         </div>
+
         {showWalkerForm && (
-          <div className="grid grid-cols-4 gap-2 rounded-lg bg-slate-50 p-3">
-            {[["name","Nombre completo","Ana García"],["rut","RUT","12.345.678-9"],["email","Email","ana@diageo.com"],["ruta","Ruta asignada","Ruta Oriente"]].map(([k,l,ph]) => (
-              <label key={k} className={labelCls}><span className={eyebrowCls}>{l}</span>
-                <input className={inputCls} placeholder={ph} value={wForm[k]} onChange={(e) => setWForm((f) => ({...f,[k]:e.target.value}))} />
-              </label>
-            ))}
-            <div className="col-span-full flex justify-end gap-2">
-              <button type="button" onClick={() => setShowWalkerForm(false)} className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[13px] hover:bg-slate-50 focus:outline-none">Cancelar</button>
-              <button type="button" onClick={() => { if (!wForm.name.trim()) return; setWalkersList((prev) => [...prev, { ...wForm, id: `w-${Date.now()}`, role: "walker" }]); setWForm(emptyW); setShowWalkerForm(false); }}
-                className="rounded-lg bg-slate-900 px-3 py-1.5 text-[13px] font-semibold text-white hover:bg-slate-800 focus:outline-none">Guardar</button>
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <strong className="mb-3 block text-[13px] font-semibold text-slate-900">Nuevo Walker</strong>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {[
+                ["name",  "Nombre completo",  "Camila Torres"],
+                ["rut",   "RUT",              "12.345.678-9"],
+                ["email", "Email",            "camila@diageo.com"],
+                ["ruta",  "Ruta asignada",    "Ruta Oriente"],
+              ].map(([k, l, ph]) => (
+                <label key={k} className={labelCls}>
+                  <span className={eyebrowCls}>{l}</span>
+                  <input
+                    className={inputCls}
+                    placeholder={ph}
+                    value={wForm[k]}
+                    onChange={(e) => setWForm((f) => ({ ...f, [k]: e.target.value }))}
+                  />
+                </label>
+              ))}
+            </div>
+            <div className="mt-3 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => { setShowWalkerForm(false); setWForm(emptyW); }}
+                className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-[13px] hover:bg-slate-50 focus:outline-none"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={addWalker}
+                className="rounded-lg bg-slate-900 px-4 py-2 text-[13px] font-semibold text-white hover:bg-slate-800 focus:outline-none"
+              >
+                Crear Walker
+              </button>
             </div>
           </div>
         )}
-        <div className="overflow-x-auto rounded-xl border border-slate-200">
-          <table className="w-full min-w-[520px] border-collapse">
-            <thead><tr>{["Nombre","RUT","Email","Ruta",""].map((h) => <th key={h} className={thCls}>{h}</th>)}</tr></thead>
-            <tbody>
-              {walkersList.map((w) => (
-                <tr key={w.id} className="last:border-b-0">
-                  <td className={`${tdCls} font-semibold text-slate-900`}>{w.name}</td>
-                  <td className={`${tdCls} text-slate-600`}>{w.rut}</td>
-                  <td className={`${tdCls} text-slate-600`}>{w.email}</td>
-                  <td className={`${tdCls} text-slate-600`}>{w.ruta}</td>
-                  <td className={tdCls}><button type="button" onClick={() => setWalkersList((prev) => prev.filter((x) => x.id !== w.id))} className="text-[12px] text-rose-500 hover:text-rose-700 focus:outline-none">Eliminar</button></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+
+        {registeredWalkers.length === 0 ? (
+          <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 py-10 text-center">
+            <p className="text-[14px] text-slate-500">No hay walkers registrados. Agrega el primero.</p>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {registeredWalkers.map((w) => (
+              <div
+                key={w.id}
+                className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:flex-row sm:items-center"
+              >
+                <div className="flex shrink-0 items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-[13px] font-bold text-white">
+                    {w.name.split(" ").map((p) => p[0]).slice(0, 2).join("")}
+                  </span>
+                  <div>
+                    <strong className="block text-[14px] font-semibold text-slate-900">{w.name}</strong>
+                    <span className="text-[12px] text-slate-500">{w.ruta}</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-1 flex-wrap items-center gap-2 sm:justify-center">
+                  <span className="text-[12px] text-slate-500">{w.email}</span>
+                  {w.rut && <span className="text-[11px] text-slate-400">· {w.rut}</span>}
+                </div>
+
+                <div className="flex shrink-0 items-center gap-2">
+                  <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold ${
+                    w.portalAccess
+                      ? "bg-emerald-50 text-emerald-700"
+                      : "bg-slate-100 text-slate-500"
+                  }`}>
+                    {w.portalAccess ? "Acceso activo" : "Sin acceso"}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => toggleAccess(w.id)}
+                    className={`rounded-lg px-3 py-1.5 text-[12px] font-medium transition focus:outline-none ${
+                      w.portalAccess
+                        ? "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                        : "bg-emerald-600 text-white hover:bg-emerald-700"
+                    }`}
+                  >
+                    {w.portalAccess ? "Revocar" : "Activar"}
+                  </button>
+                  {w.portalAccess && (
+                    <button
+                      type="button"
+                      onClick={() => copyCredentials(w)}
+                      className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-medium text-slate-600 transition hover:bg-slate-50 focus:outline-none"
+                    >
+                      {copiedId === w.id ? "✓ Copiado" : "Copiar acceso"}
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => removeWalker(w.id)}
+                    className="rounded-lg px-2 py-1.5 text-[12px] text-rose-500 transition hover:bg-rose-50 hover:text-rose-700 focus:outline-none"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* DBAs */}
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between gap-2">
-          <strong className="text-[14px] font-semibold text-slate-900">DBAs (Desarrolladores de Marca)</strong>
-          <button type="button" onClick={() => setShowDbaForm((v) => !v)}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[13px] font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none">
-            + Agregar DBA
-          </button>
-        </div>
-        {showDbaForm && (
-          <div className="grid grid-cols-3 gap-2 rounded-lg bg-slate-50 p-3">
-            {[["name","Nombre completo","Carlos Muñoz DBA"],["email","Email","carlos@partner.com"],["brand","Marcas asignadas","Tanqueray / Gordon's"]].map(([k,l,ph]) => (
-              <label key={k} className={labelCls}><span className={eyebrowCls}>{l}</span>
-                <input className={inputCls} placeholder={ph} value={dForm[k]} onChange={(e) => setDForm((f) => ({...f,[k]:e.target.value}))} />
-              </label>
-            ))}
-            <div className="col-span-full flex justify-end gap-2">
-              <button type="button" onClick={() => setShowDbaForm(false)} className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[13px] hover:bg-slate-50 focus:outline-none">Cancelar</button>
-              <button type="button" onClick={() => { if (!dForm.name.trim()) return; setDbasList((prev) => [...prev, { ...dForm, id: `d-${Date.now()}` }]); setDForm(emptyD); setShowDbaForm(false); }}
-                className="rounded-lg bg-slate-900 px-3 py-1.5 text-[13px] font-semibold text-white hover:bg-slate-800 focus:outline-none">Guardar</button>
-            </div>
-          </div>
-        )}
-        <div className="overflow-x-auto rounded-xl border border-slate-200">
-          <table className="w-full min-w-[440px] border-collapse">
-            <thead><tr>{["Nombre","Email","Marcas",""].map((h) => <th key={h} className={thCls}>{h}</th>)}</tr></thead>
-            <tbody>
-              {dbasList.map((d) => (
-                <tr key={d.id} className="last:border-b-0">
-                  <td className={`${tdCls} font-semibold text-slate-900`}>{d.name}</td>
-                  <td className={`${tdCls} text-slate-600`}>{d.email}</td>
-                  <td className={`${tdCls} text-slate-600`}>{d.brand}</td>
-                  <td className={tdCls}><button type="button" onClick={() => setDbasList((prev) => prev.filter((x) => x.id !== d.id))} className="text-[12px] text-rose-500 hover:text-rose-700 focus:outline-none">Eliminar</button></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <div className="rounded-lg border border-blue-100 bg-blue-50 p-4 text-[12px] text-blue-800">
+        <strong className="block font-semibold">Próximamente — Login real con Supabase Auth</strong>
+        Los walkers podrán ingresar con su email + PIN. Al activar el acceso, se enviará automáticamente
+        un correo de bienvenida con las instrucciones de primer ingreso.
       </div>
     </article>
+  );
+}
+
+function BulkLocalsUploadSection({ registeredWalkers = [], localsData = [], setLocalsData }) {
+  const [csvText, setCsvText] = useState("");
+  const [preview, setPreview] = useState(null);
+  const [saved, setSaved] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+
+  const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
+  const thCls = "border-b border-slate-200 bg-slate-50 p-3 text-left text-[10px] font-semibold uppercase tracking-wide text-slate-500";
+  const tdCls = "border-b border-slate-100 p-2.5 text-[13px]";
+
+  const SEGMENTOS = ["PREMIUM CORE", "RESERVE", "MAINSTREAM", "TRENDSETTER", "NIGHTLIFE"];
+  const SUBCANALES = ["DINING", "BAR", "DISCO", "HOTEL", "RESTAURANT", "CAFE", "LATE NIGHT", "OTRO"];
+
+  function parseCsvToRows(text) {
+    const lines = text.trim().split(/\r?\n/);
+    if (lines.length < 2) return [];
+    const headers = lines[0].split(",").map((h) => h.trim().toLowerCase().replace(/\s+/g, "_"));
+    return lines.slice(1).filter((l) => l.trim()).map((line) => {
+      const vals = line.split(",").map((v) => v.trim().replace(/^"|"$/g, ""));
+      return Object.fromEntries(headers.map((h, i) => [h, vals[i] ?? ""]));
+    });
+  }
+
+  function buildLocalsFromRows(rows) {
+    return rows.map((row, idx) => {
+      const walkerName = row.walker || row.walker_asignado || "Sin asignar";
+      return buildManualLocal({
+        nombre: row.nombre || row.name || `Local ${idx + 1}`,
+        razonSocial: row.razon_social || row.nombre || "",
+        direccion: row.direccion || row.direccion || "",
+        comuna: row.comuna || "",
+        region: row.region || "07. Metropolitana",
+        segmento: (SEGMENTOS.find((s) => s === (row.segmento || "").toUpperCase())) || "PREMIUM CORE",
+        subcanal: (SUBCANALES.find((s) => s === (row.subcanal || "").toUpperCase())) || "BAR",
+        walkerName,
+        acuerdo: row.acuerdo || "Sin AACC",
+        accountCode: row.codigo || row.account_code || `BULK-${Date.now()}-${idx}`,
+        skus: "",
+        observacion: row.observacion || "",
+        menuUrl: "",
+        fechaTermino: "",
+      });
+    });
+  }
+
+  function handleFileRead(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target.result;
+      setCsvText(text);
+      const rows = parseCsvToRows(text);
+      setPreview(rows);
+      setSaved(false);
+    };
+    reader.readAsText(file, "utf-8");
+  }
+
+  function handleFileInput(e) {
+    handleFileRead(e.target.files?.[0]);
+    e.target.value = "";
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.name.endsWith(".csv")) handleFileRead(file);
+  }
+
+  function handleImport() {
+    if (!preview?.length) return;
+    const newLocals = buildLocalsFromRows(preview);
+    setLocalsData?.((prev) => {
+      const existingCodes = new Set(prev.map((l) => l.accountCode));
+      const toAdd = newLocals.filter((l) => !existingCodes.has(l.accountCode));
+      return [...prev, ...toAdd];
+    });
+    setSaved(true);
+    setPreview(null);
+    setCsvText("");
+  }
+
+  function downloadTemplate() {
+    const walkerNames = registeredWalkers.map((w) => w.name).join(" / ") || "Nombre Walker";
+    const header = "nombre,razon_social,direccion,comuna,region,segmento,subcanal,walker,acuerdo,codigo,observacion";
+    const example1 = `Bar El Diablo,El Diablo SpA,Av. Providencia 1234,Providencia,07. Metropolitana,PREMIUM CORE,BAR,${registeredWalkers[0]?.name ?? "Camila Torres"},Sin AACC,PDV-001,`;
+    const example2 = `Club La Roca,La Roca SRL,Loreto 45,Santiago,07. Metropolitana,NIGHTLIFE,DISCO,${registeredWalkers[1]?.name ?? "Diego Herrera"},Diageo,PDV-002,Cuenta AACC activa`;
+    const csv = [header, example1, example2].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "plantilla_locales_barra.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  return (
+    <div className="flex flex-col gap-5">
+      <article className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <span className={eyebrowCls}>CP&A · Carga masiva</span>
+            <h2 className="mt-1 text-[16px] font-bold text-slate-900">Importar locales por CSV</h2>
+            <p className="mt-1 text-[13px] leading-relaxed text-slate-600">
+              Carga múltiples locales de una vez asignándolos a un Walker. Usa la plantilla para asegurarte del formato correcto.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={downloadTemplate}
+            className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-[13px] font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none"
+          >
+            Descargar plantilla CSV
+          </button>
+        </div>
+
+        {/* Drop zone */}
+        <label
+          className={`cursor-pointer`}
+          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={handleDrop}
+        >
+          <div className={`flex items-center gap-4 rounded-xl border-2 border-dashed p-6 transition ${
+            dragOver ? "border-slate-900 bg-slate-50" : preview ? "border-emerald-300 bg-emerald-50" : "border-slate-200 bg-white hover:bg-slate-50"
+          }`}>
+            <span className="shrink-0 text-3xl">{preview ? "✅" : "📋"}</span>
+            <div>
+              <strong className={`block text-[14px] font-semibold ${preview ? "text-emerald-700" : "text-slate-900"}`}>
+                {preview ? `${preview.length} locales listos para importar` : "Arrastra el CSV o haz click para seleccionar"}
+              </strong>
+              <small className="text-[11px] text-slate-500">
+                {preview ? "Revisa la vista previa abajo antes de confirmar" : "Formato .csv — columnas: nombre, dirección, walker, segmento, etc."}
+              </small>
+            </div>
+          </div>
+          <input type="file" accept=".csv" className="hidden" onChange={handleFileInput} />
+        </label>
+
+        {saved && (
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-[13px] font-semibold text-emerald-700">
+            ✓ Locales importados correctamente a la cartera
+          </div>
+        )}
+      </article>
+
+      {/* Walkers en sistema */}
+      <article className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 className="mb-3 text-[14px] font-semibold text-slate-900">Walkers registrados (asignar en el CSV)</h3>
+        {registeredWalkers.length === 0 ? (
+          <p className="text-[13px] text-slate-500">Agrega walkers en la sección "Walkers y DBAs" primero.</p>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            {registeredWalkers.map((w) => (
+              <div key={w.id} className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5">
+                <span className="text-[13px] font-medium text-slate-900">{w.name}</span>
+                <span className="text-[11px] text-slate-400">— {w.ruta}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </article>
+
+      {/* Preview table */}
+      {preview?.length > 0 && (
+        <article className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <h3 className="text-[14px] font-semibold text-slate-900">Vista previa — {preview.length} locales</h3>
+              <p className="text-[12px] text-slate-500">Verifica que los datos sean correctos antes de importar.</p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => { setPreview(null); setCsvText(""); }}
+                className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-[13px] hover:bg-slate-50 focus:outline-none"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleImport}
+                className="rounded-lg bg-slate-900 px-4 py-2 text-[13px] font-semibold text-white hover:bg-slate-800 focus:outline-none"
+              >
+                Confirmar importación
+              </button>
+            </div>
+          </div>
+          <div className="overflow-x-auto rounded-xl border border-slate-200">
+            <table className="w-full min-w-[600px] border-collapse">
+              <thead>
+                <tr>
+                  {["Nombre", "Walker", "Segmento", "Subcanal", "Comuna", "Código"].map((h) => (
+                    <th key={h} className={thCls}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {preview.slice(0, 20).map((row, i) => (
+                  <tr key={i} className="last:border-b-0">
+                    <td className={`${tdCls} font-medium text-slate-900`}>{row.nombre || row.name || "—"}</td>
+                    <td className={tdCls}>{row.walker || row.walker_asignado || "—"}</td>
+                    <td className={tdCls}>{(row.segmento || "").toUpperCase() || "—"}</td>
+                    <td className={tdCls}>{(row.subcanal || "").toUpperCase() || "—"}</td>
+                    <td className={tdCls}>{row.comuna || "—"}</td>
+                    <td className={tdCls}>{row.codigo || row.account_code || "—"}</td>
+                  </tr>
+                ))}
+                {preview.length > 20 && (
+                  <tr>
+                    <td colSpan={6} className="p-2.5 text-center text-[12px] text-slate-400">
+                      … y {preview.length - 20} locales más
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </article>
+      )}
+    </div>
   );
 }
 
