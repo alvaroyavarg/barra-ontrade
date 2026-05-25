@@ -3673,8 +3673,8 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar }) {
     setTimeout(() => setReqSent(false), 2500);
   }
 
-  const checkItemCls = "flex cursor-pointer items-start gap-2 rounded-lg border border-slate-200 bg-slate-50 p-2.5";
-  const checkboxCls = "mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-slate-900";
+  const checkItemCls = "flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3";
+  const checkboxCls = "mt-0.5 h-5 w-5 shrink-0 rounded border-slate-300 accent-slate-900";
 
   return (
     <div className="flex flex-col gap-4">
@@ -3686,7 +3686,7 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar }) {
           <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${tone === "good" ? "bg-emerald-50 text-emerald-700" : tone === "warning" ? "bg-amber-50 text-amber-700" : "bg-slate-100 text-slate-600"}`}>{score}</span>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
           <fieldset className="flex flex-col gap-2 rounded-lg border border-slate-200 p-3">
             <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Johnnie Walker</legend>
             <label className={checkItemCls}>
@@ -3773,12 +3773,12 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar }) {
       </div>
 
       {/* Foto + guardar */}
-      <div className="grid grid-cols-2 items-end gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-        <label className="flex cursor-pointer flex-col gap-1 rounded-lg border border-dashed border-slate-200 p-3">
+      <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:grid sm:grid-cols-2 sm:items-end">
+        <label className="flex cursor-pointer flex-col gap-1.5 rounded-lg border border-dashed border-slate-200 p-3">
           <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Foto de evidencia branding</span>
-          <input accept="image/*" type="file" className="text-[12px] text-slate-600" />
+          <input accept="image/*" type="file" className="text-[13px] text-slate-600" />
         </label>
-        <button className="rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700" type="button" onClick={saveAudit}>
+        <button className="rounded-lg bg-slate-900 px-4 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700" type="button" onClick={saveAudit}>
           Guardar auditoria
         </button>
       </div>
@@ -3813,24 +3813,24 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar }) {
           Agrega uno o más materiales. La solicitud llega al portal CP&A con todos los datos de la cuenta.
         </p>
 
-        <div className="mt-4 grid items-end gap-2" style={{ gridTemplateColumns: "1fr 70px auto" }}>
-          <label className="flex flex-col gap-1">
+        <div className="mt-4 flex flex-col gap-2 sm:grid sm:items-end sm:gap-2" style={{ gridTemplateColumns: "1fr 70px auto" }}>
+          <label className="flex flex-col gap-1.5">
             <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Material</span>
             <select value={cartMaterial} onChange={(e) => setCartMaterial(e.target.value)}
-              className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none">
+              className="rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[14px] focus:border-slate-900 focus:outline-none">
               <option value="">Elegir material...</option>
               {BRANDING_MATERIALS_CATALOG.map((m) => (
                 <option key={m.code} value={m.code}>{m.code} — {m.name} (Stock: {m.stock})</option>
               ))}
             </select>
           </label>
-          <label className="flex flex-col gap-1">
+          <label className="flex flex-col gap-1.5">
             <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Cant.</span>
             <input type="number" min="1" max="99" value={cartQty} onChange={(e) => setCartQty(Number(e.target.value))}
-              className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-center text-[13px] focus:border-slate-900 focus:outline-none" />
+              className="rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-center text-[14px] focus:border-slate-900 focus:outline-none" />
           </label>
           <button type="button" onClick={addToCart} disabled={!cartMaterial}
-            className="rounded-lg px-3.5 py-1.5 text-[13px] font-semibold text-white transition focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 bg-slate-900 hover:bg-slate-800 active:bg-slate-700">
+            className="rounded-lg px-4 py-2.5 text-[14px] font-semibold text-white transition focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 bg-slate-900 hover:bg-slate-800 active:bg-slate-700">
             + Agregar
           </button>
         </div>
@@ -3966,8 +3966,8 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
 
   const activeNow = activations.filter((a) => a.dateEnd >= new Date().toISOString().slice(0, 10) || !a.dateEnd);
 
-  const inputCls = "rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none";
-  const fieldLabelCls = "flex flex-col gap-1";
+  const inputCls = "rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[14px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
+  const fieldLabelCls = "flex flex-col gap-1.5";
   const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
 
   return (
@@ -4003,7 +4003,7 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
               key={t.key}
               type="button"
               onClick={() => setField("type", t.key)}
-              className={`rounded-lg px-3 py-1.5 text-[13px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 ${
+              className={`rounded-lg px-4 py-2.5 text-[14px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 ${
                 form.type === t.key
                   ? "bg-slate-900 text-white"
                   : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
@@ -4044,20 +4044,20 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
             />
           </label>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-slate-200 px-3 py-1.5 text-[13px] text-slate-600 hover:bg-slate-50">
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
+            <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-slate-200 px-4 py-2.5 text-[14px] text-slate-600 hover:bg-slate-50">
               <input accept="image/*" style={{ display: "none" }} type="file" />
               + Adjuntar foto
             </label>
             <button
               type="button"
               onClick={markNoActivation}
-              className={`rounded-lg border px-3 py-1.5 text-[13px] transition focus:outline-none ${noActivation ? "border-slate-900 bg-slate-900 font-semibold text-white" : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}`}
+              className={`rounded-lg border px-4 py-2.5 text-[14px] transition focus:outline-none ${noActivation ? "border-slate-900 bg-slate-900 font-semibold text-white" : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}`}
             >
               {noActivation ? "✓ Sin activación registrado" : "No tiene activación"}
             </button>
             <button
-              className="rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-lg bg-slate-900 px-4 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={!canSave}
               type="button"
               onClick={saveActivation}
@@ -4633,21 +4633,21 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData
   const [configSection, setConfigSection] = useState("maestro");
 
   return (
-    <div className="grid min-h-[600px] overflow-hidden rounded-xl border border-slate-200 bg-white" style={{ gridTemplateColumns: "220px 1fr" }}>
+    <div className="flex min-h-[600px] flex-col overflow-hidden rounded-xl border border-slate-200 bg-white md:grid" style={{ gridTemplateColumns: "220px 1fr" }}>
 
       {/* ── Panel izquierdo — lista de secciones ── */}
-      <div className="border-r border-slate-200 py-2">
+      <div className="border-b border-slate-200 py-2 md:border-b-0 md:border-r">
         <div className="px-5 pb-3 pt-4">
           <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">BARRA · CP&A</span>
           <h2 className="text-[16px] font-bold text-slate-900">Configuración</h2>
         </div>
-        <nav className="flex flex-col gap-0.5 px-2">
+        <nav className="flex flex-wrap gap-1 px-2 pb-2 md:flex-col md:gap-0.5 md:pb-0">
           {CONFIG_SECTIONS.map((s) => (
             <button
               key={s.id}
               type="button"
               onClick={() => setConfigSection(s.id)}
-              className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-left text-[13px] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 ${
+              className={`flex items-center gap-2 rounded-lg px-3 py-2.5 text-left text-[13px] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 ${
                 configSection === s.id
                   ? "bg-slate-100 font-semibold text-slate-900"
                   : "text-slate-700 hover:bg-slate-50"
@@ -4655,14 +4655,14 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData
             >
               <span className="opacity-80">{s.icon}</span>
               <span className="flex-1">{s.label}</span>
-              {configSection === s.id && <span className="text-[11px] text-slate-400">›</span>}
+              {configSection === s.id && <span className="hidden text-[11px] text-slate-400 md:inline">›</span>}
             </button>
           ))}
         </nav>
       </div>
 
       {/* ── Panel derecho — contenido de la sección activa ── */}
-      <div className="overflow-y-auto p-8">
+      <div className="overflow-y-auto p-4 md:p-8">
 
       {configSection === "maestro" && (<>
       {/* ── Carga del Excel ── */}
