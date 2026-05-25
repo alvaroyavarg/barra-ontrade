@@ -300,19 +300,11 @@ function OnTradeCrm({ onOpenModule }) {
   const [assortmentAudits, setAssortmentAudits] = useState({});
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const DEMO_REGISTERED_WALKERS = [
-    { id: "rw-1", name: "Camila Torres",  rut: "12.111.222-3", email: "camila.torres@diageo.com",  ruta: "Ruta Oriente",       portalAccess: true  },
-    { id: "rw-2", name: "Diego Herrera",  rut: "13.222.333-4", email: "diego.herrera@diageo.com",  ruta: "Ruta Centro-Norte",  portalAccess: true  },
-    { id: "rw-3", name: "Natalia Vega",   rut: "14.333.444-5", email: "natalia.vega@diageo.com",   ruta: "Ruta Centro-Sur",    portalAccess: false },
-    { id: "rw-4", name: "Felipe Araya",   rut: "15.444.555-6", email: "felipe.araya@diageo.com",   ruta: "Ruta Sur",           portalAccess: false },
-    { id: "rw-5", name: "Javiera Castro", rut: "16.555.666-7", email: "javiera.castro@diageo.com", ruta: "Ruta Norte",         portalAccess: true  },
-  ];
-
   const [registeredWalkers, setRegisteredWalkers] = useState(() => {
     try {
       const saved = localStorage.getItem("barra-registered-walkers");
-      return saved ? JSON.parse(saved) : DEMO_REGISTERED_WALKERS;
-    } catch { return DEMO_REGISTERED_WALKERS; }
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
   });
 
   useEffect(() => {
@@ -5043,7 +5035,7 @@ function UserRolesSection({ registeredWalkers = [], onSetRegisteredWalkers }) {
             <strong className="mb-3 block text-[13px] font-semibold text-slate-900">Nuevo Walker</strong>
             <div className="grid gap-3 sm:grid-cols-2">
               {[
-                ["name",  "Nombre completo",  "Camila Torres"],
+                ["name",  "Nombre completo",  "Juan Pérez"],
                 ["rut",   "RUT",              "12.345.678-9"],
                 ["email", "Email",            "camila@diageo.com"],
                 ["ruta",  "Ruta asignada",    "Ruta Oriente"],
@@ -5241,8 +5233,10 @@ function BulkLocalsUploadSection({ registeredWalkers = [], localsData = [], setL
   function downloadTemplate() {
     const walkerNames = registeredWalkers.map((w) => w.name).join(" / ") || "Nombre Walker";
     const header = "nombre,razon_social,direccion,comuna,region,segmento,subcanal,walker,acuerdo,codigo,observacion";
-    const example1 = `Bar El Diablo,El Diablo SpA,Av. Providencia 1234,Providencia,07. Metropolitana,PREMIUM CORE,BAR,${registeredWalkers[0]?.name ?? "Camila Torres"},Sin AACC,PDV-001,`;
-    const example2 = `Club La Roca,La Roca SRL,Loreto 45,Santiago,07. Metropolitana,NIGHTLIFE,DISCO,${registeredWalkers[1]?.name ?? "Diego Herrera"},Diageo,PDV-002,Cuenta AACC activa`;
+    const walkerEjemplo1 = registeredWalkers[0]?.name ?? "Nombre Walker 1";
+    const walkerEjemplo2 = registeredWalkers[1]?.name ?? "Nombre Walker 2";
+    const example1 = `Bar Ejemplo,Razón Social SpA,Av. Ejemplo 1234,Providencia,07. Metropolitana,PREMIUM CORE,BAR,${walkerEjemplo1},Sin AACC,PDV-001,`;
+    const example2 = `Club Ejemplo,Club SpA,Calle Ejemplo 45,Santiago,07. Metropolitana,NIGHTLIFE,DISCO,${walkerEjemplo2},Diageo,PDV-002,Observación opcional`;
     const csv = [header, example1, example2].join("\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
