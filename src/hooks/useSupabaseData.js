@@ -37,15 +37,16 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
       .then(([remoteLocals, cards]) => {
         if (remoteLocals.length > 0) {
           setLocals(remoteLocals);
-          const uniqueWalkers = [
-            ...new Map(
-              remoteLocals
-                .filter((l) => l.walkerName)
-                .map((l) => [l.walkerName, { id: l.walkerName, name: l.walkerName }])
-            ).values(),
-          ];
-          setWalkers(uniqueWalkers);
-          setMeta((prev) => ({ ...prev, count: remoteLocals.length }));
+          const walkerMap = new Map();
+          for (const l of remoteLocals) {
+            if (!l.walkerName) continue;
+            if (!walkerMap.has(l.walkerName)) {
+              walkerMap.set(l.walkerName, { id: l.walkerName, name: l.walkerName, count: 0 });
+            }
+            walkerMap.get(l.walkerName).count++;
+          }
+          setWalkers([...walkerMap.values()]);
+          setMeta((prev) => ({ ...prev, count: remoteLocals.length, walkerCount: walkerMap.size }));
         }
         if (cards.length > 0) {
           const byColumn = { todo: [], progress: [], done: [] };

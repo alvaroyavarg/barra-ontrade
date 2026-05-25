@@ -135,6 +135,8 @@ function localToRow(l) {
   };
 }
 
+const DEFAULT_PILLAR_KEYS = ["staff", "assortment", "menu", "branding", "activation"];
+
 function rowToLocal(row) {
   const pillarsObj = {};
   for (const p of row.pillars ?? []) {
@@ -145,6 +147,17 @@ function rowToLocal(row) {
       details: p.details ?? [],
       nextAction: p.next_action,
     };
+  }
+  for (const key of DEFAULT_PILLAR_KEYS) {
+    if (!pillarsObj[key]) {
+      pillarsObj[key] = {
+        title: capitalize(key),
+        score: "Sin registro",
+        summary: "",
+        details: [],
+        nextAction: "",
+      };
+    }
   }
 
   return {
