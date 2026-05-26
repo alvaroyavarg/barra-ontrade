@@ -60,6 +60,18 @@ export async function fetchProfiles(role) {
   return data ?? [];
 }
 
+export async function updateWalkerRuta(userId, ruta) {
+  const token = await getToken();
+  const res = await fetch("/api/update-walker-ruta", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+    body: JSON.stringify({ userId, ruta }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error ?? "Error al asignar ruta");
+  return data;
+}
+
 export async function fetchDevelopers() {
   const { data, error } = await supabase.from("developers").select("*").order("code");
   if (error) throw error;

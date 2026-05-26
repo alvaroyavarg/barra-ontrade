@@ -4,7 +4,7 @@ import { parseOnFiveWorkbook, summarizeOnFiveLocals } from "../utils/onFiveExcel
 import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCuentas.js";
 import { useSupabaseData } from "../hooks/useSupabaseData.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
-import { createUserFromAdmin, fetchProfilesFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute, updateUserRole, fetchDevelopers, updateDeveloper } from "../services/authService.js";
+import { createUserFromAdmin, fetchProfilesFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute, updateUserRole, updateWalkerRuta, fetchDevelopers, updateDeveloper } from "../services/authService.js";
 import { updateLocalRoute, updateLocalWalkerName, deleteAllLocals } from "../services/localsService.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
@@ -4906,7 +4906,12 @@ function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, 
           routes={routes}
           localsData={localsData}
           setLocalsData={setLocalsData}
-          onRefresh={() => fetchRoutes().then(setRoutes).catch(() => {})}
+          walkerProfiles={teamProfiles.filter((p) => p.role === "walker")}
+          onRefresh={() => Promise.all([fetchRoutes().then(setRoutes), loadTeam()]).catch(() => {})}
+          onAssignWalkerToRoute={async (userId, ruta) => {
+            await updateWalkerRuta(userId, ruta);
+            await loadTeam();
+          }}
         />
       )}
       {configSection === "carga-masiva" && (
@@ -5480,12 +5485,14 @@ function UserRolesSection({ teamProfiles = [], routes = [], onRefresh }) {
   );
 }
 
-function RoutesSection({ routes = [], localsData = [], setLocalsData, onRefresh }) {
-  const [newName, setNewName]           = useState("");
-  const [saving, setSaving]             = useState(false);
-  const [error, setError]               = useState("");
+function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProfiles = [], onRefresh, onAssignWalkerToRoute }) {
+  const [newName, setNewName]             = useState("");
+  const [saving, setSaving]               = useState(false);
+  const [error, setError]                 = useState("");
   const [expandedRoute, setExpandedRoute] = useState(null);
-  const [search, setSearch]             = useState("");
+  const [search, setSearch]               = useState("");
+  const [savedRoutes, setSavedRoutes]     = useState({});
+  const [assigningWalker, setAssigningWalker] = useState({});
 
   const inputCls   = "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[14px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
   const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
@@ -5535,15 +5542,33 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, onRefresh 
     }
   }
 
+  function flashSaved(routeName) {
+    setSavedRoutes((prev) => ({ ...prev, [routeName]: true }));
+    setTimeout(() => setSavedRoutes((prev) => ({ ...prev, [routeName]: false })), 2000);
+  }
+
   function assignToRoute(localId, routeName) {
     setLocalsData((prev) => prev.map((l) => l.id === localId ? { ...l, ruta: routeName } : l));
-    updateLocalRoute(localId, routeName).catch(() => {});
+    updateLocalRoute(localId, routeName)
+      .then(() => flashSaved(routeName))
+      .catch(() => {});
     setSearch("");
   }
 
-  function removeFromRoute(localId) {
+  function removeFromRoute(localId, routeName) {
     setLocalsData((prev) => prev.map((l) => l.id === localId ? { ...l, ruta: "" } : l));
-    updateLocalRoute(localId, "").catch(() => {});
+    updateLocalRoute(localId, "")
+      .then(() => flashSaved(routeName))
+      .catch(() => {});
+  }
+
+  async function handleAssignWalker(routeName, userId) {
+    setAssigningWalker((prev) => ({ ...prev, [routeName]: true }));
+    try {
+      await onAssignWalkerToRoute?.(userId || null, userId ? routeName : "");
+      flashSaved(routeName);
+    } catch {}
+    finally { setAssigningWalker((prev) => ({ ...prev, [routeName]: false })); }
   }
 
   return (
@@ -5587,6 +5612,8 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, onRefresh 
           {routes.map((r) => {
             const assigned = localsByRoute[r.name] ?? [];
             const isExpanded = expandedRoute === r.name;
+            const isSaved = savedRoutes[r.name];
+            const assignedWalker = walkerProfiles.find((w) => w.ruta === r.name);
 
             return (
               <div key={r.id} className="rounded-xl border border-slate-200 bg-slate-50 overflow-hidden">
@@ -5594,11 +5621,21 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, onRefresh 
                   className="flex cursor-pointer items-center justify-between px-4 py-3 transition hover:bg-slate-100"
                   onClick={() => { setExpandedRoute(isExpanded ? null : r.name); setSearch(""); }}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-[14px] font-semibold text-slate-900">{r.name}</span>
                     <span className="rounded-md bg-slate-200 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
                       {assigned.length} cuentas
                     </span>
+                    {assignedWalker && (
+                      <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-[11px] font-semibold text-blue-700">
+                        {assignedWalker.full_name}
+                      </span>
+                    )}
+                    {isSaved && (
+                      <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
+                        ✓ Guardado
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center gap-2">
                     <button
@@ -5614,6 +5651,27 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, onRefresh 
 
                 {isExpanded && (
                   <div className="border-t border-slate-200 bg-white p-4">
+
+                    {/* Walker asignado a esta ruta */}
+                    <div className="mb-4 flex items-center gap-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5">
+                      <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 shrink-0">Walker</span>
+                      <select
+                        className="flex-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none"
+                        value={assignedWalker?.id ?? ""}
+                        disabled={assigningWalker[r.name]}
+                        onChange={(e) => handleAssignWalker(r.name, e.target.value)}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <option value="">Sin walker asignado</option>
+                        {walkerProfiles.map((w) => (
+                          <option key={w.id} value={w.id}>{w.full_name}</option>
+                        ))}
+                      </select>
+                      {assigningWalker[r.name] && (
+                        <span className="text-[11px] text-slate-400 shrink-0">Guardando…</span>
+                      )}
+                    </div>
+
                     <div className="relative">
                       <input
                         className={inputCls}
@@ -5665,7 +5723,7 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, onRefresh 
                             </div>
                             <button
                               type="button"
-                              onClick={() => removeFromRoute(l.id)}
+                              onClick={() => removeFromRoute(l.id, r.name)}
                               className="shrink-0 rounded px-2 py-1 text-[11px] text-rose-500 hover:bg-rose-50 focus:outline-none"
                             >
                               Quitar
