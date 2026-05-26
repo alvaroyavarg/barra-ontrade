@@ -4,7 +4,7 @@ import { parseOnFiveWorkbook, summarizeOnFiveLocals } from "../utils/onFiveExcel
 import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCuentas.js";
 import { useSupabaseData } from "../hooks/useSupabaseData.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
-import { createUserFromAdmin, fetchProfilesFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute, updateUserRole } from "../services/authService.js";
+import { createUserFromAdmin, fetchProfilesFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute, updateUserRole, fetchDevelopers, updateDeveloper } from "../services/authService.js";
 import { updateLocalRoute } from "../services/localsService.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
@@ -4686,6 +4686,7 @@ function MaestroSection({ excelMeta, excelError, onUpload, onClearBase }) {
 function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, setLocalsData, walkers, onAddManualLocal, assortmentConfig, onSaveAssortmentConfig, onUpdateAccount }) {
   const [teamProfiles, setTeamProfiles] = useState([]);
   const [routes, setRoutes] = useState([]);
+  const [developers, setDevelopers] = useState([]);
 
   function loadTeam() {
     return fetchProfilesFromAdmin().then(setTeamProfiles).catch(() => {});
@@ -4694,6 +4695,7 @@ function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, 
   useEffect(() => {
     loadTeam();
     fetchRoutes().then(setRoutes).catch(() => {});
+    fetchDevelopers().then(setDevelopers).catch(() => {});
   }, []);
   const [showForm, setShowForm] = useState(false);
   const [justAdded, setJustAdded] = useState(null);
@@ -4744,14 +4746,15 @@ function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, 
   const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
 
   const CONFIG_SECTIONS = [
-    { id: "maestro",      label: "Maestro de cuentas",   icon: "📂", desc: "Carga del Excel maestro" },
-    { id: "walkers",      label: "Equipo",                 icon: "👥", desc: "Walkers y Managers" },
-    { id: "rutas",        label: "Rutas",                 icon: "🗺️", desc: "Rutas del equipo" },
-    { id: "carga-masiva", label: "Carga masiva locales",  icon: "📋", desc: "Importar locales por Walker" },
-    { id: "assortment",   label: "Portafolio Assortment", icon: "🍾", desc: "Portafolio por segmento" },
-    { id: "weights",      label: "Pesos On Five",         icon: "⚖️", desc: "Ponderación del score" },
-    { id: "cuentas",      label: "Segmento por cuenta",   icon: "🏪", desc: "Segmento y tipo de outlet" },
-    { id: "manual",       label: "Agregar cuenta manual", icon: "➕", desc: "Alta manual de PDV" },
+    { id: "maestro",        label: "Maestro de cuentas",   icon: "📂", desc: "Carga del Excel maestro" },
+    { id: "walkers",        label: "Equipo",               icon: "👥", desc: "Walkers y Managers" },
+    { id: "desarrolladores",label: "Desarrolladores",      icon: "🏢", desc: "Equipo Andina" },
+    { id: "rutas",          label: "Rutas",                icon: "🗺️", desc: "Rutas del equipo" },
+    { id: "carga-masiva",   label: "Carga masiva locales", icon: "📋", desc: "Importar locales por Walker" },
+    { id: "assortment",     label: "Portafolio Assortment",icon: "🍾", desc: "Portafolio por segmento" },
+    { id: "weights",        label: "Pesos On Five",        icon: "⚖️", desc: "Ponderación del score" },
+    { id: "cuentas",        label: "Segmento por cuenta",  icon: "🏪", desc: "Segmento y tipo de outlet" },
+    { id: "manual",         label: "Agregar cuenta manual",icon: "➕", desc: "Alta manual de PDV" },
   ];
   const [configSection, setConfigSection] = useState("maestro");
 
@@ -4846,6 +4849,12 @@ function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, 
           teamProfiles={teamProfiles}
           routes={routes}
           onRefresh={loadTeam}
+        />
+      )}
+      {configSection === "desarrolladores" && (
+        <DevelopersSection
+          developers={developers}
+          onRefresh={() => fetchDevelopers().then(setDevelopers).catch(() => {})}
         />
       )}
       {configSection === "rutas" && (
@@ -5054,6 +5063,118 @@ function AccountSegmentSection({ localsData, walkers, onUpdateAccount }) {
           })}
         </div>
       )}
+    </article>
+  );
+}
+
+function DevelopersSection({ developers = [], onRefresh }) {
+  const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
+  const inputCls   = "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-[13px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
+
+  const [rows, setRows]     = useState({});
+  const [saved, setSaved]   = useState({});
+  const [saving, setSaving] = useState({});
+
+  useEffect(() => {
+    const init = {};
+    developers.forEach((d) => {
+      init[d.id] = { firstName: d.first_name, lastName: d.last_name, phone: d.phone, email: d.email };
+    });
+    setRows(init);
+  }, [developers]);
+
+  function setField(id, key, value) {
+    setRows((prev) => ({ ...prev, [id]: { ...prev[id], [key]: value } }));
+    setSaved((prev) => ({ ...prev, [id]: false }));
+  }
+
+  async function handleSave(dev) {
+    setSaving((prev) => ({ ...prev, [dev.id]: true }));
+    try {
+      await updateDeveloper(dev.id, rows[dev.id]);
+      await onRefresh?.();
+      setSaved((prev) => ({ ...prev, [dev.id]: true }));
+      setTimeout(() => setSaved((prev) => ({ ...prev, [dev.id]: false })), 2000);
+    } catch {
+      // error silenciado — el usuario puede reintentar
+    } finally {
+      setSaving((prev) => ({ ...prev, [dev.id]: false }));
+    }
+  }
+
+  const isDirty = (dev) => {
+    const r = rows[dev.id];
+    if (!r) return false;
+    return r.firstName !== dev.first_name || r.lastName !== dev.last_name ||
+           r.phone !== dev.phone || r.email !== dev.email;
+  };
+
+  return (
+    <article className="flex flex-col gap-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div>
+        <span className={eyebrowCls}>Andina · Equipo</span>
+        <h2 className="mt-1 text-[16px] font-bold text-slate-900">Desarrolladores</h2>
+        <p className="mt-0.5 text-[13px] text-slate-600">
+          El código CL es fijo. Actualiza nombre, teléfono o correo cuando cambie el responsable.
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        {developers.length === 0 && (
+          <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 py-10 text-center">
+            <p className="text-[14px] text-slate-500">Cargando desarrolladores…</p>
+          </div>
+        )}
+        {developers.map((dev) => {
+          const r = rows[dev.id] ?? {};
+          const isSaving = saving[dev.id];
+          const isSaved  = saved[dev.id];
+          const dirty    = isDirty(dev);
+          return (
+            <div key={dev.id} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div className="mb-3 flex items-center gap-2">
+                <span className="rounded-md bg-slate-900 px-2.5 py-1 text-[12px] font-bold text-white tracking-wide">
+                  {dev.code}
+                </span>
+                <span className="text-[13px] font-semibold text-slate-700">
+                  {dev.first_name} {dev.last_name}
+                </span>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-4">
+                {[
+                  ["firstName", "Nombre"],
+                  ["lastName",  "Apellido"],
+                  ["phone",     "Teléfono"],
+                  ["email",     "Correo"],
+                ].map(([key, label]) => (
+                  <label key={key} className="flex flex-col gap-1">
+                    <span className={eyebrowCls}>{label}</span>
+                    <input
+                      className={inputCls}
+                      value={r[key] ?? ""}
+                      onChange={(e) => setField(dev.id, key, e.target.value)}
+                    />
+                  </label>
+                ))}
+              </div>
+              <div className="mt-3 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => handleSave(dev)}
+                  disabled={isSaving || (!dirty && !isSaved)}
+                  className={`rounded-lg px-4 py-2 text-[12px] font-semibold transition focus:outline-none disabled:opacity-40 ${
+                    isSaved
+                      ? "bg-emerald-600 text-white"
+                      : "bg-slate-900 text-white hover:bg-slate-800"
+                  }`}
+                >
+                  {isSaving ? "Guardando…" : isSaved ? "✓ Guardado" : "Guardar"}
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </article>
   );
 }

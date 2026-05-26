@@ -60,6 +60,23 @@ export async function fetchProfiles(role) {
   return data ?? [];
 }
 
+export async function fetchDevelopers() {
+  const { data, error } = await supabase.from("developers").select("*").order("code");
+  if (error) throw error;
+  return data ?? [];
+}
+
+export async function updateDeveloper(id, { firstName, lastName, phone, email }) {
+  const { error } = await supabase.from("developers").update({
+    first_name: firstName,
+    last_name: lastName,
+    phone,
+    email,
+    updated_at: new Date().toISOString(),
+  }).eq("id", id);
+  if (error) throw error;
+}
+
 export async function fetchRoutes() {
   const { data, error } = await supabase.from("routes").select("*").order("name");
   if (error) throw error;

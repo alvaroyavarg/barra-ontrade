@@ -133,6 +133,31 @@ create policy "anon_all_pillars"           on pillars           for all using (t
 create policy "anon_all_audits"            on assortment_audits for all using (true) with check (true);
 create policy "anon_all_kanban"            on kanban_cards      for all using (true) with check (true);
 
+-- Desarrolladores Andina (códigos CL fijos, datos editables)
+create table if not exists developers (
+  id         uuid primary key default gen_random_uuid(),
+  code       text unique not null,
+  first_name text default '',
+  last_name  text default '',
+  phone      text default '',
+  email      text default '',
+  updated_at timestamptz default now()
+);
+
+alter table developers enable row level security;
+create policy "anon_all_developers" on developers for all using (true) with check (true);
+
+insert into developers (code, first_name, last_name, phone, email) values
+  ('CL51', 'Pia',       'Rojas',    '56972252170', 'projas@koandina.com'),
+  ('CL52', 'Fernando',  'Perez',    '56942089220', 'fperezve@koandina.com'),
+  ('CL53', 'Alexis',    'Fuentes',  '56998837747', 'afuentesvaldivieso@koandina.com'),
+  ('CL54', 'Sebastian', 'Cornejo',  '56957092336', 'scornejos@koandina.com'),
+  ('CL55', 'Vicente',   'Chellew',  '56971062663', 'vchellew@koandina.com'),
+  ('CL56', 'Santiago',  'Izurieta', '56957189826', 'sanizurieta@koandina.com'),
+  ('CL57', 'Fernando',  'Acuña',    '56934686689', 'facunaf@koandina.com'),
+  ('CL58', 'Valentina', 'Albornoz', '56950094360', 'valbornoz@koandina.com')
+on conflict (code) do nothing;
+
 -- ── Índices de apoyo ─────────────────────────────────────────
 create index if not exists idx_contacts_local      on contacts (local_id);
 create index if not exists idx_notes_local         on notes (local_id, note_date desc);
