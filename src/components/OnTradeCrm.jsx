@@ -5487,6 +5487,8 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
   const [savedRoutes, setSavedRoutes]     = useState({});
   const [assigningWalker, setAssigningWalker] = useState({});
   const [batchSaving, setBatchSaving]     = useState({});
+  const [globalSaving, setGlobalSaving]   = useState(false);
+  const [globalSaved, setGlobalSaved]     = useState(false);
 
   const inputCls   = "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[14px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
   const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
@@ -5541,11 +5543,18 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
     setTimeout(() => setSavedRoutes((prev) => ({ ...prev, [routeName]: false })), 2000);
   }
 
+  function handleRouteError(err) {
+    const msg = err.message ?? "";
+    setError(msg.includes("ruta") || msg.includes("column")
+      ? "Columna 'ruta' no existe. Ejecuta en Supabase SQL Editor: ALTER TABLE locals ADD COLUMN IF NOT EXISTS ruta text default '';"
+      : msg || "Error de Supabase");
+  }
+
   function assignToRoute(localId, routeName) {
     setLocalsData((prev) => prev.map((l) => l.id === localId ? { ...l, ruta: routeName } : l));
     updateLocalRoute(localId, routeName)
       .then(() => flashSaved(routeName))
-      .catch((err) => setError(err.message ?? "Error al asignar cuenta"));
+      .catch(handleRouteError);
     setSearch("");
   }
 
@@ -5553,7 +5562,7 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
     setLocalsData((prev) => prev.map((l) => l.id === localId ? { ...l, ruta: "" } : l));
     updateLocalRoute(localId, "")
       .then(() => flashSaved(routeName))
-      .catch((err) => setError(err.message ?? "Error al quitar cuenta"));
+      .catch(handleRouteError);
   }
 
   async function batchSaveRoute(routeName, accounts) {
@@ -5563,9 +5572,31 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
       await Promise.all(accounts.map((l) => updateLocalRoute(l.id, routeName)));
       flashSaved(routeName);
     } catch (err) {
-      setError(err.message ?? "Error al guardar asignaciones");
+      const msg = err.message ?? "";
+      setError(msg.includes("ruta") || msg.includes("column")
+        ? "Columna 'ruta' no existe en Supabase. Corre: ALTER TABLE locals ADD COLUMN IF NOT EXISTS ruta text default '';"
+        : msg || "Error al guardar asignaciones");
     } finally {
       setBatchSaving((prev) => ({ ...prev, [routeName]: false }));
+    }
+  }
+
+  async function saveAllAssignments() {
+    const withRuta = localsData.filter((l) => l.ruta);
+    if (!withRuta.length) return;
+    setGlobalSaving(true);
+    setError("");
+    try {
+      await Promise.all(withRuta.map((l) => updateLocalRoute(l.id, l.ruta)));
+      setGlobalSaved(true);
+      setTimeout(() => setGlobalSaved(false), 3000);
+    } catch (err) {
+      const msg = err.message ?? "";
+      setError(msg.includes("ruta") || msg.includes("column")
+        ? "Columna 'ruta' no existe. Ejecuta en Supabase SQL Editor: ALTER TABLE locals ADD COLUMN IF NOT EXISTS ruta text default '';"
+        : msg || "Error al guardar asignaciones");
+    } finally {
+      setGlobalSaving(false);
     }
   }
 
@@ -5580,12 +5611,25 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
 
   return (
     <article className="flex flex-col gap-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <div>
-        <span className={eyebrowCls}>CP&A · Configuración</span>
-        <h2 className="mt-1 text-[16px] font-bold text-slate-900">Rutas del equipo</h2>
-        <p className="mt-0.5 text-[13px] text-slate-600">
-          Define las rutas y asigna cuentas a cada una. Busca por nombre, comuna o segmento.
-        </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <span className={eyebrowCls}>CP&A · Configuración</span>
+          <h2 className="mt-1 text-[16px] font-bold text-slate-900">Rutas del equipo</h2>
+          <p className="mt-0.5 text-[13px] text-slate-600">
+            Define las rutas y asigna cuentas. Después haz click en{" "}
+            <strong>Guardar asignaciones</strong> para que los walkers las vean.
+          </p>
+        </div>
+        {localsData.some((l) => l.ruta) && (
+          <button
+            type="button"
+            disabled={globalSaving}
+            onClick={saveAllAssignments}
+            className="shrink-0 rounded-lg bg-emerald-600 px-4 py-2 text-[13px] font-semibold text-white hover:bg-emerald-700 focus:outline-none disabled:opacity-50"
+          >
+            {globalSaving ? "Guardando…" : globalSaved ? "✓ Guardado" : `Guardar ${localsData.filter((l) => l.ruta).length} asignaciones`}
+          </button>
+        )}
       </div>
 
       <div className="flex gap-2">
@@ -5607,7 +5651,11 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
       </div>
 
       {error && (
-        <p className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-[12px] text-rose-700">{error}</p>
+        <div className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3">
+          <p className="text-[12px] font-semibold text-rose-700">Error</p>
+          <p className="mt-0.5 font-mono text-[11px] text-rose-600 break-all">{error}</p>
+          <button type="button" onClick={() => setError("")} className="mt-1 text-[11px] text-rose-500 underline">Cerrar</button>
+        </div>
       )}
 
       {routes.length === 0 ? (
