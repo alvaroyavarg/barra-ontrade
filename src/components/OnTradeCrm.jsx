@@ -4711,7 +4711,6 @@ function MaestroSection({ excelMeta, excelError, onUpload, onClearBase, pendingE
         </div>
       )}
 
-      {/* ── Panel de guardado en Supabase ── */}
       {pendingExcelResult && (
         <div className="rounded-xl border-2 border-slate-900 bg-slate-50 p-5">
           <div className="flex items-center justify-between gap-4 flex-wrap">
@@ -4720,8 +4719,7 @@ function MaestroSection({ excelMeta, excelError, onUpload, onClearBase, pendingE
                 {pendingExcelResult.locals.length} cuentas listas para guardar
               </p>
               <p className="mt-0.5 text-[12px] text-slate-500">
-                Los datos ya están en la app pero aún no se guardaron en la base de datos.
-                Haz click en <strong>Guardar en Supabase</strong> para que persistan.
+                Los datos ya están en la app. Haz click en <strong>Guardar</strong> para que queden disponibles para todos los usuarios.
               </p>
             </div>
             <button
@@ -4730,7 +4728,7 @@ function MaestroSection({ excelMeta, excelError, onUpload, onClearBase, pendingE
               onClick={onSaveToSupabase}
               className="shrink-0 rounded-lg bg-slate-900 px-5 py-2.5 text-[14px] font-bold text-white hover:bg-slate-700 focus:outline-none disabled:opacity-50"
             >
-              {uploadSaving ? "Guardando…" : "Guardar en Supabase"}
+              {uploadSaving ? "Guardando…" : "Guardar"}
             </button>
           </div>
           {uploadSupabaseError && (
@@ -4750,7 +4748,7 @@ function MaestroSection({ excelMeta, excelError, onUpload, onClearBase, pendingE
       {uploadSavedAt && !pendingExcelResult && (
         <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
           <p className="text-[13px] font-semibold text-emerald-700">
-            ✓ Guardado en Supabase — {uploadSavedAt.toLocaleTimeString("es-CL")}
+            ✓ Guardado — {uploadSavedAt.toLocaleTimeString("es-CL")}
           </p>
           <p className="mt-0.5 text-[12px] text-emerald-600">Los walkers verán las cuentas al iniciar sesión.</p>
         </div>
