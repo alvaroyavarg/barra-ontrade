@@ -678,14 +678,14 @@ function OnTradeCrm({ onOpenModule, profile }) {
           {activeView === "execution" && roleId === "walker" && selectedLocal ? (
             <ExecutionWorkspace
               activeModuleKey={activeOnFiveModule}
-              activeUserName={role.name}
+              activeUserName={profile?.full_name ?? role.name}
               local={selectedLocal}
               onSelectModule={setActiveOnFiveModule}
               onUpdatePillar={(pillarKey, data) => updateLocalPillar(selectedLocal.id, pillarKey, data)}
               assortmentConfig={assortmentConfig}
               assortmentAudit={assortmentAudits[selectedLocal.id] ?? null}
               onSaveAssortmentAudit={async (checkedIds, segmentIds) => {
-                const audit = await persistAssortmentAudit(selectedLocal.id, checkedIds, role.name, segmentIds);
+                const audit = await persistAssortmentAudit(selectedLocal.id, checkedIds, profile?.full_name ?? role.name, segmentIds);
                 setAssortmentAudits((prev) => ({ ...prev, [selectedLocal.id]: audit }));
               }}
             />
