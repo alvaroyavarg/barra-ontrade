@@ -104,6 +104,14 @@ export async function updateMissionStatus(missionId, status, progress) {
 
 // ── Helpers row <-> app object ────────────────────────────────────────
 
+export async function updateLocalRoute(localId, ruta) {
+  const { error } = await supabase
+    .from("locals")
+    .update({ ruta, updated_at: new Date().toISOString() })
+    .eq("id", localId);
+  if (error) throw error;
+}
+
 function localToRow(l) {
   return {
     id: l.id,
@@ -131,6 +139,7 @@ function localToRow(l) {
     has_aacc: l.hasAacc ?? false,
     investment: l.investment ?? 0,
     tags: l.tags ?? [],
+    ruta: l.ruta ?? "",
     updated_at: new Date().toISOString(),
   };
 }
@@ -164,6 +173,7 @@ function rowToLocal(row) {
     id: row.id,
     accountCode: row.account_code,
     walkerName: row.walker_name,
+    ruta: row.ruta ?? "",
     sheetName: row.sheet_name,
     legalName: row.legal_name,
     name: row.name,

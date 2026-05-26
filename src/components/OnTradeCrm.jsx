@@ -5,6 +5,7 @@ import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCu
 import { useSupabaseData } from "../hooks/useSupabaseData.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { createUserFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute } from "../services/authService.js";
+import { updateLocalRoute } from "../services/localsService.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
 const CRM_ROLES = [
@@ -4850,6 +4851,8 @@ function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, 
       {configSection === "rutas" && (
         <RoutesSection
           routes={routes}
+          localsData={localsData}
+          setLocalsData={setLocalsData}
           onRefresh={() => fetchRoutes().then(setRoutes).catch(() => {})}
         />
       )}
@@ -5288,13 +5291,36 @@ function UserRolesSection({ teamProfiles = [], routes = [], onRefresh }) {
   );
 }
 
-function RoutesSection({ routes = [], onRefresh }) {
-  const [newName, setNewName] = useState("");
-  const [saving, setSaving]   = useState(false);
-  const [error, setError]     = useState("");
+function RoutesSection({ routes = [], localsData = [], setLocalsData, onRefresh }) {
+  const [newName, setNewName]           = useState("");
+  const [saving, setSaving]             = useState(false);
+  const [error, setError]               = useState("");
+  const [expandedRoute, setExpandedRoute] = useState(null);
+  const [search, setSearch]             = useState("");
 
-  const inputCls  = "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[14px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
+  const inputCls   = "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[14px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
   const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
+
+  const localsByRoute = useMemo(() => {
+    const map = {};
+    for (const r of routes) map[r.name] = localsData.filter((l) => l.ruta === r.name);
+    return map;
+  }, [routes, localsData]);
+
+  const searchResults = useMemo(() => {
+    if (!search.trim() || !expandedRoute) return [];
+    const q = search.toLowerCase();
+    return localsData
+      .filter((l) => l.ruta !== expandedRoute)
+      .filter((l) =>
+        (l.name ?? "").toLowerCase().includes(q) ||
+        (l.district ?? "").toLowerCase().includes(q) ||
+        (l.address ?? "").toLowerCase().includes(q) ||
+        (l.accountCode ?? "").toLowerCase().includes(q) ||
+        (l.segment ?? "").toLowerCase().includes(q)
+      )
+      .slice(0, 12);
+  }, [search, localsData, expandedRoute]);
 
   async function handleAdd() {
     if (!newName.trim()) return;
@@ -5320,13 +5346,24 @@ function RoutesSection({ routes = [], onRefresh }) {
     }
   }
 
+  function assignToRoute(localId, routeName) {
+    setLocalsData((prev) => prev.map((l) => l.id === localId ? { ...l, ruta: routeName } : l));
+    updateLocalRoute(localId, routeName).catch(() => {});
+    setSearch("");
+  }
+
+  function removeFromRoute(localId) {
+    setLocalsData((prev) => prev.map((l) => l.id === localId ? { ...l, ruta: "" } : l));
+    updateLocalRoute(localId, "").catch(() => {});
+  }
+
   return (
     <article className="flex flex-col gap-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <div>
         <span className={eyebrowCls}>CP&A · Configuración</span>
         <h2 className="mt-1 text-[16px] font-bold text-slate-900">Rutas del equipo</h2>
         <p className="mt-0.5 text-[13px] text-slate-600">
-          Define las rutas disponibles. Aparecen como opciones al crear un walker.
+          Define las rutas y asigna cuentas a cada una. Busca por nombre, comuna o segmento.
         </p>
       </div>
 
@@ -5357,19 +5394,106 @@ function RoutesSection({ routes = [], onRefresh }) {
           <p className="text-[14px] text-slate-500">No hay rutas. Agrega la primera arriba.</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-2">
-          {routes.map((r) => (
-            <div key={r.id} className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
-              <span className="text-[14px] font-medium text-slate-900">{r.name}</span>
-              <button
-                type="button"
-                onClick={() => handleDelete(r.id)}
-                className="rounded-lg px-2 py-1 text-[12px] text-rose-500 transition hover:bg-rose-50 hover:text-rose-700 focus:outline-none"
-              >
-                Eliminar
-              </button>
-            </div>
-          ))}
+        <div className="flex flex-col gap-3">
+          {routes.map((r) => {
+            const assigned = localsByRoute[r.name] ?? [];
+            const isExpanded = expandedRoute === r.name;
+
+            return (
+              <div key={r.id} className="rounded-xl border border-slate-200 bg-slate-50 overflow-hidden">
+                <div
+                  className="flex cursor-pointer items-center justify-between px-4 py-3 transition hover:bg-slate-100"
+                  onClick={() => { setExpandedRoute(isExpanded ? null : r.name); setSearch(""); }}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-[14px] font-semibold text-slate-900">{r.name}</span>
+                    <span className="rounded-md bg-slate-200 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
+                      {assigned.length} cuentas
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); handleDelete(r.id); }}
+                      className="rounded-lg px-2 py-1 text-[12px] text-rose-500 hover:bg-rose-50 hover:text-rose-700 focus:outline-none"
+                    >
+                      Eliminar
+                    </button>
+                    <span className={`text-[12px] text-slate-400 transition ${isExpanded ? "rotate-180" : ""}`}>▾</span>
+                  </div>
+                </div>
+
+                {isExpanded && (
+                  <div className="border-t border-slate-200 bg-white p-4">
+                    <div className="relative">
+                      <input
+                        className={inputCls}
+                        placeholder="Buscar cuenta por nombre, comuna, segmento..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        autoFocus
+                      />
+                      {searchResults.length > 0 && (
+                        <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-64 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-lg">
+                          {searchResults.map((l) => (
+                            <button
+                              key={l.id}
+                              type="button"
+                              onClick={() => assignToRoute(l.id, r.name)}
+                              className="flex w-full items-center justify-between px-4 py-2.5 text-left transition hover:bg-slate-50"
+                            >
+                              <div>
+                                <strong className="block text-[13px] font-semibold text-slate-900">{l.name}</strong>
+                                <span className="text-[11px] text-slate-500">
+                                  {[l.district, l.segment, l.subchannel].filter(Boolean).join(" · ")}
+                                  {l.ruta ? ` — ${l.ruta}` : ""}
+                                </span>
+                              </div>
+                              <span className="shrink-0 text-[11px] font-semibold text-emerald-600">+ Agregar</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                      {search.trim() && searchResults.length === 0 && (
+                        <div className="absolute left-0 right-0 top-full z-10 mt-1 rounded-xl border border-slate-200 bg-white p-4 text-center shadow-lg">
+                          <p className="text-[13px] text-slate-500">No se encontraron cuentas para "{search}"</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {assigned.length > 0 ? (
+                      <div className="mt-3 flex flex-col gap-1">
+                        <span className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+                          Cuentas en esta ruta
+                        </span>
+                        {assigned.map((l) => (
+                          <div key={l.id} className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
+                            <div>
+                              <strong className="text-[13px] font-medium text-slate-900">{l.name}</strong>
+                              <span className="ml-2 text-[11px] text-slate-400">
+                                {[l.district, l.segment].filter(Boolean).join(" · ")}
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeFromRoute(l.id)}
+                              className="shrink-0 rounded px-2 py-1 text-[11px] text-rose-500 hover:bg-rose-50 focus:outline-none"
+                            >
+                              Quitar
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="mt-3 text-center text-[13px] text-slate-400">
+                        Sin cuentas asignadas. Usa el buscador para agregar.
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </article>
