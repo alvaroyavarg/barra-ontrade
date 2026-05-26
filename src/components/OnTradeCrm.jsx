@@ -2496,7 +2496,6 @@ function MissionGrid({ missions }) {
 function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit }) {
   const [moduleLogs, setModuleLogs] = useState([]);
   const [activeIncentives, setActiveIncentives] = useState(["Tanqueray Perfect Serve Challenge", "Smirnoff Red Staff Challenge"]);
-  const tone = getPillarTone(pillar?.score);
 
   return (
     <article className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -2517,29 +2516,6 @@ function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePil
           </button>
         ) : null}
       </div>
-
-      {module.key !== "menu" ? (
-        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
-          <div className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
-              {initials(local.name)}
-            </span>
-            <div className="flex flex-col">
-              <strong className="text-[13px] font-semibold text-slate-900">{local.name}</strong>
-              <span className="text-[11px] text-slate-500">{local.segment} · {local.district}</span>
-            </div>
-          </div>
-          <span className={`rounded-md px-2 py-0.5 text-[11px] font-semibold ${PILLAR_TONE_STYLES[tone] ?? PILLAR_TONE_STYLES.neutral}`}>
-            {pillar?.score ?? "Sin dato"}
-          </span>
-          {pillar?.summary ? (
-            <span className="text-[12px] text-slate-600">{pillar.summary}</span>
-          ) : null}
-          {pillar?.nextAction ? (
-            <span className="text-[12px] font-medium text-slate-900">→ {pillar.nextAction}</span>
-          ) : null}
-        </div>
-      ) : null}
 
       {module.key === "assortment" ? (
         <>
