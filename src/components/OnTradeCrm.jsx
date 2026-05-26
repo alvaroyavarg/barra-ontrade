@@ -5,7 +5,7 @@ import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCu
 import { useSupabaseData } from "../hooks/useSupabaseData.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { createUserFromAdmin, fetchProfilesFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute, updateUserRole, updateWalkerRuta, fetchDevelopers, updateDeveloper } from "../services/authService.js";
-import { updateLocalRoute, updateLocalWalkerName, deleteAllLocals, upsertLocals } from "../services/localsService.js";
+import { updateLocalRoute, updateLocalWalkerName, deleteAllLocals, upsertLocals, updateLocalAccountCode } from "../services/localsService.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
 const CRM_ROLES = [
@@ -707,6 +707,10 @@ function OnTradeCrm({ onOpenModule, profile }) {
                 setActiveView("execution");
               }}
               onPublishNote={publishNote}
+              onUpdateAccountCode={async (newCode) => {
+                setLocalsData((prev) => prev.map((l) => l.id === selectedLocal.id ? { ...l, accountCode: newCode, accountCodePending: false } : l));
+                try { await updateLocalAccountCode(selectedLocal.id, newCode); } catch {}
+              }}
             />
           ) : null}
 
@@ -1329,13 +1333,30 @@ function WalkerDashboard({ columns, locals, summary, profile, draggedCardId, onC
   );
 }
 
-function LocalProfile({ draftNote, extraContacts, local, notes, onAddContact, onDraftNoteChange, onOpenOnFive, onPublishNote, walkers = [], roleId, onAssignWalker }) {
+function LocalProfile({ draftNote, extraContacts, local, notes, onAddContact, onDraftNoteChange, onOpenOnFive, onPublishNote, walkers = [], roleId, onAssignWalker, onUpdateAccountCode }) {
   const healthTone =
     local.healthScore >= 76
       ? "text-emerald-600"
       : local.healthScore >= 68
       ? "text-amber-600"
       : "text-rose-600";
+
+  const [editingCode, setEditingCode] = useState(false);
+  const [codeInput, setCodeInput] = useState("");
+  const [codeSaving, setCodeSaving] = useState(false);
+
+  function startEditCode() {
+    setCodeInput(local.accountCode || "");
+    setEditingCode(true);
+  }
+
+  async function saveCode() {
+    if (!codeInput.trim()) return;
+    setCodeSaving(true);
+    await onUpdateAccountCode?.(codeInput.trim());
+    setCodeSaving(false);
+    setEditingCode(false);
+  }
 
   return (
     <div className="flex flex-col gap-5">
@@ -1373,6 +1394,43 @@ function LocalProfile({ draftNote, extraContacts, local, notes, onAddContact, on
               <span className="text-[12px] text-slate-600">{local.walkerName}</span>
             </div>
           )}
+
+          {/* Código de cuenta — editable por Walker o CP&A */}
+          <div className="mt-3 border-t border-slate-100 pt-3">
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Código cliente</span>
+            {editingCode ? (
+              <div className="mt-1 flex items-center gap-2">
+                <input
+                  autoFocus
+                  className="flex-1 rounded-lg border border-slate-300 px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none"
+                  placeholder="Ej: 501000123"
+                  value={codeInput}
+                  onChange={(e) => setCodeInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") saveCode(); if (e.key === "Escape") setEditingCode(false); }}
+                />
+                <button
+                  type="button"
+                  disabled={codeSaving || !codeInput.trim()}
+                  onClick={saveCode}
+                  className="rounded-lg bg-slate-900 px-3 py-1.5 text-[12px] font-semibold text-white disabled:opacity-50"
+                >
+                  {codeSaving ? "…" : "Guardar"}
+                </button>
+                <button type="button" onClick={() => setEditingCode(false)} className="text-[12px] text-slate-400 hover:text-slate-600">Cancelar</button>
+              </div>
+            ) : (
+              <div className="mt-1 flex items-center gap-2">
+                {local.accountCodePending || !local.accountCode ? (
+                  <span className="rounded-md bg-amber-50 px-2 py-0.5 text-[12px] font-semibold text-amber-700">Pendiente</span>
+                ) : (
+                  <span className="text-[13px] font-mono text-slate-700">{local.accountCode}</span>
+                )}
+                <button type="button" onClick={startEditCode} className="text-[11px] text-slate-400 underline hover:text-slate-700">
+                  Editar
+                </button>
+              </div>
+            )}
+          </div>
 
           <div className="mt-4 flex flex-wrap gap-1.5">
             {[local.segment, local.occasion, ...local.tags].map((tag) => (

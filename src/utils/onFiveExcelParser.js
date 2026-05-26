@@ -63,8 +63,11 @@ function healthFromPillars(pillars) {
   return Math.round(vals.reduce((a,b) => a+b, 0) / vals.length);
 }
 
+const PENDING_CODES = new Set(["pendiente", "tbd", "s/n", "sin codigo", "sin código", "-", "n/a", "na", "por definir", "pd"]);
+
 function buildLocal(item, sheetName, idx) {
-  const accountCode  = clean(item["CLIENTE ID"]) || clean(item["ID Distribuidor"]) || "";
+  const rawCode     = clean(item["CLIENTE ID"]) || clean(item["ID Distribuidor"]) || "";
+  const accountCode = PENDING_CODES.has(rawCode.toLowerCase()) ? "" : rawCode;
   // Walker (Diageo) and Desarrollador (Andina CL code) are different fields
   const walkerName   = clean(item["WALKER"]) || clean(item["Walker"]) || "";
   const developer    = clean(item["Desarrollador Sell Out"]) || clean(item["Desarrollador"]) || clean(item["Contacto Cuenta"]) || "";
@@ -142,10 +145,12 @@ function buildLocal(item, sheetName, idx) {
   const diageoId  = clean(item["ID Diageo"]) || "";
 
   const ruta = clean(item["Ruta"]) || clean(item["RUTA"]) || clean(item["ruta"]) || "";
+  const safeName = (name || `cuenta${idx}`).toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 20);
 
   return {
-    id: accountCode ? `acc-${accountCode}` : `acc-${sheetName}-${idx}`,
+    id: accountCode ? `acc-${accountCode}` : `acc-pend-${sheetName.slice(0, 8)}-${safeName}-${idx}`,
     accountCode, walkerName, sheetName, diageoId, ruta,
+    accountCodePending: !accountCode,
     legalName:   clean(item["Razón Social"]), name,
     distributor: clean(item["DISTRIBUIDOR"]),
     region:      clean(item["REGION"]),

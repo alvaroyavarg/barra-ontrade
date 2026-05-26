@@ -128,6 +128,14 @@ export async function updateLocalHealthScore(localId, healthScore) {
   if (error) throw error;
 }
 
+export async function updateLocalAccountCode(localId, accountCode) {
+  const { error } = await supabase
+    .from("locals")
+    .update({ account_code: accountCode, updated_at: new Date().toISOString() })
+    .eq("id", localId);
+  if (error) throw error;
+}
+
 export async function updateLocalWalkerName(localId, walkerName) {
   const { error } = await supabase
     .from("locals")
