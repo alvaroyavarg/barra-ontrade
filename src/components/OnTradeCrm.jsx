@@ -5671,7 +5671,7 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
             const assignedWalker = walkerProfiles.find((w) => w.ruta === r.name);
 
             return (
-              <div key={r.id} className="rounded-xl border border-slate-200 bg-slate-50 overflow-hidden">
+              <div key={r.id} className="rounded-xl border border-slate-200 bg-slate-50">
                 {/* ── Header siempre visible ── */}
                 <div className="px-4 py-3">
                   <div className="flex items-center justify-between gap-2 flex-wrap">
@@ -5736,7 +5736,7 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
                         autoFocus
                       />
                       {searchResults.length > 0 && (
-                        <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-64 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-lg">
+                        <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-72 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-lg">
                           {searchResults.map((l) => (
                             <button
                               key={l.id}
