@@ -10,21 +10,30 @@ export async function fetchLocals() {
 }
 
 export async function upsertLocals(locals) {
-  // Deduplicate by id — Excel may have duplicate CLIENTE IDs
+  // Deduplicate by id
   const seen = new Set();
   const unique = locals.filter((l) => { if (seen.has(l.id)) return false; seen.add(l.id); return true; });
-  const rows = unique.map(localToRow);
-  const { error } = await supabase
-    .from("locals")
-    .upsert(rows, { onConflict: "id" });
-  if (error) throw error;
 
-  // upsert contacts, missions, pillars per local (use unique to avoid dupe sub-rows)
+  // Upsert locals one-by-one to avoid "second time" batch conflict
+  for (const local of unique) {
+    const { error } = await supabase.from("locals").upsert(localToRow(local), { onConflict: "id" });
+    if (error) throw new Error(`Error guardando cuenta "${local.name}": ${error.message}`);
+  }
+
+  // Upsert sub-tables per local
   for (const local of unique) {
     await upsertContacts(local.id, local.contacts ?? []);
     await upsertMissions(local.id, local.missions ?? []);
     await upsertPillars(local.id, local.pillars ?? {});
   }
+}
+
+export async function upsertRoutesFromLocals(locals) {
+  const names = [...new Set(locals.map((l) => l.ruta).filter(Boolean))];
+  if (!names.length) return;
+  const rows = names.map((name) => ({ name }));
+  const { error } = await supabase.from("routes").upsert(rows, { onConflict: "name", ignoreDuplicates: true });
+  if (error) throw new Error(`Error creando rutas: ${error.message}`);
 }
 
 export async function upsertContacts(localId, contacts) {

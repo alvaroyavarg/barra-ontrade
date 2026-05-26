@@ -5,7 +5,7 @@ import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCu
 import { useSupabaseData } from "../hooks/useSupabaseData.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { createUserFromAdmin, fetchProfilesFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute, updateUserRole, updateWalkerRuta, fetchDevelopers, updateDeveloper } from "../services/authService.js";
-import { updateLocalRoute, updateLocalWalkerName, deleteAllLocals, upsertLocals, updateLocalAccountCode } from "../services/localsService.js";
+import { updateLocalRoute, updateLocalWalkerName, deleteAllLocals, upsertLocals, updateLocalAccountCode, upsertRoutesFromLocals } from "../services/localsService.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
 const CRM_ROLES = [
@@ -412,6 +412,9 @@ function OnTradeCrm({ onOpenModule, profile }) {
     setUploadSupabaseError("");
     try {
       await upsertLocals(pendingExcelResult.locals);
+      await upsertRoutesFromLocals(pendingExcelResult.locals);
+      // Reload routes so Rutas tab is up to date
+      fetchRoutes().then(setRoutes).catch(() => {});
       setUploadSavedAt(new Date());
       setPendingExcelResult(null);
       setActiveView("dashboard");

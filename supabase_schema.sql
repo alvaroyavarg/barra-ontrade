@@ -30,6 +30,7 @@ create table if not exists locals (
   has_aacc           boolean default false,
   investment         numeric default 0,
   tags               text[] default '{}',
+  ruta               text default '',
   created_at         timestamptz default now(),
   updated_at         timestamptz default now()
 );
