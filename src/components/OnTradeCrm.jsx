@@ -3,7 +3,7 @@ import { parseOnFiveWorkbook, summarizeOnFiveLocals } from "../utils/onFiveExcel
 import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCuentas.js";
 import { useSupabaseData } from "../hooks/useSupabaseData.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
-import { createUserFromAdmin, fetchProfiles } from "../services/authService.js";
+import { createUserFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute } from "../services/authService.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
 const CRM_ROLES = [
@@ -4556,9 +4556,11 @@ const CONFIG_WALKERS_MOCK = [
 
 function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData, walkers, onAddManualLocal, assortmentConfig, onSaveAssortmentConfig, onUpdateAccount }) {
   const [walkerProfiles, setWalkerProfiles] = useState([]);
+  const [routes, setRoutes] = useState([]);
 
   useEffect(() => {
     fetchProfiles("walker").then(setWalkerProfiles).catch(() => {});
+    fetchRoutes().then(setRoutes).catch(() => {});
   }, []);
   const [showForm, setShowForm] = useState(false);
   const [justAdded, setJustAdded] = useState(null);
@@ -4611,6 +4613,7 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData
   const CONFIG_SECTIONS = [
     { id: "maestro",      label: "Maestro de cuentas",   icon: "📂", desc: "Carga del Excel maestro" },
     { id: "walkers",      label: "Walkers y DBAs",        icon: "👥", desc: "Equipo de terreno" },
+    { id: "rutas",        label: "Rutas",                 icon: "🗺️", desc: "Rutas del equipo" },
     { id: "carga-masiva", label: "Carga masiva locales",  icon: "📋", desc: "Importar locales por Walker" },
     { id: "assortment",   label: "Portafolio Assortment", icon: "🍾", desc: "Portafolio por segmento" },
     { id: "weights",      label: "Pesos On Five",         icon: "⚖️", desc: "Ponderación del score" },
@@ -4741,7 +4744,14 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData
       {configSection === "walkers" && (
         <UserRolesSection
           walkerProfiles={walkerProfiles}
+          routes={routes}
           onRefresh={() => fetchProfiles("walker").then(setWalkerProfiles).catch(() => {})}
+        />
+      )}
+      {configSection === "rutas" && (
+        <RoutesSection
+          routes={routes}
+          onRefresh={() => fetchRoutes().then(setRoutes).catch(() => {})}
         />
       )}
       {configSection === "carga-masiva" && (
@@ -4946,13 +4956,13 @@ function AccountSegmentSection({ localsData, walkers, onUpdateAccount }) {
   );
 }
 
-function UserRolesSection({ walkerProfiles = [], onRefresh }) {
+function UserRolesSection({ walkerProfiles = [], routes = [], onRefresh }) {
   const [showForm, setShowForm]   = useState(false);
   const [saving, setSaving]       = useState(false);
   const [formError, setFormError] = useState("");
   const [copiedId, setCopiedId]   = useState(null);
 
-  const emptyForm = { fullName: "", rut: "", email: "", password: "", ruta: "" };
+  const emptyForm = { fullName: "", rut: "", phone: "", email: "", password: "", ruta: "" };
   const [form, setForm] = useState(emptyForm);
 
   const inputCls = "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[14px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
@@ -4979,7 +4989,8 @@ function UserRolesSection({ walkerProfiles = [], onRefresh }) {
         role: "walker",
         fullName: form.fullName.trim(),
         rut: form.rut.trim(),
-        ruta: form.ruta.trim(),
+        phone: form.phone.trim(),
+        ruta: form.ruta,
         walkerName: form.fullName.trim(),
       });
       await onRefresh?.();
@@ -4993,7 +5004,11 @@ function UserRolesSection({ walkerProfiles = [], onRefresh }) {
   }
 
   function copyInfo(w) {
-    const text = `Acceso BARRA On Trade\nNombre: ${w.full_name}\nRuta: ${w.ruta}\nIngresa con tu email en barra-ontrade.vercel.app`;
+    const lines = [`Acceso BARRA On Trade`, `Nombre: ${w.full_name}`];
+    if (w.phone) lines.push(`Teléfono: ${w.phone}`);
+    if (w.ruta) lines.push(`Ruta: ${w.ruta}`);
+    lines.push(`Ingresa con tu email en barra-ontrade.vercel.app`);
+    const text = lines.join("\n");
     navigator.clipboard.writeText(text).catch(() => {});
     setCopiedId(w.id);
     setTimeout(() => setCopiedId(null), 2000);
@@ -5034,23 +5049,36 @@ function UserRolesSection({ walkerProfiles = [], onRefresh }) {
             )}
             <div className="grid gap-3 sm:grid-cols-2">
               {[
-                ["fullName",  "Nombre completo", "Juan Pérez"],
-                ["rut",       "RUT",             "12.345.678-9"],
-                ["email",     "Email de acceso", "juan@diageo.com"],
-                ["password",  "Contraseña (dejar vacío = auto)", "mínimo 8 caracteres"],
-                ["ruta",      "Ruta asignada",   "Ruta Oriente"],
-              ].map(([k, l, ph]) => (
+                ["fullName", "Nombre completo",              "text",     "Juan Pérez"],
+                ["rut",      "RUT",                          "text",     "12.345.678-9"],
+                ["phone",    "Teléfono",                     "text",     "+56 9 1234 5678"],
+                ["email",    "Email de acceso",              "email",    "juan@diageo.com"],
+                ["password", "Contraseña (vacío = auto)",    "password", "mínimo 8 caracteres"],
+              ].map(([k, l, t, ph]) => (
                 <label key={k} className={labelCls}>
                   <span className={eyebrowCls}>{l}</span>
                   <input
                     className={inputCls}
                     placeholder={ph}
                     value={form[k]}
-                    type={k === "password" ? "password" : "text"}
+                    type={t}
                     onChange={(e) => setForm((f) => ({ ...f, [k]: e.target.value }))}
                   />
                 </label>
               ))}
+              <label className={labelCls}>
+                <span className={eyebrowCls}>Ruta asignada</span>
+                <select
+                  className={inputCls}
+                  value={form.ruta}
+                  onChange={(e) => setForm((f) => ({ ...f, ruta: e.target.value }))}
+                >
+                  <option value="">Sin ruta asignada</option>
+                  {routes.map((r) => (
+                    <option key={r.id} value={r.name}>{r.name}</option>
+                  ))}
+                </select>
+              </label>
             </div>
             <div className="mt-3 flex justify-end gap-2">
               <button
@@ -5095,6 +5123,7 @@ function UserRolesSection({ walkerProfiles = [], onRefresh }) {
 
                 <div className="flex flex-1 flex-wrap items-center gap-2 sm:justify-center">
                   {w.rut && <span className="text-[12px] text-slate-500">RUT: {w.rut}</span>}
+                  {w.phone && <span className="text-[12px] text-slate-500">{w.phone}</span>}
                   <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
                     Acceso activo
                   </span>
@@ -5114,6 +5143,94 @@ function UserRolesSection({ walkerProfiles = [], onRefresh }) {
           </div>
         )}
       </div>
+    </article>
+  );
+}
+
+function RoutesSection({ routes = [], onRefresh }) {
+  const [newName, setNewName] = useState("");
+  const [saving, setSaving]   = useState(false);
+  const [error, setError]     = useState("");
+
+  const inputCls  = "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[14px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
+  const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
+
+  async function handleAdd() {
+    if (!newName.trim()) return;
+    setSaving(true);
+    setError("");
+    try {
+      await addRoute(newName.trim());
+      setNewName("");
+      await onRefresh?.();
+    } catch (err) {
+      setError(err.message ?? "Error al guardar");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleDelete(id) {
+    try {
+      await deleteRoute(id);
+      await onRefresh?.();
+    } catch (err) {
+      setError(err.message ?? "Error al eliminar");
+    }
+  }
+
+  return (
+    <article className="flex flex-col gap-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div>
+        <span className={eyebrowCls}>CP&A · Configuración</span>
+        <h2 className="mt-1 text-[16px] font-bold text-slate-900">Rutas del equipo</h2>
+        <p className="mt-0.5 text-[13px] text-slate-600">
+          Define las rutas disponibles. Aparecen como opciones al crear un walker.
+        </p>
+      </div>
+
+      <div className="flex gap-2">
+        <input
+          className={inputCls}
+          placeholder="Nombre de la ruta, ej: Ruta Norte"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+        />
+        <button
+          type="button"
+          onClick={handleAdd}
+          disabled={saving || !newName.trim()}
+          className="shrink-0 rounded-lg bg-slate-900 px-4 py-2 text-[13px] font-semibold text-white hover:bg-slate-800 focus:outline-none disabled:opacity-50"
+        >
+          {saving ? "…" : "Agregar"}
+        </button>
+      </div>
+
+      {error && (
+        <p className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-[12px] text-rose-700">{error}</p>
+      )}
+
+      {routes.length === 0 ? (
+        <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 py-10 text-center">
+          <p className="text-[14px] text-slate-500">No hay rutas. Agrega la primera arriba.</p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">
+          {routes.map((r) => (
+            <div key={r.id} className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
+              <span className="text-[14px] font-medium text-slate-900">{r.name}</span>
+              <button
+                type="button"
+                onClick={() => handleDelete(r.id)}
+                className="rounded-lg px-2 py-1 text-[12px] text-rose-500 transition hover:bg-rose-50 hover:text-rose-700 focus:outline-none"
+              >
+                Eliminar
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </article>
   );
 }

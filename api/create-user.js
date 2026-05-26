@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     return res.status(403).json({ error: "Solo CP&A puede crear usuarios" });
   }
 
-  const { email, password, role, fullName, rut, ruta, walkerName } = req.body;
+  const { email, password, role, fullName, rut, phone, ruta, walkerName } = req.body;
   if (!email || !password || !role || !fullName) {
     return res.status(400).json({ error: "Faltan campos obligatorios" });
   }
@@ -48,6 +48,7 @@ export default async function handler(req, res) {
     role,
     full_name: fullName,
     rut: rut ?? "",
+    phone: phone ?? "",
     ruta: ruta ?? "",
     walker_name: walkerName ?? "",
   });
