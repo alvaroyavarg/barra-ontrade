@@ -112,6 +112,14 @@ export async function updateLocalRoute(localId, ruta) {
   if (error) throw error;
 }
 
+export async function updateLocalWalkerName(localId, walkerName) {
+  const { error } = await supabase
+    .from("locals")
+    .update({ walker_name: walkerName, updated_at: new Date().toISOString() })
+    .eq("id", localId);
+  if (error) throw error;
+}
+
 function localToRow(l) {
   return {
     id: l.id,

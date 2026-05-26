@@ -14,6 +14,12 @@ const SKIP_SHEETS = new Set([
   "detalle de avances de kpis","free good","registro consolidados free good",
 ]);
 
+// Any of these column names in a row marks it as the header row
+const HEADER_ANCHORS = new Set([
+  "cliente id", "id distribuidor", "nombre cuenta", "nombre fantasía",
+  "nombre fantasia", "razón social", "razon social",
+]);
+
 function clean(v) { return v == null ? "" : String(v).trim(); }
 function yes(v) { return ["SI","SÍ","OK","YES","TRUE","1"].includes(clean(v).toUpperCase()); }
 function isFilled(v) { const t = clean(v).toUpperCase(); return Boolean(t) && !["NO","NA","N/A","-"].includes(t); }
@@ -59,7 +65,8 @@ function healthFromPillars(pillars) {
 
 function buildLocal(item, sheetName, idx) {
   const accountCode  = clean(item["CLIENTE ID"]) || clean(item["ID Distribuidor"]) || "";
-  const walkerName   = clean(item["WALKER"]) || clean(item["Desarrollador"]) || sheetName;
+  // Walker (Diageo) and Desarrollador (Andina CL code) are different fields
+  const walkerName   = clean(item["WALKER"]) || clean(item["Walker"]) || "";
   const developer    = clean(item["Desarrollador Sell Out"]) || clean(item["Desarrollador"]) || clean(item["Contacto Cuenta"]) || "";
   const name         = clean(item["Nombre Fantasía"]) || clean(item["Nombre Cuenta"]) || clean(item["Razón Social"]) || `Cuenta ${idx+1}`;
 
@@ -135,7 +142,7 @@ function buildLocal(item, sheetName, idx) {
   const diageoId  = clean(item["ID Diageo"]) || "";
 
   return {
-    id: `${sheetName}-${accountCode || idx}`,
+    id: accountCode ? `acc-${accountCode}` : `acc-${sheetName}-${idx}`,
     accountCode, walkerName, sheetName, diageoId,
     legalName:   clean(item["Razón Social"]), name,
     distributor: clean(item["DISTRIBUIDOR"]),
@@ -183,7 +190,9 @@ function buildLocal(item, sheetName, idx) {
 
 function parseSheet(ws, sheetName) {
   const rows = XLSX.utils.sheet_to_json(ws, { header:1, defval:"", blankrows:false });
-  const hIdx = rows.findIndex((row) => row.some((c) => clean(c).toUpperCase() === "CLIENTE ID"));
+  const hIdx = rows.findIndex((row) =>
+    row.some((c) => HEADER_ANCHORS.has(clean(c).toLowerCase()))
+  );
   if (hIdx < 0) return [];
   const headers = rows[hIdx].map(clean);
   const dataRows = rows.slice(hIdx + 1).filter((row) => clean(row[0]));

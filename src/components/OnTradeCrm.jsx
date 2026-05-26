@@ -389,7 +389,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
       ]);
       setActiveView("dashboard");
     } catch (error) {
-      setExcelError(error.message || "No pude leer el Excel. Verifica que tenga la columna CLIENTE ID.");
+      setExcelError(error.message || "No pude leer el Excel. Verifica que la hoja se llame 'Cuentas' y tenga las columnas correctas.");
     } finally {
       event.target.value = "";
     }
@@ -654,6 +654,12 @@ function OnTradeCrm({ onOpenModule, profile }) {
               local={selectedLocal}
               notes={localNotes}
               extraContacts={[...(extraContacts[selectedLocal.id] ?? []), ...selectedLocal.contacts]}
+              walkers={walkers}
+              roleId={roleId}
+              onAssignWalker={async (walkerName) => {
+                setLocalsData((prev) => prev.map((l) => l.id === selectedLocal.id ? { ...l, walkerName } : l));
+                try { await import("../services/localsService.js").then(m => m.updateLocalWalkerName(selectedLocal.id, walkerName)); } catch {}
+              }}
               onAddContact={(contact) => setExtraContacts((prev) => ({
                 ...prev,
                 [selectedLocal.id]: [contact, ...(prev[selectedLocal.id] ?? [])],
@@ -811,7 +817,7 @@ function ExcelUploadView({ excelMeta, excelError, onUpload }) {
           <span className="crm-eyebrow">Paso 1</span>
           <h2 style={{ fontSize: "1.15rem", fontWeight: 740, margin: "4px 0 6px", letterSpacing: "-.02em" }}>Sube el Excel maestro de cuentas</h2>
           <p style={{ color: "var(--text-2)", fontSize: "0.86rem", lineHeight: 1.55 }}>
-            El archivo debe tener una hoja con los headers <strong>CLIENTE ID</strong>, <em>Nombre Fantasía</em>, <em>Segmento</em>, <em>Comuna</em>, <em>Acuerdo Comercial Vigente</em>, <em>Tropical Gin</em>, <em>CA c/ Whisky</em>, <em>CA c/ Gin</em>, <em>JW + Coca Cola</em>, <em>Gin & Tonic</em>, <em>Whisky Sour</em>, entre otras.
+            Hoja "Cuentas" con columnas: <strong>Nombre Cuenta</strong>, <em>ID Distribuidor</em>, <em>Segmento</em>, <em>Outlet</em>, <em>Dirección</em>, <em>Comuna</em>, <em>Desarrollador</em>, <em>AACC</em>. La columna <strong>Walker</strong> es opcional — puede ir en blanco y asignarse desde el perfil de cada cuenta.
           </p>
         </div>
 
@@ -1286,7 +1292,7 @@ function WalkerDashboard({ columns, locals, summary, excelMeta, excelError, drag
   );
 }
 
-function LocalProfile({ draftNote, extraContacts, local, notes, onAddContact, onDraftNoteChange, onOpenOnFive, onPublishNote }) {
+function LocalProfile({ draftNote, extraContacts, local, notes, onAddContact, onDraftNoteChange, onOpenOnFive, onPublishNote, walkers = [], roleId, onAssignWalker }) {
   const healthTone =
     local.healthScore >= 76
       ? "text-emerald-600"
@@ -1308,6 +1314,28 @@ function LocalProfile({ draftNote, extraContacts, local, notes, onAddContact, on
             </div>
             <strong className={`text-2xl font-bold ${healthTone}`}>{local.healthScore}</strong>
           </div>
+
+          {roleId === "cpa" && (
+            <div className="mt-4 flex items-center gap-2 border-t border-slate-100 pt-3">
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Walker</span>
+              <select
+                className="flex-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none"
+                value={local.walkerName ?? ""}
+                onChange={(e) => onAssignWalker?.(e.target.value)}
+              >
+                <option value="">Sin asignar</option>
+                {walkers.map((w) => (
+                  <option key={w.id} value={w.name}>{w.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
+          {roleId !== "cpa" && local.walkerName && (
+            <div className="mt-3 border-t border-slate-100 pt-3">
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Walker — </span>
+              <span className="text-[12px] text-slate-600">{local.walkerName}</span>
+            </div>
+          )}
 
           <div className="mt-4 flex flex-wrap gap-1.5">
             {[local.segment, local.occasion, ...local.tags].map((tag) => (
@@ -4587,19 +4615,19 @@ function MaestroSection({ excelMeta, excelError, onUpload, onClearBase }) {
   function downloadTemplate() {
     const headers = [
       "Nombre Cuenta", "Razón Social", "ID Distribuidor", "ID Diageo",
-      "Segmento", "Outlet", "Dirección", "Comuna", "Desarrollador", "AACC",
+      "Segmento", "Outlet", "Dirección", "Comuna", "Desarrollador", "AACC", "Walker",
     ];
     const example1 = [
-      "Bar La Terraza", "Inversiones La Terraza SpA", "PDV-001", "",
-      "PREMIUM CORE", "BAR", "Av. Providencia 1234", "Providencia", "Luis Felipe Cruz", "Diageo",
+      "Bar La Terraza", "Inversiones La Terraza SpA", "501000001", "",
+      "PREMIUM CORE", "BAR", "Av. Providencia 1234", "Providencia", "CL55", "AACC", "Luis Felipe Cruz",
     ];
     const example2 = [
-      "Club Nocturno", "", "PDV-002", "",
-      "NIGHTLIFE", "DISCO", "Calle Estado 45", "Santiago", "Michael Yañez", "Sin AC",
+      "Club Nocturno", "", "501000002", "",
+      "NIGHTLIFE", "DISCO", "Calle Estado 45", "Santiago", "CL56", "Sin AACC", "",
     ];
     const example3 = [
-      "Restaurante Centro", "Gastronomía Centro Ltda", "PDV-003", "",
-      "RESERVE", "DINING", "Nueva de Lyon 89", "Providencia", "Luis Felipe Cruz", "Competencia",
+      "Restaurante Centro", "Gastronomía Centro Ltda", "501000003", "",
+      "RESERVE", "DINING", "Nueva de Lyon 89", "Providencia", "CL55", "Sin AACC", "",
     ];
     const ws = XLSX.utils.aoa_to_sheet([headers, example1, example2, example3]);
     ws["!cols"] = headers.map((h) => ({ wch: Math.max(h.length + 4, 18) }));
