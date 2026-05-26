@@ -4,9 +4,27 @@ import CommercialConsultationModule from "./components/CommercialConsultationMod
 import AaccProfitabilityPage from "./components/AaccProfitabilityPage.jsx";
 import ExecutionHub from "./components/ExecutionHub.jsx";
 import { MAESTRO_LOCALS } from "./data/maestroCuentas.js";
+import { useAuth } from "./contexts/AuthContext.jsx";
+import LoginScreen from "./components/LoginScreen.jsx";
 
 function App() {
+  const { user, profile, loading } = useAuth();
   const [activeModule, setActiveModule] = useState("home");
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-900">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+          <span className="text-[13px] text-slate-400">Cargando…</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <LoginScreen />;
+  }
 
   if (activeModule === "commercial") {
     return (
@@ -32,7 +50,7 @@ function App() {
     );
   }
 
-  return <OnTradeCrm onOpenModule={setActiveModule} />;
+  return <OnTradeCrm onOpenModule={setActiveModule} profile={profile} />;
 }
 
 export default App;

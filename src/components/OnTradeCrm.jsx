@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { parseOnFiveWorkbook, summarizeOnFiveLocals } from "../utils/onFiveExcelParser.js";
 import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCuentas.js";
 import { useSupabaseData } from "../hooks/useSupabaseData.js";
+import { useAuth } from "../contexts/AuthContext.jsx";
+import { createUserFromAdmin, fetchProfiles } from "../services/authService.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
 const CRM_ROLES = [
@@ -286,8 +288,9 @@ function buildKanbanFromLocals(locals) {
   return cards;
 }
 
-function OnTradeCrm({ onOpenModule }) {
-  const [roleId, setRoleId] = useState("walker");
+function OnTradeCrm({ onOpenModule, profile }) {
+  const { signOut } = useAuth();
+  const roleId = profile?.role ?? "walker";
   const [activeView, setActiveView] = useState("dashboard");
   const [activeWalker, setActiveWalker] = useState("all");
   const [excelError, setExcelError] = useState("");
@@ -300,16 +303,11 @@ function OnTradeCrm({ onOpenModule }) {
   const [assortmentAudits, setAssortmentAudits] = useState({});
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const [registeredWalkers, setRegisteredWalkers] = useState(() => {
-    try {
-      const saved = localStorage.getItem("barra-registered-walkers");
-      return saved ? JSON.parse(saved) : [];
-    } catch { return []; }
-  });
-
   useEffect(() => {
-    localStorage.setItem("barra-registered-walkers", JSON.stringify(registeredWalkers));
-  }, [registeredWalkers]);
+    if (roleId === "walker" && profile?.walker_name) {
+      setActiveWalker(profile.walker_name);
+    }
+  }, [roleId, profile?.walker_name]);
 
   const {
     locals: localsData,
@@ -384,11 +382,6 @@ function OnTradeCrm({ onOpenModule }) {
     }
   }
 
-  function handleRoleChange(nextRoleId) {
-    setRoleId(nextRoleId);
-    setActiveView("contacts");
-  }
-
   function moveCard(targetColumnId) {
     if (!draggedCardId) {
       return;
@@ -426,7 +419,7 @@ function OnTradeCrm({ onOpenModule }) {
     if (!noteText || !selectedLocal) return;
     const note = {
       id: `note-${Date.now()}`,
-      author: role.name,
+      author: profile?.full_name ?? role.name,
       date: "Ahora",
       nextAction: "Definir siguiente paso desde el playbook.",
       text: noteText,
@@ -470,27 +463,18 @@ function OnTradeCrm({ onOpenModule }) {
           )}
         </div>
 
-        <div
-          aria-label="Selector de rol"
-          className="inline-flex items-center gap-0.5 rounded-lg border border-white/10 bg-white/5 p-0.5"
-        >
-          {CRM_ROLES.map((item) => {
-            const isActive = roleId === item.id;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => handleRoleChange(item.id)}
-                className={`rounded-md px-3 py-1 text-[12px] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900 ${
-                  isActive
-                    ? "bg-white text-slate-900 shadow-sm"
-                    : "text-slate-300 hover:text-white"
-                }`}
-              >
-                {item.label}
-              </button>
-            );
-          })}
+        <div className="flex items-center gap-2.5">
+          <div className="hidden flex-col items-end leading-tight sm:flex">
+            <span className="text-[13px] font-semibold text-white">{profile?.full_name ?? "Usuario"}</span>
+            <span className="text-[10px] uppercase tracking-wide text-slate-400">{roleId}</span>
+          </div>
+          <button
+            type="button"
+            onClick={signOut}
+            className="rounded-lg border border-white/10 px-3 py-1.5 text-[12px] font-medium text-slate-300 transition hover:bg-white/10 hover:text-white focus:outline-none"
+          >
+            Salir
+          </button>
         </div>
       </header>
 
@@ -700,8 +684,6 @@ function OnTradeCrm({ onOpenModule }) {
               localsData={localsData}
               setLocalsData={setLocalsData}
               walkers={walkers}
-              registeredWalkers={registeredWalkers}
-              onSetRegisteredWalkers={setRegisteredWalkers}
               onAddManualLocal={addManualLocal}
               assortmentConfig={assortmentConfig}
               onSaveAssortmentConfig={setAssortmentConfig}
@@ -4572,7 +4554,12 @@ const CONFIG_WALKERS_MOCK = [
   { id: "w3", name: "Lucas Prima", ruta: "Ruta Centro-Norte", locals: ["Club Crobar", "Liguria", "The Clinic Bar"] },
 ];
 
-function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData, walkers, registeredWalkers, onSetRegisteredWalkers, onAddManualLocal, assortmentConfig, onSaveAssortmentConfig, onUpdateAccount }) {
+function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData, walkers, onAddManualLocal, assortmentConfig, onSaveAssortmentConfig, onUpdateAccount }) {
+  const [walkerProfiles, setWalkerProfiles] = useState([]);
+
+  useEffect(() => {
+    fetchProfiles("walker").then(setWalkerProfiles).catch(() => {});
+  }, []);
   const [showForm, setShowForm] = useState(false);
   const [justAdded, setJustAdded] = useState(null);
   const emptyForm = {
@@ -4753,13 +4740,13 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData
 
       {configSection === "walkers" && (
         <UserRolesSection
-          registeredWalkers={registeredWalkers}
-          onSetRegisteredWalkers={onSetRegisteredWalkers}
+          walkerProfiles={walkerProfiles}
+          onRefresh={() => fetchProfiles("walker").then(setWalkerProfiles).catch(() => {})}
         />
       )}
       {configSection === "carga-masiva" && (
         <BulkLocalsUploadSection
-          registeredWalkers={registeredWalkers}
+          walkerProfiles={walkerProfiles}
           localsData={localsData}
           setLocalsData={setLocalsData}
         />
@@ -4959,41 +4946,54 @@ function AccountSegmentSection({ localsData, walkers, onUpdateAccount }) {
   );
 }
 
-function UserRolesSection({ registeredWalkers = [], onSetRegisteredWalkers }) {
-  const [showWalkerForm, setShowWalkerForm] = useState(false);
-  const [copiedId, setCopiedId] = useState(null);
-  const emptyW = { name: "", rut: "", email: "", ruta: "" };
-  const [wForm, setWForm] = useState(emptyW);
+function UserRolesSection({ walkerProfiles = [], onRefresh }) {
+  const [showForm, setShowForm]   = useState(false);
+  const [saving, setSaving]       = useState(false);
+  const [formError, setFormError] = useState("");
+  const [copiedId, setCopiedId]   = useState(null);
+
+  const emptyForm = { fullName: "", rut: "", email: "", password: "", ruta: "" };
+  const [form, setForm] = useState(emptyForm);
 
   const inputCls = "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[14px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
   const labelCls = "flex flex-col gap-1.5";
   const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
-  const thCls = "border-b border-slate-200 bg-slate-50 p-3 text-left text-[10px] font-semibold uppercase tracking-wide text-slate-500";
-  const tdCls = "border-b border-slate-100 p-3 text-[13px]";
 
-  function addWalker() {
-    if (!wForm.name.trim()) return;
-    const pin = String(Math.floor(100000 + Math.random() * 900000));
-    onSetRegisteredWalkers?.((prev) => [
-      ...prev,
-      { ...wForm, id: `rw-${Date.now()}`, portalAccess: false, tempPin: pin }
-    ]);
-    setWForm(emptyW);
-    setShowWalkerForm(false);
+  function generatePassword() {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
+    return Array.from({ length: 10 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
   }
 
-  function toggleAccess(id) {
-    onSetRegisteredWalkers?.((prev) =>
-      prev.map((w) => w.id === id ? { ...w, portalAccess: !w.portalAccess } : w)
-    );
+  async function handleCreate() {
+    if (!form.fullName.trim() || !form.email.trim()) {
+      setFormError("Nombre y email son obligatorios.");
+      return;
+    }
+    const password = form.password.trim() || generatePassword();
+    setSaving(true);
+    setFormError("");
+    try {
+      await createUserFromAdmin({
+        email: form.email.trim(),
+        password,
+        role: "walker",
+        fullName: form.fullName.trim(),
+        rut: form.rut.trim(),
+        ruta: form.ruta.trim(),
+        walkerName: form.fullName.trim(),
+      });
+      await onRefresh?.();
+      setForm(emptyForm);
+      setShowForm(false);
+    } catch (err) {
+      setFormError(err.message ?? "Error al crear usuario");
+    } finally {
+      setSaving(false);
+    }
   }
 
-  function removeWalker(id) {
-    onSetRegisteredWalkers?.((prev) => prev.filter((w) => w.id !== id));
-  }
-
-  function copyCredentials(w) {
-    const text = `Acceso BARRA On Trade\nUsuario: ${w.email}\nPIN temporal: ${w.tempPin ?? "Por configurar"}\nRuta: ${w.ruta}`;
+  function copyInfo(w) {
+    const text = `Acceso BARRA On Trade\nNombre: ${w.full_name}\nRuta: ${w.ruta}\nIngresa con tu email en barra-ontrade.vercel.app`;
     navigator.clipboard.writeText(text).catch(() => {});
     setCopiedId(w.id);
     setTimeout(() => setCopiedId(null), 2000);
@@ -5005,48 +5005,49 @@ function UserRolesSection({ registeredWalkers = [], onSetRegisteredWalkers }) {
         <span className={eyebrowCls}>CP&A · Administración</span>
         <h2 className="mt-1 text-[16px] font-bold text-slate-900">Walkers — Acceso al portal</h2>
         <p className="mt-0.5 text-[13px] text-slate-600">
-          Crea y gestiona el equipo de terreno. Cada walker creado aquí tiene acceso al portal de ejecución.
+          Crea cuentas para el equipo de terreno. Cada usuario puede ingresar con su email y contraseña.
         </p>
       </div>
 
-      {/* Walkers */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <strong className="text-[14px] font-semibold text-slate-900">Walkers</strong>
             <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
-              {registeredWalkers.length}
-            </span>
-            <span className="rounded-md bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">
-              {registeredWalkers.filter((w) => w.portalAccess).length} activos
+              {walkerProfiles.length}
             </span>
           </div>
           <button
             type="button"
-            onClick={() => setShowWalkerForm((v) => !v)}
+            onClick={() => { setShowForm((v) => !v); setFormError(""); }}
             className="rounded-lg bg-slate-900 px-3 py-2 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none"
           >
             + Agregar Walker
           </button>
         </div>
 
-        {showWalkerForm && (
+        {showForm && (
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
             <strong className="mb-3 block text-[13px] font-semibold text-slate-900">Nuevo Walker</strong>
+            {formError && (
+              <p className="mb-3 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-[12px] text-rose-700">{formError}</p>
+            )}
             <div className="grid gap-3 sm:grid-cols-2">
               {[
-                ["name",  "Nombre completo",  "Juan Pérez"],
-                ["rut",   "RUT",              "12.345.678-9"],
-                ["email", "Email",            "camila@diageo.com"],
-                ["ruta",  "Ruta asignada",    "Ruta Oriente"],
+                ["fullName",  "Nombre completo", "Juan Pérez"],
+                ["rut",       "RUT",             "12.345.678-9"],
+                ["email",     "Email de acceso", "juan@diageo.com"],
+                ["password",  "Contraseña (dejar vacío = auto)", "mínimo 8 caracteres"],
+                ["ruta",      "Ruta asignada",   "Ruta Oriente"],
               ].map(([k, l, ph]) => (
                 <label key={k} className={labelCls}>
                   <span className={eyebrowCls}>{l}</span>
                   <input
                     className={inputCls}
                     placeholder={ph}
-                    value={wForm[k]}
-                    onChange={(e) => setWForm((f) => ({ ...f, [k]: e.target.value }))}
+                    value={form[k]}
+                    type={k === "password" ? "password" : "text"}
+                    onChange={(e) => setForm((f) => ({ ...f, [k]: e.target.value }))}
                   />
                 </label>
               ))}
@@ -5054,82 +5055,58 @@ function UserRolesSection({ registeredWalkers = [], onSetRegisteredWalkers }) {
             <div className="mt-3 flex justify-end gap-2">
               <button
                 type="button"
-                onClick={() => { setShowWalkerForm(false); setWForm(emptyW); }}
+                onClick={() => { setShowForm(false); setForm(emptyForm); setFormError(""); }}
                 className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-[13px] hover:bg-slate-50 focus:outline-none"
               >
                 Cancelar
               </button>
               <button
                 type="button"
-                onClick={addWalker}
-                className="rounded-lg bg-slate-900 px-4 py-2 text-[13px] font-semibold text-white hover:bg-slate-800 focus:outline-none"
+                onClick={handleCreate}
+                disabled={saving}
+                className="rounded-lg bg-slate-900 px-4 py-2 text-[13px] font-semibold text-white hover:bg-slate-800 focus:outline-none disabled:opacity-60"
               >
-                Crear Walker
+                {saving ? "Creando…" : "Crear Walker"}
               </button>
             </div>
           </div>
         )}
 
-        {registeredWalkers.length === 0 ? (
+        {walkerProfiles.length === 0 ? (
           <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 py-10 text-center">
             <p className="text-[14px] text-slate-500">No hay walkers registrados. Agrega el primero.</p>
           </div>
         ) : (
           <div className="flex flex-col gap-2">
-            {registeredWalkers.map((w) => (
+            {walkerProfiles.map((w) => (
               <div
                 key={w.id}
                 className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:flex-row sm:items-center"
               >
                 <div className="flex shrink-0 items-center gap-3">
                   <span className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-[13px] font-bold text-white">
-                    {w.name.split(" ").map((p) => p[0]).slice(0, 2).join("")}
+                    {(w.full_name ?? "?").split(" ").map((p) => p[0]).slice(0, 2).join("")}
                   </span>
                   <div>
-                    <strong className="block text-[14px] font-semibold text-slate-900">{w.name}</strong>
-                    <span className="text-[12px] text-slate-500">{w.ruta}</span>
+                    <strong className="block text-[14px] font-semibold text-slate-900">{w.full_name}</strong>
+                    <span className="text-[12px] text-slate-500">{w.ruta || "Sin ruta asignada"}</span>
                   </div>
                 </div>
 
                 <div className="flex flex-1 flex-wrap items-center gap-2 sm:justify-center">
-                  <span className="text-[12px] text-slate-500">{w.email}</span>
-                  {w.rut && <span className="text-[11px] text-slate-400">· {w.rut}</span>}
+                  {w.rut && <span className="text-[12px] text-slate-500">RUT: {w.rut}</span>}
+                  <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
+                    Acceso activo
+                  </span>
                 </div>
 
                 <div className="flex shrink-0 items-center gap-2">
-                  <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold ${
-                    w.portalAccess
-                      ? "bg-emerald-50 text-emerald-700"
-                      : "bg-slate-100 text-slate-500"
-                  }`}>
-                    {w.portalAccess ? "Acceso activo" : "Sin acceso"}
-                  </span>
                   <button
                     type="button"
-                    onClick={() => toggleAccess(w.id)}
-                    className={`rounded-lg px-3 py-1.5 text-[12px] font-medium transition focus:outline-none ${
-                      w.portalAccess
-                        ? "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
-                        : "bg-emerald-600 text-white hover:bg-emerald-700"
-                    }`}
+                    onClick={() => copyInfo(w)}
+                    className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-medium text-slate-600 transition hover:bg-slate-50 focus:outline-none"
                   >
-                    {w.portalAccess ? "Revocar" : "Activar"}
-                  </button>
-                  {w.portalAccess && (
-                    <button
-                      type="button"
-                      onClick={() => copyCredentials(w)}
-                      className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-medium text-slate-600 transition hover:bg-slate-50 focus:outline-none"
-                    >
-                      {copiedId === w.id ? "✓ Copiado" : "Copiar acceso"}
-                    </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => removeWalker(w.id)}
-                    className="rounded-lg px-2 py-1.5 text-[12px] text-rose-500 transition hover:bg-rose-50 hover:text-rose-700 focus:outline-none"
-                  >
-                    Eliminar
+                    {copiedId === w.id ? "✓ Copiado" : "Copiar info"}
                   </button>
                 </div>
               </div>
@@ -5137,17 +5114,11 @@ function UserRolesSection({ registeredWalkers = [], onSetRegisteredWalkers }) {
           </div>
         )}
       </div>
-
-      <div className="rounded-lg border border-blue-100 bg-blue-50 p-4 text-[12px] text-blue-800">
-        <strong className="block font-semibold">Próximamente — Login real con Supabase Auth</strong>
-        Los walkers podrán ingresar con su email + PIN. Al activar el acceso, se enviará automáticamente
-        un correo de bienvenida con las instrucciones de primer ingreso.
-      </div>
     </article>
   );
 }
 
-function BulkLocalsUploadSection({ registeredWalkers = [], localsData = [], setLocalsData }) {
+function BulkLocalsUploadSection({ walkerProfiles = [], localsData = [], setLocalsData }) {
   const [csvText, setCsvText] = useState("");
   const [preview, setPreview] = useState(null);
   const [saved, setSaved] = useState(false);
@@ -5231,10 +5202,10 @@ function BulkLocalsUploadSection({ registeredWalkers = [], localsData = [], setL
   }
 
   function downloadTemplate() {
-    const walkerNames = registeredWalkers.map((w) => w.name).join(" / ") || "Nombre Walker";
+    const walkerNames = walkerProfiles.map((w) => w.full_name).join(" / ") || "Nombre Walker";
     const header = "nombre,razon_social,direccion,comuna,region,segmento,subcanal,walker,acuerdo,codigo,observacion";
-    const walkerEjemplo1 = registeredWalkers[0]?.name ?? "Nombre Walker 1";
-    const walkerEjemplo2 = registeredWalkers[1]?.name ?? "Nombre Walker 2";
+    const walkerEjemplo1 = walkerProfiles[0]?.full_name ?? "Nombre Walker 1";
+    const walkerEjemplo2 = walkerProfiles[1]?.full_name ?? "Nombre Walker 2";
     const example1 = `Bar Ejemplo,Razón Social SpA,Av. Ejemplo 1234,Providencia,07. Metropolitana,PREMIUM CORE,BAR,${walkerEjemplo1},Sin AACC,PDV-001,`;
     const example2 = `Club Ejemplo,Club SpA,Calle Ejemplo 45,Santiago,07. Metropolitana,NIGHTLIFE,DISCO,${walkerEjemplo2},Diageo,PDV-002,Observación opcional`;
     const csv = [header, example1, example2].join("\n");
@@ -5300,14 +5271,14 @@ function BulkLocalsUploadSection({ registeredWalkers = [], localsData = [], setL
       {/* Walkers en sistema */}
       <article className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <h3 className="mb-3 text-[14px] font-semibold text-slate-900">Walkers registrados (asignar en el CSV)</h3>
-        {registeredWalkers.length === 0 ? (
-          <p className="text-[13px] text-slate-500">Agrega walkers en la sección "Walkers y DBAs" primero.</p>
+        {walkerProfiles.length === 0 ? (
+          <p className="text-[13px] text-slate-500">Agrega walkers en la sección "Walkers" primero.</p>
         ) : (
           <div className="flex flex-wrap gap-2">
-            {registeredWalkers.map((w) => (
+            {walkerProfiles.map((w) => (
               <div key={w.id} className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5">
-                <span className="text-[13px] font-medium text-slate-900">{w.name}</span>
-                <span className="text-[11px] text-slate-400">— {w.ruta}</span>
+                <span className="text-[13px] font-medium text-slate-900">{w.full_name}</span>
+                {w.ruta && <span className="text-[11px] text-slate-400">— {w.ruta}</span>}
               </div>
             ))}
           </div>
