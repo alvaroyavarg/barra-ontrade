@@ -352,11 +352,14 @@ function OnTradeCrm({ onOpenModule, profile }) {
 
   const role = CRM_ROLES.find((item) => item.id === roleId) ?? CRM_ROLES[0];
 
-  // Cuentas filtradas por Walker activo (columna WALKER del Excel)
-  const visibleLocals = useMemo(() =>
-    activeWalker === "all" ? localsData : localsData.filter((l) => l.walkerName === activeWalker),
-    [localsData, activeWalker]
-  );
+  // Cuentas filtradas por Walker activo (walker_name del Excel o ruta asignada)
+  const visibleLocals = useMemo(() => {
+    if (activeWalker === "all") return localsData;
+    return localsData.filter((l) =>
+      l.walkerName === activeWalker ||
+      (profile?.ruta && l.ruta === profile.ruta)
+    );
+  }, [localsData, activeWalker, profile?.ruta]);
 
   const selectedLocal = visibleLocals.find((item) => item.id === selectedLocalId) ?? visibleLocals[0] ?? null;
   const localNotes = selectedLocal ? [...(extraNotes[selectedLocal.id] ?? []), ...(selectedLocal.notes ?? [])] : [];
@@ -476,7 +479,11 @@ function OnTradeCrm({ onOpenModule, profile }) {
         <div className="flex items-center gap-2.5">
           <div className="hidden flex-col items-end leading-tight sm:flex">
             <span className="text-[13px] font-semibold text-white">{profile?.full_name ?? "Usuario"}</span>
-            <span className="text-[10px] uppercase tracking-wide text-slate-400">{roleId}</span>
+            <span className="text-[10px] uppercase tracking-wide text-slate-400">
+              {roleId === "walker"
+                ? profile?.ruta ? `Walker · ${profile.ruta}` : "Walker"
+                : roleId === "manager" ? "OT Manager" : "CP&A"}
+            </span>
           </div>
           <button
             type="button"
@@ -520,14 +527,22 @@ function OnTradeCrm({ onOpenModule, profile }) {
           </div>
 
           <div className="flex flex-col gap-0.5 rounded-lg border border-slate-200 bg-slate-50 p-3">
-            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{role.label}</span>
-            <strong className="text-[13px] font-semibold text-slate-900">{role.name}</strong>
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+              {roleId === "walker" ? "Walker On Trade" : roleId === "manager" ? "OT Manager" : "CP&A"}
+            </span>
+            <strong className="text-[13px] font-semibold text-slate-900">{profile?.full_name ?? role.name}</strong>
             <small className="text-[11px] text-slate-500">
-              {excelMeta ? `${excelMeta.count} cuentas · ${excelMeta.walkerCount} walkers` : role.subtitle}
+              {roleId === "walker"
+                ? profile?.ruta
+                  ? `${profile.ruta} · ${visibleLocals.length} cuentas`
+                  : `${visibleLocals.length} cuentas asignadas`
+                : excelMeta
+                  ? `${excelMeta.count} cuentas · ${excelMeta.walkerCount} walkers`
+                  : role.subtitle}
             </small>
           </div>
 
-          {roleId === "walker" && walkers.length > 0 ? (
+          {roleId !== "walker" && walkers.length > 0 ? (
             <div className="flex flex-col gap-1">
               <span className="px-2.5 text-[10px] font-semibold uppercase tracking-wide text-slate-400">Walker</span>
               <SidebarNavButton
