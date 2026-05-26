@@ -117,6 +117,14 @@ export async function deleteAllLocals() {
   if (error) throw error;
 }
 
+export async function updateLocalHealthScore(localId, healthScore) {
+  const { error } = await supabase
+    .from("locals")
+    .update({ health_score: healthScore, updated_at: new Date().toISOString() })
+    .eq("id", localId);
+  if (error) throw error;
+}
+
 export async function updateLocalWalkerName(localId, walkerName) {
   const { error } = await supabase
     .from("locals")
@@ -168,6 +176,7 @@ function rowToLocal(row) {
       summary: p.summary,
       details: p.details ?? [],
       nextAction: p.next_action,
+      lastAudit: p.last_audit ?? null,
     };
   }
   for (const key of DEFAULT_PILLAR_KEYS) {

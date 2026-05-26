@@ -5,7 +5,18 @@ import {
   upsertLocals,
   updatePillar,
   updateMissionStatus,
+  updateLocalHealthScore,
 } from "../services/localsService.js";
+
+function calcHealthScore(pillars, hasAacc = false) {
+  const scoreMap = { "Fuerte": 100, "Completo": 100, "Bueno": 80, "En curso": 75,
+    "Completado": 90, "Atencion": 55, "Oportunidad": 55, "No aplica": 70, "Pendiente": 30, "Sin registro": 30 };
+  const keys = ["staff", "assortment", "menu", "branding", "activation"];
+  let total = 0;
+  for (const k of keys) total += scoreMap[pillars[k]?.score ?? "Pendiente"] ?? 40;
+  const base = Math.round(total / keys.length);
+  return hasAacc ? Math.min(100, base + 5) : base;
+}
 import { addNote, fetchNotesByLocal } from "../services/notesService.js";
 import {
   saveAssortmentAudit as persistAudit,
@@ -98,23 +109,26 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
     }
   }, []);
 
-  // Update pillar in local state + persist
+  // Update pillar in local state + persist + recalculate healthScore
   const updateLocalPillar = useCallback(async (localId, pillarKey, pillarData) => {
+    let newHealthScore;
     setLocals((current) =>
       current.map((local) => {
         if (local.id !== localId) return local;
-        return {
-          ...local,
-          pillars: {
-            ...local.pillars,
-            [pillarKey]: { ...(local.pillars?.[pillarKey] ?? {}), ...pillarData },
-          },
+        const updatedPillars = {
+          ...local.pillars,
+          [pillarKey]: { ...(local.pillars?.[pillarKey] ?? {}), ...pillarData },
         };
+        newHealthScore = calcHealthScore(updatedPillars, local.hasAacc);
+        return { ...local, pillars: updatedPillars, healthScore: newHealthScore };
       })
     );
     if (!isSupabaseEnabled) return;
     try {
       await updatePillar(localId, pillarKey, pillarData);
+      if (newHealthScore !== undefined) {
+        await updateLocalHealthScore(localId, newHealthScore);
+      }
     } catch (err) {
       console.error("[Supabase] Error al actualizar pilar:", err.message);
       setSyncError(err.message);
