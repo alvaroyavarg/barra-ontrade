@@ -309,12 +309,17 @@ function OnTradeCrm({ onOpenModule, profile }) {
   const [uploadProgress, setUploadProgress] = useState(null);
   const [uploadSavedAt, setUploadSavedAt] = useState(null);
   const [uploadSupabaseError, setUploadSupabaseError] = useState("");
+  const [developers, setDevelopers] = useState([]);
 
   useEffect(() => {
     if (roleId === "walker" && profile?.walker_name) {
       setActiveWalker(profile.walker_name);
     }
   }, [roleId, profile?.walker_name]);
+
+  useEffect(() => {
+    fetchDevelopers().then(setDevelopers).catch(() => {});
+  }, []);
 
   const {
     locals: localsData,
@@ -696,6 +701,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
               extraContacts={[...(extraContacts[selectedLocal.id] ?? []), ...selectedLocal.contacts]}
               walkers={walkers}
               roleId={roleId}
+              developers={developers}
               onAssignWalker={async (walkerName) => {
                 setLocalsData((prev) => prev.map((l) => l.id === selectedLocal.id ? { ...l, walkerName } : l));
                 try { await updateLocalWalkerName(selectedLocal.id, walkerName); } catch {}
@@ -771,6 +777,8 @@ function OnTradeCrm({ onOpenModule, profile }) {
               uploadSaving={uploadSaving}
               uploadSavedAt={uploadSavedAt}
               uploadSupabaseError={uploadSupabaseError}
+              developers={developers}
+              onDevelopersChange={setDevelopers}
             />
           ) : null}
 
@@ -1336,7 +1344,7 @@ function WalkerDashboard({ columns, locals, summary, profile, draggedCardId, onC
   );
 }
 
-function LocalProfile({ draftNote, extraContacts, local, notes, onAddContact, onDraftNoteChange, onOpenOnFive, onPublishNote, walkers = [], roleId, onAssignWalker, onUpdateAccountCode }) {
+function LocalProfile({ draftNote, developers = [], extraContacts, local, notes, onAddContact, onDraftNoteChange, onOpenOnFive, onPublishNote, walkers = [], roleId, onAssignWalker, onUpdateAccountCode }) {
   const healthTone =
     local.healthScore >= 76
       ? "text-emerald-600"
@@ -1447,7 +1455,7 @@ function LocalProfile({ draftNote, extraContacts, local, notes, onAddContact, on
           </div>
 
           <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
-            {local.kpis.map((item) => (
+            {local.kpis.filter((item) => item.label !== "Acuerdo").map((item) => (
               <MetricCard key={item.label} compact label={item.label} note={item.note} value={item.value} />
             ))}
             <MetricCard
@@ -1455,14 +1463,14 @@ function LocalProfile({ draftNote, extraContacts, local, notes, onAddContact, on
               label="Acuerdo comercial"
               note={local.hasAacc ? "AACC vigente" : "Sin AACC"}
               tone={local.hasAacc ? "good" : "warning"}
-              value={local.hasAacc ? formatCurrency(local.investment) : "No"}
+              value={local.agreement || (local.hasAacc ? "Vigente" : "No")}
             />
           </div>
         </article>
 
         <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="Relacion" title="Contactos clave" />
-          <KeyContacts contacts={extraContacts ?? local.contacts} onAdd={onAddContact} />
+          <KeyContacts contacts={extraContacts ?? local.contacts} onAdd={onAddContact} developerCode={local.developer} developers={developers} />
         </article>
 
         <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -2200,7 +2208,7 @@ function FieldLabel({ children }) {
 const TEXT_INPUT_CLASS =
   "rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
 
-function KeyContacts({ contacts, onAdd }) {
+function KeyContacts({ contacts, developers = [], developerCode = "", onAdd }) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ nombre: "", apellido: "", cargo: "", telefono: "" });
 
@@ -2219,9 +2227,39 @@ function KeyContacts({ contacts, onAdd }) {
     setOpen(false);
   }
 
+  const devInfo = developerCode
+    ? developers.find((d) => d.code === developerCode || d.code === developerCode.toUpperCase())
+    : null;
+
   return (
     <div className="flex flex-col gap-2">
-      {contacts.map((contact) => (
+      {devInfo && (
+        <article className="flex items-center gap-3 rounded-lg border border-slate-200 bg-slate-50 p-2.5">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-900 text-[11px] font-bold text-white">
+            {devInfo.code}
+          </span>
+          <div className="flex flex-1 flex-col">
+            <strong className="text-[13px] font-semibold text-slate-900">
+              {devInfo.first_name} {devInfo.last_name}
+            </strong>
+            <small className="text-[11px] text-slate-500">
+              Desarrollador Sell Out
+              {devInfo.email ? ` · ${devInfo.email}` : ""}
+            </small>
+          </div>
+          {devInfo.phone ? (
+            <a
+              href={`https://wa.me/${devInfo.phone}`}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-md bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 transition hover:bg-emerald-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+            >
+              WhatsApp
+            </a>
+          ) : null}
+        </article>
+      )}
+      {contacts.filter((c) => c.role !== "Desarrollador Sell Out" || !devInfo).map((contact) => (
         <article
           key={contact.id}
           className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-2.5"
@@ -2499,7 +2537,7 @@ function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePil
                   if (module.key === "staff" && onUpdatePillar) {
                     const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
                     onUpdatePillar("staff", {
-                      score: "Fuerte",
+                      score: "Completado",
                       summary: `Visita registrada ${ts}`,
                       nextAction: "Programar proxima visita",
                     });
@@ -3258,8 +3296,8 @@ function OnFiveRegisterPanel({ module, onSave, activeIncentives }) {
   }
 
   function saveRegister() {
-    const record = buildRegisterSummary(registerType, formValues);
-    onSave?.({ ...record, registerType: registerType.key, incentiveName: formValues.incentiveName });
+    const summary = buildRegisterSummary(registerType, formValues);
+    onSave?.({ text: summary, registerType: registerType.key, incentiveName: formValues.incentiveName });
     setFormValues({});
   }
 
@@ -3480,6 +3518,20 @@ const PILLAR_TONE_STYLES = {
   neutral: "bg-slate-100 text-slate-600",
 };
 
+const PILLAR_TONE_STYLES_ACTIVE = {
+  positive: "bg-emerald-500 text-white",
+  warning:  "bg-rose-500 text-white",
+  danger:   "bg-rose-600 text-white",
+  neutral:  "bg-slate-600 text-white",
+};
+
+function pillarDisplayLabel(score = "") {
+  const s = String(score).toLowerCase();
+  if (!s || s === "sin registro" || s === "sin dato") return "Sin auditar";
+  if (s === "pendiente" || s === "atencion" || s === "oportunidad" || s === "riesgo") return "Pendiente";
+  return "Completado";
+}
+
 function ExecutionPillars({ activeKey = "", local, onSelectPillar }) {
   const pillars = ON_FIVE_MODULES.map((module) => ({
     ...module,
@@ -3491,6 +3543,10 @@ function ExecutionPillars({ activeKey = "", local, onSelectPillar }) {
       {pillars.map((pillar) => {
         const isActive = pillar.key === activeKey;
         const tone = getPillarTone(pillar.score);
+        const displayLabel = pillarDisplayLabel(pillar.score);
+        const badgeClass = isActive
+          ? (PILLAR_TONE_STYLES_ACTIVE[tone] ?? PILLAR_TONE_STYLES_ACTIVE.neutral)
+          : (PILLAR_TONE_STYLES[tone] ?? PILLAR_TONE_STYLES.neutral);
         return (
           <button
             key={pillar.key}
@@ -3506,8 +3562,8 @@ function ExecutionPillars({ activeKey = "", local, onSelectPillar }) {
               <span className={`text-[11px] font-semibold uppercase tracking-wide ${isActive ? "text-slate-300" : "text-slate-500"}`}>
                 {pillar.label}
               </span>
-              <strong className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${PILLAR_TONE_STYLES[tone] ?? PILLAR_TONE_STYLES.neutral}`}>
-                {pillar.score}
+              <strong className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${badgeClass}`}>
+                {displayLabel}
               </strong>
             </header>
             <h3 className={`text-[12px] leading-relaxed ${isActive ? "text-slate-100" : "text-slate-700"}`}>
@@ -4877,10 +4933,9 @@ function MaestroSection({ excelMeta, excelError, onUpload, onClearBase, pendingE
   );
 }
 
-function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, setLocalsData, walkers, onAddManualLocal, assortmentConfig, onSaveAssortmentConfig, onUpdateAccount, pendingExcelResult, onSaveToSupabase, uploadSaving, uploadSavedAt, uploadSupabaseError }) {
+function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, setLocalsData, walkers, onAddManualLocal, assortmentConfig, onSaveAssortmentConfig, onUpdateAccount, pendingExcelResult, onSaveToSupabase, uploadSaving, uploadSavedAt, uploadSupabaseError, developers = [], onDevelopersChange }) {
   const [teamProfiles, setTeamProfiles] = useState([]);
   const [routes, setRoutes] = useState([]);
-  const [developers, setDevelopers] = useState([]);
 
   function loadTeam() {
     return fetchProfilesFromAdmin().then(setTeamProfiles).catch(() => {});
@@ -4889,7 +4944,6 @@ function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, 
   useEffect(() => {
     loadTeam();
     fetchRoutes().then(setRoutes).catch(() => {});
-    fetchDevelopers().then(setDevelopers).catch(() => {});
   }, []);
   const [showForm, setShowForm] = useState(false);
   const [justAdded, setJustAdded] = useState(null);
@@ -5053,7 +5107,7 @@ function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, 
       {configSection === "desarrolladores" && (
         <DevelopersSection
           developers={developers}
-          onRefresh={() => fetchDevelopers().then(setDevelopers).catch(() => {})}
+          onRefresh={() => fetchDevelopers().then((d) => { onDevelopersChange?.(d); }).catch(() => {})}
         />
       )}
       {configSection === "rutas" && (
@@ -5365,7 +5419,7 @@ function DevelopersSection({ developers = [], onRefresh }) {
                 <button
                   type="button"
                   onClick={() => handleSave(dev)}
-                  disabled={isSaving || (!dirty && !isSaved)}
+                  disabled={isSaving}
                   className={`rounded-lg px-4 py-2 text-[12px] font-semibold transition focus:outline-none disabled:opacity-40 ${
                     isSaved
                       ? "bg-emerald-600 text-white"
