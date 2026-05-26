@@ -417,10 +417,18 @@ function OnTradeCrm({ onOpenModule, profile }) {
       setActiveView("dashboard");
     } catch (err) {
       const msg = err.message ?? "";
-      const isColumnError = msg.toLowerCase().includes("ruta") || msg.toLowerCase().includes("column") || msg.toLowerCase().includes("does not exist");
-      setUploadSupabaseError(isColumnError
-        ? `Falta la columna 'ruta' en Supabase.\nEjecuta en SQL Editor:\n\nALTER TABLE locals ADD COLUMN IF NOT EXISTS ruta text default '';\n\nLuego haz click en Guardar de nuevo.`
-        : (msg || "Error al guardar en Supabase."));
+      const lower = msg.toLowerCase();
+      let friendly = msg;
+      if (lower.includes("ruta") || lower.includes("column") || lower.includes("does not exist")) {
+        friendly = `Falta la columna 'ruta' en la base de datos.\nEjecuta en SQL Editor:\n\nALTER TABLE locals ADD COLUMN IF NOT EXISTS ruta text default '';\n\nLuego haz click en Guardar de nuevo.`;
+      } else if (lower.includes("conflict") && lower.includes("second time")) {
+        friendly = "El archivo tiene cuentas con el mismo código duplicado (CLIENTE ID). Revisa el Excel y asegúrate de que cada cuenta tenga un código único.";
+      } else if (lower.includes("jwt") || lower.includes("auth")) {
+        friendly = "Sesión expirada. Recarga la página e intenta de nuevo.";
+      } else if (lower.includes("network") || lower.includes("fetch")) {
+        friendly = "Error de conexión. Verifica tu internet e intenta de nuevo.";
+      }
+      setUploadSupabaseError(friendly);
     } finally {
       setUploadSaving(false);
     }

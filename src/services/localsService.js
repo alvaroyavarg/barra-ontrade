@@ -10,7 +10,10 @@ export async function fetchLocals() {
 }
 
 export async function upsertLocals(locals) {
-  const rows = locals.map(localToRow);
+  // Deduplicate by id — Excel may have duplicate CLIENTE IDs
+  const seen = new Set();
+  const unique = locals.filter((l) => { if (seen.has(l.id)) return false; seen.add(l.id); return true; });
+  const rows = unique.map(localToRow);
   const { error } = await supabase
     .from("locals")
     .upsert(rows, { onConflict: "id" });
