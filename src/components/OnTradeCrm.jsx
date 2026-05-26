@@ -414,12 +414,10 @@ function OnTradeCrm({ onOpenModule, profile }) {
     setUploadSupabaseError("");
     try {
       await upsertLocals(pendingExcelResult.locals, (done, total) => setUploadProgress({ done, total }));
-      await upsertRoutesFromLocals(pendingExcelResult.locals);
-      // Reload routes so Rutas tab is up to date
+      await upsertRoutesFromLocals(pendingExcelResult.locals).catch(() => {});
       fetchRoutes().then(setRoutes).catch(() => {});
       setUploadSavedAt(new Date());
       setPendingExcelResult(null);
-      setActiveView("dashboard");
     } catch (err) {
       const msg = err.message ?? "";
       const lower = msg.toLowerCase();

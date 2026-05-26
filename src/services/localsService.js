@@ -27,12 +27,15 @@ export async function upsertLocals(locals, onProgress) {
     onProgress?.(Math.min(i + CHUNK, unique.length), unique.length);
   }
 
-  // Upsert sub-tables in parallel across all locals
-  await Promise.all(unique.map((local) => Promise.all([
-    upsertContacts(local.id, local.contacts ?? []),
-    upsertMissions(local.id, local.missions ?? []),
-    upsertPillars(local.id, local.pillars ?? {}),
-  ])));
+  // Upsert sub-tables in chunks to avoid overwhelming the connection
+  for (let i = 0; i < unique.length; i += CHUNK) {
+    const chunk = unique.slice(i, i + CHUNK);
+    await Promise.all(chunk.map((local) => Promise.all([
+      upsertContacts(local.id, local.contacts ?? []),
+      upsertMissions(local.id, local.missions ?? []),
+      upsertPillars(local.id, local.pillars ?? {}),
+    ])));
+  }
 }
 
 export async function upsertRoutesFromLocals(locals) {
