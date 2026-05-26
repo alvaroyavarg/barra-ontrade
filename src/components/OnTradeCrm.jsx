@@ -5,7 +5,7 @@ import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCu
 import { useSupabaseData } from "../hooks/useSupabaseData.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { createUserFromAdmin, fetchProfilesFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute, updateUserRole, fetchDevelopers, updateDeveloper } from "../services/authService.js";
-import { updateLocalRoute } from "../services/localsService.js";
+import { updateLocalRoute, updateLocalWalkerName, deleteAllLocals } from "../services/localsService.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
 const CRM_ROLES = [
@@ -365,12 +365,13 @@ function OnTradeCrm({ onOpenModule, profile }) {
   const localNotes = selectedLocal ? [...(extraNotes[selectedLocal.id] ?? []), ...(selectedLocal.notes ?? [])] : [];
   const dashboardSummary = useMemo(() => summarizeOnFiveLocals(visibleLocals), [visibleLocals]);
 
-  function handleClearBase() {
+  async function handleClearBase() {
     setLocalsData([]);
     setWalkers([]);
     setExcelMeta(null);
     setSelectedLocalId(null);
     setActiveWalker("all");
+    try { await deleteAllLocals(); } catch {}
   }
 
   async function handleOnFiveWorkbookUpload(event) {
@@ -658,7 +659,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
               roleId={roleId}
               onAssignWalker={async (walkerName) => {
                 setLocalsData((prev) => prev.map((l) => l.id === selectedLocal.id ? { ...l, walkerName } : l));
-                try { await import("../services/localsService.js").then(m => m.updateLocalWalkerName(selectedLocal.id, walkerName)); } catch {}
+                try { await updateLocalWalkerName(selectedLocal.id, walkerName); } catch {}
               }}
               onAddContact={(contact) => setExtraContacts((prev) => ({
                 ...prev,

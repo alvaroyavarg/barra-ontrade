@@ -112,6 +112,11 @@ export async function updateLocalRoute(localId, ruta) {
   if (error) throw error;
 }
 
+export async function deleteAllLocals() {
+  const { error } = await supabase.from("locals").delete().neq("id", "___none___");
+  if (error) throw error;
+}
+
 export async function updateLocalWalkerName(localId, walkerName) {
   const { error } = await supabase
     .from("locals")
