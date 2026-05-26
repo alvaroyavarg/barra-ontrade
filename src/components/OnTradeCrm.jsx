@@ -4,7 +4,7 @@ import { parseOnFiveWorkbook, summarizeOnFiveLocals } from "../utils/onFiveExcel
 import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCuentas.js";
 import { useSupabaseData } from "../hooks/useSupabaseData.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
-import { createUserFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute } from "../services/authService.js";
+import { createUserFromAdmin, fetchProfilesFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute, updateUserRole } from "../services/authService.js";
 import { updateLocalRoute } from "../services/localsService.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
@@ -4688,7 +4688,7 @@ function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, 
   const [routes, setRoutes] = useState([]);
 
   function loadTeam() {
-    return fetchProfiles().then((data) => setTeamProfiles(data.filter((p) => p.role !== "cpa"))).catch(() => {});
+    return fetchProfilesFromAdmin().then(setTeamProfiles).catch(() => {});
   }
 
   useEffect(() => {
@@ -5059,11 +5059,12 @@ function AccountSegmentSection({ localsData, walkers, onUpdateAccount }) {
 }
 
 function UserRolesSection({ teamProfiles = [], routes = [], onRefresh }) {
-  const [showForm, setShowForm]   = useState(false);
-  const [formRole, setFormRole]   = useState("walker");
-  const [saving, setSaving]       = useState(false);
-  const [formError, setFormError] = useState("");
-  const [copiedId, setCopiedId]   = useState(null);
+  const [showForm, setShowForm]       = useState(false);
+  const [formRole, setFormRole]       = useState("walker");
+  const [saving, setSaving]           = useState(false);
+  const [formError, setFormError]     = useState("");
+  const [copiedId, setCopiedId]       = useState(null);
+  const [changingRole, setChangingRole] = useState(null);
 
   const emptyForm = { fullName: "", rut: "", phone: "", email: "", password: "", ruta: "" };
   const [form, setForm] = useState(emptyForm);
@@ -5123,7 +5124,22 @@ function UserRolesSection({ teamProfiles = [], routes = [], onRefresh }) {
   const ROLE_LABELS = { walker: "Walker", manager: "OT Manager" };
   const ROLE_COLORS = { walker: "bg-blue-50 text-blue-700", manager: "bg-violet-50 text-violet-700" };
 
+  async function handleRoleChange(w) {
+    const newRole = w.role === "walker" ? "manager" : "walker";
+    setChangingRole(w.id);
+    try {
+      await updateUserRole(w.id, newRole);
+      await onRefresh?.();
+    } catch {
+      // silently ignore — user stays as is
+    } finally {
+      setChangingRole(null);
+    }
+  }
+
   function renderCard(w) {
+    const isChanging = changingRole === w.id;
+    const toggleLabel = w.role === "walker" ? "→ OT Manager" : "→ Walker";
     return (
       <div
         key={w.id}
@@ -5150,6 +5166,14 @@ function UserRolesSection({ teamProfiles = [], routes = [], onRefresh }) {
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            onClick={() => handleRoleChange(w)}
+            disabled={isChanging}
+            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-medium text-slate-600 transition hover:bg-slate-50 focus:outline-none disabled:opacity-50"
+          >
+            {isChanging ? "Cambiando…" : toggleLabel}
+          </button>
           <button
             type="button"
             onClick={() => copyInfo(w)}
