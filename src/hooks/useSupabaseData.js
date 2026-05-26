@@ -35,8 +35,8 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
     setLoading(true);
     Promise.all([fetchLocals(), fetchKanbanCards()])
       .then(([remoteLocals, cards]) => {
+        setLocals(remoteLocals);
         if (remoteLocals.length > 0) {
-          setLocals(remoteLocals);
           const walkerMap = new Map();
           for (const l of remoteLocals) {
             if (!l.walkerName) continue;
@@ -46,7 +46,10 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
             walkerMap.get(l.walkerName).count++;
           }
           setWalkers([...walkerMap.values()]);
-          setMeta((prev) => ({ ...prev, count: remoteLocals.length, walkerCount: walkerMap.size }));
+          setMeta((prev) => ({ fileName: prev?.fileName, count: remoteLocals.length, walkerCount: walkerMap.size }));
+        } else {
+          setWalkers([]);
+          setMeta(null);
         }
         if (cards.length > 0) {
           const byColumn = { todo: [], progress: [], done: [] };
