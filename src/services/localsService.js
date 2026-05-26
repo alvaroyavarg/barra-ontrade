@@ -19,8 +19,8 @@ export async function upsertLocals(locals) {
     .upsert(rows, { onConflict: "id" });
   if (error) throw error;
 
-  // upsert contacts, missions, pillars per local
-  for (const local of locals) {
+  // upsert contacts, missions, pillars per local (use unique to avoid dupe sub-rows)
+  for (const local of unique) {
     await upsertContacts(local.id, local.contacts ?? []);
     await upsertMissions(local.id, local.missions ?? []);
     await upsertPillars(local.id, local.pillars ?? {});
@@ -147,7 +147,7 @@ export async function updateLocalWalkerName(localId, walkerName) {
 function localToRow(l) {
   return {
     id: l.id,
-    account_code: l.accountCode ?? "",
+    account_code: l.accountCode || null,
     walker_name: l.walkerName ?? "",
     sheet_name: l.sheetName ?? "",
     legal_name: l.legalName ?? "",
