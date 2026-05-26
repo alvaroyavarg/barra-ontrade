@@ -5610,60 +5610,60 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
 
             return (
               <div key={r.id} className="rounded-xl border border-slate-200 bg-slate-50 overflow-hidden">
-                <div
-                  className="flex cursor-pointer items-center justify-between px-4 py-3 transition hover:bg-slate-100"
-                  onClick={() => { setExpandedRoute(isExpanded ? null : r.name); setSearch(""); }}
-                >
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[14px] font-semibold text-slate-900">{r.name}</span>
-                    <span className="rounded-md bg-slate-200 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
-                      {assigned.length} cuentas
-                    </span>
-                    {assignedWalker && (
-                      <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-[11px] font-semibold text-blue-700">
-                        {assignedWalker.full_name}
+                {/* ── Header siempre visible ── */}
+                <div className="px-4 py-3">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[14px] font-semibold text-slate-900">{r.name}</span>
+                      <span className="rounded-md bg-slate-200 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
+                        {assigned.length} cuentas
                       </span>
-                    )}
-                    {isSaved && (
-                      <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
-                        ✓ Guardado
-                      </span>
-                    )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); handleDelete(r.id); }}
+                        className="rounded-lg px-2 py-1 text-[12px] text-rose-500 hover:bg-rose-50 hover:text-rose-700 focus:outline-none"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={(e) => { e.stopPropagation(); handleDelete(r.id); }}
-                      className="rounded-lg px-2 py-1 text-[12px] text-rose-500 hover:bg-rose-50 hover:text-rose-700 focus:outline-none"
+
+                  {/* Walker siempre visible */}
+                  <div className="mt-3 flex items-center gap-2">
+                    <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 shrink-0 w-14">Walker</span>
+                    <select
+                      className="flex-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none"
+                      value={assignedWalker?.id ?? ""}
+                      disabled={assigningWalker[r.name]}
+                      onChange={(e) => handleAssignWalker(r.name, e.target.value)}
                     >
-                      Eliminar
-                    </button>
-                    <span className={`text-[12px] text-slate-400 transition ${isExpanded ? "rotate-180" : ""}`}>▾</span>
+                      <option value="">Sin walker asignado</option>
+                      {walkerProfiles.map((w) => (
+                        <option key={w.id} value={w.id}>{w.full_name}</option>
+                      ))}
+                    </select>
+                    {isSaved
+                      ? <span className="shrink-0 rounded-lg bg-emerald-50 px-3 py-1.5 text-[12px] font-semibold text-emerald-700">✓ Guardado</span>
+                      : assigningWalker[r.name]
+                      ? <span className="shrink-0 text-[12px] text-slate-400">Guardando…</span>
+                      : null}
                   </div>
+
+                  {/* Expandir para gestionar cuentas */}
+                  <button
+                    type="button"
+                    onClick={() => { setExpandedRoute(isExpanded ? null : r.name); setSearch(""); }}
+                    className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white py-1.5 text-[12px] font-medium text-slate-600 hover:bg-slate-50 focus:outline-none"
+                  >
+                    <span>{isExpanded ? "Cerrar cuentas" : `Gestionar cuentas (${assigned.length})`}</span>
+                    <span className={`transition-transform ${isExpanded ? "rotate-180" : ""}`}>▾</span>
+                  </button>
                 </div>
 
                 {isExpanded && (
                   <div className="border-t border-slate-200 bg-white p-4">
-
-                    {/* Walker asignado a esta ruta */}
-                    <div className="mb-4 flex items-center gap-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5">
-                      <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 shrink-0">Walker</span>
-                      <select
-                        className="flex-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none"
-                        value={assignedWalker?.id ?? ""}
-                        disabled={assigningWalker[r.name]}
-                        onChange={(e) => handleAssignWalker(r.name, e.target.value)}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <option value="">Sin walker asignado</option>
-                        {walkerProfiles.map((w) => (
-                          <option key={w.id} value={w.id}>{w.full_name}</option>
-                        ))}
-                      </select>
-                      {assigningWalker[r.name] && (
-                        <span className="text-[11px] text-slate-400 shrink-0">Guardando…</span>
-                      )}
-                    </div>
 
                     <div className="relative">
                       <input
