@@ -635,12 +635,10 @@ function OnTradeCrm({ onOpenModule, profile }) {
               columns={kanbanColumns}
               locals={visibleLocals}
               summary={dashboardSummary}
-              excelMeta={excelMeta}
-              excelError={excelError}
+              profile={profile}
               draggedCardId={draggedCardId}
               onCardDragStart={setDraggedCardId}
               onCardDrop={moveCard}
-              onUpload={handleOnFiveWorkbookUpload}
               onOpenLocal={(localId) => {
                 setSelectedLocalId(localId);
                 setActiveView("local");
@@ -1147,29 +1145,24 @@ function ContactsProjectsView({ locals, onOpenLocal }) {
   );
 }
 
-function WalkerDashboard({ columns, locals, summary, excelMeta, excelError, draggedCardId, onCardDragStart, onCardDrop, onOpenLocal, onUpload }) {
+function WalkerDashboard({ columns, locals, summary, profile, draggedCardId, onCardDragStart, onCardDrop, onOpenLocal }) {
   if (!locals || locals.length === 0) {
     return (
       <div className="flex flex-col gap-4">
         <article className="max-w-xl rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
-          <SectionTitle
-            kicker="Sin datos"
-            title="Carga el Excel maestro para ver tu dashboard"
-            description="Sube el archivo Maestro de Cuentas DBA para activar los KPIs de On Five, avance por pilar y cuentas en atencion."
-          />
-          <label className="mt-5 block cursor-pointer">
-            <div className="flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center transition hover:border-slate-400 hover:bg-slate-100">
-              <span className="text-3xl" aria-hidden="true">📂</span>
-              <strong className="text-[14px] font-semibold text-slate-900">Arrastra o haz click para seleccionar</strong>
-              <small className="text-[12px] text-slate-500">Maestro de Cuentas DBA .xlsx</small>
+          <div className="flex flex-col items-center gap-3 text-center">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-2xl">🗺️</span>
+            <div>
+              <strong className="block text-[15px] font-semibold text-slate-900">
+                {profile?.ruta ? `Ruta "${profile.ruta}" sin cuentas asignadas` : "Sin ruta asignada aún"}
+              </strong>
+              <p className="mt-1 text-[13px] text-slate-500">
+                {profile?.ruta
+                  ? "Tu CP&A está asignando las cuentas a esta ruta. Vuelve en unos minutos."
+                  : "Tu CP&A te asignará una ruta con tus cuentas. No necesitas hacer nada por ahora."}
+              </p>
             </div>
-            <input type="file" accept=".xlsx,.xls" className="sr-only" onChange={onUpload} />
-          </label>
-          {excelError ? (
-            <div className="mt-3 rounded-lg border border-rose-200 bg-rose-50 px-3.5 py-3 text-[13px] font-semibold text-rose-700">
-              {excelError}
-            </div>
-          ) : null}
+          </div>
         </article>
       </div>
     );
