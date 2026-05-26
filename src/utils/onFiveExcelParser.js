@@ -58,13 +58,14 @@ function healthFromPillars(pillars) {
 }
 
 function buildLocal(item, sheetName, idx) {
-  const accountCode  = clean(item["CLIENTE ID"]);
-  const walkerName   = clean(item["WALKER"]) || sheetName;
-  const developer    = clean(item["Desarrollador Sell Out"]) || clean(item["Contacto Cuenta"]) || "";
-  const name         = clean(item["Nombre Fantasía"]) || clean(item["Razón Social"]) || `Cuenta ${idx+1}`;
+  const accountCode  = clean(item["CLIENTE ID"]) || clean(item["ID Distribuidor"]) || "";
+  const walkerName   = clean(item["WALKER"]) || clean(item["Desarrollador"]) || sheetName;
+  const developer    = clean(item["Desarrollador Sell Out"]) || clean(item["Desarrollador"]) || clean(item["Contacto Cuenta"]) || "";
+  const name         = clean(item["Nombre Fantasía"]) || clean(item["Nombre Cuenta"]) || clean(item["Razón Social"]) || `Cuenta ${idx+1}`;
 
+  const rawAgreement = clean(item["Acuerdo Comercial Vigente"]) || clean(item["AACC"]) || "";
   const menuEval = {
-    commercialStatus: clean(item["Acuerdo Comercial Vigente"]).toLowerCase().includes("diageo") ? "diageo" : "none",
+    commercialStatus: rawAgreement.toLowerCase().includes("diageo") ? "diageo" : "none",
     authorCocktailsTotal: 2,
     authorCocktailsDiageo: countOk([yes(item["CA c/ Whisky"]), yes(item["CA c/ Gin"])]),
     hasTropicalGin:          yes(item["Tropical Gin"]),
@@ -129,9 +130,13 @@ function buildLocal(item, sheetName, idx) {
     },
   };
 
+  const agreement = clean(item["Acuerdo Comercial Vigente"]) || clean(item["AACC"]) || "";
+  const outlet    = clean(item["SUBCANAL"]) || clean(item["Outlet"]) || "";
+  const diageoId  = clean(item["ID Diageo"]) || "";
+
   return {
     id: `${sheetName}-${accountCode || idx}`,
-    accountCode, walkerName, sheetName,
+    accountCode, walkerName, sheetName, diageoId,
     legalName:   clean(item["Razón Social"]), name,
     distributor: clean(item["DISTRIBUIDOR"]),
     region:      clean(item["REGION"]),
@@ -139,24 +144,24 @@ function buildLocal(item, sheetName, idx) {
     district:    clean(item["Comuna"]),
     channel:     clean(item["CANAL"]),
     segment:     clean(item["Segmento"]),
-    subchannel:  clean(item["SUBCANAL"]),
+    subchannel:  outlet,
     address:     clean(item["Dirección"]),
     developer,
     skus:             clean(item["SKU's"]),
-    agreement:        clean(item["Acuerdo Comercial Vigente"]),
+    agreement,
     agreementEndDate: formatDate(item["Fecha de Termino Acuerdo Comercial"]),
     menuUrl:     clean(item["Carta"]),
     observation: clean(item["Observación"]),
-    occasion:    clean(item["SUBCANAL"]) || "On Trade",
+    occasion:    outlet || "On Trade",
     healthScore: healthFromPillars(pillars),
-    hasAacc: clean(item["Acuerdo Comercial Vigente"]).toLowerCase().includes("diageo"),
+    hasAacc: agreement.toLowerCase().includes("diageo"),
     investment: 0,
-    tags: [clean(item["CANAL"]), clean(item["Segmento"]), clean(item["SUBCANAL"])].filter(Boolean),
+    tags: [clean(item["CANAL"]), clean(item["Segmento"]), outlet].filter(Boolean),
     contacts: [{ id:"dev", name: developer || walkerName || "Sin responsable", role:"Desarrollador Sell Out", note: clean(item["DISTRIBUIDOR"]), phone:"" }],
     kpis: [
       { label:"Cod. cliente", value: accountCode||"-",                               note:"llave venta real" },
-      { label:"Segmento",     value: clean(item["Segmento"])||"-",                   note: clean(item["SUBCANAL"])||"subcanal" },
-      { label:"Acuerdo",      value: clean(item["Acuerdo Comercial Vigente"])||"-",  note:`Termino: ${formatDate(item["Fecha de Termino Acuerdo Comercial"])}` },
+      { label:"Segmento",     value: clean(item["Segmento"])||"-",                   note: outlet||"outlet" },
+      { label:"Acuerdo",      value: agreement||"-",                                 note:`Termino: ${formatDate(item["Fecha de Termino Acuerdo Comercial"])}` },
       { label:"SKUs",         value: clean(item["SKU's"]) ? clean(item["SKU's"]).split(",").length : 0, note:"declarados" },
       { label:"Menu",         value:`${menuOk}/${MENU_FIELDS.length}`,               note:"KPIs cumplidos" },
       { label:"Branding",     value:`${brandOk}/2`,                                  note:"Glassware / Neon" },

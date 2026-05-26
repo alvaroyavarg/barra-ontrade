@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import * as XLSX from "xlsx";
 import { parseOnFiveWorkbook, summarizeOnFiveLocals } from "../utils/onFiveExcelParser.js";
 import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCuentas.js";
 import { useSupabaseData } from "../hooks/useSupabaseData.js";
@@ -360,6 +361,14 @@ function OnTradeCrm({ onOpenModule, profile }) {
   const localNotes = selectedLocal ? [...(extraNotes[selectedLocal.id] ?? []), ...(selectedLocal.notes ?? [])] : [];
   const dashboardSummary = useMemo(() => summarizeOnFiveLocals(visibleLocals), [visibleLocals]);
 
+  function handleClearBase() {
+    setLocalsData([]);
+    setWalkers([]);
+    setExcelMeta(null);
+    setSelectedLocalId(null);
+    setActiveWalker("all");
+  }
+
   async function handleOnFiveWorkbookUpload(event) {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -681,6 +690,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
               excelMeta={excelMeta}
               excelError={excelError}
               onUpload={handleOnFiveWorkbookUpload}
+              onClearBase={handleClearBase}
               localsData={localsData}
               setLocalsData={setLocalsData}
               walkers={walkers}
@@ -4554,7 +4564,125 @@ const CONFIG_WALKERS_MOCK = [
   { id: "w3", name: "Lucas Prima", ruta: "Ruta Centro-Norte", locals: ["Club Crobar", "Liguria", "The Clinic Bar"] },
 ];
 
-function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData, walkers, onAddManualLocal, assortmentConfig, onSaveAssortmentConfig, onUpdateAccount }) {
+function MaestroSection({ excelMeta, excelError, onUpload, onClearBase }) {
+  const [showConfirm, setShowConfirm] = useState(false);
+  const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
+
+  function downloadTemplate() {
+    const headers = [
+      "Nombre Cuenta", "Razón Social", "ID Distribuidor", "ID Diageo",
+      "Segmento", "Outlet", "Dirección", "Comuna", "Desarrollador", "AACC",
+    ];
+    const example1 = [
+      "Bar La Terraza", "Inversiones La Terraza SpA", "PDV-001", "",
+      "PREMIUM CORE", "BAR", "Av. Providencia 1234", "Providencia", "Luis Felipe Cruz", "Diageo",
+    ];
+    const example2 = [
+      "Club Nocturno", "", "PDV-002", "",
+      "NIGHTLIFE", "DISCO", "Calle Estado 45", "Santiago", "Michael Yañez", "Sin AC",
+    ];
+    const example3 = [
+      "Restaurante Centro", "Gastronomía Centro Ltda", "PDV-003", "",
+      "RESERVE", "DINING", "Nueva de Lyon 89", "Providencia", "Luis Felipe Cruz", "Competencia",
+    ];
+    const ws = XLSX.utils.aoa_to_sheet([headers, example1, example2, example3]);
+    ws["!cols"] = headers.map((h) => ({ wch: Math.max(h.length + 4, 18) }));
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Cuentas");
+    XLSX.writeFile(wb, "plantilla_maestro_cuentas.xlsx");
+  }
+
+  return (
+    <article className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <span className={eyebrowCls}>CP&A · Administración</span>
+          <h2 className="mt-1 text-[16px] font-bold text-slate-900">Maestro de cuentas</h2>
+          <p className="mt-1 text-[13px] leading-relaxed text-slate-600">
+            Solo CP&A puede cargar o actualizar la cartera. Los Walkers ven la data lista al ingresar.
+          </p>
+        </div>
+        {excelMeta ? (
+          <span className="inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-emerald-50 text-emerald-700">
+            ✓ {excelMeta.count} cuentas · {excelMeta.fileName}
+          </span>
+        ) : (
+          <span className="inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-600">Sin datos cargados</span>
+        )}
+      </div>
+
+      <label className="cursor-pointer">
+        <div className={`flex items-center gap-4 rounded-xl border-2 border-dashed p-6 transition ${excelMeta ? "border-emerald-300 bg-emerald-50" : "border-slate-200 bg-white hover:bg-slate-50"}`}>
+          <span className="shrink-0 text-3xl">{excelMeta ? "✅" : "📂"}</span>
+          <div>
+            <strong className={`block text-[14px] font-semibold ${excelMeta ? "text-emerald-700" : "text-slate-900"}`}>
+              {excelMeta ? `BASE — ${excelMeta.count} cuentas importadas` : "Arrastra o haz click para cargar el Excel"}
+            </strong>
+            <small className="text-[11px] text-slate-500">
+              {excelMeta ? "Haz click para reemplazar con un archivo nuevo" : "Formato .xlsx con las columnas de la plantilla"}
+            </small>
+          </div>
+        </div>
+        <input type="file" accept=".xlsx,.xls" className="hidden" onChange={onUpload} />
+      </label>
+
+      {excelError && (
+        <div className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-2.5 text-[13px] font-semibold text-rose-700">
+          {excelError}
+        </div>
+      )}
+
+      <div className="flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={downloadTemplate}
+          className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-[13px] font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none"
+        >
+          Descargar plantilla Excel
+        </button>
+        {excelMeta && (
+          <button
+            type="button"
+            onClick={() => setShowConfirm(true)}
+            className="rounded-lg border border-rose-200 bg-white px-4 py-2 text-[13px] font-medium text-rose-600 transition hover:bg-rose-50 focus:outline-none"
+          >
+            Eliminar base actual
+          </button>
+        )}
+      </div>
+
+      {showConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setShowConfirm(false)}>
+          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-[16px] font-bold text-slate-900">Eliminar base de cuentas</h3>
+            <p className="mt-2 text-[13px] leading-relaxed text-slate-600">
+              Esto eliminará las <strong>{excelMeta?.count ?? 0} cuentas</strong> cargadas actualmente.
+              Esta acción no se puede deshacer.
+            </p>
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setShowConfirm(false)}
+                className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-[13px] hover:bg-slate-50 focus:outline-none"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={() => { onClearBase?.(); setShowConfirm(false); }}
+                className="rounded-lg bg-rose-600 px-4 py-2 text-[13px] font-semibold text-white hover:bg-rose-700 focus:outline-none"
+              >
+                Sí, eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </article>
+  );
+}
+
+function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, setLocalsData, walkers, onAddManualLocal, assortmentConfig, onSaveAssortmentConfig, onUpdateAccount }) {
   const [teamProfiles, setTeamProfiles] = useState([]);
   const [routes, setRoutes] = useState([]);
 
@@ -4660,45 +4788,12 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData
 
       {configSection === "maestro" && (<>
       {/* ── Carga del Excel ── */}
-      <article className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <span className={eyebrowCls}>CP&A · Administración</span>
-            <h2 className="mt-1 text-[16px] font-bold text-slate-900">Maestro de cuentas</h2>
-            <p className="mt-1 text-[13px] leading-relaxed text-slate-600">
-              Solo CP&A puede cargar o actualizar la cartera. Los Walkers ven la data lista al ingresar.
-            </p>
-          </div>
-          {excelMeta ? (
-            <span className="inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-emerald-50 text-emerald-700">
-              ✓ {excelMeta.count} cuentas · {excelMeta.fileName}
-            </span>
-          ) : (
-            <span className="inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-600">Sin datos cargados</span>
-          )}
-        </div>
-
-        <label className="cursor-pointer">
-          <div className={`flex items-center gap-4 rounded-xl border-2 border-dashed p-6 transition ${excelMeta ? "border-emerald-300 bg-emerald-50" : "border-slate-200 bg-white hover:bg-slate-50"}`}>
-            <span className="shrink-0 text-3xl">{excelMeta ? "✅" : "📂"}</span>
-            <div>
-              <strong className={`block text-[14px] font-semibold ${excelMeta ? "text-emerald-700" : "text-slate-900"}`}>
-                {excelMeta ? `${excelMeta.sheetName} — ${excelMeta.count} cuentas importadas` : "Arrastra o haz click para cargar el Excel"}
-              </strong>
-              <small className="text-[11px] text-slate-500">
-                {excelMeta ? "Haz click para reemplazar con un archivo nuevo" : "Formato .xlsx — debe tener columna CLIENTE ID como llave"}
-              </small>
-            </div>
-          </div>
-          <input type="file" accept=".xlsx,.xls" className="hidden" onChange={onUpload} />
-        </label>
-
-        {excelError && (
-          <div className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-2.5 text-[13px] font-semibold text-rose-700">
-            ⚠️ {excelError}
-          </div>
-        )}
-      </article>
+      <MaestroSection
+        excelMeta={excelMeta}
+        excelError={excelError}
+        onUpload={onUpload}
+        onClearBase={onClearBase}
+      />
 
       {/* ── Asignación por Walker ── */}
       {walkerStats.length > 0 ? (
