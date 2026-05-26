@@ -159,6 +159,15 @@ insert into developers (code, first_name, last_name, phone, email) values
   ('CL58', 'Valentina', 'Albornoz', '56950094360', 'valbornoz@koandina.com')
 on conflict (code) do nothing;
 
+-- Rutas del equipo
+create table if not exists routes (
+  id         uuid primary key default gen_random_uuid(),
+  name       text unique not null,
+  created_at timestamptz default now()
+);
+alter table routes enable row level security;
+create policy "anon_all_routes" on routes for all using (true) with check (true);
+
 -- ── Índices de apoyo ─────────────────────────────────────────
 create index if not exists idx_contacts_local      on contacts (local_id);
 create index if not exists idx_notes_local         on notes (local_id, note_date desc);

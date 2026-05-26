@@ -306,6 +306,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [pendingExcelResult, setPendingExcelResult] = useState(null);
   const [uploadSaving, setUploadSaving] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(null);
   const [uploadSavedAt, setUploadSavedAt] = useState(null);
   const [uploadSupabaseError, setUploadSupabaseError] = useState("");
 
@@ -409,9 +410,10 @@ function OnTradeCrm({ onOpenModule, profile }) {
   async function handleSaveExcelToSupabase() {
     if (!pendingExcelResult) return;
     setUploadSaving(true);
+    setUploadProgress(null);
     setUploadSupabaseError("");
     try {
-      await upsertLocals(pendingExcelResult.locals);
+      await upsertLocals(pendingExcelResult.locals, (done, total) => setUploadProgress({ done, total }));
       await upsertRoutesFromLocals(pendingExcelResult.locals);
       // Reload routes so Rutas tab is up to date
       fetchRoutes().then(setRoutes).catch(() => {});
@@ -4797,7 +4799,11 @@ function MaestroSection({ excelMeta, excelError, onUpload, onClearBase, pendingE
               onClick={onSaveToSupabase}
               className="shrink-0 rounded-lg bg-slate-900 px-5 py-2.5 text-[14px] font-bold text-white hover:bg-slate-700 focus:outline-none disabled:opacity-50"
             >
-              {uploadSaving ? "Guardando…" : "Guardar"}
+              {uploadSaving
+                ? uploadProgress
+                  ? `Guardando ${uploadProgress.done}/${uploadProgress.total}…`
+                  : "Guardando…"
+                : "Guardar"}
             </button>
           </div>
           {uploadSupabaseError && (

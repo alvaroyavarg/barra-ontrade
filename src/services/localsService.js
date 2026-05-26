@@ -9,23 +9,30 @@ export async function fetchLocals() {
   return data.map(rowToLocal);
 }
 
-export async function upsertLocals(locals) {
+async function upsertChunk(rows) {
+  const { error } = await supabase.from("locals").upsert(rows, { onConflict: "id" });
+  if (error) throw new Error(error.message);
+}
+
+export async function upsertLocals(locals, onProgress) {
   // Deduplicate by id
   const seen = new Set();
   const unique = locals.filter((l) => { if (seen.has(l.id)) return false; seen.add(l.id); return true; });
 
-  // Upsert locals one-by-one to avoid "second time" batch conflict
-  for (const local of unique) {
-    const { error } = await supabase.from("locals").upsert(localToRow(local), { onConflict: "id" });
-    if (error) throw new Error(`Error guardando cuenta "${local.name}": ${error.message}`);
+  // Upsert locals in parallel chunks of 10
+  const CHUNK = 10;
+  for (let i = 0; i < unique.length; i += CHUNK) {
+    const chunk = unique.slice(i, i + CHUNK);
+    await Promise.all(chunk.map((l) => upsertChunk([localToRow(l)])));
+    onProgress?.(Math.min(i + CHUNK, unique.length), unique.length);
   }
 
-  // Upsert sub-tables per local
-  for (const local of unique) {
-    await upsertContacts(local.id, local.contacts ?? []);
-    await upsertMissions(local.id, local.missions ?? []);
-    await upsertPillars(local.id, local.pillars ?? {});
-  }
+  // Upsert sub-tables in parallel across all locals
+  await Promise.all(unique.map((local) => Promise.all([
+    upsertContacts(local.id, local.contacts ?? []),
+    upsertMissions(local.id, local.missions ?? []),
+    upsertPillars(local.id, local.pillars ?? {}),
+  ])));
 }
 
 export async function upsertRoutesFromLocals(locals) {
