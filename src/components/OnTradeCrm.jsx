@@ -4555,11 +4555,15 @@ const CONFIG_WALKERS_MOCK = [
 ];
 
 function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData, walkers, onAddManualLocal, assortmentConfig, onSaveAssortmentConfig, onUpdateAccount }) {
-  const [walkerProfiles, setWalkerProfiles] = useState([]);
+  const [teamProfiles, setTeamProfiles] = useState([]);
   const [routes, setRoutes] = useState([]);
 
+  function loadTeam() {
+    return fetchProfiles().then((data) => setTeamProfiles(data.filter((p) => p.role !== "cpa"))).catch(() => {});
+  }
+
   useEffect(() => {
-    fetchProfiles("walker").then(setWalkerProfiles).catch(() => {});
+    loadTeam();
     fetchRoutes().then(setRoutes).catch(() => {});
   }, []);
   const [showForm, setShowForm] = useState(false);
@@ -4612,7 +4616,7 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData
 
   const CONFIG_SECTIONS = [
     { id: "maestro",      label: "Maestro de cuentas",   icon: "📂", desc: "Carga del Excel maestro" },
-    { id: "walkers",      label: "Walkers y DBAs",        icon: "👥", desc: "Equipo de terreno" },
+    { id: "walkers",      label: "Equipo",                 icon: "👥", desc: "Walkers y Managers" },
     { id: "rutas",        label: "Rutas",                 icon: "🗺️", desc: "Rutas del equipo" },
     { id: "carga-masiva", label: "Carga masiva locales",  icon: "📋", desc: "Importar locales por Walker" },
     { id: "assortment",   label: "Portafolio Assortment", icon: "🍾", desc: "Portafolio por segmento" },
@@ -4743,9 +4747,9 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData
 
       {configSection === "walkers" && (
         <UserRolesSection
-          walkerProfiles={walkerProfiles}
+          teamProfiles={teamProfiles}
           routes={routes}
-          onRefresh={() => fetchProfiles("walker").then(setWalkerProfiles).catch(() => {})}
+          onRefresh={loadTeam}
         />
       )}
       {configSection === "rutas" && (
@@ -4756,7 +4760,7 @@ function ConfigView({ excelMeta, excelError, onUpload, localsData, setLocalsData
       )}
       {configSection === "carga-masiva" && (
         <BulkLocalsUploadSection
-          walkerProfiles={walkerProfiles}
+          walkerProfiles={teamProfiles.filter((p) => p.role === "walker")}
           localsData={localsData}
           setLocalsData={setLocalsData}
         />
@@ -4956,8 +4960,9 @@ function AccountSegmentSection({ localsData, walkers, onUpdateAccount }) {
   );
 }
 
-function UserRolesSection({ walkerProfiles = [], routes = [], onRefresh }) {
+function UserRolesSection({ teamProfiles = [], routes = [], onRefresh }) {
   const [showForm, setShowForm]   = useState(false);
+  const [formRole, setFormRole]   = useState("walker");
   const [saving, setSaving]       = useState(false);
   const [formError, setFormError] = useState("");
   const [copiedId, setCopiedId]   = useState(null);
@@ -4968,6 +4973,9 @@ function UserRolesSection({ walkerProfiles = [], routes = [], onRefresh }) {
   const inputCls = "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[14px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
   const labelCls = "flex flex-col gap-1.5";
   const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
+
+  const walkerList  = teamProfiles.filter((p) => p.role === "walker");
+  const managerList = teamProfiles.filter((p) => p.role === "manager");
 
   function generatePassword() {
     const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
@@ -4986,12 +4994,12 @@ function UserRolesSection({ walkerProfiles = [], routes = [], onRefresh }) {
       await createUserFromAdmin({
         email: form.email.trim(),
         password,
-        role: "walker",
+        role: formRole,
         fullName: form.fullName.trim(),
         rut: form.rut.trim(),
         phone: form.phone.trim(),
-        ruta: form.ruta,
-        walkerName: form.fullName.trim(),
+        ruta: formRole === "walker" ? form.ruta : "",
+        walkerName: formRole === "walker" ? form.fullName.trim() : "",
       });
       await onRefresh?.();
       setForm(emptyForm);
@@ -5004,7 +5012,7 @@ function UserRolesSection({ walkerProfiles = [], routes = [], onRefresh }) {
   }
 
   function copyInfo(w) {
-    const lines = [`Acceso BARRA On Trade`, `Nombre: ${w.full_name}`];
+    const lines = [`Acceso BARRA On Trade`, `Nombre: ${w.full_name}`, `Rol: ${w.role === "manager" ? "OT Manager" : "Walker"}`];
     if (w.phone) lines.push(`Teléfono: ${w.phone}`);
     if (w.ruta) lines.push(`Ruta: ${w.ruta}`);
     lines.push(`Ingresa con tu email en barra-ontrade.vercel.app`);
@@ -5014,22 +5022,64 @@ function UserRolesSection({ walkerProfiles = [], routes = [], onRefresh }) {
     setTimeout(() => setCopiedId(null), 2000);
   }
 
+  const ROLE_LABELS = { walker: "Walker", manager: "OT Manager" };
+  const ROLE_COLORS = { walker: "bg-blue-50 text-blue-700", manager: "bg-violet-50 text-violet-700" };
+
+  function renderCard(w) {
+    return (
+      <div
+        key={w.id}
+        className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:flex-row sm:items-center"
+      >
+        <div className="flex shrink-0 items-center gap-3">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-[13px] font-bold text-white">
+            {(w.full_name ?? "?").split(" ").map((p) => p[0]).slice(0, 2).join("")}
+          </span>
+          <div>
+            <strong className="block text-[14px] font-semibold text-slate-900">{w.full_name}</strong>
+            <span className="text-[12px] text-slate-500">{w.ruta || (w.role === "walker" ? "Sin ruta" : "Vista global")}</span>
+          </div>
+        </div>
+
+        <div className="flex flex-1 flex-wrap items-center gap-2 sm:justify-center">
+          {w.phone && <span className="text-[12px] text-slate-500">{w.phone}</span>}
+          <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${ROLE_COLORS[w.role] ?? "bg-slate-100 text-slate-600"}`}>
+            {ROLE_LABELS[w.role] ?? w.role}
+          </span>
+          <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
+            Acceso activo
+          </span>
+        </div>
+
+        <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            onClick={() => copyInfo(w)}
+            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-medium text-slate-600 transition hover:bg-slate-50 focus:outline-none"
+          >
+            {copiedId === w.id ? "✓ Copiado" : "Copiar info"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <article className="flex flex-col gap-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <div>
         <span className={eyebrowCls}>CP&A · Administración</span>
-        <h2 className="mt-1 text-[16px] font-bold text-slate-900">Walkers — Acceso al portal</h2>
+        <h2 className="mt-1 text-[16px] font-bold text-slate-900">Equipo — Acceso al portal</h2>
         <p className="mt-0.5 text-[13px] text-slate-600">
-          Crea cuentas para el equipo de terreno. Cada usuario puede ingresar con su email y contraseña.
+          Crea cuentas para walkers y managers. Cada usuario ingresa con su email y contraseña.
         </p>
       </div>
 
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <strong className="text-[14px] font-semibold text-slate-900">Walkers</strong>
+            <strong className="text-[14px] font-semibold text-slate-900">Equipo</strong>
             <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
-              {walkerProfiles.length}
+              {teamProfiles.length}
             </span>
           </div>
           <button
@@ -5037,23 +5087,40 @@ function UserRolesSection({ walkerProfiles = [], routes = [], onRefresh }) {
             onClick={() => { setShowForm((v) => !v); setFormError(""); }}
             className="rounded-lg bg-slate-900 px-3 py-2 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none"
           >
-            + Agregar Walker
+            + Agregar usuario
           </button>
         </div>
 
         {showForm && (
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <strong className="mb-3 block text-[13px] font-semibold text-slate-900">Nuevo Walker</strong>
+            <strong className="mb-3 block text-[13px] font-semibold text-slate-900">Nuevo usuario</strong>
             {formError && (
               <p className="mb-3 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-[12px] text-rose-700">{formError}</p>
             )}
+
+            <div className="mb-3 flex gap-2">
+              {[["walker", "Walker"], ["manager", "OT Manager"]].map(([val, label]) => (
+                <button
+                  key={val}
+                  type="button"
+                  onClick={() => setFormRole(val)}
+                  className={`rounded-lg px-4 py-2 text-[13px] font-semibold transition focus:outline-none ${
+                    formRole === val
+                      ? "bg-slate-900 text-white"
+                      : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
             <div className="grid gap-3 sm:grid-cols-2">
               {[
-                ["fullName", "Nombre completo",              "text",     "Juan Pérez"],
-                ["rut",      "RUT",                          "text",     "12.345.678-9"],
-                ["phone",    "Teléfono",                     "text",     "+56 9 1234 5678"],
-                ["email",    "Email de acceso",              "email",    "juan@diageo.com"],
-                ["password", "Contraseña (vacío = auto)",    "password", "mínimo 8 caracteres"],
+                ["fullName", "Nombre completo", "text",     "Juan Pérez"],
+                ["phone",    "Teléfono",        "text",     "+56 9 1234 5678"],
+                ["email",    "Email de acceso", "email",    "juan@diageo.com"],
+                ["password", "Contraseña (vacío = auto)", "password", "mínimo 8 caracteres"],
               ].map(([k, l, t, ph]) => (
                 <label key={k} className={labelCls}>
                   <span className={eyebrowCls}>{l}</span>
@@ -5066,19 +5133,21 @@ function UserRolesSection({ walkerProfiles = [], routes = [], onRefresh }) {
                   />
                 </label>
               ))}
-              <label className={labelCls}>
-                <span className={eyebrowCls}>Ruta asignada</span>
-                <select
-                  className={inputCls}
-                  value={form.ruta}
-                  onChange={(e) => setForm((f) => ({ ...f, ruta: e.target.value }))}
-                >
-                  <option value="">Sin ruta asignada</option>
-                  {routes.map((r) => (
-                    <option key={r.id} value={r.name}>{r.name}</option>
-                  ))}
-                </select>
-              </label>
+              {formRole === "walker" && (
+                <label className={labelCls}>
+                  <span className={eyebrowCls}>Ruta asignada</span>
+                  <select
+                    className={inputCls}
+                    value={form.ruta}
+                    onChange={(e) => setForm((f) => ({ ...f, ruta: e.target.value }))}
+                  >
+                    <option value="">Sin ruta asignada</option>
+                    {routes.map((r) => (
+                      <option key={r.id} value={r.name}>{r.name}</option>
+                    ))}
+                  </select>
+                </label>
+              )}
             </div>
             <div className="mt-3 flex justify-end gap-2">
               <button
@@ -5094,52 +5163,29 @@ function UserRolesSection({ walkerProfiles = [], routes = [], onRefresh }) {
                 disabled={saving}
                 className="rounded-lg bg-slate-900 px-4 py-2 text-[13px] font-semibold text-white hover:bg-slate-800 focus:outline-none disabled:opacity-60"
               >
-                {saving ? "Creando…" : "Crear Walker"}
+                {saving ? "Creando…" : `Crear ${formRole === "manager" ? "Manager" : "Walker"}`}
               </button>
             </div>
           </div>
         )}
 
-        {walkerProfiles.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 py-10 text-center">
-            <p className="text-[14px] text-slate-500">No hay walkers registrados. Agrega el primero.</p>
-          </div>
-        ) : (
+        {managerList.length > 0 && (
           <div className="flex flex-col gap-2">
-            {walkerProfiles.map((w) => (
-              <div
-                key={w.id}
-                className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:flex-row sm:items-center"
-              >
-                <div className="flex shrink-0 items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-[13px] font-bold text-white">
-                    {(w.full_name ?? "?").split(" ").map((p) => p[0]).slice(0, 2).join("")}
-                  </span>
-                  <div>
-                    <strong className="block text-[14px] font-semibold text-slate-900">{w.full_name}</strong>
-                    <span className="text-[12px] text-slate-500">{w.ruta || "Sin ruta asignada"}</span>
-                  </div>
-                </div>
+            <span className="mt-2 px-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Managers</span>
+            {managerList.map(renderCard)}
+          </div>
+        )}
 
-                <div className="flex flex-1 flex-wrap items-center gap-2 sm:justify-center">
-                  {w.rut && <span className="text-[12px] text-slate-500">RUT: {w.rut}</span>}
-                  {w.phone && <span className="text-[12px] text-slate-500">{w.phone}</span>}
-                  <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
-                    Acceso activo
-                  </span>
-                </div>
+        {walkerList.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <span className="mt-2 px-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Walkers</span>
+            {walkerList.map(renderCard)}
+          </div>
+        )}
 
-                <div className="flex shrink-0 items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => copyInfo(w)}
-                    className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-medium text-slate-600 transition hover:bg-slate-50 focus:outline-none"
-                  >
-                    {copiedId === w.id ? "✓ Copiado" : "Copiar info"}
-                  </button>
-                </div>
-              </div>
-            ))}
+        {teamProfiles.length === 0 && (
+          <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 py-10 text-center">
+            <p className="text-[14px] text-slate-500">No hay usuarios registrados. Agrega el primero.</p>
           </div>
         )}
       </div>
