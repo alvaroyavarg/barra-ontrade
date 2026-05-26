@@ -5,7 +5,7 @@ import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCu
 import { useSupabaseData } from "../hooks/useSupabaseData.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { createUserFromAdmin, fetchProfilesFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute, updateUserRole, updateWalkerRuta, fetchDevelopers, updateDeveloper } from "../services/authService.js";
-import { updateLocalRoute, updateLocalWalkerName, deleteAllLocals } from "../services/localsService.js";
+import { updateLocalRoute, updateLocalWalkerName, deleteAllLocals, upsertLocals } from "../services/localsService.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
 const CRM_ROLES = [
@@ -304,6 +304,10 @@ function OnTradeCrm({ onOpenModule, profile }) {
   const [assortmentConfig, setAssortmentConfig] = useState(DEFAULT_ASSORTMENT_CONFIG);
   const [assortmentAudits, setAssortmentAudits] = useState({});
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [pendingExcelResult, setPendingExcelResult] = useState(null);
+  const [uploadSaving, setUploadSaving] = useState(false);
+  const [uploadSavedAt, setUploadSavedAt] = useState(null);
+  const [uploadSupabaseError, setUploadSupabaseError] = useState("");
 
   useEffect(() => {
     if (roleId === "walker" && profile?.walker_name) {
@@ -378,9 +382,15 @@ function OnTradeCrm({ onOpenModule, profile }) {
     const file = event.target.files?.[0];
     if (!file) return;
     setExcelError("");
+    setUploadSupabaseError("");
+    setPendingExcelResult(null);
+    setUploadSavedAt(null);
     try {
       const result = await parseOnFiveWorkbook(file);
-      await importLocalsFromExcel(result);
+      // Update React state immediately so user can preview
+      setLocalsData(result.locals);
+      setWalkers(result.walkers);
+      setExcelMeta({ fileName: result.fileName, count: result.locals.length, walkerCount: result.walkers.length });
       setActiveWalker("all");
       setSelectedLocalId(result.locals[0]?.id ?? null);
       setKanbanColumnsCompat([
@@ -388,17 +398,31 @@ function OnTradeCrm({ onOpenModule, profile }) {
         { id: "progress", title: "En progreso", cards: [] },
         { id: "done",     title: "Completado",  cards: [] },
       ]);
-      setActiveView("dashboard");
+      setPendingExcelResult(result);
     } catch (error) {
-      const msg = error.message ?? "";
-      const isColumnError = msg.toLowerCase().includes("ruta") || msg.toLowerCase().includes("column") || msg.toLowerCase().includes("does not exist");
-      setExcelError(
-        isColumnError
-          ? `Error Supabase: falta la columna 'ruta'. Ejecuta esto en Supabase → SQL Editor:\n\nALTER TABLE locals ADD COLUMN IF NOT EXISTS ruta text default '';\n\nLuego vuelve a cargar el Excel.`
-          : (msg || "No pude leer el Excel. Verifica que la hoja se llame 'Cuentas' y tenga las columnas correctas.")
-      );
+      setExcelError(error.message || "No pude leer el Excel. Verifica que la hoja se llame 'Cuentas' y tenga las columnas correctas.");
     } finally {
       event.target.value = "";
+    }
+  }
+
+  async function handleSaveExcelToSupabase() {
+    if (!pendingExcelResult) return;
+    setUploadSaving(true);
+    setUploadSupabaseError("");
+    try {
+      await upsertLocals(pendingExcelResult.locals);
+      setUploadSavedAt(new Date());
+      setPendingExcelResult(null);
+      setActiveView("dashboard");
+    } catch (err) {
+      const msg = err.message ?? "";
+      const isColumnError = msg.toLowerCase().includes("ruta") || msg.toLowerCase().includes("column") || msg.toLowerCase().includes("does not exist");
+      setUploadSupabaseError(isColumnError
+        ? `Falta la columna 'ruta' en Supabase.\nEjecuta en SQL Editor:\n\nALTER TABLE locals ADD COLUMN IF NOT EXISTS ruta text default '';\n\nLuego haz click en Guardar de nuevo.`
+        : (msg || "Error al guardar en Supabase."));
+    } finally {
+      setUploadSaving(false);
     }
   }
 
@@ -727,6 +751,11 @@ function OnTradeCrm({ onOpenModule, profile }) {
               onUpdateAccount={(localId, updates) =>
                 setLocalsData((current) => current.map((l) => l.id === localId ? { ...l, ...updates } : l))
               }
+              pendingExcelResult={pendingExcelResult}
+              onSaveToSupabase={handleSaveExcelToSupabase}
+              uploadSaving={uploadSaving}
+              uploadSavedAt={uploadSavedAt}
+              uploadSupabaseError={uploadSupabaseError}
             />
           ) : null}
 
@@ -4608,7 +4637,7 @@ const CONFIG_WALKERS_MOCK = [
   { id: "w3", name: "Lucas Prima", ruta: "Ruta Centro-Norte", locals: ["Club Crobar", "Liguria", "The Clinic Bar"] },
 ];
 
-function MaestroSection({ excelMeta, excelError, onUpload, onClearBase }) {
+function MaestroSection({ excelMeta, excelError, onUpload, onClearBase, pendingExcelResult, onSaveToSupabase, uploadSaving, uploadSavedAt, uploadSupabaseError }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
 
@@ -4682,6 +4711,51 @@ function MaestroSection({ excelMeta, excelError, onUpload, onClearBase }) {
         </div>
       )}
 
+      {/* ── Panel de guardado en Supabase ── */}
+      {pendingExcelResult && (
+        <div className="rounded-xl border-2 border-slate-900 bg-slate-50 p-5">
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div>
+              <p className="text-[14px] font-bold text-slate-900">
+                {pendingExcelResult.locals.length} cuentas listas para guardar
+              </p>
+              <p className="mt-0.5 text-[12px] text-slate-500">
+                Los datos ya están en la app pero aún no se guardaron en la base de datos.
+                Haz click en <strong>Guardar en Supabase</strong> para que persistan.
+              </p>
+            </div>
+            <button
+              type="button"
+              disabled={uploadSaving}
+              onClick={onSaveToSupabase}
+              className="shrink-0 rounded-lg bg-slate-900 px-5 py-2.5 text-[14px] font-bold text-white hover:bg-slate-700 focus:outline-none disabled:opacity-50"
+            >
+              {uploadSaving ? "Guardando…" : "Guardar en Supabase"}
+            </button>
+          </div>
+          {uploadSupabaseError && (
+            <div className="mt-3 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3">
+              {uploadSupabaseError.split("\n").map((line, i) =>
+                line.trim().startsWith("ALTER") ? (
+                  <code key={i} className="mt-1 block rounded bg-rose-100 px-2 py-1 font-mono text-[11px] text-rose-800 select-all break-all">{line}</code>
+                ) : (
+                  <p key={i} className={`text-[13px] ${i === 0 ? "font-semibold text-rose-700" : "mt-1 text-rose-600"}`}>{line}</p>
+                )
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {uploadSavedAt && !pendingExcelResult && (
+        <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+          <p className="text-[13px] font-semibold text-emerald-700">
+            ✓ Guardado en Supabase — {uploadSavedAt.toLocaleTimeString("es-CL")}
+          </p>
+          <p className="mt-0.5 text-[12px] text-emerald-600">Los walkers verán las cuentas al iniciar sesión.</p>
+        </div>
+      )}
+
       <div className="flex flex-wrap gap-2">
         <button
           type="button"
@@ -4732,7 +4806,7 @@ function MaestroSection({ excelMeta, excelError, onUpload, onClearBase }) {
   );
 }
 
-function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, setLocalsData, walkers, onAddManualLocal, assortmentConfig, onSaveAssortmentConfig, onUpdateAccount }) {
+function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, setLocalsData, walkers, onAddManualLocal, assortmentConfig, onSaveAssortmentConfig, onUpdateAccount, pendingExcelResult, onSaveToSupabase, uploadSaving, uploadSavedAt, uploadSupabaseError }) {
   const [teamProfiles, setTeamProfiles] = useState([]);
   const [routes, setRoutes] = useState([]);
   const [developers, setDevelopers] = useState([]);
@@ -4846,6 +4920,11 @@ function ConfigView({ excelMeta, excelError, onUpload, onClearBase, localsData, 
         excelError={excelError}
         onUpload={onUpload}
         onClearBase={onClearBase}
+        pendingExcelResult={pendingExcelResult}
+        onSaveToSupabase={onSaveToSupabase}
+        uploadSaving={uploadSaving}
+        uploadSavedAt={uploadSavedAt}
+        uploadSupabaseError={uploadSupabaseError}
       />
 
       {/* ── Asignación por Walker ── */}
