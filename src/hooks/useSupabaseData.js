@@ -197,12 +197,7 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
     setWalkers(result.walkers);
     setMeta({ fileName: result.fileName, count: result.locals.length, walkerCount: result.walkers.length });
     if (!isSupabaseEnabled) return;
-    try {
-      await upsertLocals(result.locals);
-    } catch (err) {
-      console.error("[Supabase] Error al importar cuentas:", err.message);
-      setSyncError(err.message);
-    }
+    await upsertLocals(result.locals); // throws on error so caller can handle
   }, []);
 
   // Move kanban card

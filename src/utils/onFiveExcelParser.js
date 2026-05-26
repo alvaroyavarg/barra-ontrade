@@ -141,9 +141,11 @@ function buildLocal(item, sheetName, idx) {
   const outlet    = clean(item["SUBCANAL"]) || clean(item["Outlet"]) || "";
   const diageoId  = clean(item["ID Diageo"]) || "";
 
+  const ruta = clean(item["Ruta"]) || clean(item["RUTA"]) || clean(item["ruta"]) || "";
+
   return {
     id: accountCode ? `acc-${accountCode}` : `acc-${sheetName}-${idx}`,
-    accountCode, walkerName, sheetName, diageoId,
+    accountCode, walkerName, sheetName, diageoId, ruta,
     legalName:   clean(item["Razón Social"]), name,
     distributor: clean(item["DISTRIBUIDOR"]),
     region:      clean(item["REGION"]),

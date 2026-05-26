@@ -390,7 +390,13 @@ function OnTradeCrm({ onOpenModule, profile }) {
       ]);
       setActiveView("dashboard");
     } catch (error) {
-      setExcelError(error.message || "No pude leer el Excel. Verifica que la hoja se llame 'Cuentas' y tenga las columnas correctas.");
+      const msg = error.message ?? "";
+      const isColumnError = msg.toLowerCase().includes("ruta") || msg.toLowerCase().includes("column") || msg.toLowerCase().includes("does not exist");
+      setExcelError(
+        isColumnError
+          ? `Error Supabase: falta la columna 'ruta'. Ejecuta esto en Supabase → SQL Editor:\n\nALTER TABLE locals ADD COLUMN IF NOT EXISTS ruta text default '';\n\nLuego vuelve a cargar el Excel.`
+          : (msg || "No pude leer el Excel. Verifica que la hoja se llame 'Cuentas' y tenga las columnas correctas.")
+      );
     } finally {
       event.target.value = "";
     }
@@ -4609,19 +4615,19 @@ function MaestroSection({ excelMeta, excelError, onUpload, onClearBase }) {
   function downloadTemplate() {
     const headers = [
       "Nombre Cuenta", "Razón Social", "ID Distribuidor", "ID Diageo",
-      "Segmento", "Outlet", "Dirección", "Comuna", "Desarrollador", "AACC", "Walker",
+      "Segmento", "Outlet", "Dirección", "Comuna", "Desarrollador", "AACC", "Walker", "Ruta",
     ];
     const example1 = [
       "Bar La Terraza", "Inversiones La Terraza SpA", "501000001", "",
-      "PREMIUM CORE", "BAR", "Av. Providencia 1234", "Providencia", "CL55", "AACC", "Luis Felipe Cruz",
+      "PREMIUM CORE", "BAR", "Av. Providencia 1234", "Providencia", "CL55", "AACC", "Luis Felipe Cruz", "Ruta Norte",
     ];
     const example2 = [
       "Club Nocturno", "", "501000002", "",
-      "NIGHTLIFE", "DISCO", "Calle Estado 45", "Santiago", "CL56", "Sin AACC", "",
+      "NIGHTLIFE", "DISCO", "Calle Estado 45", "Santiago", "CL56", "Sin AACC", "", "",
     ];
     const example3 = [
       "Restaurante Centro", "Gastronomía Centro Ltda", "501000003", "",
-      "RESERVE", "DINING", "Nueva de Lyon 89", "Providencia", "CL55", "Sin AACC", "",
+      "RESERVE", "DINING", "Nueva de Lyon 89", "Providencia", "CL55", "Sin AACC", "", "",
     ];
     const ws = XLSX.utils.aoa_to_sheet([headers, example1, example2, example3]);
     ws["!cols"] = headers.map((h) => ({ wch: Math.max(h.length + 4, 18) }));
@@ -4665,8 +4671,14 @@ function MaestroSection({ excelMeta, excelError, onUpload, onClearBase }) {
       </label>
 
       {excelError && (
-        <div className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-2.5 text-[13px] font-semibold text-rose-700">
-          {excelError}
+        <div className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3">
+          {excelError.split("\n").map((line, i) =>
+            line.trim().startsWith("ALTER") ? (
+              <code key={i} className="mt-1 block rounded bg-rose-100 px-2 py-1 font-mono text-[11px] text-rose-800 select-all break-all">{line}</code>
+            ) : (
+              <p key={i} className={`text-[13px] ${i === 0 ? "font-semibold text-rose-700" : "mt-1 text-rose-600"}`}>{line}</p>
+            )
+          )}
         </div>
       )}
 
