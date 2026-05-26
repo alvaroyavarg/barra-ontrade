@@ -222,15 +222,42 @@ const OT_INNOVATIONS = [
   { id: "tq00",      name: "Tanqueray 0,0",  category: "Gin NA" },
   { id: "gordspink", name: "Gordon's Pink",  category: "Gin" },
 ];
-const OT_SEGMENTS = ["Reserve", "Premium Core Gold", "Premium Core Silver", "Premium Core Bronze", "Mainstream"];
+const OT_OUTLET_TYPES  = ["Bar", "Restaurante", "Disco"];
+const OT_SEGMENT_TYPES = ["Reserve", "Premium Core", "Mainstream"];
+
+// Clave compuesta: "Outlet-Segmento"
+function assortmentKey(outlet, segment) { return `${outlet}-${segment}`; }
+
+function normalizeOutlet(subchannel = "", occasion = "") {
+  const s = (subchannel || occasion || "").toLowerCase();
+  if (s.includes("disco") || s.includes("nightlife") || s.includes("club")) return "Disco";
+  if (s.includes("rest") || s.includes("dining") || s.includes("hotel") || s.includes("bar")) {
+    if (s.includes("rest") || s.includes("dining") || s.includes("hotel")) return "Restaurante";
+  }
+  return "Bar";
+}
+
+function normalizeSegment(segment = "") {
+  const s = segment.toLowerCase();
+  if (s.includes("reserve")) return "Reserve";
+  if (s.includes("mainstream")) return "Mainstream";
+  return "Premium Core";
+}
 
 // ── Assortment por defecto — CP&A puede editarlo en Configuración ─
 const DEFAULT_ASSORTMENT_CONFIG = {
-  "Reserve":              ["dj1942","dj70","djrep","djanejo","djblanco","jwblack","jwgold","jwblue","tqlon","tqbossa","tqsevilla","gordons"],
-  "Premium Core Gold":    ["djrep","djblanco","jwblack","jwdblack","jwgold","tqlon","tqsevilla","tqbossa","gordons","smirnoff"],
-  "Premium Core Silver":  ["djblanco","jwblack","jwred","tqlon","tqsevilla","gordons","smirnoff"],
-  "Premium Core Bronze":  ["djblanco","jwblack","jwred","tqlon","gordons","smirnoff"],
-  "Mainstream":           ["jwred","jwblack","tqlon","gordons","smirnoff"],
+  // Bar
+  "Bar-Reserve":              ["dj1942","dj70","djrep","djanejo","djblanco","jwblack","jwdblack","jwgold","jwblue","tqlon","tqbossa","tqsevilla","gordons"],
+  "Bar-Premium Core":         ["djrep","djblanco","jwblack","jwdblack","jwgold","tqlon","tqsevilla","tqbossa","gordons","smirnoff"],
+  "Bar-Mainstream":           ["jwred","jwblack","tqlon","gordons","smirnoff"],
+  // Restaurante
+  "Restaurante-Reserve":      ["dj1942","djrep","djanejo","djblanco","jwblack","jwgold","jwblue","tqlon","tqsevilla","gordons"],
+  "Restaurante-Premium Core": ["djrep","djblanco","jwblack","jwgold","tqlon","tqsevilla","gordons","smirnoff"],
+  "Restaurante-Mainstream":   ["jwred","jwblack","tqlon","gordons","smirnoff"],
+  // Disco
+  "Disco-Reserve":            ["djblanco","jwblack","jwdblack","jwgold","tqlon","tqbossa","gordons","smirnoff"],
+  "Disco-Premium Core":       ["jwblack","jwred","tqlon","tqbossa","gordons","smirnoff"],
+  "Disco-Mainstream":         ["jwred","tqlon","gordons","smirnoff"],
 };
 
 // Mantenemos ASSORTMENT_PORTFOLIOS solo como fallback legacy (no se usa en nueva lógica)
@@ -2647,9 +2674,11 @@ function OnFiveAccountCard({ local }) {
 }
 
 function AssortmentPortfolioPanel({ local, pillar, assortmentConfig, assortmentAudit, onSaveAudit, activeUserName }) {
-  // Determinar segmento normalizado de la cuenta
-  const segmentKey = OT_SEGMENTS.find((s) => local.segment?.toUpperCase().includes(s.toUpperCase().split(" ")[0])) ?? local.segment ?? "";
-  const requiredIds = (assortmentConfig ?? DEFAULT_ASSORTMENT_CONFIG)[segmentKey] ?? [];
+  const outlet     = normalizeOutlet(local.subchannel, local.occasion);
+  const segment    = normalizeSegment(local.segment);
+  const configKey  = assortmentKey(outlet, segment);
+  const cfg        = assortmentConfig ?? DEFAULT_ASSORTMENT_CONFIG;
+  const requiredIds = cfg[configKey] ?? [];
   const requiredLabels = OT_LABELS.filter((l) => requiredIds.includes(l.id));
 
   // Estado de checkboxes en terreno
@@ -2689,7 +2718,7 @@ function AssortmentPortfolioPanel({ local, pillar, assortmentConfig, assortmentA
         <SectionTitle
           kicker="Assortment — medición en terreno"
           title="Portafolio objetivo"
-          description={`Segmento: ${segmentKey || local.segment || "Sin clasificar"}. Marca lo que está presente en la cuenta.`}
+          description={`${outlet} · ${segment}. Marca las etiquetas presentes en la cuenta.`}
         />
         <strong className={`shrink-0 rounded-md px-2.5 py-1 text-[12px] font-semibold ${PILLAR_TONE_STYLES[pctTone] ?? PILLAR_TONE_STYLES.neutral}`}>
           {total > 0 ? `${present}/${total} · ${pct}%` : "Sin portafolio"}
@@ -2701,7 +2730,7 @@ function AssortmentPortfolioPanel({ local, pillar, assortmentConfig, assortmentA
           <article className="flex flex-col gap-0.5 rounded-lg border border-slate-200 bg-slate-50 p-3">
             <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Objetivo</span>
             <strong className="text-[15px] font-semibold text-slate-900">{total} etiquetas</strong>
-            <small className="text-[11px] text-slate-500">{segmentKey}</small>
+            <small className="text-[11px] text-slate-500">{outlet} · {segment}</small>
           </article>
           <article className="flex flex-col gap-0.5 rounded-lg border border-slate-200 bg-slate-50 p-3">
             <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Presentes</span>
@@ -6322,14 +6351,18 @@ function OnFiveWeightsSection() {
 
 function AssortmentConfigSection({ assortmentConfig, onSave }) {
   const [localConfig, setLocalConfig] = useState(() => ({ ...DEFAULT_ASSORTMENT_CONFIG, ...assortmentConfig }));
-  const [activeSegment, setActiveSegment] = useState(OT_SEGMENTS[0]);
+  const [activeOutlet,  setActiveOutlet]  = useState(OT_OUTLET_TYPES[0]);
+  const [activeSegment, setActiveSegment] = useState(OT_SEGMENT_TYPES[0]);
   const [justSaved, setJustSaved] = useState(false);
 
-  function toggleLabel(segmentKey, labelId) {
+  const activeKey = assortmentKey(activeOutlet, activeSegment);
+  const activeIds = localConfig[activeKey] ?? [];
+
+  function toggleLabel(labelId) {
     setLocalConfig((prev) => {
-      const current = prev[segmentKey] ?? [];
+      const current = prev[activeKey] ?? [];
       const next = current.includes(labelId) ? current.filter((id) => id !== labelId) : [...current, labelId];
-      return { ...prev, [segmentKey]: next };
+      return { ...prev, [activeKey]: next };
     });
   }
 
@@ -6339,20 +6372,19 @@ function AssortmentConfigSection({ assortmentConfig, onSave }) {
     setTimeout(() => setJustSaved(false), 2500);
   }
 
-  const activeIds = localConfig[activeSegment] ?? [];
   const byCategory = OT_LABELS.reduce((acc, l) => {
     (acc[l.category] = acc[l.category] ?? []).push(l);
     return acc;
   }, {});
 
   return (
-    <article className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+    <article className="flex flex-col gap-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">CP&A · Assortment</span>
-          <h2 className="mt-1 text-[16px] font-bold text-slate-900">Portafolio objetivo por segmento</h2>
+          <h2 className="mt-1 text-[16px] font-bold text-slate-900">Portafolio objetivo por tipo de local</h2>
           <p className="mt-0.5 text-[13px] leading-relaxed text-slate-600">
-            Define qué etiquetas debe tener cada segmento. El Walker las audita en terreno.
+            Define qué etiquetas debe tener cada combinación de outlet y segmento. El Walker las audita en terreno.
           </p>
         </div>
         <button
@@ -6364,23 +6396,64 @@ function AssortmentConfigSection({ assortmentConfig, onSave }) {
         </button>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        {OT_SEGMENTS.map((seg) => (
-          <button
-            key={seg}
-            type="button"
-            onClick={() => setActiveSegment(seg)}
-            className={`rounded-lg px-3 py-1.5 text-[13px] transition focus:outline-none ${
-              activeSegment === seg
-                ? "bg-slate-900 font-semibold text-white"
-                : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
-            }`}
-          >
-            {seg} <span className="opacity-60 font-normal">({(localConfig[seg] ?? []).length})</span>
-          </button>
-        ))}
+      {/* Selector 2 niveles: Outlet × Segmento */}
+      <div className="flex flex-col gap-3 rounded-xl border border-slate-100 bg-slate-50 p-4">
+        <div className="flex items-center gap-3">
+          <span className="w-20 shrink-0 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Outlet</span>
+          <div className="flex flex-wrap gap-2">
+            {OT_OUTLET_TYPES.map((o) => (
+              <button
+                key={o}
+                type="button"
+                onClick={() => setActiveOutlet(o)}
+                className={`rounded-lg px-3 py-1.5 text-[13px] font-medium transition focus:outline-none ${
+                  activeOutlet === o
+                    ? "bg-slate-900 text-white"
+                    : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                }`}
+              >
+                {o}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="w-20 shrink-0 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Segmento</span>
+          <div className="flex flex-wrap gap-2">
+            {OT_SEGMENT_TYPES.map((s) => {
+              const k = assortmentKey(activeOutlet, s);
+              const count = (localConfig[k] ?? []).length;
+              return (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => setActiveSegment(s)}
+                  className={`rounded-lg px-3 py-1.5 text-[13px] transition focus:outline-none ${
+                    activeSegment === s
+                      ? "bg-slate-900 font-semibold text-white"
+                      : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                  }`}
+                >
+                  {s} <span className="font-normal opacity-60">({count})</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div className="flex items-center gap-2 pt-1">
+          <span className="text-[11px] text-slate-500">
+            Perfil activo:
+          </span>
+          <span className="rounded-md bg-slate-900 px-2.5 py-0.5 text-[11px] font-semibold text-white">
+            {activeOutlet} · {activeSegment}
+          </span>
+          <span className="text-[11px] text-slate-500">
+            — {activeIds.length} etiquetas requeridas
+          </span>
+        </div>
       </div>
 
+      {/* Checkboxes de etiquetas */}
       <div className="flex flex-col gap-4">
         {Object.entries(byCategory).map(([cat, items]) => (
           <div key={cat}>
@@ -6390,7 +6463,7 @@ function AssortmentConfigSection({ assortmentConfig, onSave }) {
                 const active = activeIds.includes(item.id);
                 return (
                   <label key={item.id} className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-[13px] transition ${active ? "border-emerald-200 bg-emerald-50" : "border-slate-200 bg-white hover:bg-slate-50"}`}>
-                    <input type="checkbox" checked={active} onChange={() => toggleLabel(activeSegment, item.id)}
+                    <input type="checkbox" checked={active} onChange={() => toggleLabel(item.id)}
                       className="h-4 w-4 shrink-0 rounded border-slate-300 accent-slate-900" />
                     <span className={active ? "font-semibold text-emerald-700" : "text-slate-700"}>{item.name}</span>
                   </label>
