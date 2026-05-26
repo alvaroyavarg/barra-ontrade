@@ -5486,6 +5486,7 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
   const [search, setSearch]               = useState("");
   const [savedRoutes, setSavedRoutes]     = useState({});
   const [assigningWalker, setAssigningWalker] = useState({});
+  const [batchSaving, setBatchSaving]     = useState({});
 
   const inputCls   = "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[14px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
   const eyebrowCls = "text-[10px] font-semibold uppercase tracking-wide text-slate-500";
@@ -5544,7 +5545,7 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
     setLocalsData((prev) => prev.map((l) => l.id === localId ? { ...l, ruta: routeName } : l));
     updateLocalRoute(localId, routeName)
       .then(() => flashSaved(routeName))
-      .catch(() => {});
+      .catch((err) => setError(err.message ?? "Error al asignar cuenta"));
     setSearch("");
   }
 
@@ -5552,7 +5553,20 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
     setLocalsData((prev) => prev.map((l) => l.id === localId ? { ...l, ruta: "" } : l));
     updateLocalRoute(localId, "")
       .then(() => flashSaved(routeName))
-      .catch(() => {});
+      .catch((err) => setError(err.message ?? "Error al quitar cuenta"));
+  }
+
+  async function batchSaveRoute(routeName, accounts) {
+    setBatchSaving((prev) => ({ ...prev, [routeName]: true }));
+    setError("");
+    try {
+      await Promise.all(accounts.map((l) => updateLocalRoute(l.id, routeName)));
+      flashSaved(routeName);
+    } catch (err) {
+      setError(err.message ?? "Error al guardar asignaciones");
+    } finally {
+      setBatchSaving((prev) => ({ ...prev, [routeName]: false }));
+    }
   }
 
   async function handleAssignWalker(routeName, userId) {
@@ -5703,9 +5717,19 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
 
                     {assigned.length > 0 ? (
                       <div className="mt-3 flex flex-col gap-1">
-                        <span className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
-                          Cuentas en esta ruta
-                        </span>
+                        <div className="mb-2 flex items-center justify-between">
+                          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+                            Cuentas en esta ruta
+                          </span>
+                          <button
+                            type="button"
+                            disabled={batchSaving[r.name]}
+                            onClick={() => batchSaveRoute(r.name, assigned)}
+                            className="rounded-lg bg-slate-900 px-3 py-1.5 text-[12px] font-semibold text-white hover:bg-slate-800 focus:outline-none disabled:opacity-50"
+                          >
+                            {batchSaving[r.name] ? "Guardando…" : `Guardar ${assigned.length} asignaciones`}
+                          </button>
+                        </div>
                         {assigned.map((l) => (
                           <div key={l.id} className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
                             <div>
