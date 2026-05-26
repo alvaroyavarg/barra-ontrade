@@ -37,54 +37,33 @@ export async function upsertRoutesFromLocals(locals) {
 }
 
 export async function upsertContacts(localId, contacts) {
-  if (!contacts.length) return;
-  const rows = contacts.map((c) => ({
-    id: `${localId}-${c.id}`,
-    local_id: localId,
-    name: c.name,
-    role: c.role ?? "",
-    note: c.note ?? "",
-    phone: c.phone ?? "",
-  }));
-  const { error } = await supabase
-    .from("contacts")
-    .upsert(rows, { onConflict: "id" });
-  if (error) throw error;
+  for (const c of contacts) {
+    const { error } = await supabase.from("contacts").upsert(
+      { id: `${localId}-${c.id}`, local_id: localId, name: c.name, role: c.role ?? "", note: c.note ?? "", phone: c.phone ?? "" },
+      { onConflict: "id" }
+    );
+    if (error) throw error;
+  }
 }
 
 export async function upsertMissions(localId, missions) {
-  if (!missions.length) return;
-  const rows = missions.map((m) => ({
-    id: m.id,
-    local_id: localId,
-    title: m.title,
-    origin: m.origin ?? "",
-    impact: m.impact ?? "",
-    reason: m.reason ?? "",
-    status: m.status ?? "Sugerida",
-    progress: m.progress ?? 0,
-    next_step: m.nextStep ?? "",
-  }));
-  const { error } = await supabase
-    .from("missions")
-    .upsert(rows, { onConflict: "id" });
-  if (error) throw error;
+  for (const m of missions) {
+    const { error } = await supabase.from("missions").upsert(
+      { id: m.id, local_id: localId, title: m.title, origin: m.origin ?? "", impact: m.impact ?? "", reason: m.reason ?? "", status: m.status ?? "Sugerida", progress: m.progress ?? 0, next_step: m.nextStep ?? "" },
+      { onConflict: "id" }
+    );
+    if (error) throw error;
+  }
 }
 
 export async function upsertPillars(localId, pillarsObj) {
-  const rows = Object.entries(pillarsObj).map(([pillar, data]) => ({
-    local_id: localId,
-    pillar,
-    score: data.score ?? "Sin registro",
-    summary: data.summary ?? "",
-    details: data.details ?? [],
-    next_action: data.nextAction ?? "",
-  }));
-  if (!rows.length) return;
-  const { error } = await supabase
-    .from("pillars")
-    .upsert(rows, { onConflict: "local_id,pillar" });
-  if (error) throw error;
+  for (const [pillar, data] of Object.entries(pillarsObj)) {
+    const { error } = await supabase.from("pillars").upsert(
+      { local_id: localId, pillar, score: data.score ?? "Sin registro", summary: data.summary ?? "", details: data.details ?? [], next_action: data.nextAction ?? "" },
+      { onConflict: "local_id,pillar" }
+    );
+    if (error) throw error;
+  }
 }
 
 export async function updatePillar(localId, pillar, data) {
