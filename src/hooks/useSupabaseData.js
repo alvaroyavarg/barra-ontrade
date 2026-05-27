@@ -36,7 +36,7 @@ import {
   updateBrandingRequestStatus,
 } from "../services/brandingRequestsService.js";
 
-export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta, role, walkerName }) {
+export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta, role, walkerName, walkerRuta }) {
   const [locals, setLocals] = useState(fallbackLocals);
   const [walkers, setWalkers] = useState(fallbackWalkers);
   const [meta, setMeta] = useState(fallbackMeta);
@@ -46,16 +46,19 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta,
   const [loading, setLoading] = useState(false);
   const [syncError, setSyncError] = useState(null);
 
-  const loadedRef = useRef(false);
+  const loadedParamsRef = useRef(null);
 
   // Initial load from Supabase
   useEffect(() => {
-    if (!isSupabaseEnabled || loadedRef.current) return;
+    if (!isSupabaseEnabled) return;
     if (role === "walker" && !walkerName) return; // wait for profile
-    loadedRef.current = true;
+    const paramsKey = `${role}|${walkerName ?? ""}|${walkerRuta ?? ""}`;
+    if (loadedParamsRef.current === paramsKey) return;
+    loadedParamsRef.current = paramsKey;
     setLoading(true);
     const filterName = role === "walker" ? walkerName : undefined;
-    Promise.all([fetchLocals(filterName), fetchKanbanCards(), fetchBrandingRequests()])
+    const filterRuta = role === "walker" ? walkerRuta : undefined;
+    Promise.all([fetchLocals(filterName, filterRuta), fetchKanbanCards(), fetchBrandingRequests()])
       .then(([remoteLocals, cards, brandingReqs]) => {
         if (brandingReqs.length > 0) setBrandingRequests(brandingReqs);
         setLocals(remoteLocals);
@@ -93,7 +96,7 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta,
       })
       .finally(() => setLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [role, walkerName]);
+  }, [role, walkerName, walkerRuta]);
 
   // Real-time: sync locals + pillars changes from other users
   useEffect(() => {
