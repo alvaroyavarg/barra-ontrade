@@ -22,10 +22,10 @@ export async function addNote(localId, note) {
     next_action: note.nextAction ?? "",
   };
 
-  // Intentar con photos; si falla por columna inexistente, reintentar sin photos
-  let { error } = await supabase.from("notes").insert({ ...base, photos: note.photos ?? [] });
+  // Upsert is idempotent — safe if the same note is submitted twice (e.g., retry on slow network)
+  let { error } = await supabase.from("notes").upsert({ ...base, photos: note.photos ?? [] }, { onConflict: "id" });
   if (error && (error.message?.includes("photos") || error.code === "42703")) {
-    const retry = await supabase.from("notes").insert(base);
+    const retry = await supabase.from("notes").upsert(base, { onConflict: "id" });
     error = retry.error;
   }
   if (error) throw error;

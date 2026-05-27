@@ -155,7 +155,13 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta,
     if (!isSupabaseEnabled) return;
     try {
       const notes = await fetchNotesByLocal(localId);
-      setExtraNotes((prev) => ({ ...prev, [localId]: notes }));
+      // Merge: keep optimistic notes not yet confirmed in DB to avoid
+      // wiping in-flight saves when the refresh races with publishNote.
+      setExtraNotes((prev) => {
+        const current = prev[localId] ?? [];
+        const localOnly = current.filter((n) => !notes.some((db) => db.id === n.id));
+        return { ...prev, [localId]: [...localOnly, ...notes] };
+      });
     } catch (err) {
       console.error("[Supabase] Error al refrescar notas:", err.message);
     }

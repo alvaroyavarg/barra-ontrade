@@ -2578,7 +2578,8 @@ function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = 
   };
 
   const allLogs = executionNotes.filter((n) =>
-    n.type === "Registro" || n.type === "Evidencia" || n.type === module.label
+    (n.type === "Registro" || n.type === "Evidencia" || n.type === module.label)
+    && n.author !== "Sistema LH"
   );
 
   return (
@@ -2967,15 +2968,13 @@ function AssortmentPostWall({ activeUserName, onPublishNote }) {
 
 function MenuPdfScanner({ activeUserName, local, onUpdatePillar, onPublishNote }) {
   const [menuEvaluations, setMenuEvaluations] = useState({});
-  const [evalLogs, setEvalLogs] = useState({});
   const [justSaved, setJustSaved] = useState(false);
-  const [expandedLogId, setExpandedLogId] = useState(null);
   const [menuUrl, setMenuUrl] = useState(local.menuUrl ?? "");
+  const [menuPhotoUploading, setMenuPhotoUploading] = useState(false);
   const evaluation = menuEvaluations[local.id] ?? buildDefaultMenuEvaluation(local);
   const kpis = getManualMenuKpis(evaluation);
   const gaps = getManualMenuGaps(evaluation, kpis);
   const nextGap = gaps.find((g) => g.tone === "danger") ?? gaps.find((g) => g.tone === "warning") ?? gaps[0];
-  const localLogs = evalLogs[local.id] ?? [];
 
   function updateEvaluation(field, value) {
     setMenuEvaluations((current) => ({
@@ -2999,26 +2998,6 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar, onPublishNote }
       [local.id]: { ...snap, lastSaved: timestamp },
     }));
     const snapGaps = getManualMenuGaps(snap, snapKpis);
-    setEvalLogs((current) => ({
-      ...current,
-      [local.id]: [
-        {
-          id: `eval-${uid()}`,
-          date: timestamp,
-          author: activeUserName ?? "Walker",
-          caStatus: snapKpis.authorStatus,
-          caTone: snapKpis.authorTone,
-          dsStatus: snapKpis.drinkStatus,
-          dsTone: snapKpis.drinkTone,
-          overallTone: snapKpis.overallTone,
-          gapsCount: snapGaps.length,
-          kpis: snapKpis,
-          gaps: snapGaps,
-          snap,
-        },
-        ...(current[local.id] ?? []),
-      ].slice(0, 12),
-    }));
     // ── Actualizar pilar real de la cuenta ──
     if (onUpdatePillar) {
       const dsTotal = [snap.hasTropicalGin, snap.hasWhiscolaNaming, snap.hasTanquerayGt, snap.hasWhiskySourBlack].filter(Boolean).length;
@@ -3190,20 +3169,32 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar, onPublishNote }
               className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-[13px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10"
             />
           </label>
-          <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-2 text-[12px] text-slate-600 hover:border-slate-400 hover:bg-slate-100">
-            <span>📷 Foto / pantallazo del menú (desde cámara o galería)</span>
+          <label className={`flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-2 text-[12px] text-slate-600 hover:border-slate-400 hover:bg-slate-100 ${menuPhotoUploading ? "opacity-60 pointer-events-none" : ""}`}>
+            <span>{menuPhotoUploading ? "Subiendo foto…" : "📷 Foto / pantallazo del menú (cámara o galería)"}</span>
             <input
               type="file"
               accept="image/*"
               capture="environment"
               className="hidden"
-              onChange={(e) => {
+              onChange={async (e) => {
                 const file = e.target.files?.[0];
-                if (file) setMenuUrl(URL.createObjectURL(file));
+                if (!file) return;
+                const preview = URL.createObjectURL(file);
+                setMenuUrl(preview);
+                setMenuPhotoUploading(true);
+                try {
+                  const url = await uploadPhoto(local.id, "menu", file);
+                  URL.revokeObjectURL(preview);
+                  setMenuUrl(url);
+                } catch {
+                  // Keep blob preview — will warn user via UI
+                } finally {
+                  setMenuPhotoUploading(false);
+                }
               }}
             />
           </label>
-          {menuUrl && menuUrl.startsWith("blob:") && (
+          {menuUrl && (
             <img src={menuUrl} alt="Vista previa carta" className="h-32 w-full rounded-lg border border-slate-200 object-cover" />
           )}
         </div>
@@ -3241,92 +3232,6 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar, onPublishNote }
           ) : null}
         </div>
       </div>
-
-      {/* Historial de evaluaciones */}
-      {localLogs.length > 0 && (
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-          <SectionTitle kicker="Historial" title="Evaluaciones guardadas" />
-          <div className="mt-4 flex flex-col gap-3">
-            {localLogs.map((log) => {
-              const isOpen = expandedLogId === log.id;
-              const MENU_FIELDS_DETAIL = [
-                { key: "hasTropicalGin",          label: "Tropical Gin" },
-                { key: "hasWhiskyAuthorCocktail", label: "Coctelería de Autor c/ Whisky" },
-                { key: "hasGinAuthorCocktail",    label: "Coctelería de Autor c/ Gin" },
-                { key: "hasWhiscolaNaming",       label: "JW + Coca Cola" },
-                { key: "hasTanquerayGt",          label: "Gin & Tonic" },
-                { key: "hasWhiskySourBlack",      label: "Whisky Sour" },
-              ];
-              return (
-                <article key={log.id} className="overflow-hidden rounded-xl border border-slate-200">
-                  <button
-                    type="button"
-                    onClick={() => setExpandedLogId(isOpen ? null : log.id)}
-                    className="flex w-full items-start gap-3 p-3 text-left hover:bg-slate-50 focus:outline-none"
-                  >
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">{initials(log.author)}</div>
-                    <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                      <header className="flex items-center gap-2">
-                        <strong className="text-[13px] font-semibold text-slate-900">{log.author}</strong>
-                        <span className="text-[11px] text-slate-500">{log.date}</span>
-                        <span className="ml-auto text-[11px] text-slate-400">{isOpen ? "▲" : "▼"}</span>
-                      </header>
-                      <div className="flex flex-wrap gap-1.5">
-                        <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${log.caTone === "good" ? "bg-emerald-50 text-emerald-700" : log.caTone === "danger" ? "bg-rose-50 text-rose-700" : "bg-slate-100 text-slate-600"}`}>C. de Autor: {log.caStatus}</span>
-                        <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${log.dsTone === "good" ? "bg-emerald-50 text-emerald-700" : log.dsTone === "danger" ? "bg-rose-50 text-rose-700" : "bg-slate-100 text-slate-600"}`}>Drink Strategy: {log.dsStatus}</span>
-                        {log.gapsCount === 0
-                          ? <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-emerald-50 text-emerald-700">Sin gaps</span>
-                          : <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-amber-50 text-amber-700">{log.gapsCount} gap{log.gapsCount > 1 ? "s" : ""}</span>
-                        }
-                      </div>
-                    </div>
-                  </button>
-
-                  {isOpen && log.snap && (
-                    <div className="grid gap-4 border-t border-slate-200 bg-slate-50 p-4">
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="flex flex-col gap-2">
-                          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Cocteleria de Autor</p>
-                          <p className="text-[13px] text-slate-700">
-                            <strong className="text-slate-900">{log.snap.authorCocktailsDiageo} de {log.snap.authorCocktailsTotal}</strong> cocktails son Diageo
-                            {log.kpis?.authorShare != null && <span className="text-slate-500"> ({log.kpis.authorShare}%)</span>}
-                          </p>
-                          <p className="text-[11px] text-slate-500">{log.kpis?.authorRule}</p>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Drink Strategy</p>
-                          <p className="text-[11px] text-slate-500">{log.kpis?.drinkRule}</p>
-                          <div className="flex flex-wrap gap-1.5">
-                            {MENU_FIELDS_DETAIL.map(({ key, label }) => (
-                              <span key={key} className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${log.snap[key] ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700"}`}>
-                                {label}: {log.snap[key] ? "OK" : "No"}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-
-                      {log.gaps && log.gaps.length > 0 && (
-                        <div className="flex flex-col gap-2">
-                          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Gaps detectados</p>
-                          <div className="flex flex-col gap-2">
-                            {log.gaps.map((gap, i) => (
-                              <div key={i} className={`rounded-lg border-l-4 bg-white p-3 text-[12px] ${gap.tone === "danger" ? "border-rose-500" : "border-amber-400"}`}>
-                                <strong className="block text-slate-900">{gap.title}</strong>
-                                <span className="text-slate-600">{gap.copy}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </article>
-              );
-            })}
-          </div>
-        </div>
-      )}
 
       {/* Stand by */}
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
