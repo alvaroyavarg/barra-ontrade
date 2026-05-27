@@ -386,7 +386,6 @@ function OnTradeCrm({ onOpenModule, profile }) {
     fallbackMeta: MAESTRO_META,
     role: roleId,
     walkerName: profile?.walker_name,
-    walkerRuta: profile?.ruta,
   });
 
   const [localKanbanColumns, setLocalKanbanColumns] = useState(() => ([
