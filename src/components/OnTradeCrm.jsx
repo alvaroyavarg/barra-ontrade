@@ -560,8 +560,8 @@ function OnTradeCrm({ onOpenModule, profile }) {
             <small className="hidden text-[11px] text-slate-400 sm:block">On Trade Execution · Diageo Chile</small>
           </div>
           {isSupabaseEnabled && (
-            <span className={`ml-2 hidden rounded-full px-2 py-0.5 text-[10px] font-medium sm:inline-flex ${supabaseLoading ? "bg-yellow-500/20 text-yellow-300" : syncError ? "bg-red-500/20 text-red-300" : "bg-emerald-500/20 text-emerald-300"}`}>
-              {supabaseLoading ? "Sincronizando…" : syncError ? "Error sync" : "Conectado ✓"}
+            <span className={`ml-2 inline-flex rounded-full px-2 py-0.5 text-[10px] font-medium ${supabaseLoading ? "bg-yellow-500/20 text-yellow-300" : syncError ? "bg-red-500/20 text-red-300" : "bg-emerald-500/20 text-emerald-300"}`}>
+              {supabaseLoading ? "Sincronizando…" : syncError ? "⚠ Error al guardar" : "Conectado ✓"}
             </span>
           )}
         </div>
@@ -3015,7 +3015,7 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar, onPublishNote }
       id: `menu-${uid()}`,
       author: activeUserName ?? "Walker",
       date: timestamp,
-      text: `Evaluación Menú: Coctelería de Autor ${snapKpis.authorStatus} · Drink Strategy ${snapKpis.drinkStatus}${snapGaps.length > 0 ? ` · ${snapGaps.length} oportunidad${snapGaps.length > 1 ? "es" : ""}` : " · Sin brechas"}${menuUrl ? ` · Carta: ${menuUrl}` : ""}`,
+      text: `Evaluación Menú: Coctelería de Autor ${snapKpis.authorStatus} · Drink Strategy ${snapKpis.drinkStatus}${snapGaps.length > 0 ? ` · ${snapGaps.length} oportunidad${snapGaps.length > 1 ? "es" : ""}` : " · Sin brechas"}${menuUrl && !menuUrl.startsWith("blob:") ? ` · Carta: ${menuUrl}` : ""}`,
       photos: [],
     });
     setJustSaved(true);
