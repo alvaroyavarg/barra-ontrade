@@ -2571,22 +2571,15 @@ function SidePhotoPanel({ localId, moduleKey, activeUserName, onPublishNote }) {
 }
 
 function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = [], local, module, onPublishNote, pillar, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit, localBrandingRequests = [], onSubmitBrandingRequest }) {
-  const [moduleLogs, setModuleLogs] = useState([]);
   const [activeIncentives, setActiveIncentives] = useState(["Tanqueray Perfect Serve Challenge", "Smirnoff Red Staff Challenge"]);
+
   const publishModuleNote = (note) => {
-    const fullNote = { ...note, type: module.label };
-    setModuleLogs((current) => [fullNote, ...current.filter((m) => m.id !== fullNote.id)]);
-    onPublishNote?.(fullNote);
+    onPublishNote?.({ ...note, type: module.label });
   };
 
-  // Merge persisted notes for this module with local session logs (newest first)
-  const persistedForModule = executionNotes.filter((n) =>
+  const allLogs = executionNotes.filter((n) =>
     n.type === "Registro" || n.type === "Evidencia" || n.type === module.label
   );
-  const allLogs = [
-    ...moduleLogs,
-    ...persistedForModule.filter((pn) => !moduleLogs.some((ml) => ml.id === pn.id)),
-  ];
 
   return (
     <article className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -2619,9 +2612,6 @@ function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = 
                 onSave={(record) => {
                   const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date());
                   const noteId = `reg-${uid()}`;
-                  const enriched = { ...record, id: noteId };
-                  setModuleLogs((current) => [enriched, ...current]);
-                  // Persistir en Supabase notes table
                   onPublishNote?.({
                     id: noteId,
                     author: activeUserName ?? "Walker",
