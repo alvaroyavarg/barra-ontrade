@@ -2651,10 +2651,11 @@ function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = 
                   <KeyContacts contacts={local.contacts} developerCode={local.developer} developers={developers} />
                 </div>
               ) : null}
-              <SidePhotoPanel localId={local.id} moduleKey={module.key} activeUserName={activeUserName} onPublishNote={onPublishNote} />
             </div>
           </section>
       )}
+
+      <SidePhotoPanel localId={local.id} moduleKey={module.key} activeUserName={activeUserName} onPublishNote={publishModuleNote} />
 
       <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <SectionTitle kicker="Bitácora" title="Registros recientes" />
@@ -3150,10 +3151,6 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar, onPublishNote }
             </div>
           )}
 
-          <label className="flex cursor-pointer flex-col gap-1 rounded-lg border border-dashed border-slate-200 p-3">
-            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Foto de respaldo KPI 1</span>
-            <input accept="image/*" type="file" className="text-[12px] text-slate-600" />
-          </label>
         </div>
 
         {/* KPI 2 */}
@@ -3186,10 +3183,6 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar, onPublishNote }
             ))}
           </div>
 
-          <label className="flex cursor-pointer flex-col gap-1 rounded-lg border border-dashed border-slate-200 p-3">
-            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Foto de respaldo KPI 2</span>
-            <input accept="image/*" type="file" className="text-[12px] text-slate-600" />
-          </label>
         </div>
       </div>
 
@@ -4141,15 +4134,9 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar, bra
             className="resize-y rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[14px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10"
           />
         </label>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:items-end">
-          <label className="flex cursor-pointer flex-col gap-1.5 rounded-lg border border-dashed border-slate-200 p-3">
-            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Foto de evidencia branding</span>
-            <input accept="image/*" type="file" className="text-[13px] text-slate-600" />
-          </label>
-          <button className="rounded-lg bg-slate-900 px-4 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700" type="button" onClick={saveAudit}>
-            Guardar auditoria
-          </button>
-        </div>
+        <button className="rounded-lg bg-slate-900 px-4 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700" type="button" onClick={saveAudit}>
+          Guardar auditoria
+        </button>
       </div>
 
       {/* Solicitud a CP&A — multi-material */}
@@ -4405,10 +4392,6 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar, onPubl
           </label>
 
           <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
-            <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-slate-200 px-4 py-2.5 text-[14px] text-slate-600 hover:bg-slate-50">
-              <input accept="image/*" style={{ display: "none" }} type="file" />
-              + Adjuntar foto
-            </label>
             <button
               type="button"
               onClick={markNoActivation}
