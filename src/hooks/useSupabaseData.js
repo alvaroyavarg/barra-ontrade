@@ -105,7 +105,7 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
     }
   }, []);
 
-  // Publish note: update local state + persist
+  // Publish note: update local state + persist (rollback on failure)
   const publishNote = useCallback(async (localId, note) => {
     setExtraNotes((prev) => ({
       ...prev,
@@ -117,6 +117,10 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
     } catch (err) {
       console.error("[Supabase] Error al guardar nota:", err.message);
       setSyncError(err.message);
+      setExtraNotes((prev) => ({
+        ...prev,
+        [localId]: (prev[localId] ?? []).filter((n) => n.id !== note.id),
+      }));
     }
   }, []);
 

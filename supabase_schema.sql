@@ -3,6 +3,22 @@
 -- Ejecutar en: Supabase Dashboard > SQL Editor
 -- ============================================================
 
+-- Perfiles de usuario (vinculado a auth.users)
+create table if not exists profiles (
+  id         uuid primary key references auth.users(id) on delete cascade,
+  role       text not null default 'walker',
+  full_name  text default '',
+  rut        text default '',
+  phone      text default '',
+  ruta       text default '',
+  walker_name text default '',
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+alter table profiles enable row level security;
+create policy "anon_all_profiles" on profiles for all using (true) with check (true);
+
 -- Cuentas / locales (tabla maestra)
 create table if not exists locals (
   id                 text primary key,

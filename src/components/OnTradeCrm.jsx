@@ -3524,7 +3524,7 @@ function PhotoUploadField({ label, localId, moduleKey, photos = [], onChange, on
                 <button
                   type="button"
                   onClick={() => remove(i)}
-                  className="absolute right-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-black/60 text-[10px] font-bold text-white hover:bg-black/80"
+                  className="absolute -right-1 -top-1 flex h-7 w-7 items-center justify-center rounded-full bg-black/70 text-[13px] font-bold text-white hover:bg-black/90"
                 >
                   ×
                 </button>

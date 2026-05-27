@@ -30,6 +30,7 @@ function cardToRow(card) {
   return {
     id: card.id,
     local_id: card.localId ?? null,
+    local_name: card.local ?? "",
     title: card.title,
     zone: card.zone ?? "",
     origin: card.origin ?? "",
