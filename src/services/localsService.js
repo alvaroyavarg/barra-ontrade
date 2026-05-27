@@ -1,10 +1,12 @@
 import { supabase } from "../lib/supabase.js";
 
-export async function fetchLocals() {
-  const { data, error } = await supabase
+export async function fetchLocals(walkerName) {
+  let query = supabase
     .from("locals")
     .select("*, contacts(*), missions(*), pillars(*)")
     .order("name");
+  if (walkerName) query = query.eq("walker_name", walkerName);
+  const { data, error } = await query;
   if (error) throw error;
   return data.map(rowToLocal);
 }

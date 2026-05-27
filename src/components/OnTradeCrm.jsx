@@ -323,7 +323,9 @@ function OnTradeCrm({ onOpenModule, profile }) {
   const { signOut } = useAuth();
   const roleId = profile?.role ?? "walker";
   const [activeView, setActiveView] = useState("dashboard");
-  const [activeWalker, setActiveWalker] = useState("all");
+  const [activeWalker, setActiveWalker] = useState(() =>
+    roleId === "walker" && profile?.walker_name ? profile.walker_name : "all"
+  );
   const [excelError, setExcelError] = useState("");
   const [selectedLocalId, setSelectedLocalId] = useState(MAESTRO_LOCALS[0]?.id ?? null);
   const [draggedCardId, setDraggedCardId] = useState(null);
@@ -340,11 +342,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
   const [uploadSupabaseError, setUploadSupabaseError] = useState("");
   const [developers, setDevelopers] = useState([]);
 
-  useEffect(() => {
-    if (roleId === "walker" && profile?.walker_name) {
-      setActiveWalker(profile.walker_name);
-    }
-  }, [roleId, profile?.walker_name]);
+
 
   useEffect(() => {
     fetchDevelopers().then(setDevelopers).catch(() => {});
@@ -386,6 +384,8 @@ function OnTradeCrm({ onOpenModule, profile }) {
     fallbackLocals: MAESTRO_LOCALS,
     fallbackWalkers: MAESTRO_WALKERS,
     fallbackMeta: MAESTRO_META,
+    role: roleId,
+    walkerName: profile?.walker_name,
   });
 
   const [localKanbanColumns, setLocalKanbanColumns] = useState(() => ([
@@ -404,12 +404,15 @@ function OnTradeCrm({ onOpenModule, profile }) {
 
   // Cuentas filtradas por Walker activo (walker_name del Excel o ruta asignada)
   const visibleLocals = useMemo(() => {
+    if (roleId === "walker") {
+      return localsData.filter((l) =>
+        l.walkerName === (profile?.walker_name ?? activeWalker) ||
+        (profile?.ruta && l.ruta === profile.ruta)
+      );
+    }
     if (activeWalker === "all") return localsData;
-    return localsData.filter((l) =>
-      l.walkerName === activeWalker ||
-      (profile?.ruta && l.ruta === profile.ruta)
-    );
-  }, [localsData, activeWalker, profile?.ruta]);
+    return localsData.filter((l) => l.walkerName === activeWalker);
+  }, [localsData, activeWalker, roleId, profile?.walker_name, profile?.ruta]);
 
   const selectedLocal = visibleLocals.find((item) => item.id === selectedLocalId) ?? visibleLocals[0] ?? null;
   const localNotes = selectedLocal ? [...(extraNotes[selectedLocal.id] ?? []), ...(selectedLocal.notes ?? [])] : [];

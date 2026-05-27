@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { isSupabaseEnabled } from "../lib/supabase.js";
+import { supabase, isSupabaseEnabled } from "../lib/supabase.js";
 import {
   fetchLocals,
   upsertLocals,
@@ -36,7 +36,7 @@ import {
   updateBrandingRequestStatus,
 } from "../services/brandingRequestsService.js";
 
-export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta }) {
+export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta, role, walkerName }) {
   const [locals, setLocals] = useState(fallbackLocals);
   const [walkers, setWalkers] = useState(fallbackWalkers);
   const [meta, setMeta] = useState(fallbackMeta);
@@ -51,9 +51,11 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
   // Initial load from Supabase
   useEffect(() => {
     if (!isSupabaseEnabled || loadedRef.current) return;
+    if (role === "walker" && !walkerName) return; // wait for profile
     loadedRef.current = true;
     setLoading(true);
-    Promise.all([fetchLocals(), fetchKanbanCards(), fetchBrandingRequests()])
+    const filterName = role === "walker" ? walkerName : undefined;
+    Promise.all([fetchLocals(filterName), fetchKanbanCards(), fetchBrandingRequests()])
       .then(([remoteLocals, cards, brandingReqs]) => {
         if (brandingReqs.length > 0) setBrandingRequests(brandingReqs);
         setLocals(remoteLocals);
@@ -90,6 +92,50 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
         setSyncError(err.message);
       })
       .finally(() => setLoading(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [role, walkerName]);
+
+  // Real-time: sync locals + pillars changes from other users
+  useEffect(() => {
+    if (!isSupabaseEnabled) return;
+
+    const channel = supabase
+      .channel("barra-rt")
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "locals" }, (payload) => {
+        const r = payload.new;
+        setLocals((current) =>
+          current.map((l) =>
+            l.id !== r.id ? l : {
+              ...l,
+              healthScore: r.health_score ?? l.healthScore,
+              walkerName: r.walker_name ?? l.walkerName,
+              ruta: r.ruta ?? l.ruta,
+            }
+          )
+        );
+      })
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "pillars" }, (payload) => {
+        const r = payload.new;
+        setLocals((current) =>
+          current.map((l) => {
+            if (l.id !== r.local_id) return l;
+            const updatedPillars = {
+              ...l.pillars,
+              [r.pillar]: {
+                ...(l.pillars?.[r.pillar] ?? {}),
+                score: r.score,
+                summary: r.summary,
+                nextAction: r.next_action,
+                lastAudit: r.last_audit ?? l.pillars?.[r.pillar]?.lastAudit,
+              },
+            };
+            return { ...l, pillars: updatedPillars, healthScore: calcHealthScore(updatedPillars, l.hasAacc) };
+          })
+        );
+      })
+      .subscribe();
+
+    return () => supabase.removeChannel(channel);
   }, []);
 
   // Load notes lazily when a local is selected (no-op si ya fueron cargadas)
