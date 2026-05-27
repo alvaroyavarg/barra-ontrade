@@ -5869,17 +5869,23 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
       : msg || "Error de Supabase");
   }
 
+  function getWalkerNameForRoute(routeName) {
+    const w = walkerProfiles.find((p) => p.ruta === routeName);
+    return w?.full_name ?? "";
+  }
+
   function assignToRoute(localId, routeName) {
-    setLocalsData((prev) => prev.map((l) => l.id === localId ? { ...l, ruta: routeName } : l));
-    updateLocalRoute(localId, routeName)
+    const wName = getWalkerNameForRoute(routeName);
+    setLocalsData((prev) => prev.map((l) => l.id === localId ? { ...l, ruta: routeName, walkerName: wName || l.walkerName } : l));
+    updateLocalRoute(localId, routeName, wName || undefined)
       .then(() => flashSaved(routeName))
       .catch(handleRouteError);
     setSearch("");
   }
 
   function removeFromRoute(localId, routeName) {
-    setLocalsData((prev) => prev.map((l) => l.id === localId ? { ...l, ruta: "" } : l));
-    updateLocalRoute(localId, "")
+    setLocalsData((prev) => prev.map((l) => l.id === localId ? { ...l, ruta: "", walkerName: "" } : l));
+    updateLocalRoute(localId, "", "")
       .then(() => flashSaved(routeName))
       .catch(handleRouteError);
   }
@@ -5888,7 +5894,8 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
     setBatchSaving((prev) => ({ ...prev, [routeName]: true }));
     setError("");
     try {
-      await Promise.all(accounts.map((l) => updateLocalRoute(l.id, routeName)));
+      const wName = getWalkerNameForRoute(routeName);
+      await Promise.all(accounts.map((l) => updateLocalRoute(l.id, routeName, wName || undefined)));
       flashSaved(routeName);
     } catch (err) {
       const msg = err.message ?? "";
@@ -5906,7 +5913,10 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
     setGlobalSaving(true);
     setError("");
     try {
-      await Promise.all(withRuta.map((l) => updateLocalRoute(l.id, l.ruta)));
+      await Promise.all(withRuta.map((l) => {
+        const wName = getWalkerNameForRoute(l.ruta);
+        return updateLocalRoute(l.id, l.ruta, wName || undefined);
+      }));
       setGlobalSaved(true);
       setTimeout(() => setGlobalSaved(false), 3000);
     } catch (err) {
@@ -5923,6 +5933,13 @@ function RoutesSection({ routes = [], localsData = [], setLocalsData, walkerProf
     setAssigningWalker((prev) => ({ ...prev, [routeName]: true }));
     try {
       await onAssignWalkerToRoute?.(userId || null, userId ? routeName : "");
+      const newWalker = walkerProfiles.find((w) => w.id === userId);
+      const wName = newWalker?.full_name ?? "";
+      const assigned = localsByRoute[routeName] ?? [];
+      if (assigned.length > 0 && wName) {
+        setLocalsData((prev) => prev.map((l) => l.ruta === routeName ? { ...l, walkerName: wName } : l));
+        await Promise.all(assigned.map((l) => updateLocalRoute(l.id, routeName, wName)));
+      }
       flashSaved(routeName);
     } catch {}
     finally { setAssigningWalker((prev) => ({ ...prev, [routeName]: false })); }

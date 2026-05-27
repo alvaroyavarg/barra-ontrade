@@ -107,10 +107,12 @@ export async function updateMissionStatus(missionId, status, progress) {
 
 // ── Helpers row <-> app object ────────────────────────────────────────
 
-export async function updateLocalRoute(localId, ruta) {
+export async function updateLocalRoute(localId, ruta, walkerName) {
+  const update = { ruta, updated_at: new Date().toISOString() };
+  if (walkerName !== undefined) update.walker_name = walkerName;
   const { error } = await supabase
     .from("locals")
-    .update({ ruta, updated_at: new Date().toISOString() })
+    .update(update)
     .eq("id", localId);
   if (error) throw error;
 }
