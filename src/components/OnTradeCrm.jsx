@@ -789,7 +789,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
                 setAssortmentAudits((prev) => ({ ...prev, [selectedLocal.id]: audit }));
               }}
               executionNotes={extraNotes[selectedLocal.id] ?? []}
-              onPublishNote={(note) => publishNote(selectedLocal.id, note)}
+              onPublishNote={(note) => persistNote(selectedLocal.id, note)}
               onLoadNotes={() => loadNotesForLocal(selectedLocal.id)}
               localBrandingRequests={brandingRequests.filter((r) => r.localId === selectedLocal.id)}
               onSubmitBrandingRequest={addBrandingRequest}
