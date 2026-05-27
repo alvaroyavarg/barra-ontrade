@@ -9,11 +9,14 @@ import {
 } from "../services/localsService.js";
 
 function calcHealthScore(pillars, hasAacc = false) {
-  const scoreMap = { "Fuerte": 100, "Completo": 100, "Bueno": 80, "En curso": 75,
-    "Completado": 90, "Atencion": 55, "Oportunidad": 55, "No aplica": 70, "Pendiente": 30, "Sin registro": 30 };
+  const scoreMap = {
+    "Fuerte": 100, "Completo": 100, "Bueno": 80, "En curso": 75,
+    "Completado": 90, "Atencion": 55, "Oportunidad": 55, "No aplica": 70,
+    "Pendiente": 30, "Sin registro": 30, "Sin auditar": 30,
+  };
   const keys = ["staff", "assortment", "menu", "branding", "activation"];
   let total = 0;
-  for (const k of keys) total += scoreMap[pillars[k]?.score ?? "Pendiente"] ?? 40;
+  for (const k of keys) total += scoreMap[pillars[k]?.score ?? "Sin registro"] ?? 30;
   const base = Math.round(total / keys.length);
   return hasAacc ? Math.min(100, base + 5) : base;
 }
@@ -153,10 +156,11 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
   // Save assortment audit
   const saveAssortmentAudit = useCallback(
     async (localId, checkedIds, author, segmentIds) => {
+      const now = new Date();
       const ts = new Intl.DateTimeFormat("es-CL", {
         day: "2-digit", month: "short", year: "numeric",
         hour: "2-digit", minute: "2-digit",
-      }).format(new Date());
+      }).format(now);
       const total = segmentIds.length;
       const present = checkedIds.filter((id) => segmentIds.includes(id)).length;
       const pct = total > 0 ? Math.round((present / total) * 100) : 0;
@@ -175,6 +179,7 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
           ? `Recuperar ${total - present} etiqueta${total - present > 1 ? "s" : ""}`
           : "Defender foto de éxito",
         lastAudit: ts,
+        lastAuditIso: now.toISOString(),
       });
 
       if (!isSupabaseEnabled) return { checkedIds, savedAt: ts, author, present, total, pct };
@@ -243,9 +248,10 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
   const addManualLocal = useCallback((newLocal) => {
     setLocals((prev) => [newLocal, ...prev]);
     if (!isSupabaseEnabled) return;
-    upsertLocals([newLocal]).catch((err) =>
-      console.error("[Supabase] Error al guardar cuenta manual:", err.message)
-    );
+    upsertLocals([newLocal]).catch((err) => {
+      console.error("[Supabase] Error al guardar cuenta manual:", err.message);
+      setSyncError(`No se pudo guardar la cuenta: ${err.message}`);
+    });
   }, []);
 
   return {

@@ -87,7 +87,7 @@ export async function updatePillar(localId, pillar, data) {
         summary: data.summary,
         details: data.details ?? [],
         next_action: data.nextAction ?? "",
-        last_audit: data.lastAudit ? new Date().toISOString() : undefined,
+        last_audit: data.lastAuditIso ?? (data.lastAudit ? new Date().toISOString() : undefined),
         updated_at: new Date().toISOString(),
       },
       { onConflict: "local_id,pillar" }

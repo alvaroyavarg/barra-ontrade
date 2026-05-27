@@ -1,5 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as XLSX from "xlsx";
+
+// Unique ID — uses crypto.randomUUID when available (prevents collisions from two devices)
+function uid() {
+  return typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+    ? crypto.randomUUID()
+    : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+}
 import { parseOnFiveWorkbook, summarizeOnFiveLocals } from "../utils/onFiveExcelParser.js";
 import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCuentas.js";
 import { useSupabaseData } from "../hooks/useSupabaseData.js";
@@ -514,7 +521,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
     const noteText = draftNote.trim();
     if (!noteText || !selectedLocal) return;
     const note = {
-      id: `note-${Date.now()}`,
+      id: `note-${uid()}`,
       author: profile?.full_name ?? role.name,
       date: "Ahora",
       nextAction: "Definir siguiente paso desde el playbook.",
@@ -554,7 +561,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
           </div>
           {isSupabaseEnabled && (
             <span className={`ml-2 hidden rounded-full px-2 py-0.5 text-[10px] font-medium sm:inline-flex ${supabaseLoading ? "bg-yellow-500/20 text-yellow-300" : syncError ? "bg-red-500/20 text-red-300" : "bg-emerald-500/20 text-emerald-300"}`}>
-              {supabaseLoading ? "Sincronizando…" : syncError ? "Error sync" : "Supabase ✓"}
+              {supabaseLoading ? "Sincronizando…" : syncError ? "Error sync" : "Conectado ✓"}
             </span>
           )}
         </div>
@@ -2618,7 +2625,7 @@ function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = 
                 activeIncentives={activeIncentives}
                 onSave={(record) => {
                   const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
-                  const noteId = `reg-${local.id}-${Date.now()}`;
+                  const noteId = `reg-${uid()}`;
                   const enriched = { ...record, id: noteId };
                   setModuleLogs((current) => [enriched, ...current]);
                   // Persistir en Supabase notes table
@@ -2927,7 +2934,7 @@ function AssortmentPostWall({ activeUserName, pillar, onUpdatePillar, local }) {
     if (!canPublish) return;
     setPosts((currentPosts) => [
       {
-        id: `assortment-post-${Date.now()}`,
+        id: `assortment-post-${uid()}`,
         author: activeUserName ?? "Walker",
         date: formatPostDate(new Date()),
         text: postText.trim(),
@@ -3032,7 +3039,7 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar }) {
       ...current,
       [local.id]: [
         {
-          id: `eval-${Date.now()}`,
+          id: `eval-${uid()}`,
           date: timestamp,
           author: activeUserName ?? "Walker",
           caStatus: snapKpis.authorStatus,
@@ -3461,7 +3468,7 @@ function PhotoUploadField({ label, localId, moduleKey, photos = [], onChange, on
     if (!files.length) return;
 
     const newEntries = Array.from(files).map((f) => ({
-      _id: `${Date.now()}-${Math.random()}`,
+      _id: uid(),
       preview: URL.createObjectURL(f),
       url: null,
       uploading: true,
@@ -4006,7 +4013,7 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar }) {
 
   function saveAudit() {
     const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date());
-    setLogs((prev) => [{ id: `b-${Date.now()}`, date: ts, author: activeUserName ?? "Walker", score, tone }, ...prev].slice(0, 10));
+    setLogs((prev) => [{ id: `b-${uid()}`, date: ts, author: activeUserName ?? "Walker", score, tone }, ...prev].slice(0, 10));
     // ── Actualizar pilar real de la cuenta ──
     if (onUpdatePillar) {
       const hasCristaleria = audit.jwHighball || audit.jwPhoenix || audit.tqCopa || audit.gordCopa || audit.djCatrina || audit.djShotCatrina;
@@ -4044,7 +4051,7 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar }) {
     if (cartItems.length === 0) return;
     const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
     setRequests((prev) => [{
-      id: `br-${Date.now()}`,
+      id: `br-${uid()}`,
       items: cartItems,
       deliveryNotes,
       date: ts,
@@ -4321,7 +4328,7 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
     const typeLabel = ACTIVATION_TYPES.find((t) => t.key === form.type)?.label ?? form.type;
     setActivations((prev) => [
       {
-        id: `act-${Date.now()}`,
+        id: `act-${uid()}`,
         type: form.type,
         typeLabel,
         brand: form.brand,

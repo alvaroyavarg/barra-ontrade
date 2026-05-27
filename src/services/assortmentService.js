@@ -22,7 +22,10 @@ export async function fetchLatestAudit(localId) {
     .order("created_at", { ascending: false })
     .limit(1)
     .single();
-  if (error && error.code !== "PGRST116") throw error;
+  if (error) {
+    if (error.code === "PGRST116") return null; // no rows found — expected
+    throw error;                                // real error — surface it
+  }
   if (!data) return null;
   return {
     checkedIds: data.checked_ids,
