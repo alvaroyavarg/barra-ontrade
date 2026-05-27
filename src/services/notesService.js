@@ -20,6 +20,7 @@ export async function addNote(localId, note) {
     type: note.type ?? "Minuta",
     text: note.text,
     next_action: note.nextAction ?? "",
+    photos: note.photos ?? [],
   };
   const { error } = await supabase.from("notes").insert(row);
   if (error) throw error;
@@ -43,5 +44,7 @@ function rowToNote(row) {
     text: row.text,
     nextAction: row.next_action,
     localId: row.local_id,
+    photos: row.photos ?? [],
   };
 }
+

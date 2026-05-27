@@ -349,6 +349,12 @@ function OnTradeCrm({ onOpenModule, profile }) {
     fetchDevelopers().then(setDevelopers).catch(() => {});
   }, []);
 
+  useEffect(() => {
+    if (activeView === "execution" && selectedLocalId) {
+      loadNotesForLocal(selectedLocalId);
+    }
+  }, [activeView, selectedLocalId]);
+
   const {
     locals: localsData,
     setLocals: setLocalsData,
@@ -764,6 +770,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
               activeModuleKey={activeOnFiveModule}
               activeUserName={profile?.full_name ?? role.name}
               local={selectedLocal}
+              developers={developers}
               onSelectModule={setActiveOnFiveModule}
               onUpdatePillar={(pillarKey, data) => updateLocalPillar(selectedLocal.id, pillarKey, data)}
               assortmentConfig={assortmentConfig}
@@ -771,6 +778,11 @@ function OnTradeCrm({ onOpenModule, profile }) {
               onSaveAssortmentAudit={async (checkedIds, segmentIds) => {
                 const audit = await persistAssortmentAudit(selectedLocal.id, checkedIds, profile?.full_name ?? role.name, segmentIds);
                 setAssortmentAudits((prev) => ({ ...prev, [selectedLocal.id]: audit }));
+              }}
+              executionNotes={extraNotes[selectedLocal.id] ?? []}
+              onPublishNote={(note) => {
+                loadNotesForLocal(selectedLocal.id);
+                publishNote(selectedLocal.id, note);
               }}
             />
           ) : null}
@@ -1537,7 +1549,7 @@ function LocalProfile({ draftNote, developers = [], extraContacts, local, notes,
   );
 }
 
-function ExecutionWorkspace({ activeModuleKey, activeUserName, local, onSelectModule, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit }) {
+function ExecutionWorkspace({ activeModuleKey, activeUserName, developers = [], executionNotes = [], local, onPublishNote, onSelectModule, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit }) {
   const activeModule = ON_FIVE_MODULES.find((module) => module.key === activeModuleKey) ?? ON_FIVE_MODULES[0];
   const activePillar = local.pillars[activeModule.key];
 
@@ -1555,10 +1567,13 @@ function ExecutionWorkspace({ activeModuleKey, activeUserName, local, onSelectMo
       <section>
         <OnFiveModuleDetail
           activeUserName={activeUserName}
+          developers={developers}
+          executionNotes={executionNotes}
           local={local}
           module={activeModule}
           pillar={activePillar}
           onUpdatePillar={onUpdatePillar}
+          onPublishNote={onPublishNote}
           assortmentConfig={assortmentConfig}
           assortmentAudit={assortmentAudit}
           onSaveAssortmentAudit={onSaveAssortmentAudit}
@@ -2494,28 +2509,93 @@ function MissionGrid({ missions }) {
   );
 }
 
-function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit }) {
+const SIDE_PHOTO_SLOTS = [
+  { key: "s1", label: "Foto 1", desc: "Staff, carta, POP o promo" },
+  { key: "s2", label: "Foto 2", desc: "Antes / despues" },
+  { key: "s3", label: "Foto 3", desc: "Resultado o ganador" },
+];
+
+function SidePhotoPanel({ localId, moduleKey, activeUserName, onPublishNote }) {
+  const [slots, setSlots] = useState({ s1: null, s2: null, s3: null });
+
+  async function handleSlot(slotKey, file) {
+    if (!file) return;
+    const preview = URL.createObjectURL(file);
+    setSlots((p) => ({ ...p, [slotKey]: { preview, uploading: true } }));
+    try {
+      const url = await uploadPhoto(localId, moduleKey, file);
+      URL.revokeObjectURL(preview);
+      setSlots((p) => ({ ...p, [slotKey]: { url, uploading: false } }));
+      const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
+      onPublishNote?.({
+        id: `foto-${localId}-${slotKey}-${Date.now()}`,
+        author: activeUserName ?? "Walker",
+        date: ts,
+        type: "Evidencia",
+        text: `Foto de evidencia — ${SIDE_PHOTO_SLOTS.find((s) => s.key === slotKey)?.desc ?? slotKey}`,
+        nextAction: "",
+        photos: [url],
+      });
+    } catch {
+      URL.revokeObjectURL(preview);
+      setSlots((p) => ({ ...p, [slotKey]: { error: true } }));
+    }
+  }
+
+  return (
+    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <SectionTitle kicker="Evidencia" title="Fotos y soportes" />
+      <div className="grid grid-cols-3 gap-2">
+        {SIDE_PHOTO_SLOTS.map(({ key, label, desc }) => {
+          const slot = slots[key];
+          return (
+            <label key={key} className="relative flex cursor-pointer flex-col items-center justify-center gap-0.5 overflow-hidden rounded-lg border border-dashed border-slate-300 bg-slate-50 p-3 text-center transition hover:border-slate-400 hover:bg-slate-100">
+              {slot?.url || slot?.preview ? (
+                <>
+                  <img src={slot.url ?? slot.preview} alt={label} className="absolute inset-0 h-full w-full object-cover" />
+                  {slot.uploading && (
+                    <span className="absolute inset-0 flex items-center justify-center bg-black/40 text-[11px] font-semibold text-white">Subiendo…</span>
+                  )}
+                  {slot.error && (
+                    <span className="absolute inset-0 flex items-center justify-center bg-rose-500/80 text-[11px] font-semibold text-white">Error</span>
+                  )}
+                </>
+              ) : (
+                <>
+                  <strong className="text-[12px] font-semibold text-slate-700">📷 {label}</strong>
+                  <small className="text-[10px] text-slate-500">{desc}</small>
+                </>
+              )}
+              <input accept="image/*" type="file" className="hidden" onChange={(e) => e.target.files?.[0] && handleSlot(key, e.target.files[0])} />
+            </label>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = [], local, module, onPublishNote, pillar, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit }) {
   const [moduleLogs, setModuleLogs] = useState([]);
   const [activeIncentives, setActiveIncentives] = useState(["Tanqueray Perfect Serve Challenge", "Smirnoff Red Staff Challenge"]);
 
+  // Merge persisted notes for this module with local session logs (newest first)
+  const persistedForModule = executionNotes.filter((n) =>
+    n.type === "Registro" || n.type === module.label
+  );
+  const allLogs = [
+    ...moduleLogs,
+    ...persistedForModule.filter((pn) => !moduleLogs.some((ml) => ml.id === pn.id)),
+  ];
+
   return (
     <article className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex flex-col gap-1">
-          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
-            On Five / {module.label}
-          </span>
-          <h2 className="text-lg font-semibold tracking-tight text-slate-900">{module.title}</h2>
-          <p className="text-[13px] leading-relaxed text-slate-600">{module.description}</p>
-        </div>
-        {module.key !== "menu" ? (
-          <button
-            type="button"
-            className="rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700"
-          >
-            {module.primaryAction}
-          </button>
-        ) : null}
+      <div className="flex flex-col gap-1">
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+          On Five / {module.label}
+        </span>
+        <h2 className="text-lg font-semibold tracking-tight text-slate-900">{module.title}</h2>
+        <p className="text-[13px] leading-relaxed text-slate-600">{module.description}</p>
       </div>
 
       {module.key === "assortment" ? (
@@ -2538,9 +2618,21 @@ function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePil
                 module={module}
                 activeIncentives={activeIncentives}
                 onSave={(record) => {
-                  setModuleLogs((current) => [record, ...current]);
+                  const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
+                  const noteId = `reg-${local.id}-${Date.now()}`;
+                  const enriched = { ...record, id: noteId };
+                  setModuleLogs((current) => [enriched, ...current]);
+                  // Persistir en Supabase notes table
+                  onPublishNote?.({
+                    id: noteId,
+                    author: activeUserName ?? "Walker",
+                    date: ts,
+                    type: module.label,
+                    text: record.text ?? "",
+                    nextAction: "",
+                    photos: record.photos ?? [],
+                  });
                   if (module.key === "staff" && onUpdatePillar) {
-                    const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
                     onUpdatePillar("staff", {
                       score: "Completado",
                       summary: `Visita registrada ${ts}`,
@@ -2557,50 +2649,33 @@ function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePil
               {module.key === "staff" ? (
                 <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
                   <SectionTitle kicker="Contactos clave" title="Equipo de la cuenta" />
-                  <KeyContacts contacts={local.contacts} />
+                  <KeyContacts contacts={local.contacts} developerCode={local.developer} developers={developers} />
                 </div>
               ) : null}
-              <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-                <SectionTitle kicker="Evidencia" title="Fotos y soportes" />
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    ["Foto 1", "Staff, carta, POP o promo"],
-                    ["Foto 2", "Antes / despues"],
-                    ["Foto 3", "Resultado o ganador"],
-                  ].map(([title, desc]) => (
-                    <div
-                      key={title}
-                      className="flex flex-col items-center justify-center gap-0.5 rounded-lg border border-dashed border-slate-300 bg-slate-50 p-3 text-center"
-                    >
-                      <strong className="text-[12px] font-semibold text-slate-700">{title}</strong>
-                      <small className="text-[10px] text-slate-500">{desc}</small>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <SidePhotoPanel localId={local.id} moduleKey={module.key} activeUserName={activeUserName} onPublishNote={onPublishNote} />
             </div>
           </section>
 
           <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             <SectionTitle kicker="Bitácora" title="Registros recientes" />
-            {moduleLogs.length === 0 ? (
+            {allLogs.length === 0 ? (
               <p className="py-2 text-[13px] text-slate-500">
                 Sin registros aún. Completa el formulario y guarda para ver los registros aquí.
               </p>
             ) : (
               <div className="flex flex-col gap-3">
-                {moduleLogs.map((record, i) => {
-                  const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
+                {allLogs.map((record, i) => {
+                  const ts = record.date ?? new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
                   const text = typeof record === "string" ? record : record.text ?? "";
                   const photos = Array.isArray(record.photos) ? record.photos.filter(Boolean) : [];
                   return (
-                    <article key={i} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
+                    <article key={record.id ?? i} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
-                        {initials(activeUserName ?? "W")}
+                        {initials(record.author ?? activeUserName ?? "W")}
                       </div>
                       <div className="flex flex-1 flex-col gap-1.5">
                         <header className="flex items-center justify-between gap-2">
-                          <strong className="text-[13px] font-semibold text-slate-900">{activeUserName ?? "Walker"}</strong>
+                          <strong className="text-[13px] font-semibold text-slate-900">{record.author ?? activeUserName ?? "Walker"}</strong>
                           <span className="text-[11px] text-slate-500">{ts}</span>
                         </header>
                         {text && <p className="text-[12px] leading-relaxed text-slate-700">{text}</p>}

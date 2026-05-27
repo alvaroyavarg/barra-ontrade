@@ -56,8 +56,12 @@ create table if not exists notes (
   type        text default 'Minuta',
   text        text not null,
   next_action text default '',
+  photos      text[] default '{}',
   created_at  timestamptz default now()
 );
+
+-- Si la tabla ya existe, agregar columna photos:
+-- ALTER TABLE notes ADD COLUMN IF NOT EXISTS photos text[] default '{}';
 
 -- Misiones por cuenta
 create table if not exists missions (
