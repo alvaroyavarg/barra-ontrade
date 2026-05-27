@@ -89,6 +89,21 @@ export async function updateDeveloper(id, { firstName, lastName, phone, email })
   if (error) throw error;
 }
 
+export async function updateUserFromAdmin({ userId, fullName, phone, rut, ruta, password }) {
+  const token = await getToken();
+  const res = await fetch("/api/update-user", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+    body: JSON.stringify({ userId, fullName, phone, rut, ruta, password }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error ?? "Error al actualizar usuario");
+  return data;
+}
+
 export async function fetchRoutes() {
   const { data, error } = await supabase.from("routes").select("*").order("name");
   if (error) throw error;

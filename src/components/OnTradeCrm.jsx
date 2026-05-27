@@ -11,7 +11,7 @@ import { parseOnFiveWorkbook, summarizeOnFiveLocals } from "../utils/onFiveExcel
 import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCuentas.js";
 import { useSupabaseData } from "../hooks/useSupabaseData.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
-import { createUserFromAdmin, fetchProfilesFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute, updateUserRole, updateWalkerRuta, fetchDevelopers, updateDeveloper } from "../services/authService.js";
+import { createUserFromAdmin, fetchProfilesFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute, updateUserRole, updateWalkerRuta, fetchDevelopers, updateDeveloper, updateUserFromAdmin } from "../services/authService.js";
 import { updateLocalRoute, updateLocalWalkerName, deleteAllLocals, upsertLocals, updateLocalAccountCode, upsertRoutesFromLocals } from "../services/localsService.js";
 import { uploadPhoto } from "../services/storageService.js";
 
@@ -5447,6 +5447,10 @@ function UserRolesSection({ teamProfiles = [], routes = [], onRefresh }) {
   const [formError, setFormError]     = useState("");
   const [copiedId, setCopiedId]       = useState(null);
   const [changingRole, setChangingRole] = useState(null);
+  const [editingId, setEditingId]     = useState(null);
+  const [editForm, setEditForm]       = useState({});
+  const [editSaving, setEditSaving]   = useState(false);
+  const [editError, setEditError]     = useState("");
 
   const emptyForm = { fullName: "", rut: "", phone: "", email: "", password: "", ruta: "" };
   const [form, setForm] = useState(emptyForm);
@@ -5519,11 +5523,44 @@ function UserRolesSection({ teamProfiles = [], routes = [], onRefresh }) {
     }
   }
 
+  function openEdit(w) {
+    setEditingId(w.id);
+    setEditForm({ fullName: w.full_name ?? "", phone: w.phone ?? "", rut: w.rut ?? "", ruta: w.ruta ?? "", password: "" });
+    setEditError("");
+  }
+
+  function closeEdit() {
+    setEditingId(null);
+    setEditForm({});
+    setEditError("");
+  }
+
+  async function handleSaveEdit(w) {
+    setEditSaving(true);
+    setEditError("");
+    try {
+      await updateUserFromAdmin({
+        userId: w.id,
+        fullName: editForm.fullName.trim(),
+        phone: editForm.phone.trim(),
+        rut: editForm.rut.trim(),
+        ruta: editForm.ruta.trim(),
+        password: editForm.password.trim() || undefined,
+      });
+      await onRefresh?.();
+      closeEdit();
+    } catch (err) {
+      setEditError(err.message ?? "Error al guardar");
+    } finally {
+      setEditSaving(false);
+    }
+  }
+
   function renderCard(w) {
     const isChanging = changingRole === w.id;
     const toggleLabel = w.role === "walker" ? "→ OT Manager" : "→ Walker";
     return (
-      <div
+      <div className="flex flex-col gap-0"><div
         key={w.id}
         className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:flex-row sm:items-center"
       >
@@ -5550,6 +5587,13 @@ function UserRolesSection({ teamProfiles = [], routes = [], onRefresh }) {
         <div className="flex shrink-0 items-center gap-2">
           <button
             type="button"
+            onClick={() => editingId === w.id ? closeEdit() : openEdit(w)}
+            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-medium text-slate-600 transition hover:bg-slate-50 focus:outline-none"
+          >
+            {editingId === w.id ? "Cancelar" : "Editar"}
+          </button>
+          <button
+            type="button"
             onClick={() => handleRoleChange(w)}
             disabled={isChanging}
             className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-medium text-slate-600 transition hover:bg-slate-50 focus:outline-none disabled:opacity-50"
@@ -5564,7 +5608,63 @@ function UserRolesSection({ teamProfiles = [], routes = [], onRefresh }) {
             {copiedId === w.id ? "✓ Copiado" : "Copiar info"}
           </button>
         </div>
-      </div>
+      </div>{/* end card row */}
+
+      {editingId === w.id && (
+        <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <p className="mb-3 text-[11px] font-semibold uppercase tracking-wide text-slate-500">Editar perfil</p>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <label className={labelCls}>
+              <span className={eyebrowCls}>Nombre completo</span>
+              <input className={inputCls} value={editForm.fullName} onChange={(e) => setEditForm((f) => ({ ...f, fullName: e.target.value }))} />
+            </label>
+            <label className={labelCls}>
+              <span className={eyebrowCls}>Teléfono</span>
+              <input className={inputCls} value={editForm.phone} onChange={(e) => setEditForm((f) => ({ ...f, phone: e.target.value }))} />
+            </label>
+            {w.role === "walker" && (
+              <label className={labelCls}>
+                <span className={eyebrowCls}>Ruta</span>
+                <input className={inputCls} value={editForm.ruta} onChange={(e) => setEditForm((f) => ({ ...f, ruta: e.target.value }))} />
+              </label>
+            )}
+            <label className={labelCls}>
+              <span className={eyebrowCls}>Nueva contraseña (dejar vacío para no cambiar)</span>
+              <div className="flex gap-2">
+                <input
+                  className={inputCls}
+                  type="text"
+                  placeholder="••••••••••"
+                  value={editForm.password}
+                  onChange={(e) => setEditForm((f) => ({ ...f, password: e.target.value }))}
+                />
+                <button
+                  type="button"
+                  onClick={() => setEditForm((f) => ({ ...f, password: generatePassword() }))}
+                  className="shrink-0 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[12px] font-medium text-slate-600 hover:bg-slate-50"
+                >
+                  Generar
+                </button>
+              </div>
+            </label>
+          </div>
+          {editError && <p className="mt-2 text-[12px] text-red-600">{editError}</p>}
+          <div className="mt-3 flex justify-end gap-2">
+            <button type="button" onClick={closeEdit} className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-[12px] font-medium text-slate-600 hover:bg-slate-50">
+              Cancelar
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSaveEdit(w)}
+              disabled={editSaving}
+              className="rounded-lg bg-slate-900 px-4 py-2 text-[12px] font-semibold text-white transition hover:bg-slate-800 disabled:opacity-50"
+            >
+              {editSaving ? "Guardando…" : "Guardar cambios"}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
     );
   }
 
