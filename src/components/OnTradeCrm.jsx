@@ -3385,40 +3385,43 @@ function PhotoUploadField({ label, localId, moduleKey, photos = [], onChange, on
 
   async function handleFiles(files) {
     if (!files.length) return;
+
     const newEntries = Array.from(files).map((f) => ({
+      _id: `${Date.now()}-${Math.random()}`,
       preview: URL.createObjectURL(f),
       url: null,
       uploading: true,
       error: null,
       file: f,
     }));
-    const next = [...photos, ...newEntries];
-    onChange(next);
+
+    // Mostrar previews de inmediato — no usar función updater
+    const withPreviews = [...photos, ...newEntries];
+    onChange(withPreviews);
     onUploadStateChange?.(true);
 
+    // Subir en paralelo
     const results = await Promise.allSettled(
       newEntries.map((entry) => uploadPhoto(localId, moduleKey, entry.file))
     );
 
-    onChange((prev) => {
-      const updated = [...prev];
-      let newIdx = prev.length - newEntries.length;
-      results.forEach((result, i) => {
-        const idx = newIdx + i;
-        if (result.status === "fulfilled") {
-          updated[idx] = { ...updated[idx], url: result.value, uploading: false };
-        } else {
-          updated[idx] = { ...updated[idx], uploading: false, error: "Error al subir" };
-        }
-        URL.revokeObjectURL(newEntries[i].preview);
-      });
-      return updated;
+    // Resolver desde el array capturado en closure (sin función updater → sin crash)
+    const finalPhotos = withPreviews.map((p) => {
+      const eIdx = newEntries.findIndex((e) => e._id === p._id);
+      if (eIdx === -1) return p;
+      try { URL.revokeObjectURL(p.preview); } catch {}
+      const result = results[eIdx];
+      return result.status === "fulfilled"
+        ? { ...p, url: result.value, uploading: false, preview: null, file: null }
+        : { ...p, uploading: false, error: "Error al subir", file: null };
     });
+
+    onChange(finalPhotos);
     onUploadStateChange?.(false);
   }
 
   function remove(idx) {
-    onChange((prev) => prev.filter((_, i) => i !== idx));
+    onChange(photos.filter((_, i) => i !== idx));
   }
 
   return (
@@ -3427,7 +3430,7 @@ function PhotoUploadField({ label, localId, moduleKey, photos = [], onChange, on
       {photos.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {photos.map((p, i) => (
-            <div key={i} className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-100">
+            <div key={p._id ?? i} className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-100">
               <img
                 src={p.url ?? p.preview}
                 alt={`Foto ${i + 1}`}
