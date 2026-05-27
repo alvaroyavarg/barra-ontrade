@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as XLSX from "xlsx";
 import { parseOnFiveWorkbook, summarizeOnFiveLocals } from "../utils/onFiveExcelParser.js";
 import { MAESTRO_LOCALS, MAESTRO_WALKERS, MAESTRO_META } from "../data/maestroCuentas.js";
@@ -6,6 +6,7 @@ import { useSupabaseData } from "../hooks/useSupabaseData.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { createUserFromAdmin, fetchProfilesFromAdmin, fetchProfiles, fetchRoutes, addRoute, deleteRoute, updateUserRole, updateWalkerRuta, fetchDevelopers, updateDeveloper } from "../services/authService.js";
 import { updateLocalRoute, updateLocalWalkerName, deleteAllLocals, upsertLocals, updateLocalAccountCode, upsertRoutesFromLocals } from "../services/localsService.js";
+import { uploadPhoto } from "../services/storageService.js";
 
 // ── Roles (sin datos personales mock) ─────────────────────────────
 const CRM_ROLES = [
@@ -2533,6 +2534,7 @@ function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePil
           <section className="grid grid-cols-1 gap-4 lg:grid-cols-[2fr_1fr]">
             <div>
               <OnFiveRegisterPanel
+                localId={local.id}
                 module={module}
                 activeIncentives={activeIncentives}
                 onSave={(record) => {
@@ -2589,18 +2591,28 @@ function OnFiveModuleDetail({ activeUserName, local, module, pillar, onUpdatePil
               <div className="flex flex-col gap-3">
                 {moduleLogs.map((record, i) => {
                   const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
-                  const text = typeof record === "string" ? record : record.text ?? JSON.stringify(record);
+                  const text = typeof record === "string" ? record : record.text ?? "";
+                  const photos = Array.isArray(record.photos) ? record.photos.filter(Boolean) : [];
                   return (
                     <article key={i} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
                         {initials(activeUserName ?? "W")}
                       </div>
-                      <div className="flex flex-1 flex-col">
+                      <div className="flex flex-1 flex-col gap-1.5">
                         <header className="flex items-center justify-between gap-2">
                           <strong className="text-[13px] font-semibold text-slate-900">{activeUserName ?? "Walker"}</strong>
                           <span className="text-[11px] text-slate-500">{ts}</span>
                         </header>
-                        <p className="mt-1 text-[12px] leading-relaxed text-slate-700">{text}</p>
+                        {text && <p className="text-[12px] leading-relaxed text-slate-700">{text}</p>}
+                        {photos.length > 0 && (
+                          <div className="mt-1 flex flex-wrap gap-1.5">
+                            {photos.map((url, pi) => (
+                              <a key={pi} href={url} target="_blank" rel="noreferrer">
+                                <img src={url} alt={`Foto ${pi + 1}`} className="h-16 w-16 rounded-lg border border-slate-200 object-cover shadow-sm hover:opacity-90" />
+                              </a>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </article>
                   );
@@ -3261,9 +3273,10 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar }) {
   );
 }
 
-function OnFiveRegisterPanel({ module, onSave, activeIncentives }) {
+function OnFiveRegisterPanel({ localId, module, onSave, activeIncentives }) {
   const [activeRegisterType, setActiveRegisterType] = useState(STAFF_REGISTER_TYPES[0].key);
   const [formValues, setFormValues] = useState({});
+  const [uploading, setUploading] = useState(false);
   const isStaffModule = module.key === "staff";
 
   if (!isStaffModule) {
@@ -3284,10 +3297,9 @@ function OnFiveRegisterPanel({ module, onSave, activeIncentives }) {
   }
 
   const registerType = STAFF_REGISTER_TYPES.find((type) => type.key === activeRegisterType) ?? STAFF_REGISTER_TYPES[0];
-  const hasValues = Object.values(formValues).some((value) => {
-    if (typeof value === "object" && value !== null) {
-      return Object.values(value).some(Boolean);
-    }
+  const hasValues = Object.entries(formValues).some(([key, value]) => {
+    if (key === "photos") return Array.isArray(value) && value.length > 0;
+    if (typeof value === "object" && value !== null) return Object.values(value).some(Boolean);
     return Boolean(value);
   });
 
@@ -3302,7 +3314,8 @@ function OnFiveRegisterPanel({ module, onSave, activeIncentives }) {
 
   function saveRegister() {
     const summary = buildRegisterSummary(registerType, formValues);
-    onSave?.({ text: summary, registerType: registerType.key, incentiveName: formValues.incentiveName });
+    const photos = (formValues.photos ?? []).filter((p) => p.url).map((p) => p.url);
+    onSave?.({ text: summary, registerType: registerType.key, incentiveName: formValues.incentiveName, photos });
     setFormValues({});
   }
 
@@ -3345,15 +3358,18 @@ function OnFiveRegisterPanel({ module, onSave, activeIncentives }) {
           <RegisterField
             key={field.key}
             field={field}
+            localId={localId}
+            moduleKey={module.key}
             scope={registerType.key}
             value={formValues[field.key]}
             onChange={(value) => updateValue(field.key, value)}
+            onUploadStateChange={setUploading}
           />
         ))}
       </div>
       <div className="flex flex-wrap items-center gap-3">
-        <button className="rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50" disabled={!hasValues} type="button" onClick={saveRegister}>
-          Guardar registro
+        <button className="rounded-lg bg-slate-900 px-3.5 py-1.5 text-[13px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50" disabled={!hasValues || uploading} type="button" onClick={saveRegister}>
+          {uploading ? "Subiendo fotos…" : "Guardar registro"}
         </button>
         <button className="cursor-not-allowed rounded-lg border border-slate-200 bg-white px-3.5 py-1.5 text-[13px] font-medium text-slate-400" disabled type="button">
           Enviar minuta por correo
@@ -3364,7 +3380,100 @@ function OnFiveRegisterPanel({ module, onSave, activeIncentives }) {
   );
 }
 
-function RegisterField({ field, onChange, scope, value }) {
+function PhotoUploadField({ label, localId, moduleKey, photos = [], onChange, onUploadStateChange }) {
+  const inputRef = useRef(null);
+
+  async function handleFiles(files) {
+    if (!files.length) return;
+    const newEntries = Array.from(files).map((f) => ({
+      preview: URL.createObjectURL(f),
+      url: null,
+      uploading: true,
+      error: null,
+      file: f,
+    }));
+    const next = [...photos, ...newEntries];
+    onChange(next);
+    onUploadStateChange?.(true);
+
+    const results = await Promise.allSettled(
+      newEntries.map((entry) => uploadPhoto(localId, moduleKey, entry.file))
+    );
+
+    onChange((prev) => {
+      const updated = [...prev];
+      let newIdx = prev.length - newEntries.length;
+      results.forEach((result, i) => {
+        const idx = newIdx + i;
+        if (result.status === "fulfilled") {
+          updated[idx] = { ...updated[idx], url: result.value, uploading: false };
+        } else {
+          updated[idx] = { ...updated[idx], uploading: false, error: "Error al subir" };
+        }
+        URL.revokeObjectURL(newEntries[i].preview);
+      });
+      return updated;
+    });
+    onUploadStateChange?.(false);
+  }
+
+  function remove(idx) {
+    onChange((prev) => prev.filter((_, i) => i !== idx));
+  }
+
+  return (
+    <div className="col-span-full flex flex-col gap-2">
+      <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{label}</span>
+      {photos.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {photos.map((p, i) => (
+            <div key={i} className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-100">
+              <img
+                src={p.url ?? p.preview}
+                alt={`Foto ${i + 1}`}
+                className="h-full w-full object-cover"
+              />
+              {p.uploading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                  <span className="text-[10px] font-semibold text-white">Subiendo…</span>
+                </div>
+              )}
+              {p.error && (
+                <div className="absolute inset-0 flex items-center justify-center bg-rose-500/80">
+                  <span className="text-[10px] font-semibold text-white">Error</span>
+                </div>
+              )}
+              {!p.uploading && (
+                <button
+                  type="button"
+                  onClick={() => remove(i)}
+                  className="absolute right-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-black/60 text-[10px] font-bold text-white hover:bg-black/80"
+                >
+                  ×
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <label className="flex cursor-pointer items-center gap-2 self-start rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-2 text-[12px] text-slate-600 transition hover:bg-slate-100">
+        <span>📷</span>
+        <span>{photos.length > 0 ? "Agregar más fotos" : "Subir fotos de evidencia"}</span>
+        <input
+          ref={inputRef}
+          accept="image/*"
+          multiple
+          type="file"
+          className="hidden"
+          onChange={(e) => handleFiles(e.target.files)}
+        />
+      </label>
+      <small className="text-[11px] text-slate-400">Se comprimen automáticamente antes de subir.</small>
+    </div>
+  );
+}
+
+function RegisterField({ field, localId, moduleKey, onChange, onUploadStateChange, scope, value }) {
   const listId = `crm-${scope}-${field.key}`;
   const inputCls = "rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10";
   const labelCls = "flex flex-col gap-1";
@@ -3434,11 +3543,14 @@ function RegisterField({ field, onChange, scope, value }) {
 
   if (field.type === "file") {
     return (
-      <label className={`cursor-pointer rounded-lg border border-dashed border-slate-200 p-3 ${labelCls}`}>
-        <span className={spanCls}>{field.label}</span>
-        <input accept="image/*" multiple type="file" onChange={(event) => onChange(`${event.target.files?.length ?? 0} foto(s) adjuntas`)} className="text-[12px] text-slate-600" />
-        <small className="text-[11px] text-slate-500">Subir evidencia desde camara o galeria</small>
-      </label>
+      <PhotoUploadField
+        label={field.label}
+        localId={localId}
+        moduleKey={moduleKey}
+        photos={value ?? []}
+        onChange={onChange}
+        onUploadStateChange={onUploadStateChange}
+      />
     );
   }
 
