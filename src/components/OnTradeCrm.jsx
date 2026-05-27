@@ -790,6 +790,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
               }}
               executionNotes={extraNotes[selectedLocal.id] ?? []}
               onPublishNote={(note) => publishNote(selectedLocal.id, note)}
+              onLoadNotes={() => loadNotesForLocal(selectedLocal.id)}
               localBrandingRequests={brandingRequests.filter((r) => r.localId === selectedLocal.id)}
               onSubmitBrandingRequest={addBrandingRequest}
             />
@@ -1557,9 +1558,11 @@ function LocalProfile({ draftNote, developers = [], extraContacts, local, notes,
   );
 }
 
-function ExecutionWorkspace({ activeModuleKey, activeUserName, developers = [], executionNotes = [], local, onPublishNote, onSelectModule, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit, localBrandingRequests = [], onSubmitBrandingRequest }) {
+function ExecutionWorkspace({ activeModuleKey, activeUserName, developers = [], executionNotes = [], local, onPublishNote, onSelectModule, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit, localBrandingRequests = [], onSubmitBrandingRequest, onLoadNotes }) {
   const activeModule = ON_FIVE_MODULES.find((module) => module.key === activeModuleKey) ?? ON_FIVE_MODULES[0];
   const activePillar = local.pillars[activeModule.key];
+
+  useEffect(() => { onLoadNotes?.(); }, [local.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="flex flex-col gap-5">
@@ -2570,7 +2573,11 @@ function SidePhotoPanel({ localId, moduleKey, activeUserName, onPublishNote }) {
 function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = [], local, module, onPublishNote, pillar, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit, localBrandingRequests = [], onSubmitBrandingRequest }) {
   const [moduleLogs, setModuleLogs] = useState([]);
   const [activeIncentives, setActiveIncentives] = useState(["Tanqueray Perfect Serve Challenge", "Smirnoff Red Staff Challenge"]);
-  const publishModuleNote = (note) => onPublishNote?.({ ...note, type: module.label });
+  const publishModuleNote = (note) => {
+    const fullNote = { ...note, type: module.label };
+    setModuleLogs((current) => [fullNote, ...current.filter((m) => m.id !== fullNote.id)]);
+    onPublishNote?.(fullNote);
+  };
 
   // Merge persisted notes for this module with local session logs (newest first)
   const persistedForModule = executionNotes.filter((n) =>
@@ -2594,7 +2601,7 @@ function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = 
       {module.key === "assortment" ? (
         <>
           <AssortmentPortfolioPanel local={local} pillar={pillar} assortmentConfig={assortmentConfig} assortmentAudit={assortmentAudit} onSaveAudit={onSaveAssortmentAudit} activeUserName={activeUserName} onPublishNote={publishModuleNote} />
-          <AssortmentPostWall activeUserName={activeUserName} pillar={pillar} onUpdatePillar={onUpdatePillar} local={local} />
+          <AssortmentPostWall activeUserName={activeUserName} pillar={pillar} onUpdatePillar={onUpdatePillar} local={local} onPublishNote={publishModuleNote} />
         </>
       ) : module.key === "menu" ? (
         <MenuPdfScanner activeUserName={activeUserName} local={local} onUpdatePillar={onUpdatePillar} onPublishNote={publishModuleNote} />
@@ -2914,30 +2921,20 @@ function AssortmentPortfolioPanel({ local, pillar, assortmentConfig, assortmentA
   );
 }
 
-function AssortmentPostWall({ activeUserName, pillar, onUpdatePillar, local }) {
+function AssortmentPostWall({ activeUserName, onPublishNote }) {
   const [postText, setPostText] = useState("");
-  const [posts, setPosts] = useState(() =>
-    (pillar?.details ?? []).slice(0, 2).map((detail, index) => ({
-      id: `assortment-system-${index}`,
-      author: "Sistema LH",
-      date: "Ultima lectura",
-      text: detail,
-    })),
-  );
   const canPublish = postText.trim().length > 0;
 
   function publishPost() {
     if (!canPublish) return;
-    setPosts((currentPosts) => [
-      {
-        id: `assortment-post-${uid()}`,
-        author: activeUserName ?? "Walker",
-        date: formatPostDate(new Date()),
-        text: postText.trim(),
-      },
-      ...currentPosts,
-    ]);
-    // El assortment se actualiza al guardar la auditoría en AssortmentPortfolioPanel
+    const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date());
+    onPublishNote?.({
+      id: `apost-${uid()}`,
+      author: activeUserName ?? "Walker",
+      date: ts,
+      text: postText.trim(),
+      photos: [],
+    });
     setPostText("");
   }
 
@@ -2948,7 +2945,6 @@ function AssortmentPostWall({ activeUserName, pillar, onUpdatePillar, local }) {
         title="Comentarios de la cuenta"
         description="Notas comerciales, acuerdos y pendientes del portafolio."
       />
-
       <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
         <div className="flex items-center gap-2">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
@@ -2974,26 +2970,6 @@ function AssortmentPostWall({ activeUserName, pillar, onUpdatePillar, local }) {
           Publicar
         </button>
       </div>
-
-      <div className="mt-4 flex flex-col gap-3">
-        {posts.map((post) => (
-          <article
-            key={post.id}
-            className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3"
-          >
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
-              {initials(post.author)}
-            </div>
-            <div className="flex flex-1 flex-col">
-              <header className="flex items-center justify-between gap-2">
-                <strong className="text-[13px] font-semibold text-slate-900">{post.author}</strong>
-                <span className="text-[11px] text-slate-500">{post.date}</span>
-              </header>
-              <p className="mt-1 text-[12px] leading-relaxed text-slate-700">{post.text}</p>
-            </div>
-          </article>
-        ))}
-      </div>
     </section>
   );
 }
@@ -3003,6 +2979,7 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar, onPublishNote }
   const [evalLogs, setEvalLogs] = useState({});
   const [justSaved, setJustSaved] = useState(false);
   const [expandedLogId, setExpandedLogId] = useState(null);
+  const [menuUrl, setMenuUrl] = useState(local.menuUrl ?? "");
   const evaluation = menuEvaluations[local.id] ?? buildDefaultMenuEvaluation(local);
   const kpis = getManualMenuKpis(evaluation);
   const gaps = getManualMenuGaps(evaluation, kpis);
@@ -3061,13 +3038,14 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar, onPublishNote }
         summary: `Coctelería de Autor: ${snapKpis.authorStatus} · Drink Strategy: ${dsTotal}/4`,
         nextAction: snapGaps[0]?.title ?? "Mantener ejecucion",
         lastEval: timestamp,
+        ...(menuUrl ? { lastAudit: timestamp } : {}),
       });
     }
     onPublishNote?.({
       id: `menu-${uid()}`,
       author: activeUserName ?? "Walker",
       date: timestamp,
-      text: `Evaluación Menú: Coctelería de Autor ${snapKpis.authorStatus} · Drink Strategy ${snapKpis.drinkStatus}${snapGaps.length > 0 ? ` · ${snapGaps.length} oportunidad${snapGaps.length > 1 ? "es" : ""}` : " · Sin brechas"}`,
+      text: `Evaluación Menú: Coctelería de Autor ${snapKpis.authorStatus} · Drink Strategy ${snapKpis.drinkStatus}${snapGaps.length > 0 ? ` · ${snapGaps.length} oportunidad${snapGaps.length > 1 ? "es" : ""}` : " · Sin brechas"}${menuUrl ? ` · Carta: ${menuUrl}` : ""}`,
       photos: [],
     });
     setJustSaved(true);
@@ -3212,6 +3190,39 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar, onPublishNote }
             <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Foto de respaldo KPI 2</span>
             <input accept="image/*" type="file" className="text-[12px] text-slate-600" />
           </label>
+        </div>
+      </div>
+
+      {/* Link / foto de carta */}
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+        <SectionTitle kicker="Carta del local" title="Link o foto del menú" description="Guarda el link de la carta digital o sube un pantallazo. Queda registrado en el post de auditoría." />
+        <div className="mt-3 flex flex-col gap-2">
+          <label className="flex flex-col gap-1">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Link de la carta (URL)</span>
+            <input
+              type="url"
+              value={menuUrl}
+              onChange={(e) => setMenuUrl(e.target.value)}
+              placeholder="https://carta.restaurante.cl o link de Instagram/PDF"
+              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-[13px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10"
+            />
+          </label>
+          <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-2 text-[12px] text-slate-600 hover:border-slate-400 hover:bg-slate-100">
+            <span>📷 Foto / pantallazo del menú (desde cámara o galería)</span>
+            <input
+              type="file"
+              accept="image/*"
+              capture="environment"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) setMenuUrl(URL.createObjectURL(file));
+              }}
+            />
+          </label>
+          {menuUrl && menuUrl.startsWith("blob:") && (
+            <img src={menuUrl} alt="Vista previa carta" className="h-32 w-full rounded-lg border border-slate-200 object-cover" />
+          )}
         </div>
       </div>
 
@@ -3944,7 +3955,7 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar, bra
   const [cartQty, setCartQty] = useState(1);
   const [deliveryNotes, setDeliveryNotes] = useState("");
   const [reqSent, setReqSent] = useState(false);
-  const [logs, setLogs] = useState([]);
+  const [brandingComment, setBrandingComment] = useState("");
   const { score, tone } = getBrandingScore(audit);
 
   function toggle(key) {
@@ -3957,7 +3968,6 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar, bra
 
   function saveAudit() {
     const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date());
-    setLogs((prev) => [{ id: `b-${uid()}`, date: ts, author: activeUserName ?? "Walker", score, tone }, ...prev].slice(0, 10));
     const hasCristaleria = audit.jwHighball || audit.jwPhoenix || audit.tqCopa || audit.gordCopa || audit.djCatrina || audit.djShotCatrina;
     const hasNeon = audit.neonJw || audit.neonTq || audit.neonDj || audit.neonGord || Boolean(audit.neonOtro?.trim());
     const cristSummary = hasCristaleria ? "Cristalería OK" : "Sin cristalería";
@@ -3975,9 +3985,10 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar, bra
       id: `brd-${uid()}`,
       author: activeUserName ?? "Walker",
       date: ts,
-      text: `Auditoría Branding: ${cristSummary} · ${neonSummary} · ${score}`,
+      text: `Auditoría Branding: ${cristSummary} · ${neonSummary} · ${score}${brandingComment.trim() ? ` · ${brandingComment.trim()}` : ""}`,
       photos: [],
     });
+    setBrandingComment("");
   }
 
   function addToCart() {
@@ -4118,39 +4129,28 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar, bra
         </label>
       </div>
 
-      {/* Foto + guardar */}
-      <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:grid sm:grid-cols-2 sm:items-end">
-        <label className="flex cursor-pointer flex-col gap-1.5 rounded-lg border border-dashed border-slate-200 p-3">
-          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Foto de evidencia branding</span>
-          <input accept="image/*" type="file" className="text-[13px] text-slate-600" />
+      {/* Comentarios adicionales + foto + guardar */}
+      <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+        <label className="flex flex-col gap-1.5">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Comentarios adicionales</span>
+          <textarea
+            placeholder="Ej: Falta implementar cristalería en zona de barra. Acordado con encargado para próxima visita."
+            rows={3}
+            value={brandingComment}
+            onChange={(e) => setBrandingComment(e.target.value)}
+            className="resize-y rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[14px] focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10"
+          />
         </label>
-        <button className="rounded-lg bg-slate-900 px-4 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700" type="button" onClick={saveAudit}>
-          Guardar auditoria
-        </button>
-      </div>
-
-      {/* Historial */}
-      {logs.length > 0 && (
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-          <SectionTitle kicker="Historial" title="Auditorias guardadas" />
-          <div className="mt-4 flex flex-col gap-3">
-            {logs.map((log) => (
-              <article key={log.id} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">{initials(log.author)}</div>
-                <div className="flex flex-1 flex-col gap-1.5">
-                  <header className="flex items-center gap-2">
-                    <strong className="text-[13px] font-semibold text-slate-900">{log.author}</strong>
-                    <span className="text-[11px] text-slate-500">{log.date}</span>
-                  </header>
-                  <div className="flex flex-wrap gap-1.5">
-                    <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${log.tone === "good" ? "bg-emerald-50 text-emerald-700" : log.tone === "warning" ? "bg-amber-50 text-amber-700" : "bg-slate-100 text-slate-600"}`}>{log.score}</span>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:items-end">
+          <label className="flex cursor-pointer flex-col gap-1.5 rounded-lg border border-dashed border-slate-200 p-3">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Foto de evidencia branding</span>
+            <input accept="image/*" type="file" className="text-[13px] text-slate-600" />
+          </label>
+          <button className="rounded-lg bg-slate-900 px-4 py-3 text-[14px] font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 active:bg-slate-700" type="button" onClick={saveAudit}>
+            Guardar auditoria
+          </button>
         </div>
-      )}
+      </div>
 
       {/* Solicitud a CP&A — multi-material */}
       <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -4250,11 +4250,7 @@ const ACTIVATION_BRANDS = [
 function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar, onPublishNote }) {
   const emptyForm = { type: "", brand: "", dateStart: "", dateEnd: "", mechanic: "", photo: null };
   const [form, setForm] = useState(emptyForm);
-  const [activations, setActivations] = useState(
-    pillar?.records
-      ? pillar.records.map((r, i) => ({ id: `a-mock-${i}`, label: r, date: "Mock", author: "Sistema" }))
-      : []
-  );
+  const [activations, setActivations] = useState([]);
   const [justSaved, setJustSaved] = useState(false);
   const canSave = form.type && form.brand && form.dateStart;
   const [noActivation, setNoActivation] = useState(false);
@@ -4481,33 +4477,6 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar, onPubl
               </div>
             );
           })}
-        </div>
-      )}
-
-      {/* Historial */}
-      {activations.length > 0 && (
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-          <SectionTitle kicker="Historial" title="Activaciones registradas" />
-          <div className="mt-4 flex flex-col gap-3">
-            {activations.map((act) => (
-              <article key={act.id} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">{initials(act.author ?? "W")}</div>
-                <div className="flex flex-1 flex-col gap-1.5">
-                  <header className="flex items-center gap-2">
-                    <strong className="text-[13px] font-semibold text-slate-900">{act.author ?? "Sistema"}</strong>
-                    <span className="text-[11px] text-slate-500">{act.date}</span>
-                  </header>
-                  <div className="flex flex-wrap gap-1.5">
-                    <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-violet-50 text-violet-700">{act.typeLabel ?? act.label}</span>
-                    {act.brand && <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-600">{act.brand}</span>}
-                    {act.results && <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-emerald-50 text-emerald-700">✓ Cerrada · {act.results.unitsSold} unid.</span>}
-                    {act.dateEnd && act.dateEnd < today && !act.results && <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-amber-50 text-amber-700">Vencida</span>}
-                  </div>
-                  {act.mechanic && <p className="text-[12px] text-slate-600">{act.mechanic}</p>}
-                </div>
-              </article>
-            ))}
-          </div>
         </div>
       )}
 
