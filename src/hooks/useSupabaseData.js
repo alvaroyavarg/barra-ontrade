@@ -30,6 +30,11 @@ import {
   upsertKanbanCards,
   moveKanbanCard,
 } from "../services/kanbanService.js";
+import {
+  fetchBrandingRequests,
+  submitBrandingRequest,
+  updateBrandingRequestStatus,
+} from "../services/brandingRequestsService.js";
 
 export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta }) {
   const [locals, setLocals] = useState(fallbackLocals);
@@ -37,6 +42,7 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
   const [meta, setMeta] = useState(fallbackMeta);
   const [kanbanColumns, setKanbanColumns] = useState(null);
   const [extraNotes, setExtraNotes] = useState({});
+  const [brandingRequests, setBrandingRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const [syncError, setSyncError] = useState(null);
 
@@ -47,8 +53,9 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
     if (!isSupabaseEnabled || loadedRef.current) return;
     loadedRef.current = true;
     setLoading(true);
-    Promise.all([fetchLocals(), fetchKanbanCards()])
-      .then(([remoteLocals, cards]) => {
+    Promise.all([fetchLocals(), fetchKanbanCards(), fetchBrandingRequests()])
+      .then(([remoteLocals, cards, brandingReqs]) => {
+        if (brandingReqs.length > 0) setBrandingRequests(brandingReqs);
         setLocals(remoteLocals);
         if (remoteLocals.length > 0) {
           const walkerMap = new Map();
@@ -245,6 +252,31 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
     }
   }, []);
 
+  // Submit branding request (Walker → CP&A)
+  const addBrandingRequest = useCallback(async (req) => {
+    setBrandingRequests((prev) => [req, ...prev]);
+    if (!isSupabaseEnabled) return;
+    try {
+      await submitBrandingRequest(req);
+    } catch (err) {
+      console.error("[Supabase] Error al enviar solicitud de branding:", err.message);
+      setSyncError(`No se pudo enviar la solicitud: ${err.message}`);
+      setBrandingRequests((prev) => prev.filter((r) => r.id !== req.id));
+    }
+  }, []);
+
+  // CP&A updates branding request status
+  const updateBrandingRequest = useCallback(async (id, status) => {
+    setBrandingRequests((prev) => prev.map((r) => r.id === id ? { ...r, status } : r));
+    if (!isSupabaseEnabled) return;
+    try {
+      await updateBrandingRequestStatus(id, status);
+    } catch (err) {
+      console.error("[Supabase] Error al actualizar solicitud:", err.message);
+      setSyncError(err.message);
+    }
+  }, []);
+
   const addManualLocal = useCallback((newLocal) => {
     setLocals((prev) => [newLocal, ...prev]);
     if (!isSupabaseEnabled) return;
@@ -276,5 +308,8 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
     importLocalsFromExcel,
     moveKanbanCardFn,
     addManualLocal,
+    brandingRequests,
+    addBrandingRequest,
+    updateBrandingRequest,
   };
 }

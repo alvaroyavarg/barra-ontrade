@@ -135,24 +135,42 @@ create table if not exists kanban_cards (
   updated_at timestamptz default now()
 );
 
+-- Solicitudes de material de branding (Walker → CP&A)
+create table if not exists branding_requests (
+  id             text primary key,
+  local_id       text references locals(id) on delete set null,
+  local_name     text default '',
+  local_address  text default '',
+  walker         text default '',
+  contact        text default '',
+  items          jsonb default '[]',
+  delivery_notes text default '',
+  status         text default 'Pendiente',
+  date_label     text default '',
+  created_at     timestamptz default now(),
+  updated_at     timestamptz default now()
+);
+
 -- ── Row-Level Security (RLS) ────────────────────────────────
 -- Habilitar RLS en todas las tablas
-alter table locals           enable row level security;
-alter table contacts         enable row level security;
-alter table notes            enable row level security;
-alter table missions         enable row level security;
-alter table pillars          enable row level security;
-alter table assortment_audits enable row level security;
-alter table kanban_cards     enable row level security;
+alter table locals              enable row level security;
+alter table contacts            enable row level security;
+alter table notes               enable row level security;
+alter table missions            enable row level security;
+alter table pillars             enable row level security;
+alter table assortment_audits   enable row level security;
+alter table kanban_cards        enable row level security;
+alter table branding_requests   enable row level security;
 
 -- Política abierta para anon (ajustar según auth real en el futuro)
-create policy "anon_all_locals"            on locals            for all using (true) with check (true);
-create policy "anon_all_contacts"          on contacts          for all using (true) with check (true);
-create policy "anon_all_notes"             on notes             for all using (true) with check (true);
-create policy "anon_all_missions"          on missions          for all using (true) with check (true);
-create policy "anon_all_pillars"           on pillars           for all using (true) with check (true);
-create policy "anon_all_audits"            on assortment_audits for all using (true) with check (true);
-create policy "anon_all_kanban"            on kanban_cards      for all using (true) with check (true);
+create policy "anon_all_locals"            on locals             for all using (true) with check (true);
+create policy "anon_all_contacts"          on contacts           for all using (true) with check (true);
+create policy "anon_all_notes"             on notes              for all using (true) with check (true);
+create policy "anon_all_missions"          on missions           for all using (true) with check (true);
+create policy "anon_all_pillars"           on pillars            for all using (true) with check (true);
+create policy "anon_all_audits"            on assortment_audits  for all using (true) with check (true);
+create policy "anon_all_kanban"            on kanban_cards       for all using (true) with check (true);
+create policy "anon_all_branding"          on branding_requests  for all using (true) with check (true);
 
 -- Desarrolladores Andina (códigos CL fijos, datos editables)
 create table if not exists developers (

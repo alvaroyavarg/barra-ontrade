@@ -385,6 +385,9 @@ function OnTradeCrm({ onOpenModule, profile }) {
     importLocalsFromExcel,
     moveKanbanCardFn,
     addManualLocal,
+    brandingRequests,
+    addBrandingRequest,
+    updateBrandingRequest,
   } = useSupabaseData({
     fallbackLocals: MAESTRO_LOCALS,
     fallbackWalkers: MAESTRO_WALKERS,
@@ -790,6 +793,8 @@ function OnTradeCrm({ onOpenModule, profile }) {
               }}
               executionNotes={extraNotes[selectedLocal.id] ?? []}
               onPublishNote={(note) => publishNote(selectedLocal.id, note)}
+              localBrandingRequests={brandingRequests.filter((r) => r.localId === selectedLocal.id)}
+              onSubmitBrandingRequest={addBrandingRequest}
             />
           ) : null}
 
@@ -802,7 +807,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
           {roleId === "cpa" && activeView === "po"                 ? <CpaPlaceholder icon="📋" title="PO Management" desc="Gestión de Purchase Orders: creación, estado, aprobación, historial y cierre." tag="En desarrollo" /> : null}
           {roleId === "cpa" && activeView === "forecast"           ? <CpaPlaceholder icon="📅" title="Forecast" desc="Proyección de volumen y valor vs plan por SKU, canal y zona. Actualización mensual." tag="En desarrollo" /> : null}
           {roleId === "cpa" && activeView === "budget"             ? <CpaPlaceholder icon="💼" title="Gestión de Presupuesto" desc="Control de gasto real vs presupuesto. Alertas de desviación y proyección de cierre." tag="En desarrollo" /> : null}
-          {roleId === "cpa" && activeView === "branding-requests"  ? <BrandingRequestsBoard /> : null}
+          {roleId === "cpa" && activeView === "branding-requests"  ? <BrandingRequestsBoard requests={brandingRequests} onUpdateStatus={updateBrandingRequest} /> : null}
           {roleId === "cpa" && activeView === "config" ? (
             <ConfigView
               excelMeta={excelMeta}
@@ -1555,7 +1560,7 @@ function LocalProfile({ draftNote, developers = [], extraContacts, local, notes,
   );
 }
 
-function ExecutionWorkspace({ activeModuleKey, activeUserName, developers = [], executionNotes = [], local, onPublishNote, onSelectModule, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit }) {
+function ExecutionWorkspace({ activeModuleKey, activeUserName, developers = [], executionNotes = [], local, onPublishNote, onSelectModule, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit, localBrandingRequests = [], onSubmitBrandingRequest }) {
   const activeModule = ON_FIVE_MODULES.find((module) => module.key === activeModuleKey) ?? ON_FIVE_MODULES[0];
   const activePillar = local.pillars[activeModule.key];
 
@@ -1583,6 +1588,8 @@ function ExecutionWorkspace({ activeModuleKey, activeUserName, developers = [], 
           assortmentConfig={assortmentConfig}
           assortmentAudit={assortmentAudit}
           onSaveAssortmentAudit={onSaveAssortmentAudit}
+          localBrandingRequests={localBrandingRequests}
+          onSubmitBrandingRequest={onSubmitBrandingRequest}
         />
       </section>
     </div>
@@ -2581,7 +2588,7 @@ function SidePhotoPanel({ localId, moduleKey, activeUserName, onPublishNote }) {
   );
 }
 
-function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = [], local, module, onPublishNote, pillar, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit }) {
+function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = [], local, module, onPublishNote, pillar, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit, localBrandingRequests = [], onSubmitBrandingRequest }) {
   const [moduleLogs, setModuleLogs] = useState([]);
   const [activeIncentives, setActiveIncentives] = useState(["Tanqueray Perfect Serve Challenge", "Smirnoff Red Staff Challenge"]);
 
@@ -2612,7 +2619,7 @@ function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = 
       ) : module.key === "menu" ? (
         <MenuPdfScanner activeUserName={activeUserName} local={local} onUpdatePillar={onUpdatePillar} />
       ) : module.key === "branding" ? (
-        <BrandingAuditPanel activeUserName={activeUserName} local={local} pillar={pillar} onUpdatePillar={onUpdatePillar} />
+        <BrandingAuditPanel activeUserName={activeUserName} local={local} pillar={pillar} onUpdatePillar={onUpdatePillar} brandingRequests={localBrandingRequests} onSubmitBrandingRequest={onSubmitBrandingRequest} />
       ) : module.key === "activation" ? (
         <ActivationPanel activeUserName={activeUserName} local={local} pillar={pillar} onUpdatePillar={onUpdatePillar} />
       ) : (
@@ -3985,7 +3992,7 @@ function getBrandingScore(audit) {
   return { score: "Sin registro", tone: "soft" };
 }
 
-function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar }) {
+function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar, brandingRequests = [], onSubmitBrandingRequest }) {
   const [audit, setAudit] = useState({
     jwHighball: false, jwPhoenix: false,
     tqCopa: false, gordCopa: false,
@@ -3998,7 +4005,6 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar }) {
   const [cartMaterial, setCartMaterial] = useState("");
   const [cartQty, setCartQty] = useState(1);
   const [deliveryNotes, setDeliveryNotes] = useState("");
-  const [requests, setRequests] = useState([]);
   const [reqSent, setReqSent] = useState(false);
   const [logs, setLogs] = useState([]);
   const { score, tone } = getBrandingScore(audit);
@@ -4050,14 +4056,19 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar }) {
   function sendRequest() {
     if (cartItems.length === 0) return;
     const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
-    setRequests((prev) => [{
+    const req = {
       id: `br-${uid()}`,
+      localId: local?.id ?? null,
+      local: local?.name ?? "",
+      address: local?.address ?? "",
+      walker: activeUserName ?? "Walker",
+      contact: (local?.contacts?.[0]?.name ?? "") + (local?.contacts?.[0]?.role ? ` — ${local.contacts[0].role}` : ""),
       items: cartItems,
       deliveryNotes,
       date: ts,
-      author: activeUserName ?? "Walker",
-      status: "Enviada a CP&A",
-    }, ...prev]);
+      status: "Pendiente",
+    };
+    onSubmitBrandingRequest ? onSubmitBrandingRequest(req) : null;
     setCartItems([]);
     setDeliveryNotes("");
     setReqSent(true);
@@ -4250,19 +4261,24 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar }) {
           {reqSent ? "✓ Solicitud enviada a CP&A" : `Enviar solicitud${cartItems.length > 0 ? ` (${cartItems.length} ítem${cartItems.length > 1 ? "s" : ""})` : ""}`}
         </button>
 
-        {requests.length > 0 && (
+        {brandingRequests.length > 0 && (
           <div className="mt-4 flex flex-col gap-3">
-            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Solicitudes enviadas</span>
-            {requests.map((req) => (
-              <div key={req.id} className="flex flex-col gap-1 border-t border-slate-100 pt-3">
-                <div className="flex items-center justify-between gap-2">
-                  <strong className="text-[13px] font-semibold text-slate-900">{req.items.length} material{req.items.length > 1 ? "es" : ""} · {req.date}</strong>
-                  <span className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-600">{req.status}</span>
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Solicitudes enviadas a CP&A</span>
+            {brandingRequests.map((req) => {
+              const statusStyle = req.status === "Entregado" ? "bg-emerald-50 text-emerald-700"
+                : req.status === "En tránsito" ? "bg-blue-50 text-blue-700"
+                : "bg-amber-50 text-amber-700";
+              return (
+                <div key={req.id} className="flex flex-col gap-1 border-t border-slate-100 pt-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <strong className="text-[13px] font-semibold text-slate-900">{req.items.length} material{req.items.length > 1 ? "es" : ""} · {req.date}</strong>
+                    <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${statusStyle}`}>{req.status}</span>
+                  </div>
+                  {req.items.map((i) => <span key={i.code} className="text-[12px] text-slate-600">{i.code} — {i.name} ×{i.qty}</span>)}
+                  {req.deliveryNotes && <span className="text-[11px] text-slate-500">Notas: {req.deliveryNotes}</span>}
                 </div>
-                {req.items.map((i) => <span key={i.code} className="text-[12px] text-slate-600">{i.code} — {i.name} ×{i.qty}</span>)}
-                {req.deliveryNotes && <span className="text-[11px] text-slate-500">Notas: {req.deliveryNotes}</span>}
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -4813,13 +4829,12 @@ const REQUEST_STATUS_STYLE = {
   "Entregado":   "good",
 };
 
-function BrandingRequestsBoard() {
-  const [requests, setRequests] = useState(BRANDING_REQUESTS_MOCK);
+function BrandingRequestsBoard({ requests = [], onUpdateStatus }) {
   const [selected, setSelected] = useState(new Set());
   const [bulkStatus, setBulkStatus] = useState("En tránsito");
 
   function updateStatus(id, nextStatus) {
-    setRequests((current) => current.map((r) => r.id === id ? { ...r, status: nextStatus } : r));
+    onUpdateStatus?.(id, nextStatus);
   }
 
   function toggleSelect(id) {
@@ -4835,7 +4850,7 @@ function BrandingRequestsBoard() {
   }
 
   function applyBulk() {
-    setRequests((current) => current.map((r) => selected.has(r.id) ? { ...r, status: bulkStatus } : r));
+    selected.forEach((id) => onUpdateStatus?.(id, bulkStatus));
     setSelected(new Set());
   }
 
