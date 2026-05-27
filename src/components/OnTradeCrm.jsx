@@ -2567,10 +2567,11 @@ function SidePhotoPanel({ localId, moduleKey, activeUserName, onPublishNote }) {
 function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = [], local, module, onPublishNote, pillar, onUpdatePillar, assortmentConfig, assortmentAudit, onSaveAssortmentAudit, localBrandingRequests = [], onSubmitBrandingRequest }) {
   const [moduleLogs, setModuleLogs] = useState([]);
   const [activeIncentives, setActiveIncentives] = useState(["Tanqueray Perfect Serve Challenge", "Smirnoff Red Staff Challenge"]);
+  const publishModuleNote = (note) => onPublishNote?.({ ...note, type: module.label });
 
   // Merge persisted notes for this module with local session logs (newest first)
   const persistedForModule = executionNotes.filter((n) =>
-    n.type === "Registro" || n.type === module.label
+    n.type === "Registro" || n.type === "Evidencia" || n.type === module.label
   );
   const allLogs = [
     ...moduleLogs,
@@ -2589,17 +2590,16 @@ function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = 
 
       {module.key === "assortment" ? (
         <>
-          <AssortmentPortfolioPanel local={local} pillar={pillar} assortmentConfig={assortmentConfig} assortmentAudit={assortmentAudit} onSaveAudit={onSaveAssortmentAudit} activeUserName={activeUserName} />
+          <AssortmentPortfolioPanel local={local} pillar={pillar} assortmentConfig={assortmentConfig} assortmentAudit={assortmentAudit} onSaveAudit={onSaveAssortmentAudit} activeUserName={activeUserName} onPublishNote={publishModuleNote} />
           <AssortmentPostWall activeUserName={activeUserName} pillar={pillar} onUpdatePillar={onUpdatePillar} local={local} />
         </>
       ) : module.key === "menu" ? (
-        <MenuPdfScanner activeUserName={activeUserName} local={local} onUpdatePillar={onUpdatePillar} />
+        <MenuPdfScanner activeUserName={activeUserName} local={local} onUpdatePillar={onUpdatePillar} onPublishNote={publishModuleNote} />
       ) : module.key === "branding" ? (
-        <BrandingAuditPanel activeUserName={activeUserName} local={local} pillar={pillar} onUpdatePillar={onUpdatePillar} brandingRequests={localBrandingRequests} onSubmitBrandingRequest={onSubmitBrandingRequest} />
+        <BrandingAuditPanel activeUserName={activeUserName} local={local} pillar={pillar} onUpdatePillar={onUpdatePillar} brandingRequests={localBrandingRequests} onSubmitBrandingRequest={onSubmitBrandingRequest} onPublishNote={publishModuleNote} />
       ) : module.key === "activation" ? (
-        <ActivationPanel activeUserName={activeUserName} local={local} pillar={pillar} onUpdatePillar={onUpdatePillar} />
+        <ActivationPanel activeUserName={activeUserName} local={local} pillar={pillar} onUpdatePillar={onUpdatePillar} onPublishNote={publishModuleNote} />
       ) : (
-        <>
           <section className="grid grid-cols-1 gap-4 lg:grid-cols-[2fr_1fr]">
             <div>
               <OnFiveRegisterPanel
@@ -2607,7 +2607,7 @@ function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = 
                 module={module}
                 activeIncentives={activeIncentives}
                 onSave={(record) => {
-                  const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
+                  const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date());
                   const noteId = `reg-${uid()}`;
                   const enriched = { ...record, id: noteId };
                   setModuleLogs((current) => [enriched, ...current]);
@@ -2644,48 +2644,47 @@ function OnFiveModuleDetail({ activeUserName, developers = [], executionNotes = 
               <SidePhotoPanel localId={local.id} moduleKey={module.key} activeUserName={activeUserName} onPublishNote={onPublishNote} />
             </div>
           </section>
-
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-            <SectionTitle kicker="Bitácora" title="Registros recientes" />
-            {allLogs.length === 0 ? (
-              <p className="py-2 text-[13px] text-slate-500">
-                Sin registros aún. Completa el formulario y guarda para ver los registros aquí.
-              </p>
-            ) : (
-              <div className="flex flex-col gap-3">
-                {allLogs.map((record, i) => {
-                  const ts = record.date ?? new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
-                  const text = typeof record === "string" ? record : record.text ?? "";
-                  const photos = Array.isArray(record.photos) ? record.photos.filter(Boolean) : [];
-                  return (
-                    <article key={record.id ?? i} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
-                        {initials(record.author ?? activeUserName ?? "W")}
-                      </div>
-                      <div className="flex flex-1 flex-col gap-1.5">
-                        <header className="flex items-center justify-between gap-2">
-                          <strong className="text-[13px] font-semibold text-slate-900">{record.author ?? activeUserName ?? "Walker"}</strong>
-                          <span className="text-[11px] text-slate-500">{ts}</span>
-                        </header>
-                        {text && <p className="text-[12px] leading-relaxed text-slate-700">{text}</p>}
-                        {photos.length > 0 && (
-                          <div className="mt-1 flex flex-wrap gap-1.5">
-                            {photos.map((url, pi) => (
-                              <a key={pi} href={url} target="_blank" rel="noreferrer">
-                                <img src={url} alt={`Foto ${pi + 1}`} className="h-16 w-16 rounded-lg border border-slate-200 object-cover shadow-sm hover:opacity-90" />
-                              </a>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </article>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </>
       )}
+
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+        <SectionTitle kicker="Bitácora" title="Registros recientes" />
+        {allLogs.length === 0 ? (
+          <p className="py-2 text-[13px] text-slate-500">
+            Sin registros aún. Guarda una auditoría para ver los registros aquí.
+          </p>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {allLogs.map((record, i) => {
+              const ts = record.date ?? new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date());
+              const text = typeof record === "string" ? record : record.text ?? "";
+              const photos = Array.isArray(record.photos) ? record.photos.filter(Boolean) : [];
+              return (
+                <article key={record.id ?? i} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-semibold text-slate-700">
+                    {initials(record.author ?? activeUserName ?? "W")}
+                  </div>
+                  <div className="flex flex-1 flex-col gap-1.5">
+                    <header className="flex items-center justify-between gap-2">
+                      <strong className="text-[13px] font-semibold text-slate-900">{record.author ?? activeUserName ?? "Walker"}</strong>
+                      <span className="text-[11px] text-slate-500">{ts}</span>
+                    </header>
+                    {text && <p className="text-[12px] leading-relaxed text-slate-700">{text}</p>}
+                    {photos.length > 0 && (
+                      <div className="mt-1 flex flex-wrap gap-1.5">
+                        {photos.map((url, pi) => (
+                          <a key={pi} href={url} target="_blank" rel="noreferrer">
+                            <img src={url} alt={`Foto ${pi + 1}`} className="h-16 w-16 rounded-lg border border-slate-200 object-cover shadow-sm hover:opacity-90" />
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </article>
   );
 }
@@ -2725,7 +2724,7 @@ function OnFiveAccountCard({ local }) {
   );
 }
 
-function AssortmentPortfolioPanel({ local, pillar, assortmentConfig, assortmentAudit, onSaveAudit, activeUserName }) {
+function AssortmentPortfolioPanel({ local, pillar, assortmentConfig, assortmentAudit, onSaveAudit, activeUserName, onPublishNote }) {
   const outlet     = normalizeOutlet(local.subchannel, local.occasion);
   const segment    = normalizeSegment(local.segment);
   const configKey  = assortmentKey(outlet, segment);
@@ -2755,6 +2754,17 @@ function AssortmentPortfolioPanel({ local, pillar, assortmentConfig, assortmentA
 
   function saveTerreno() {
     onSaveAudit?.(checkedIds, requiredIds);
+    const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date());
+    const pctNow = total > 0 ? Math.round((present / total) * 100) : 0;
+    onPublishNote?.({
+      id: `aud-${uid()}`,
+      author: activeUserName ?? "Walker",
+      date: ts,
+      text: total > 0
+        ? `Auditoría Assortment: ${present}/${total} etiquetas (${pctNow}%)${missingLabels.length > 0 ? ` · Faltantes: ${missingLabels.map((l) => l.name).join(", ")}` : " · Portafolio completo ✓"}`
+        : "Auditoría Assortment: sin portafolio configurado para este segmento",
+      photos: [],
+    });
     setJustSaved(true);
     setTimeout(() => setJustSaved(false), 2500);
   }
@@ -2985,7 +2995,7 @@ function AssortmentPostWall({ activeUserName, pillar, onUpdatePillar, local }) {
   );
 }
 
-function MenuPdfScanner({ activeUserName, local, onUpdatePillar }) {
+function MenuPdfScanner({ activeUserName, local, onUpdatePillar, onPublishNote }) {
   const [menuEvaluations, setMenuEvaluations] = useState({});
   const [evalLogs, setEvalLogs] = useState({});
   const [justSaved, setJustSaved] = useState(false);
@@ -3050,6 +3060,13 @@ function MenuPdfScanner({ activeUserName, local, onUpdatePillar }) {
         lastEval: timestamp,
       });
     }
+    onPublishNote?.({
+      id: `menu-${uid()}`,
+      author: activeUserName ?? "Walker",
+      date: timestamp,
+      text: `Evaluación Menú: Coctelería de Autor ${snapKpis.authorStatus} · Drink Strategy ${snapKpis.drinkStatus}${snapGaps.length > 0 ? ` · ${snapGaps.length} oportunidad${snapGaps.length > 1 ? "es" : ""}` : " · Sin brechas"}`,
+      photos: [],
+    });
     setJustSaved(true);
     setTimeout(() => setJustSaved(false), 2500);
   }
@@ -3910,7 +3927,7 @@ function getBrandingScore(audit) {
   return { score: "Sin registro", tone: "soft" };
 }
 
-function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar, brandingRequests = [], onSubmitBrandingRequest }) {
+function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar, brandingRequests = [], onSubmitBrandingRequest, onPublishNote }) {
   const [audit, setAudit] = useState({
     jwHighball: false, jwPhoenix: false,
     tqCopa: false, gordCopa: false,
@@ -3938,12 +3955,11 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar, bra
   function saveAudit() {
     const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date());
     setLogs((prev) => [{ id: `b-${uid()}`, date: ts, author: activeUserName ?? "Walker", score, tone }, ...prev].slice(0, 10));
-    // ── Actualizar pilar real de la cuenta ──
+    const hasCristaleria = audit.jwHighball || audit.jwPhoenix || audit.tqCopa || audit.gordCopa || audit.djCatrina || audit.djShotCatrina;
+    const hasNeon = audit.neonJw || audit.neonTq || audit.neonDj || audit.neonGord || Boolean(audit.neonOtro?.trim());
+    const cristSummary = hasCristaleria ? "Cristalería OK" : "Sin cristalería";
+    const neonSummary = hasNeon ? "Neón OK" : "Sin neón";
     if (onUpdatePillar) {
-      const hasCristaleria = audit.jwHighball || audit.jwPhoenix || audit.tqCopa || audit.gordCopa || audit.djCatrina || audit.djShotCatrina;
-      const hasNeon = audit.neonJw || audit.neonTq || audit.neonDj || audit.neonGord || Boolean(audit.neonOtro?.trim());
-      const cristSummary = hasCristaleria ? "Cristaleria OK" : "Sin cristaleria";
-      const neonSummary = hasNeon ? "Neon OK" : "Sin neon";
       onUpdatePillar("branding", {
         score,
         summary: `${cristSummary} · ${neonSummary}`,
@@ -3952,6 +3968,13 @@ function BrandingAuditPanel({ activeUserName, local, pillar, onUpdatePillar, bra
         lastAudit: ts,
       });
     }
+    onPublishNote?.({
+      id: `brd-${uid()}`,
+      author: activeUserName ?? "Walker",
+      date: ts,
+      text: `Auditoría Branding: ${cristSummary} · ${neonSummary} · ${score}`,
+      photos: [],
+    });
   }
 
   function addToCart() {
@@ -4221,7 +4244,7 @@ const ACTIVATION_BRANDS = [
   "Gordon's", "Zacapa", "Baileys", "Bulleit", "Captain Morgan",
 ];
 
-function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
+function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar, onPublishNote }) {
   const emptyForm = { type: "", brand: "", dateStart: "", dateEnd: "", mechanic: "", photo: null };
   const [form, setForm] = useState(emptyForm);
   const [activations, setActivations] = useState(
@@ -4244,7 +4267,7 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
   }
 
   function markNoActivation() {
-    const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
+    const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date());
     setNoActivation(true);
     if (onUpdatePillar) {
       onUpdatePillar("activation", {
@@ -4254,11 +4277,18 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
         lastActivation: ts,
       });
     }
+    onPublishNote?.({
+      id: `act-${uid()}`,
+      author: activeUserName ?? "Walker",
+      date: ts,
+      text: "Sin activación en cuenta. Se propone activación en próxima visita.",
+      photos: [],
+    });
   }
 
   function saveActivation() {
     if (!canSave) return;
-    const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
+    const ts = new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date());
     const typeLabel = ACTIVATION_TYPES.find((t) => t.key === form.type)?.label ?? form.type;
     setActivations((prev) => [
       {
@@ -4274,7 +4304,6 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
       },
       ...prev,
     ]);
-    // ── Actualizar pilar real de la cuenta ──
     if (onUpdatePillar) {
       onUpdatePillar("activation", {
         score: "Completado",
@@ -4283,6 +4312,13 @@ function ActivationPanel({ activeUserName, local, pillar, onUpdatePillar }) {
         lastActivation: ts,
       });
     }
+    onPublishNote?.({
+      id: `act-${uid()}`,
+      author: activeUserName ?? "Walker",
+      date: ts,
+      text: `Activación: ${typeLabel} · ${form.brand}${form.mechanic ? ` · ${form.mechanic}` : ""}${form.dateEnd ? ` · Hasta ${form.dateEnd}` : ""}`,
+      photos: [],
+    });
     setNoActivation(false);
     setForm(emptyForm);
     setJustSaved(true);
