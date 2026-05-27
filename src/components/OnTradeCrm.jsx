@@ -29,10 +29,6 @@ const EMPTY_KANBAN   = [
   { id: "progress", title: "En progreso", cards: [] },
   { id: "done",     title: "Completado",  cards: [] },
 ];
-const CRM_ACTIVITIES  = [];
-const CRM_VISITS      = [];
-const CPA_REQUESTS    = [];
-const MANAGER_WALKERS = [];
 
 const ROLE_NAV = {
   walker: [
@@ -268,8 +264,6 @@ const DEFAULT_ASSORTMENT_CONFIG = {
   "Disco-Mainstream":         ["jwred","tqlon","gordons","smirnoff"],
 };
 
-// Mantenemos ASSORTMENT_PORTFOLIOS solo como fallback legacy (no se usa en nueva lógica)
-const ASSORTMENT_PORTFOLIOS = {};
 
 
 const MENU_DETECTION_MOCKS = {
@@ -546,7 +540,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
             type="button"
             aria-label="Abrir menú"
             onClick={() => setSidebarOpen((v) => !v)}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-white transition hover:bg-white/10 focus:outline-none md:hidden"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-white transition hover:bg-white/10 focus:outline-none md:hidden"
           >
             <svg viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
               <path fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 5A.75.75 0 012.75 9h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 9zm0 5a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 14.75z" clipRule="evenodd" />
@@ -798,8 +792,8 @@ function OnTradeCrm({ onOpenModule, profile }) {
             />
           ) : null}
 
-          {roleId === "cpa" && activeView === "dashboard"         ? <CpaDashboard locals={visibleLocals} walkers={walkers} /> : null}
-          {roleId === "cpa" && activeView === "solicitudes"        ? <CpaSolicitudesView locals={visibleLocals} /> : null}
+          {roleId === "cpa" && activeView === "dashboard"         ? <CpaDashboard locals={visibleLocals} walkers={walkers} brandingRequests={brandingRequests} /> : null}
+          {roleId === "cpa" && activeView === "solicitudes"        ? <CpaSolicitudesView brandingRequests={brandingRequests} /> : null}
           {roleId === "cpa" && activeView === "kpi-walkers"        ? <CpaKpiWalkersView locals={visibleLocals} walkers={walkers} /> : null}
           {roleId === "cpa" && activeView === "share"              ? <CpaPlaceholder icon="📊" title="Análisis de Share" desc="Evolución de participación de mercado por categoría, marca y canal." tag="En desarrollo" /> : null}
           {roleId === "cpa" && activeView === "kpi-comercial"      ? <CpaPlaceholder icon="📈" title="KPIs Comerciales" desc="Cobertura de acuerdos, sell out, distribución numérica y evolución por zona walker." tag="En desarrollo" /> : null}
@@ -1653,12 +1647,12 @@ function VisitPlaybook({ local }) {
   );
 }
 
-function CpaDashboard({ locals = [], walkers = [] }) {
+function CpaDashboard({ locals = [], walkers = [], brandingRequests = [] }) {
   const totalLocals   = locals.length;
   const auditados     = locals.filter((l) => l.pillars && Object.values(l.pillars).some((p) => p.lastAudit)).length;
   const pctAuditados  = totalLocals > 0 ? Math.round((auditados / totalLocals) * 100) : 0;
-  const solicitudes   = CPA_REQUESTS.length;
-  const enRevision    = CPA_REQUESTS.filter((r) => r.status === "En revision").length;
+  const solicitudes   = brandingRequests.length;
+  const pendientes    = brandingRequests.filter((r) => r.status === "Pendiente").length;
 
   // On Five score promedio por pilar (de los locales auditados)
   const pilarScores = ["staff","assortment","menu","branding","activation"].map((key) => {
@@ -1686,7 +1680,7 @@ function CpaDashboard({ locals = [], walkers = [] }) {
           question="¿Qué gestionar?"
           label="Solicitudes walkers abiertas"
           value={solicitudes}
-          note={`${enRevision} en revisión ahora`}
+          note={`${pendientes} pendiente${pendientes !== 1 ? "s" : ""} de despacho`}
         />
         <KpiCard
           color="amber"
@@ -1710,8 +1704,27 @@ function CpaDashboard({ locals = [], walkers = [] }) {
 
       <section className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <SectionTitle kicker="Backoffice" title="Solicitudes recientes" />
-          <RequestList requests={CPA_REQUESTS} />
+          <SectionTitle kicker="Branding" title="Solicitudes recientes" />
+          {brandingRequests.length > 0 ? (
+            <div className="flex flex-col gap-2">
+              {brandingRequests.slice(0, 6).map((req) => {
+                const statusStyle = req.status === "Entregado" ? "bg-emerald-50 text-emerald-700"
+                  : req.status === "En tránsito" ? "bg-blue-50 text-blue-700"
+                  : "bg-amber-50 text-amber-700";
+                return (
+                  <div key={req.id} className="flex items-center justify-between gap-2 border-b border-slate-100 py-2 last:border-b-0">
+                    <div className="flex flex-col gap-0.5">
+                      <strong className="text-[13px] font-semibold text-slate-900">{req.local || "Sin cuenta"}</strong>
+                      <span className="text-[11px] text-slate-500">{req.walker} · {req.date}</span>
+                    </div>
+                    <span className={`inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${statusStyle}`}>{req.status}</span>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="py-4 text-center text-[13px] text-slate-400">Sin solicitudes de material aún</p>
+          )}
         </article>
         <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <SectionTitle kicker="On Five" title="Ejecución por pilar" />
@@ -1723,38 +1736,6 @@ function CpaDashboard({ locals = [], walkers = [] }) {
         </article>
       </section>
     </div>
-  );
-}
-
-function CpaExecutionBoard() {
-  const STATUSES = ["Solicitado", "En revision", "Aprobado", "Enviado", "Instalado"];
-  return (
-    <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-      <SectionTitle
-        kicker="CP&A"
-        title="Solicitudes de visibilidad"
-        description="Vista inicial para coordinar material POP, activos, aprobaciones y seguimiento de instalacion."
-      />
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-3 xl:grid-cols-5">
-        {STATUSES.map((status) => (
-          <div key={status} className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-slate-50 p-3">
-            <strong className="text-[12px] font-semibold uppercase tracking-wide text-slate-700">{status}</strong>
-            {CPA_REQUESTS.filter((request) => request.status === status).map((request) => (
-              <article
-                key={request.id}
-                className="flex flex-col gap-1 rounded-lg border border-slate-200 bg-white p-3 shadow-sm"
-              >
-                <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
-                  {request.local}
-                </span>
-                <p className="text-[13px] font-semibold text-slate-900">{request.type}</p>
-                <small className="text-[11px] text-slate-500">{request.owner}</small>
-              </article>
-            ))}
-          </div>
-        ))}
-      </div>
-    </section>
   );
 }
 
@@ -1775,42 +1756,45 @@ function CpaPlaceholder({ icon = "🔧", title, desc, tag = "En desarrollo" }) {
    Los walkers crean solicitudes desde terreno.
    CP&A las gestiona acá: revisar, aprobar, rechazar.
 ────────────────────────────────────────────────────────────── */
-function CpaSolicitudesView({ locals = [] }) {
-  const STATUSES = ["Solicitado", "En revision", "Aprobado", "Rechazado"];
+function CpaSolicitudesView({ brandingRequests = [] }) {
+  const STATUSES = ["Pendiente", "En tránsito", "Entregado"];
   const STATUS_TONE = {
-    Solicitado: "bg-blue-50 text-blue-700",
-    "En revision": "bg-amber-50 text-amber-700",
-    Aprobado: "bg-emerald-50 text-emerald-700",
-    Rechazado: "bg-rose-50 text-rose-700",
+    Pendiente: "bg-amber-50 text-amber-700",
+    "En tránsito": "bg-blue-50 text-blue-700",
+    Entregado: "bg-emerald-50 text-emerald-700",
   };
   return (
     <div className="flex flex-col gap-5">
-      <section className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <section className="grid grid-cols-2 gap-3 md:grid-cols-3">
         {STATUSES.map((s) => {
-          const n = CPA_REQUESTS.filter((r) => r.status === s).length;
+          const n = brandingRequests.filter((r) => r.status === s).length;
           return <MetricCard key={s} compact label={s} value={n} />;
         })}
       </section>
       <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-        <SectionTitle kicker="Walker → CP&A" title="Solicitudes recibidas" />
-        <div className="flex flex-col gap-2">
-          {CPA_REQUESTS.map((req) => (
-            <div
-              key={req.id}
-              className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3"
-            >
-              <div className="flex flex-col">
-                <span className="text-[13px] font-semibold text-slate-900">{req.type}</span>
-                <span className="text-[11px] text-slate-500">
-                  {req.local} · {req.owner}
+        <SectionTitle kicker="Walker → CP&A" title="Solicitudes de material recibidas" />
+        {brandingRequests.length > 0 ? (
+          <div className="flex flex-col gap-2">
+            {brandingRequests.map((req) => (
+              <div
+                key={req.id}
+                className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3"
+              >
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-[13px] font-semibold text-slate-900">{req.local || "Sin cuenta"}</span>
+                  <span className="text-[11px] text-slate-500">
+                    {req.walker} · {req.items?.length ?? 0} material{(req.items?.length ?? 0) !== 1 ? "es" : ""} · {req.date}
+                  </span>
+                </div>
+                <span className={`shrink-0 rounded-md px-2 py-0.5 text-[11px] font-semibold ${STATUS_TONE[req.status] ?? "bg-slate-100 text-slate-600"}`}>
+                  {req.status}
                 </span>
               </div>
-              <span className={`rounded-md px-2 py-0.5 text-[11px] font-semibold ${STATUS_TONE[req.status] ?? "bg-slate-100 text-slate-600"}`}>
-                {req.status}
-              </span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <p className="py-6 text-center text-[13px] text-slate-400">Los walkers aún no han enviado solicitudes de material</p>
+        )}
       </article>
     </div>
   );
@@ -1964,8 +1948,27 @@ function ManagerDashboard({ locals = [], walkers = [] }) {
           <WalkerTable walkers={walkers} locals={locals} />
         </article>
         <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <SectionTitle kicker="Prioridades" title="Cuentas a revisar esta semana" />
-          <VisitList visits={CRM_VISITS.slice(0, 4)} onOpenLocal={() => {}} />
+          <SectionTitle kicker="Prioridades" title="Cuentas que requieren atención" />
+          {(() => {
+            const urgent = [...locals]
+              .filter((l) => (l.healthScore ?? 50) < 60)
+              .sort((a, b) => (a.healthScore ?? 50) - (b.healthScore ?? 50))
+              .slice(0, 5);
+            if (urgent.length === 0) return <p className="py-4 text-center text-[13px] text-slate-400">Todas las cuentas sobre 60% On Five</p>;
+            return (
+              <div className="flex flex-col gap-2">
+                {urgent.map((l) => (
+                  <div key={l.id} className="flex items-center justify-between gap-2 border-b border-slate-100 py-2 last:border-b-0">
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-[13px] font-semibold text-slate-900">{l.name}</span>
+                      <span className="text-[11px] text-slate-500">{l.walkerName || "Sin walker"} · {l.segment || l.subchannel || "—"}</span>
+                    </div>
+                    <span className={`shrink-0 rounded-md px-2 py-0.5 text-[12px] font-bold ${l.healthScore < 40 ? "bg-rose-50 text-rose-700" : "bg-amber-50 text-amber-700"}`}>{l.healthScore ?? 50}%</span>
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
         </article>
       </section>
     </div>
@@ -2160,33 +2163,6 @@ const STATUS_TONE = {
   neutral: "bg-slate-100 text-slate-600",
 };
 
-function VisitList({ visits, onOpenLocal }) {
-  return (
-    <div className="flex flex-col gap-2">
-      {visits.map((visit) => (
-        <button
-          key={visit.id}
-          type="button"
-          onClick={() => onOpenLocal(visit.localId)}
-          className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 text-left transition hover:border-slate-300 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
-        >
-          <span className="flex flex-1 flex-col">
-            <strong className="text-[13px] font-semibold text-slate-900">{visit.local}</strong>
-            <small className="text-[11px] text-slate-500">
-              {visit.description} · {visit.objective}
-            </small>
-          </span>
-          <span className={`rounded-md px-2 py-0.5 text-[11px] font-medium ${STATUS_TONE[visit.tone] ?? STATUS_TONE.neutral}`}>
-            {visit.status}
-          </span>
-          <span className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-100">
-            <i className="block h-full bg-slate-900" style={{ width: `${visit.progress}%` }} />
-          </span>
-        </button>
-      ))}
-    </div>
-  );
-}
 
 const PRIORITY_TONE = {
   Alta: "text-rose-600",
@@ -3690,34 +3666,6 @@ function formatPostDate(date) {
   }).format(date);
 }
 
-function getAssortmentAnalysis(local) {
-  const portfolio = ASSORTMENT_PORTFOLIOS[local.segment] ?? ASSORTMENT_PORTFOLIOS.Mainstream;
-  const presentNames = new Set(LIGHTHOUSE_ASSORTMENT_BY_LOCAL[local.id] ?? []);
-  const items = portfolio.items.map((item) => ({ ...item, isPresent: presentNames.has(item.name) }));
-  const missing = items.filter((item) => !item.isPresent);
-  const presentCount = items.length - missing.length;
-  const requiredCount = items.length;
-  const compliance = Math.round((presentCount / requiredCount) * 100);
-  const tone = compliance >= 90 ? "good" : compliance >= 70 ? "warning" : "danger";
-  const actionTitle =
-    missing.length > 0 ? `Recuperar ${missing[0].name} en proxima compra` : "Defender foto de exito completa";
-  const actionCopy =
-    missing.length > 0
-      ? `La cuenta tiene ${presentCount}/${requiredCount} etiquetas objetivo. Prioriza los faltantes de mayor rol comercial antes de abrir nuevas condiciones.`
-      : "La cuenta cumple el portafolio objetivo. En visita, enfocar en rotacion, visibilidad y trade up.";
-
-  return {
-    actionCopy,
-    actionTitle,
-    compliance,
-    items,
-    missing,
-    portfolio,
-    presentCount,
-    requiredCount,
-    tone,
-  };
-}
 
 const PILLAR_TONE_STYLES = {
   positive: "bg-emerald-100 text-emerald-700",
@@ -3840,36 +3788,6 @@ function VisitWall({ draftNote, notes, onDraftNoteChange, onPublishNote }) {
   );
 }
 
-const REQUEST_STATUS_TONE = {
-  Solicitado: "bg-blue-50 text-blue-700",
-  "En revision": "bg-amber-50 text-amber-700",
-  Aprobado: "bg-emerald-50 text-emerald-700",
-  Enviado: "bg-violet-50 text-violet-700",
-  Instalado: "bg-slate-100 text-slate-700",
-  Rechazado: "bg-rose-50 text-rose-700",
-};
-
-function RequestList({ requests }) {
-  return (
-    <div className="flex flex-col gap-2">
-      {requests.map((request) => (
-        <article
-          key={request.id}
-          className="grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-0.5 rounded-lg border border-slate-200 bg-slate-50 p-3"
-        >
-          <span
-            className={`row-span-2 self-start rounded-md px-2 py-0.5 text-[11px] font-semibold ${REQUEST_STATUS_TONE[request.status] ?? "bg-slate-100 text-slate-600"}`}
-          >
-            {request.status}
-          </span>
-          <strong className="text-[13px] font-semibold text-slate-900">{request.local}</strong>
-          <p className="text-[12px] text-slate-600">{request.type}</p>
-          <small className="col-start-2 text-[11px] text-slate-500">{request.owner}</small>
-        </article>
-      ))}
-    </div>
-  );
-}
 
 function ProgressRow({ label, value }) {
   return (
@@ -4816,18 +4734,6 @@ function initials(name) {
     .toUpperCase();
 }
 
-const BRANDING_REQUESTS_MOCK = [
-  { id: "br1", local: "Bar Lagarto", address: "Av. Italia 123, Providencia", walker: "Ana Garcia", contact: "Juan Pérez - Bartender", items: [{ code: "BRD-011", name: "Table tent Tanqueray", qty: 2 }], status: "Pendiente", date: "02 may 2026", deliveryNotes: "Dejar en barra principal, preguntar por Juan" },
-  { id: "br2", local: "Hotel Las Condes", address: "El Bosque Norte 0440, Las Condes", walker: "Marcos Ruiz", contact: "Pedro Salas - Encargado", items: [{ code: "BRD-015", name: "Backbar Johnnie Walker Blue", qty: 1 }], status: "En tránsito", date: "01 may 2026", deliveryNotes: "Reposición de botellero dañado" },
-  { id: "br3", local: "Bar Lagarto", address: "Av. Italia 123, Providencia", walker: "Ana Garcia", contact: "Juan Pérez - Bartender", items: [{ code: "BRD-014", name: "Cooler Smirnoff", qty: 1 }, { code: "BRD-016", name: "Banner de barra Diageo", qty: 2 }], status: "Entregado", date: "28 abr 2026", deliveryNotes: "Entrada del bar, a la derecha" },
-  { id: "br4", local: "Club Crobar", address: "Marchant Pereira 145, Providencia", walker: "Lucas Prima", contact: "Sofía Mora - Gerente", items: [{ code: "BRD-017", name: "Lanyards staff (x10)", qty: 2 }], status: "Entregado", date: "25 abr 2026", deliveryNotes: "20 lanyards para temporada de verano" },
-];
-
-const REQUEST_STATUS_STYLE = {
-  "Pendiente":   "warning",
-  "En tránsito": "soft",
-  "Entregado":   "good",
-};
 
 function BrandingRequestsBoard({ requests = [], onUpdateStatus }) {
   const [selected, setSelected] = useState(new Set());
@@ -4972,11 +4878,6 @@ function BrandingRequestsBoard({ requests = [], onUpdateStatus }) {
   );
 }
 
-const CONFIG_WALKERS_MOCK = [
-  { id: "w1", name: "Ana Garcia", ruta: "Ruta Oriente", locals: ["Bar Lagarto", "Vitacura Club", "Sushi Osaka Las Condes"] },
-  { id: "w2", name: "Marcos Ruiz", ruta: "Ruta Centro-Sur", locals: ["Hotel Las Condes", "Clandestino", "Bar Nacional"] },
-  { id: "w3", name: "Lucas Prima", ruta: "Ruta Centro-Norte", locals: ["Club Crobar", "Liguria", "The Clinic Bar"] },
-];
 
 function MaestroSection({ excelMeta, excelError, onUpload, onClearBase, pendingExcelResult, onSaveToSupabase, uploadSaving, uploadSavedAt, uploadSupabaseError }) {
   const [showConfirm, setShowConfirm] = useState(false);
