@@ -351,7 +351,8 @@ function OnTradeCrm({ onOpenModule, profile }) {
 
   useEffect(() => {
     if (activeView === "execution" && selectedLocalId) {
-      loadNotesForLocal(selectedLocalId);
+      // Siempre refresca desde DB al entrar a On Five (ignora caché)
+      refreshNotesForLocal(selectedLocalId);
     }
   }, [activeView, selectedLocalId]);
 
@@ -369,6 +370,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
     syncError,
     isSupabaseEnabled,
     loadNotesForLocal,
+    refreshNotesForLocal,
     publishNote: persistNote,
     updateLocalPillar,
     saveAssortmentAudit: persistAssortmentAudit,
@@ -780,10 +782,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
                 setAssortmentAudits((prev) => ({ ...prev, [selectedLocal.id]: audit }));
               }}
               executionNotes={extraNotes[selectedLocal.id] ?? []}
-              onPublishNote={(note) => {
-                loadNotesForLocal(selectedLocal.id);
-                publishNote(selectedLocal.id, note);
-              }}
+              onPublishNote={(note) => publishNote(selectedLocal.id, note)}
             />
           ) : null}
 

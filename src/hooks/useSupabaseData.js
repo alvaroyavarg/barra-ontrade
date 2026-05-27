@@ -82,7 +82,7 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
       .finally(() => setLoading(false));
   }, []);
 
-  // Load notes lazily when a local is selected
+  // Load notes lazily when a local is selected (no-op si ya fueron cargadas)
   const loadNotesForLocal = useCallback(async (localId) => {
     if (!isSupabaseEnabled) return;
     if (extraNotes[localId] !== undefined) return; // already loaded
@@ -93,6 +93,17 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
       console.error("[Supabase] Error al cargar notas:", err.message);
     }
   }, [extraNotes]);
+
+  // Fuerza recarga desde DB (para On Five workspace)
+  const refreshNotesForLocal = useCallback(async (localId) => {
+    if (!isSupabaseEnabled) return;
+    try {
+      const notes = await fetchNotesByLocal(localId);
+      setExtraNotes((prev) => ({ ...prev, [localId]: notes }));
+    } catch (err) {
+      console.error("[Supabase] Error al refrescar notas:", err.message);
+    }
+  }, []);
 
   // Publish note: update local state + persist
   const publishNote = useCallback(async (localId, note) => {
@@ -247,6 +258,7 @@ export function useSupabaseData({ fallbackLocals, fallbackWalkers, fallbackMeta 
     syncError,
     isSupabaseEnabled,
     loadNotesForLocal,
+    refreshNotesForLocal,
     publishNote,
     updateLocalPillar,
     saveAssortmentAudit,

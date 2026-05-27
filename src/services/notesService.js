@@ -11,7 +11,7 @@ export async function fetchNotesByLocal(localId) {
 }
 
 export async function addNote(localId, note) {
-  const row = {
+  const base = {
     id: note.id,
     local_id: localId,
     author: note.author,
@@ -20,9 +20,14 @@ export async function addNote(localId, note) {
     type: note.type ?? "Minuta",
     text: note.text,
     next_action: note.nextAction ?? "",
-    photos: note.photos ?? [],
   };
-  const { error } = await supabase.from("notes").insert(row);
+
+  // Intentar con photos; si falla por columna inexistente, reintentar sin photos
+  let { error } = await supabase.from("notes").insert({ ...base, photos: note.photos ?? [] });
+  if (error && (error.message?.includes("photos") || error.code === "42703")) {
+    const retry = await supabase.from("notes").insert(base);
+    error = retry.error;
+  }
   if (error) throw error;
 }
 
