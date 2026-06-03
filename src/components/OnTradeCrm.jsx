@@ -766,7 +766,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
             />
           ) : null}
 
-          {activeView === "execution" && roleId === "walker" && !selectedLocal ? (
+          {activeView === "execution" && !selectedLocal ? (
             <article className="crm-card" style={{ padding: "32px", textAlign: "center", color: "#9CA3AF" }}>
               <p style={{ fontSize: "0.9rem", marginBottom: "10px" }}>Selecciona una cuenta primero para abrir On Five.</p>
               <button className="crm-nav__item" style={{ margin: "0 auto", border: "0.5px solid #E5E7EB", borderRadius: "6px", padding: "0 16px", color: "#374151" }} onClick={() => setActiveView("contacts")}>
@@ -774,7 +774,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
               </button>
             </article>
           ) : null}
-          {activeView === "execution" && roleId === "walker" && selectedLocal ? (
+          {activeView === "execution" && selectedLocal ? (
             <ExecutionWorkspace
               activeModuleKey={activeOnFiveModule}
               activeUserName={profile?.full_name ?? role.name}
