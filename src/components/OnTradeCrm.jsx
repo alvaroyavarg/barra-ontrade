@@ -2134,6 +2134,7 @@ const PILLAR_SUMMARY_META = [
 ];
 
 function PillarSummaryGrid({ locals = [] }) {
+  const [activeKey, setActiveKey] = useState(null);
   const total = locals.length;
   const stats = PILLAR_SUMMARY_META.map((meta) => {
     const completados = locals.filter((l) => l.pillars?.[meta.key]?.score === "Completado").length;
@@ -2144,48 +2145,124 @@ function PillarSummaryGrid({ locals = [] }) {
     return { ...meta, completados, pendientes, sinRegistro, pct, toneText };
   });
 
-  return (
-    <section aria-label="Resumen On Five por pilar" className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
-      {stats.map((s) => (
-        <article
-          key={s.key}
-          className={`flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm ring-1 ${s.ring} transition hover:shadow-md`}
-        >
-          <header className="flex items-center justify-between gap-2">
-            <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] font-semibold ${s.tint}`}>
-              <span aria-hidden="true">{s.icon}</span>
-              {s.label}
-            </span>
-            <strong className={`text-[20px] font-bold leading-none ${s.toneText}`}>{s.pct}%</strong>
-          </header>
+  const activeStat = activeKey ? stats.find((s) => s.key === activeKey) : null;
+  const activeMeta = activeKey ? KPI_PILAR_BY_KEY[activeKey] : null;
 
-          <div className="flex flex-col gap-1">
-            <div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
-              <div className={`h-full rounded-full ${s.accent} transition-all`} style={{ width: `${s.pct}%` }} />
+  const SCORE_ORDER = { "Sin registro": 0, "Pendiente": 1, "Atencion": 2, "Oportunidad": 3, "En curso": 4, "Bueno": 5, "Fuerte": 6, "No aplica": 7, "Completado": 8 };
+
+  const drillLocals = activeKey
+    ? [...locals].sort((a, b) => {
+        const sa = SCORE_ORDER[a.pillars?.[activeKey]?.score ?? "Sin registro"] ?? 0;
+        const sb = SCORE_ORDER[b.pillars?.[activeKey]?.score ?? "Sin registro"] ?? 0;
+        return sa - sb;
+      })
+    : [];
+
+  return (
+    <div className="flex flex-col gap-3">
+      <section aria-label="Resumen On Five por pilar" className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
+        {stats.map((s) => (
+          <article
+            key={s.key}
+            onClick={() => setActiveKey((prev) => (prev === s.key ? null : s.key))}
+            className={`flex cursor-pointer flex-col gap-3 rounded-xl border p-4 shadow-sm ring-1 transition hover:shadow-md ${
+              activeKey === s.key
+                ? `border-slate-300 bg-slate-50 ring-2 ${s.ring}`
+                : `border-slate-200 bg-white ${s.ring}`
+            }`}
+          >
+            <header className="flex items-center justify-between gap-2">
+              <span className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] font-semibold ${s.tint}`}>
+                <span aria-hidden="true">{s.icon}</span>
+                {s.label}
+              </span>
+              <strong className={`text-[20px] font-bold leading-none ${s.toneText}`}>{s.pct}%</strong>
+            </header>
+
+            <div className="flex flex-col gap-1">
+              <div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
+                <div className={`h-full rounded-full ${s.accent} transition-all`} style={{ width: `${s.pct}%` }} />
+              </div>
+              <small className="text-[11px] text-slate-500">
+                {s.completados} de {total} {total === 1 ? "cuenta" : "cuentas"}
+              </small>
             </div>
-            <small className="text-[11px] text-slate-500">
-              {s.completados} de {total} {total === 1 ? "cuenta" : "cuentas"}
-            </small>
+
+            <footer className="flex flex-wrap gap-1.5">
+              <span className="inline-flex items-center rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">
+                ✓ {s.completados}
+              </span>
+              {s.pendientes > 0 && (
+                <span className="inline-flex items-center rounded-md bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">
+                  ! {s.pendientes}
+                </span>
+              )}
+              {s.sinRegistro > 0 && (
+                <span className="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">
+                  — {s.sinRegistro}
+                </span>
+              )}
+            </footer>
+          </article>
+        ))}
+      </section>
+
+      {/* Drill-down: todas las cuentas para el pilar seleccionado */}
+      {activeStat && activeMeta && (
+        <article className={`rounded-xl border-2 ${activeMeta.border} bg-white p-5 shadow-sm`}>
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={`rounded-lg px-2.5 py-1 text-[12px] font-semibold ${activeMeta.bg} ${activeMeta.text}`}>
+                {activeStat.icon} {activeStat.label}
+              </span>
+              <span className="text-[12px] text-slate-400">
+                {activeStat.completados} completadas · {activeStat.pendientes} pendientes · {activeStat.sinRegistro} sin registro
+              </span>
+            </div>
+            <button
+              onClick={() => setActiveKey(null)}
+              className="rounded-md px-2.5 py-1 text-[12px] text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+            >
+              ✕ Cerrar
+            </button>
           </div>
 
-          <footer className="flex flex-wrap gap-1.5">
-            <span className="inline-flex items-center rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">
-              ✓ {s.completados}
-            </span>
-            {s.pendientes > 0 && (
-              <span className="inline-flex items-center rounded-md bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">
-                ! {s.pendientes}
-              </span>
-            )}
-            {s.sinRegistro > 0 && (
-              <span className="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">
-                — {s.sinRegistro}
-              </span>
-            )}
-          </footer>
+          <div className="overflow-x-auto">
+            <div className="min-w-[600px]">
+              <div className="grid grid-cols-[2fr_1fr_0.8fr_1fr_2fr_1.2fr] gap-3 border-b border-slate-100 px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                <span>Cuenta</span>
+                <span>Walker</span>
+                <span>Segmento</span>
+                <span className="text-center">Score</span>
+                <span>Resumen</span>
+                <span className="text-right">Última visita</span>
+              </div>
+              {drillLocals.map((l) => {
+                const p     = l.pillars?.[activeKey];
+                const score = p?.score || "Sin registro";
+                return (
+                  <div
+                    key={l.id}
+                    className="grid grid-cols-[2fr_1fr_0.8fr_1fr_2fr_1.2fr] items-center gap-3 border-b border-slate-50 px-2 py-2 text-[12px] last:border-b-0 hover:bg-slate-50/70"
+                  >
+                    <span className="truncate font-medium text-slate-900" title={l.name}>{l.name}</span>
+                    <span className="truncate text-[11px] text-slate-500">{l.walkerName || "—"}</span>
+                    <span className="truncate text-[11px] text-slate-500">{l.segment || l.subchannel || "—"}</span>
+                    <span className={`justify-self-center whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${scorePillStyle(score)}`}>
+                      {score}
+                    </span>
+                    <span className="truncate text-[11px] text-slate-500" title={p?.summary}>{p?.summary || "—"}</span>
+                    <span className="truncate text-right text-[11px] text-slate-400">
+                      {p?.lastAudit || "Sin visita"}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </article>
-      ))}
-    </section>
+      )}
+    </div>
   );
 }
 
