@@ -1835,13 +1835,6 @@ function scorePillStyle(score) {
 
 function CpaKpiWalkersView({ locals = [], walkers = [] }) {
   const [drillDown, setDrillDown] = useState(null); // { walkerName, pillarKey }
-  const drillRef = useRef(null);
-
-  useEffect(() => {
-    if (drillDown && drillRef.current) {
-      drillRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
-  }, [drillDown]);
 
   function barColor(pct) {
     if (pct >= 70) return "bg-emerald-500";
@@ -1978,63 +1971,49 @@ function CpaKpiWalkersView({ locals = [], walkers = [] }) {
         </div>
       </article>
 
-      {/* Drill-down: cuentas por walker × pilar */}
+      {/* Modal drill-down — fixed encima del layout overflow-hidden */}
       {drillDown && drillMeta && (
-        <article ref={drillRef} className={`rounded-xl border-2 ${drillMeta.border} bg-white p-5 shadow-sm`}>
-          <div className="mb-4 flex items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className={`rounded-lg px-2.5 py-1 text-[12px] font-semibold ${drillMeta.bg} ${drillMeta.text}`}>
-                {drillMeta.icon} {drillMeta.label}
-              </span>
-              <span className="text-[14px] font-semibold text-slate-800">{drillDown.walkerName}</span>
-              <span className="text-[12px] text-slate-400">· {drillLocals.length} cuentas</span>
-            </div>
-            <button
-              onClick={() => setDrillDown(null)}
-              className="rounded-md px-2.5 py-1 text-[12px] text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
-            >
-              ✕ Cerrar
-            </button>
-          </div>
-
-          <div className="overflow-x-auto">
-            <div className="min-w-[580px]">
-              <div className="grid grid-cols-[2fr_0.9fr_1fr_2fr_1.2fr] gap-3 border-b border-slate-100 px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
-                <span>Cuenta</span>
-                <span>Segmento</span>
-                <span className="text-center">Score</span>
-                <span>Resumen</span>
-                <span className="text-right">Última visita</span>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setDrillDown(null)} />
+          <div className="relative flex w-full max-w-2xl flex-col rounded-xl bg-white shadow-2xl" style={{ maxHeight: "80vh" }}>
+            <header className={`flex items-center justify-between gap-3 rounded-t-xl border-b border-slate-100 px-5 py-4 ${drillMeta.bg}`}>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className={`text-[14px] font-bold ${drillMeta.text}`}>{drillMeta.icon} {drillMeta.label}</span>
+                <span className="text-[13px] font-semibold text-slate-700">{drillDown.walkerName}</span>
+                <span className="text-[12px] text-slate-500">· {drillLocals.length} cuentas</span>
               </div>
-              {[...drillLocals]
-                .sort((a, b) => {
-                  const sa = SCORE_ORDER[a.pillars?.[drillDown.pillarKey]?.score ?? "Sin registro"] ?? 0;
-                  const sb = SCORE_ORDER[b.pillars?.[drillDown.pillarKey]?.score ?? "Sin registro"] ?? 0;
-                  return sa - sb;
-                })
-                .map((l) => {
-                  const p     = l.pillars?.[drillDown.pillarKey];
-                  const score = p?.score || "Sin registro";
-                  return (
-                    <div
-                      key={l.id}
-                      className="grid grid-cols-[2fr_0.9fr_1fr_2fr_1.2fr] items-center gap-3 border-b border-slate-50 px-2 py-2 text-[12px] last:border-b-0 hover:bg-slate-50/70"
-                    >
-                      <span className="truncate font-medium text-slate-900" title={l.name}>{l.name}</span>
-                      <span className="truncate text-[11px] text-slate-500">{l.segment || l.subchannel || "—"}</span>
-                      <span className={`justify-self-center whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${scorePillStyle(score)}`}>
-                        {score}
-                      </span>
-                      <span className="truncate text-[11px] text-slate-500" title={p?.summary}>{p?.summary || "—"}</span>
-                      <span className="truncate text-right text-[11px] text-slate-400" title={p?.lastAudit}>
-                        {p?.lastAudit || "Sin visita"}
-                      </span>
-                    </div>
-                  );
-                })}
+              <button onClick={() => setDrillDown(null)} className="shrink-0 rounded-md p-1.5 text-slate-400 transition hover:bg-white/60 hover:text-slate-700">✕</button>
+            </header>
+            <div className="flex-1 overflow-y-auto">
+              <div className="overflow-x-auto">
+                <div className="min-w-[500px]">
+                  <div className="grid grid-cols-[2fr_0.9fr_1fr_2fr_1.2fr] gap-3 border-b border-slate-100 px-4 py-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400 sticky top-0 bg-white">
+                    <span>Cuenta</span><span>Segmento</span><span className="text-center">Score</span><span>Resumen</span><span className="text-right">Última visita</span>
+                  </div>
+                  {[...drillLocals]
+                    .sort((a, b) => {
+                      const sa = SCORE_ORDER[a.pillars?.[drillDown.pillarKey]?.score ?? "Sin registro"] ?? 0;
+                      const sb = SCORE_ORDER[b.pillars?.[drillDown.pillarKey]?.score ?? "Sin registro"] ?? 0;
+                      return sa - sb;
+                    })
+                    .map((l) => {
+                      const p = l.pillars?.[drillDown.pillarKey];
+                      const score = p?.score || "Sin registro";
+                      return (
+                        <div key={l.id} className="grid grid-cols-[2fr_0.9fr_1fr_2fr_1.2fr] items-center gap-3 border-b border-slate-50 px-4 py-2.5 text-[12px] last:border-b-0 hover:bg-slate-50">
+                          <span className="truncate font-medium text-slate-900" title={l.name}>{l.name}</span>
+                          <span className="truncate text-[11px] text-slate-500">{l.segment || l.subchannel || "—"}</span>
+                          <span className={`justify-self-center whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${scorePillStyle(score)}`}>{score}</span>
+                          <span className="truncate text-[11px] text-slate-500" title={p?.summary}>{p?.summary || "—"}</span>
+                          <span className="truncate text-right text-[11px] text-slate-400">{p?.lastAudit || "Sin visita"}</span>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
             </div>
           </div>
-        </article>
+        </div>
       )}
     </div>
   );
@@ -2142,13 +2121,6 @@ const PILLAR_SUMMARY_META = [
 
 function PillarSummaryGrid({ locals = [] }) {
   const [activeKey, setActiveKey] = useState(null);
-  const drillRef = useRef(null);
-
-  useEffect(() => {
-    if (activeKey && drillRef.current) {
-      drillRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
-  }, [activeKey]);
 
   const total = locals.length;
   const stats = PILLAR_SUMMARY_META.map((meta) => {
@@ -2162,9 +2134,7 @@ function PillarSummaryGrid({ locals = [] }) {
 
   const activeStat = activeKey ? stats.find((s) => s.key === activeKey) : null;
   const activeMeta = activeKey ? KPI_PILAR_BY_KEY[activeKey] : null;
-
   const SCORE_ORDER = { "Sin registro": 0, "Pendiente": 1, "Atencion": 2, "Oportunidad": 3, "En curso": 4, "Bueno": 5, "Fuerte": 6, "No aplica": 7, "Completado": 8 };
-
   const drillLocals = activeKey
     ? [...locals].sort((a, b) => {
         const sa = SCORE_ORDER[a.pillars?.[activeKey]?.score ?? "Sin registro"] ?? 0;
@@ -2174,7 +2144,7 @@ function PillarSummaryGrid({ locals = [] }) {
     : [];
 
   return (
-    <div className="flex flex-col gap-3">
+    <>
       <section aria-label="Resumen On Five por pilar" className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
         {stats.map((s) => (
           <article
@@ -2193,7 +2163,6 @@ function PillarSummaryGrid({ locals = [] }) {
               </span>
               <strong className={`text-[20px] font-bold leading-none ${s.toneText}`}>{s.pct}%</strong>
             </header>
-
             <div className="flex flex-col gap-1">
               <div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
                 <div className={`h-full rounded-full ${s.accent} transition-all`} style={{ width: `${s.pct}%` }} />
@@ -2202,82 +2171,56 @@ function PillarSummaryGrid({ locals = [] }) {
                 {s.completados} de {total} {total === 1 ? "cuenta" : "cuentas"}
               </small>
             </div>
-
             <footer className="flex flex-wrap gap-1.5">
-              <span className="inline-flex items-center rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">
-                ✓ {s.completados}
-              </span>
-              {s.pendientes > 0 && (
-                <span className="inline-flex items-center rounded-md bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">
-                  ! {s.pendientes}
-                </span>
-              )}
-              {s.sinRegistro > 0 && (
-                <span className="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">
-                  — {s.sinRegistro}
-                </span>
-              )}
+              <span className="inline-flex items-center rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">✓ {s.completados}</span>
+              {s.pendientes > 0 && <span className="inline-flex items-center rounded-md bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">! {s.pendientes}</span>}
+              {s.sinRegistro > 0 && <span className="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">— {s.sinRegistro}</span>}
             </footer>
           </article>
         ))}
       </section>
 
-      {/* Drill-down: todas las cuentas para el pilar seleccionado */}
+      {/* Modal drill-down — fixed encima del layout overflow-hidden */}
       {activeStat && activeMeta && (
-        <article ref={drillRef} className={`rounded-xl border-2 ${activeMeta.border} bg-white p-5 shadow-sm`}>
-          <div className="mb-4 flex items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className={`rounded-lg px-2.5 py-1 text-[12px] font-semibold ${activeMeta.bg} ${activeMeta.text}`}>
-                {activeStat.icon} {activeStat.label}
-              </span>
-              <span className="text-[12px] text-slate-400">
-                {activeStat.completados} completadas · {activeStat.pendientes} pendientes · {activeStat.sinRegistro} sin registro
-              </span>
-            </div>
-            <button
-              onClick={() => setActiveKey(null)}
-              className="rounded-md px-2.5 py-1 text-[12px] text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
-            >
-              ✕ Cerrar
-            </button>
-          </div>
-
-          <div className="overflow-x-auto">
-            <div className="min-w-[600px]">
-              <div className="grid grid-cols-[2fr_1fr_0.8fr_1fr_2fr_1.2fr] gap-3 border-b border-slate-100 px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
-                <span>Cuenta</span>
-                <span>Walker</span>
-                <span>Segmento</span>
-                <span className="text-center">Score</span>
-                <span>Resumen</span>
-                <span className="text-right">Última visita</span>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setActiveKey(null)} />
+          <div className="relative flex w-full max-w-3xl flex-col rounded-xl bg-white shadow-2xl" style={{ maxHeight: "80vh" }}>
+            <header className={`flex items-center justify-between gap-3 border-b border-slate-100 px-5 py-4 rounded-t-xl ${activeMeta.bg}`}>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className={`text-[14px] font-bold ${activeMeta.text}`}>{activeStat.icon} {activeStat.label}</span>
+                <span className="text-[12px] text-slate-500">
+                  {activeStat.completados} completadas · {activeStat.pendientes} pendientes · {activeStat.sinRegistro} sin registro
+                </span>
               </div>
-              {drillLocals.map((l) => {
-                const p     = l.pillars?.[activeKey];
-                const score = p?.score || "Sin registro";
-                return (
-                  <div
-                    key={l.id}
-                    className="grid grid-cols-[2fr_1fr_0.8fr_1fr_2fr_1.2fr] items-center gap-3 border-b border-slate-50 px-2 py-2 text-[12px] last:border-b-0 hover:bg-slate-50/70"
-                  >
-                    <span className="truncate font-medium text-slate-900" title={l.name}>{l.name}</span>
-                    <span className="truncate text-[11px] text-slate-500">{l.walkerName || "—"}</span>
-                    <span className="truncate text-[11px] text-slate-500">{l.segment || l.subchannel || "—"}</span>
-                    <span className={`justify-self-center whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${scorePillStyle(score)}`}>
-                      {score}
-                    </span>
-                    <span className="truncate text-[11px] text-slate-500" title={p?.summary}>{p?.summary || "—"}</span>
-                    <span className="truncate text-right text-[11px] text-slate-400">
-                      {p?.lastAudit || "Sin visita"}
-                    </span>
+              <button onClick={() => setActiveKey(null)} className="shrink-0 rounded-md p-1.5 text-slate-400 transition hover:bg-white/60 hover:text-slate-700">✕</button>
+            </header>
+            <div className="flex-1 overflow-y-auto">
+              <div className="overflow-x-auto">
+                <div className="min-w-[560px]">
+                  <div className="grid grid-cols-[2fr_1fr_0.8fr_1fr_2fr_1.2fr] gap-3 border-b border-slate-100 px-4 py-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400 sticky top-0 bg-white">
+                    <span>Cuenta</span><span>Walker</span><span>Segmento</span><span className="text-center">Score</span><span>Resumen</span><span className="text-right">Última visita</span>
                   </div>
-                );
-              })}
+                  {drillLocals.map((l) => {
+                    const p = l.pillars?.[activeKey];
+                    const score = p?.score || "Sin registro";
+                    return (
+                      <div key={l.id} className="grid grid-cols-[2fr_1fr_0.8fr_1fr_2fr_1.2fr] items-center gap-3 border-b border-slate-50 px-4 py-2.5 text-[12px] last:border-b-0 hover:bg-slate-50">
+                        <span className="truncate font-medium text-slate-900" title={l.name}>{l.name}</span>
+                        <span className="truncate text-[11px] text-slate-500">{l.walkerName || "—"}</span>
+                        <span className="truncate text-[11px] text-slate-500">{l.segment || l.subchannel || "—"}</span>
+                        <span className={`justify-self-center whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${scorePillStyle(score)}`}>{score}</span>
+                        <span className="truncate text-[11px] text-slate-500" title={p?.summary}>{p?.summary || "—"}</span>
+                        <span className="truncate text-right text-[11px] text-slate-400">{p?.lastAudit || "Sin visita"}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
-        </article>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 
