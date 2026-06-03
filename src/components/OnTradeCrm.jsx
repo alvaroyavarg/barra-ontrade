@@ -1810,26 +1810,31 @@ function CpaSolicitudesView({ brandingRequests = [] }) {
    Lo que auditan los walkers en terreno (On Five) alimenta
    directo este panel. Manager y CP&A ven el mismo dato.
 ────────────────────────────────────────────────────────────── */
+const KPI_PILAR_META = [
+  { key: "staff",      label: "Staff",      icon: "👥", text: "text-indigo-700", bg: "bg-indigo-50",  bar: "bg-indigo-500",  hover: "hover:bg-indigo-50",  border: "border-indigo-200",  ring: "ring-indigo-300"  },
+  { key: "assortment", label: "Assortment", icon: "🍾", text: "text-emerald-700", bg: "bg-emerald-50", bar: "bg-emerald-500", hover: "hover:bg-emerald-50", border: "border-emerald-200", ring: "ring-emerald-300" },
+  { key: "menu",       label: "Menú",       icon: "📋", text: "text-violet-700", bg: "bg-violet-50",  bar: "bg-violet-500",  hover: "hover:bg-violet-50",  border: "border-violet-200",  ring: "ring-violet-300"  },
+  { key: "branding",   label: "Branding",   icon: "✨", text: "text-amber-700",  bg: "bg-amber-50",   bar: "bg-amber-500",   hover: "hover:bg-amber-50",   border: "border-amber-200",   ring: "ring-amber-300"   },
+  { key: "activation", label: "Activación", icon: "🎯", text: "text-rose-700",   bg: "bg-rose-50",    bar: "bg-rose-500",    hover: "hover:bg-rose-50",    border: "border-rose-200",    ring: "ring-rose-300"    },
+];
+const KPI_PILAR_BY_KEY = Object.fromEntries(KPI_PILAR_META.map((m) => [m.key, m]));
+
+function scorePillStyle(score) {
+  const map = {
+    "Completado":  "bg-emerald-50 text-emerald-700",
+    "Fuerte":      "bg-emerald-50 text-emerald-700",
+    "Bueno":       "bg-blue-50 text-blue-700",
+    "En curso":    "bg-sky-50 text-sky-700",
+    "Pendiente":   "bg-amber-50 text-amber-700",
+    "Atencion":    "bg-orange-50 text-orange-700",
+    "Oportunidad": "bg-yellow-50 text-yellow-700",
+    "No aplica":   "bg-slate-100 text-slate-500",
+  };
+  return map[score] ?? "bg-slate-100 text-slate-400";
+}
+
 function CpaKpiWalkersView({ locals = [], walkers = [] }) {
-  const PILARES = ["staff", "assortment", "menu", "branding", "activation"];
-
-  const walkerStats = walkers.map((w) => {
-    const misLocals = locals.filter((l) => l.walkerName === w.name || l.walker === w.id);
-    const total     = misLocals.length;
-    const auditados = misLocals.filter((l) =>
-      l.pillars && Object.values(l.pillars).some((p) => p.lastAudit)
-    ).length;
-    const cobertura = total > 0 ? Math.round((auditados / total) * 100) : 0;
-
-    const pilarPcts = PILARES.map((key) => {
-      const conDato = misLocals.filter((l) => l.pillars?.[key]?.score && l.pillars[key].score !== "Sin registro");
-      const ok      = conDato.filter((l) => l.pillars[key].score === "Completado").length;
-      return conDato.length > 0 ? Math.round((ok / conDato.length) * 100) : 0;
-    });
-    const onFiveScore = pilarPcts.length > 0 ? Math.round(pilarPcts.reduce((a, b) => a + b, 0) / pilarPcts.length) : 0;
-
-    return { ...w, total, auditados, cobertura, onFiveScore };
-  });
+  const [drillDown, setDrillDown] = useState(null); // { walkerName, pillarKey }
 
   function barColor(pct) {
     if (pct >= 70) return "bg-emerald-500";
@@ -1842,8 +1847,43 @@ function CpaKpiWalkersView({ locals = [], walkers = [] }) {
     return "text-rose-600";
   }
 
+  const walkerStats = walkers.map((w) => {
+    const misLocals = locals.filter((l) => l.walkerName === w.name || l.walker === w.id);
+    const total     = misLocals.length;
+    const auditados = misLocals.filter((l) =>
+      l.pillars && Object.values(l.pillars).some((p) => p.lastAudit)
+    ).length;
+    const cobertura = total > 0 ? Math.round((auditados / total) * 100) : 0;
+
+    const pilarStats = KPI_PILAR_META.map(({ key }) => {
+      const conDato    = misLocals.filter((l) => l.pillars?.[key]?.score && l.pillars[key].score !== "Sin registro");
+      const completados = misLocals.filter((l) => l.pillars?.[key]?.score === "Completado").length;
+      const pct        = conDato.length > 0 ? Math.round((completados / conDato.length) * 100) : 0;
+      return { key, pct, completados, total: misLocals.length, conDato: conDato.length };
+    });
+
+    const onFiveScore = pilarStats.length > 0
+      ? Math.round(pilarStats.reduce((a, p) => a + p.pct, 0) / pilarStats.length)
+      : 0;
+
+    return { ...w, total, auditados, cobertura, onFiveScore, pilarStats, misLocals };
+  });
+
+  function toggleDrill(walkerName, pillarKey) {
+    setDrillDown((prev) =>
+      prev?.walkerName === walkerName && prev?.pillarKey === pillarKey ? null : { walkerName, pillarKey }
+    );
+  }
+
+  const drillWalker = drillDown ? walkerStats.find((w) => w.name === drillDown.walkerName) : null;
+  const drillLocals = drillWalker?.misLocals ?? [];
+  const drillMeta   = drillDown ? KPI_PILAR_BY_KEY[drillDown.pillarKey] : null;
+
+  const SCORE_ORDER = { "Sin registro": 0, "Pendiente": 1, "Atencion": 2, "Oportunidad": 3, "En curso": 4, "Bueno": 5, "Fuerte": 6, "No aplica": 7, "Completado": 8 };
+
   return (
     <div className="flex flex-col gap-5">
+      {/* Top KPI cards */}
       <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <MetricCard label="Walkers activos" value={walkers.length} />
         <MetricCard label="Total cuentas" value={locals.length} />
@@ -1862,42 +1902,133 @@ function CpaKpiWalkersView({ locals = [], walkers = [] }) {
         />
       </section>
 
+      {/* Walker × Pilar table */}
       <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-        <SectionTitle kicker="Equipo walker" title="Performance individual" />
+        <SectionTitle
+          kicker="Equipo walker"
+          title="Performance por pilar"
+          description="Haz clic en cualquier celda de pilar para ver el detalle cuenta por cuenta."
+        />
         <div className="overflow-x-auto">
-          <div className="grid min-w-[640px] grid-cols-[1.5fr_2fr_0.6fr_0.7fr_0.7fr] items-center gap-3 border-b border-slate-200 px-2 py-2 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
-            <span>Walker</span>
-            <span>Cobertura auditoría</span>
-            <span className="text-right">Cuentas</span>
-            <span className="text-right">Auditadas</span>
-            <span className="text-right">On Five</span>
-          </div>
-          {walkerStats.map((w) => (
-            <div
-              key={w.id}
-              className="grid min-w-[640px] grid-cols-[1.5fr_2fr_0.6fr_0.7fr_0.7fr] items-center gap-3 border-b border-slate-100 px-2 py-2.5 text-[13px]"
-            >
-              <span className="font-medium text-slate-900">{w.name}</span>
-              <div className="flex items-center gap-2">
-                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
-                  <div className={`h-full rounded-full ${barColor(w.cobertura)}`} style={{ width: `${w.cobertura}%` }} />
-                </div>
-                <span className="min-w-[2rem] text-[11px] text-slate-600">{w.cobertura}%</span>
-              </div>
-              <span className="text-right text-slate-700">{w.total}</span>
-              <span className="text-right text-slate-700">{w.auditados}</span>
-              <span className={`text-right font-semibold ${valueTone(w.onFiveScore)}`}>
-                {w.onFiveScore > 0 ? `${w.onFiveScore}%` : "—"}
-              </span>
+          <div className="min-w-[840px]">
+            {/* Header */}
+            <div className="grid grid-cols-[1.5fr_1.8fr_0.5fr_0.5fr_0.9fr_0.9fr_0.9fr_0.9fr_0.9fr] items-center gap-2 border-b border-slate-200 px-2 py-2 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+              <span>Walker</span>
+              <span>Cobertura</span>
+              <span className="text-center">Total</span>
+              <span className="text-center">Aud.</span>
+              {KPI_PILAR_META.map((m) => (
+                <span key={m.key} className={`text-center ${m.text}`}>{m.icon} {m.label}</span>
+              ))}
             </div>
-          ))}
-          {walkerStats.length === 0 ? (
-            <p className="px-2 py-4 text-center text-[13px] text-slate-500">
-              Sube el Excel de cuentas en Configuración para ver los KPIs.
-            </p>
-          ) : null}
+
+            {/* Walker rows */}
+            {walkerStats.map((w) => (
+              <div key={w.id} className="border-b border-slate-100 last:border-b-0">
+                <div className="grid grid-cols-[1.5fr_1.8fr_0.5fr_0.5fr_0.9fr_0.9fr_0.9fr_0.9fr_0.9fr] items-center gap-2 px-2 py-2 text-[13px]">
+                  <span className="font-medium text-slate-900">{w.name}</span>
+                  <div className="flex items-center gap-2">
+                    <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
+                      <div className={`h-full rounded-full ${barColor(w.cobertura)}`} style={{ width: `${w.cobertura}%` }} />
+                    </div>
+                    <span className="min-w-[2.2rem] text-[11px] text-slate-600">{w.cobertura}%</span>
+                  </div>
+                  <span className="text-center text-slate-700">{w.total}</span>
+                  <span className="text-center text-slate-700">{w.auditados}</span>
+                  {w.pilarStats.map((ps) => {
+                    const m       = KPI_PILAR_BY_KEY[ps.key];
+                    const isActive = drillDown?.walkerName === w.name && drillDown?.pillarKey === ps.key;
+                    return (
+                      <button
+                        key={ps.key}
+                        onClick={() => toggleDrill(w.name, ps.key)}
+                        className={`flex flex-col items-center rounded-lg px-1 py-1.5 transition-all cursor-pointer ${
+                          isActive ? `${m.bg} ring-2 ${m.ring}` : m.hover
+                        }`}
+                        title={`${w.name} — ${m.label}: ver detalle`}
+                      >
+                        <span className={`text-[14px] font-bold ${valueTone(ps.pct)}`}>
+                          {ps.total > 0 ? (ps.conDato > 0 ? `${ps.pct}%` : "—") : "—"}
+                        </span>
+                        {ps.total > 0 && (
+                          <span className="mt-0.5 text-[9px] leading-none text-slate-400">
+                            {ps.completados}/{ps.total}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+
+            {walkerStats.length === 0 && (
+              <p className="px-2 py-4 text-center text-[13px] text-slate-500">
+                Sube el Excel de cuentas en Configuración para ver los KPIs.
+              </p>
+            )}
+          </div>
         </div>
       </article>
+
+      {/* Drill-down: cuentas por walker × pilar */}
+      {drillDown && drillMeta && (
+        <article className={`rounded-xl border-2 ${drillMeta.border} bg-white p-5 shadow-sm`}>
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={`rounded-lg px-2.5 py-1 text-[12px] font-semibold ${drillMeta.bg} ${drillMeta.text}`}>
+                {drillMeta.icon} {drillMeta.label}
+              </span>
+              <span className="text-[14px] font-semibold text-slate-800">{drillDown.walkerName}</span>
+              <span className="text-[12px] text-slate-400">· {drillLocals.length} cuentas</span>
+            </div>
+            <button
+              onClick={() => setDrillDown(null)}
+              className="rounded-md px-2.5 py-1 text-[12px] text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+            >
+              ✕ Cerrar
+            </button>
+          </div>
+
+          <div className="overflow-x-auto">
+            <div className="min-w-[580px]">
+              <div className="grid grid-cols-[2fr_0.9fr_1fr_2fr_1.2fr] gap-3 border-b border-slate-100 px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                <span>Cuenta</span>
+                <span>Segmento</span>
+                <span className="text-center">Score</span>
+                <span>Resumen</span>
+                <span className="text-right">Última visita</span>
+              </div>
+              {[...drillLocals]
+                .sort((a, b) => {
+                  const sa = SCORE_ORDER[a.pillars?.[drillDown.pillarKey]?.score ?? "Sin registro"] ?? 0;
+                  const sb = SCORE_ORDER[b.pillars?.[drillDown.pillarKey]?.score ?? "Sin registro"] ?? 0;
+                  return sa - sb;
+                })
+                .map((l) => {
+                  const p     = l.pillars?.[drillDown.pillarKey];
+                  const score = p?.score || "Sin registro";
+                  return (
+                    <div
+                      key={l.id}
+                      className="grid grid-cols-[2fr_0.9fr_1fr_2fr_1.2fr] items-center gap-3 border-b border-slate-50 px-2 py-2 text-[12px] last:border-b-0 hover:bg-slate-50/70"
+                    >
+                      <span className="truncate font-medium text-slate-900" title={l.name}>{l.name}</span>
+                      <span className="truncate text-[11px] text-slate-500">{l.segment || l.subchannel || "—"}</span>
+                      <span className={`justify-self-center whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${scorePillStyle(score)}`}>
+                        {score}
+                      </span>
+                      <span className="truncate text-[11px] text-slate-500" title={p?.summary}>{p?.summary || "—"}</span>
+                      <span className="truncate text-right text-[11px] text-slate-400" title={p?.lastAudit}>
+                        {p?.lastAudit || "Sin visita"}
+                      </span>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        </article>
+      )}
     </div>
   );
 }
