@@ -644,8 +644,8 @@ function OnTradeCrm({ onOpenModule, profile }) {
               {walkers.map((w) => (
                 <SidebarNavButton
                   key={w.id}
-                  isActive={activeWalker === w.id}
-                  onClick={() => { setActiveWalker(w.id); setSelectedLocalId(null); setActiveView("contacts"); }}
+                  isActive={activeWalker === w.name}
+                  onClick={() => { setActiveWalker(w.name); setSelectedLocalId(null); setActiveView("contacts"); }}
                 >
                   {w.name} ({w.count})
                 </SidebarNavButton>
@@ -796,9 +796,9 @@ function OnTradeCrm({ onOpenModule, profile }) {
             />
           ) : null}
 
-          {roleId === "cpa" && activeView === "dashboard"         ? <CpaDashboard locals={visibleLocals} walkers={walkers} brandingRequests={brandingRequests} /> : null}
+          {roleId === "cpa" && activeView === "dashboard"         ? <CpaDashboard locals={visibleLocals} walkers={walkers} brandingRequests={brandingRequests} onOpenLocal={(id) => { setSelectedLocalId(id); setActiveView("local"); loadNotesForLocal(id); }} /> : null}
           {roleId === "cpa" && activeView === "solicitudes"        ? <CpaSolicitudesView brandingRequests={brandingRequests} /> : null}
-          {roleId === "cpa" && activeView === "kpi-walkers"        ? <CpaKpiWalkersView locals={visibleLocals} walkers={walkers} /> : null}
+          {roleId === "cpa" && activeView === "kpi-walkers"        ? <CpaKpiWalkersView locals={visibleLocals} walkers={walkers} onOpenLocal={(id) => { setSelectedLocalId(id); setActiveView("local"); loadNotesForLocal(id); }} /> : null}
           {roleId === "cpa" && activeView === "share"              ? <CpaPlaceholder icon="📊" title="Análisis de Share" desc="Evolución de participación de mercado por categoría, marca y canal." tag="En desarrollo" /> : null}
           {roleId === "cpa" && activeView === "kpi-comercial"      ? <CpaPlaceholder icon="📈" title="KPIs Comerciales" desc="Cobertura de acuerdos, sell out, distribución numérica y evolución por zona walker." tag="En desarrollo" /> : null}
           {roleId === "cpa" && activeView === "aacc"               ? <CpaPlaceholder icon="💰" title="Acuerdos Comerciales" desc="P&L por acuerdo comercial, contribución marginal y simulador de escenarios." tag="En desarrollo" /> : null}
@@ -831,7 +831,7 @@ function OnTradeCrm({ onOpenModule, profile }) {
             />
           ) : null}
 
-          {roleId === "manager" && activeView === "dashboard"     ? <ManagerDashboard locals={visibleLocals} walkers={walkers} /> : null}
+          {roleId === "manager" && activeView === "dashboard"     ? <ManagerDashboard locals={visibleLocals} walkers={walkers} onOpenLocal={(id) => { setSelectedLocalId(id); setActiveView("local"); loadNotesForLocal(id); }} /> : null}
           {roleId === "manager" && activeView === "team"          ? <ManagerTeamView walkers={walkers} locals={visibleLocals} /> : null}
           {roleId === "manager" && activeView === "share"         ? <CpaPlaceholder icon="🥧" title="Análisis de Share" desc="Evolución de participación de mercado por categoría, marca y canal." tag="En desarrollo" /> : null}
           {roleId === "manager" && activeView === "kpi-comercial" ? <CpaPlaceholder icon="📈" title="KPIs Comerciales" desc="Cobertura de acuerdos, sell out, distribución numérica y evolución por zona walker." tag="En desarrollo" /> : null}
@@ -1328,7 +1328,7 @@ function WalkerDashboard({ columns, locals, summary, profile, draggedCardId, onC
         />
       </section>
 
-      <PillarSummaryGrid locals={locals} />
+      <PillarSummaryGrid locals={locals} onOpenLocal={onOpenLocal} />
 
       <section className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -1653,7 +1653,7 @@ function VisitPlaybook({ local }) {
   );
 }
 
-function CpaDashboard({ locals = [], walkers = [], brandingRequests = [] }) {
+function CpaDashboard({ locals = [], walkers = [], brandingRequests = [], onOpenLocal }) {
   const totalLocals   = locals.length;
   const auditados     = locals.filter((l) => l.pillars && Object.values(l.pillars).some((p) => p.lastAudit)).length;
   const pctAuditados  = totalLocals > 0 ? Math.round((auditados / totalLocals) * 100) : 0;
@@ -1706,7 +1706,7 @@ function CpaDashboard({ locals = [], walkers = [], brandingRequests = [] }) {
         />
       </section>
 
-      <PillarSummaryGrid locals={locals} />
+      <PillarSummaryGrid locals={locals} onOpenLocal={onOpenLocal} />
 
       <section className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -1833,7 +1833,7 @@ function scorePillStyle(score) {
   return map[score] ?? "bg-slate-100 text-slate-400";
 }
 
-function CpaKpiWalkersView({ locals = [], walkers = [] }) {
+function CpaKpiWalkersView({ locals = [], walkers = [], onOpenLocal }) {
   const [drillDown, setDrillDown] = useState(null); // { walkerName, pillarKey }
 
   function barColor(pct) {
@@ -2000,7 +2000,7 @@ function CpaKpiWalkersView({ locals = [], walkers = [] }) {
                       const p = l.pillars?.[drillDown.pillarKey];
                       const score = p?.score || "Sin registro";
                       return (
-                        <div key={l.id} className="grid grid-cols-[2fr_0.9fr_1fr_2fr_1.2fr] items-center gap-3 border-b border-slate-50 px-4 py-2.5 text-[12px] last:border-b-0 hover:bg-slate-50">
+                        <div key={l.id} className="grid grid-cols-[2fr_0.9fr_1fr_2fr_1.2fr] cursor-pointer items-center gap-3 border-b border-slate-50 px-4 py-2.5 text-[12px] last:border-b-0 hover:bg-slate-50" onClick={() => { setDrillDown(null); onOpenLocal?.(l.id); }}>
                           <span className="truncate font-medium text-slate-900" title={l.name}>{l.name}</span>
                           <span className="truncate text-[11px] text-slate-500">{l.segment || l.subchannel || "—"}</span>
                           <span className={`justify-self-center whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${scorePillStyle(score)}`}>{score}</span>
@@ -2019,7 +2019,7 @@ function CpaKpiWalkersView({ locals = [], walkers = [] }) {
   );
 }
 
-function ManagerDashboard({ locals = [], walkers = [] }) {
+function ManagerDashboard({ locals = [], walkers = [], onOpenLocal }) {
   const totalLocals   = locals.length;
   const auditados     = locals.filter((l) => l.pillars && Object.values(l.pillars).some((p) => p.lastAudit)).length;
   const pctCobertura  = totalLocals > 0 ? Math.round((auditados / totalLocals) * 100) : 0;
@@ -2063,7 +2063,7 @@ function ManagerDashboard({ locals = [], walkers = [] }) {
         />
       </section>
 
-      <PillarSummaryGrid locals={locals} />
+      <PillarSummaryGrid locals={locals} onOpenLocal={onOpenLocal} />
 
       <section className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -2119,7 +2119,7 @@ const PILLAR_SUMMARY_META = [
   { key: "activation", label: "Activación", icon: "🎯", accent: "bg-rose-500",    tint: "bg-rose-50 text-rose-700",       ring: "ring-rose-100"    },
 ];
 
-function PillarSummaryGrid({ locals = [] }) {
+function PillarSummaryGrid({ locals = [], onOpenLocal }) {
   const [activeKey, setActiveKey] = useState(null);
 
   const total = locals.length;
@@ -2204,7 +2204,7 @@ function PillarSummaryGrid({ locals = [] }) {
                     const p = l.pillars?.[activeKey];
                     const score = p?.score || "Sin registro";
                     return (
-                      <div key={l.id} className="grid grid-cols-[2fr_1fr_0.8fr_1fr_2fr_1.2fr] items-center gap-3 border-b border-slate-50 px-4 py-2.5 text-[12px] last:border-b-0 hover:bg-slate-50">
+                      <div key={l.id} className="grid grid-cols-[2fr_1fr_0.8fr_1fr_2fr_1.2fr] cursor-pointer items-center gap-3 border-b border-slate-50 px-4 py-2.5 text-[12px] last:border-b-0 hover:bg-slate-50" onClick={() => { setActiveKey(null); onOpenLocal?.(l.id); }}>
                         <span className="truncate font-medium text-slate-900" title={l.name}>{l.name}</span>
                         <span className="truncate text-[11px] text-slate-500">{l.walkerName || "—"}</span>
                         <span className="truncate text-[11px] text-slate-500">{l.segment || l.subchannel || "—"}</span>
