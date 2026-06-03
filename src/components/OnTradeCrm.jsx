@@ -1835,6 +1835,13 @@ function scorePillStyle(score) {
 
 function CpaKpiWalkersView({ locals = [], walkers = [] }) {
   const [drillDown, setDrillDown] = useState(null); // { walkerName, pillarKey }
+  const drillRef = useRef(null);
+
+  useEffect(() => {
+    if (drillDown && drillRef.current) {
+      drillRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [drillDown]);
 
   function barColor(pct) {
     if (pct >= 70) return "bg-emerald-500";
@@ -1973,7 +1980,7 @@ function CpaKpiWalkersView({ locals = [], walkers = [] }) {
 
       {/* Drill-down: cuentas por walker × pilar */}
       {drillDown && drillMeta && (
-        <article className={`rounded-xl border-2 ${drillMeta.border} bg-white p-5 shadow-sm`}>
+        <article ref={drillRef} className={`rounded-xl border-2 ${drillMeta.border} bg-white p-5 shadow-sm`}>
           <div className="mb-4 flex items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2">
               <span className={`rounded-lg px-2.5 py-1 text-[12px] font-semibold ${drillMeta.bg} ${drillMeta.text}`}>
@@ -2135,6 +2142,14 @@ const PILLAR_SUMMARY_META = [
 
 function PillarSummaryGrid({ locals = [] }) {
   const [activeKey, setActiveKey] = useState(null);
+  const drillRef = useRef(null);
+
+  useEffect(() => {
+    if (activeKey && drillRef.current) {
+      drillRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [activeKey]);
+
   const total = locals.length;
   const stats = PILLAR_SUMMARY_META.map((meta) => {
     const completados = locals.filter((l) => l.pillars?.[meta.key]?.score === "Completado").length;
@@ -2209,7 +2224,7 @@ function PillarSummaryGrid({ locals = [] }) {
 
       {/* Drill-down: todas las cuentas para el pilar seleccionado */}
       {activeStat && activeMeta && (
-        <article className={`rounded-xl border-2 ${activeMeta.border} bg-white p-5 shadow-sm`}>
+        <article ref={drillRef} className={`rounded-xl border-2 ${activeMeta.border} bg-white p-5 shadow-sm`}>
           <div className="mb-4 flex items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2">
               <span className={`rounded-lg px-2.5 py-1 text-[12px] font-semibold ${activeMeta.bg} ${activeMeta.text}`}>
