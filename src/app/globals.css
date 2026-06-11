@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens Key 3 — referencia: Mercury.com
+ * Un solo acento (indigo/violeta) + semánticos de compliance. Nada más.
+ */
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Superficies */
+  --color-bg: #fafafb;
+  --color-surface: #ffffff;
+  --color-border: #eeeef2;
+
+  /* Texto */
+  --color-ink: #1a1a1e;
+  --color-muted: #6b6b76;
+
+  /* Acento único */
+  --color-accent: #5b5bd6;
+  --color-accent-strong: #4a4ac4;
+  --color-accent-soft: #efeffb;
+
+  /* Semánticos de compliance */
+  --color-success: #16a34a;
+  --color-success-soft: #e9f8ef;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fdeded;
+  --color-warning: #d97706;
+  --color-warning-soft: #fbf3e5;
+
+  /* Radios y sombras */
+  --radius-card: 16px;
+  --radius-pill: 9999px;
+  --shadow-card: 0 1px 2px rgb(16 17 26 / 0.04), 0 8px 24px rgb(16 17 26 / 0.05);
+
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    @apply bg-bg;
+  }
+  body {
+    @apply bg-bg text-ink antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+  ::selection {
+    background: var(--color-accent-soft);
+  }
+}
+
+@layer utilities {
+  /* Micro-interacción estándar: 200ms ease + scale al tocar */
+  .tappable {
+    transition: all 200ms var(--ease-smooth);
+  }
+  .tappable:active {
+    transform: scale(0.97);
+  }
+}
