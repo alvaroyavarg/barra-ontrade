@@ -1,0 +1,129 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><link rel="stylesheet" href="styles.css">
+<style>
+body{font-size:14px}
+.layout{display:flex;min-height:100vh;align-items:stretch}
+.sidebar{width:248px;background:#fff;border-right:1px solid var(--border);padding:20px 14px;display:flex;flex-direction:column}
+.brand{font-weight:700;font-size:18px;letter-spacing:-.02em;padding:4px 8px 18px;display:flex;align-items:center;gap:9px}
+.brand .mk{width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+.nav-item{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:10px;color:var(--muted);font-weight:500;margin-bottom:2px}
+.nav-item.on{background:var(--accent-soft);color:var(--accent-700);font-weight:600}
+.nav-item svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.nav-label{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted-2);padding:16px 11px 6px}
+.side-user{margin-top:auto;display:flex;align-items:center;gap:10px;padding:12px 8px 2px;border-top:1px solid var(--border)}
+.side-user .ini{width:34px;height:34px;border-radius:50%;background:#EFEFF3;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--muted)}
+
+.content{flex:1;padding:26px 32px}
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}
+.page-head h1{font-size:25px;font-weight:600;letter-spacing:-.02em}
+.page-head p{color:var(--muted);font-size:13.5px;margin-top:4px}
+.dfilters{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}
+.kpi{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.kpi .label{font-size:13px;color:var(--muted);font-weight:500}
+.kpi .v{font-size:36px;font-weight:600;letter-spacing:-.025em;margin-top:10px;font-variant-numeric:tabular-nums}
+.kpi .delta{font-size:12.5px;font-weight:600;margin-top:8px;display:flex;align-items:center;gap:5px}
+
+.grid2{display:grid;grid-template-columns:1.9fr 1fr;gap:16px;margin-bottom:16px}
+.panel{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px 20px;box-shadow:var(--shadow)}
+.panel h3{font-size:14.5px;font-weight:600}
+.panel .sub{font-size:12.5px;color:var(--muted);margin-top:2px;margin-bottom:14px}
+
+.pbar{display:flex;align-items:center;gap:12px;padding:9px 0}
+.pbar .pl{width:84px;font-size:13.5px;font-weight:600}
+.pbar .pv{width:30px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums;font-size:13.5px}
+
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.tbl th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted-2);font-weight:700;padding:6px 8px}
+.tbl td{padding:11px 8px;border-top:1px solid var(--border)}
+.tbl .nm{font-weight:600}
+.tbl .sc{display:flex;align-items:center;gap:7px;justify-content:flex-end;font-weight:700;font-variant-numeric:tabular-nums}
+.rowflag{display:inline-flex;width:7px;height:7px;border-radius:50%;background:var(--red);margin-left:6px;vertical-align:middle}
+</style></head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand"><span class="mk">K3</span>Key 3</div>
+    <div class="nav-item on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</div>
+    <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M3 12h4l2 5 4-12 2 7h6"/></svg>Muro de actividad</div>
+    <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg>Clientes</div>
+    <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M17 6.5a3 3 0 0 1 0 5.7"/></svg>Programas</div>
+
+    <div class="nav-label">Administración</div>
+    <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 3l8 4-8 4-8-4 8-4Z"/><path d="M4 12l8 4 8-4"/><path d="M4 17l8 4 8-4"/></svg>Framework</div>
+    <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 20h16"/></svg>Base de clientes</div>
+    <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="17.5" cy="9" r="2.2"/></svg>Usuarios</div>
+    <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.3 1a7 7 0 0 0-1.7-1l-.3-2.5h-4l-.3 2.5a7 7 0 0 0-1.7 1l-2.3-1-2 3.5 2 1.5a7 7 0 0 0 0 2l-2 1.5 2 3.5 2.3-1a7 7 0 0 0 1.7 1l.3 2.5h4l.3-2.5a7 7 0 0 0 1.7-1l2.3 1 2-3.5-2-1.5a7 7 0 0 0 .1-1Z"/></svg>Ajustes</div>
+
+    <div class="side-user"><div class="ini">RS</div><div><div class="semibold" style="font-size:13.5px">Rodrigo Soto</div><div class="tiny muted">OT Manager</div></div></div>
+  </aside>
+
+  <main class="content">
+    <div class="page-head">
+      <div><h1>Resumen del canal</h1><p>On Trade · actualizado hoy 16:00</p></div>
+      <div class="dfilters">
+        <div class="fpill on">Últimos 30 días</div>
+        <div class="fpill">Todas las rutas</div>
+        <div class="fpill">Walker</div>
+        <div class="fpill">Tipo de cuenta</div>
+        <div class="fpill">Comuna</div>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="label">Score promedio</div><div class="v">73</div><div class="delta tx-green"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 14l7-7 7 7"/></svg>+4 vs mes anterior</div></div>
+      <div class="kpi"><div class="label">Cumplimiento AACC</div><div class="v tx-amber">68%</div><div class="delta tx-red"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 10l7 7 7-7"/></svg>-3 pts</div></div>
+      <div class="kpi"><div class="label">Visitas (30 d)</div><div class="v">142</div><div class="delta tx-green"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 14l7-7 7 7"/></svg>+18</div></div>
+      <div class="kpi"><div class="label">Cuentas críticas</div><div class="v tx-red">9</div><div class="delta muted">score bajo 55</div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <h3>Tendencia de score</h3><div class="sub">Promedio del canal · últimos 90 días</div>
+        <svg viewBox="0 0 600 200" width="100%" height="190" preserveAspectRatio="none">
+          <line x1="20" y1="60" x2="580" y2="60" stroke="#F0F0F4"/>
+          <line x1="20" y1="120" x2="580" y2="120" stroke="#F0F0F4"/>
+          <line x1="20" y1="180" x2="580" y2="180" stroke="#EDEDF2"/>
+          <path d="M20,116 L100,100 L180,110 L260,84 L340,73 L420,79 L500,63 L580,57 L580,180 L20,180 Z" fill="rgba(91,91,214,.10)"/>
+          <path d="M20,116 L100,100 L180,110 L260,84 L340,73 L420,79 L500,63 L580,57" fill="none" stroke="#5B5BD6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="580" cy="57" r="4.5" fill="#5B5BD6"/><circle cx="580" cy="57" r="9" fill="rgba(91,91,214,.15)"/>
+        </svg>
+      </div>
+      <div class="panel">
+        <h3>Score por pilar</h3><div class="sub">Promedio canal</div>
+        <div class="pbar"><span class="pl">Staff</span><div class="progress green" style="flex:1"><i style="width:78%"></i></div><span class="pv tx-green">78</span></div>
+        <div class="pbar"><span class="pl">Menú</span><div class="progress amber" style="flex:1"><i style="width:61%"></i></div><span class="pv tx-amber">61</span></div>
+        <div class="pbar"><span class="pl">Activación</span><div class="progress green" style="flex:1"><i style="width:70%"></i></div><span class="pv tx-green">70</span></div>
+        <hr class="sep" style="margin:14px 0 4px">
+        <div class="sub" style="margin:0 0 6px">Hygiene · SKU mínimos</div>
+        <div class="pbar" style="padding-top:2px"><span class="pl">Cumple</span><div class="progress amber" style="flex:1"><i style="width:64%"></i></div><span class="pv tx-amber">64</span></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <h3>Ranking de cuentas</h3><div class="sub">Top y críticas · última visita</div>
+        <table class="tbl">
+          <thead><tr><th>Cuenta</th><th>Comuna</th><th>Tipo</th><th>Walker</th><th style="text-align:right">Score</th></tr></thead>
+          <tbody>
+            <tr><td class="nm">Peumayén</td><td class="muted">Bellavista</td><td><span class="badge aacc">AACC</span></td><td class="muted">C. Vega</td><td><div class="sc tx-green">91<span class="dot green"></span></div></td></tr>
+            <tr><td class="nm">Flannery's</td><td class="muted">Las Condes</td><td class="muted sm">Estándar</td><td class="muted">C. Vega</td><td><div class="sc tx-green">88<span class="dot green"></span></div></td></tr>
+            <tr><td class="nm">Bar Liguria</td><td class="muted">Providencia</td><td><span class="badge aacc">AACC</span></td><td class="muted">M. Rojas</td><td><div class="sc tx-green">82<span class="dot green"></span></div></td></tr>
+            <tr><td class="nm">Siete Negronis<span class="rowflag"></span></td><td class="muted">Providencia</td><td><span class="badge aacc">AACC</span></td><td class="muted">C. Vega</td><td><div class="sc tx-red">58<span class="dot red"></span></div></td></tr>
+            <tr><td class="nm">La Piojera</td><td class="muted">Santiago</td><td class="muted sm">Estándar</td><td class="muted">M. Rojas</td><td><div class="sc tx-red">48<span class="dot red"></span></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="panel">
+        <h3>Cumplimiento AACC por ruta</h3><div class="sub">% piso obligatorio</div>
+        <div class="pbar"><span class="pl">Las Condes</span><div class="progress green" style="flex:1"><i style="width:84%"></i></div><span class="pv tx-green">84</span></div>
+        <div class="pbar"><span class="pl">Vitacura</span><div class="progress green" style="flex:1"><i style="width:80%"></i></div><span class="pv tx-green">80</span></div>
+        <div class="pbar"><span class="pl">Providencia</span><div class="progress amber" style="flex:1"><i style="width:72%"></i></div><span class="pv tx-amber">72</span></div>
+        <div class="pbar"><span class="pl">Santiago</span><div class="progress red" style="flex:1"><i style="width:58%"></i></div><span class="pv tx-red">58</span></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+</body></html>
