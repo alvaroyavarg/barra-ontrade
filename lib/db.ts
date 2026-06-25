@@ -15,7 +15,11 @@ const globalForDb = globalThis as unknown as {
 
 const sql =
   connectionString !== undefined
-    ? (globalForDb.__key3_sql ??= postgres(connectionString, { prepare: false }))
+    ? (globalForDb.__key3_sql ??= postgres(connectionString, {
+        prepare: false,
+        max: 1,
+        idle_timeout: 20,
+      }))
     : undefined;
 
 export const db = sql ? drizzle(sql, { schema }) : (undefined as unknown as ReturnType<typeof drizzle>);
